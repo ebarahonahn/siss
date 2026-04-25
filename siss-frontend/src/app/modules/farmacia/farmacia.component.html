@@ -1,0 +1,144 @@
+<div class="space-y-6">
+  <!-- Cabecera -->
+  <div class="flex items-center justify-between">
+    <div>
+      <h2 class="text-2xl font-bold text-gray-900">Farmacia</h2>
+      <p class="text-sm text-gray-500">Dispensación de medicamentos y control de inventario</p>
+    </div>
+  </div>
+
+  <!-- Buscador de Recetas -->
+  <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
+    <label class="block text-sm font-medium text-gray-700 mb-2">Buscar paciente por DNI o N° Expediente</label>
+    <div class="relative">
+      <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0"/>
+      </svg>
+      <input type="text" 
+             placeholder="Ingrese identificación para buscar recetas pendientes..."
+             (input)="buscar($event)"
+             class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"/>
+    </div>
+
+    <!-- Resultados de Búsqueda -->
+    <div *ngIf="cargando()" class="mt-4 text-center py-8">
+      <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+      <p class="mt-2 text-sm text-gray-500">Buscando recetas pendientes...</p>
+    </div>
+
+    <div *ngIf="!cargando() && recetas().length > 0" class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div *ngFor="let r of recetas()" 
+           (click)="seleccionarReceta(r)"
+           class="p-4 border border-gray-100 rounded-xl hover:border-blue-300 hover:bg-blue-50 cursor-pointer transition-all group">
+        <div class="flex justify-between items-start">
+          <div>
+            <h4 class="font-bold text-gray-900 group-hover:text-blue-700 transition-colors">
+              {{ r.paciente.nombres }} {{ r.paciente.apellidos }}
+            </h4>
+            <p class="text-xs text-gray-500">Expediente: {{ r.paciente.numeroExpediente }}</p>
+          </div>
+          <span [ngClass]="r.estado === 'PENDIENTE' ? 'bg-orange-100 text-orange-700' : 'bg-blue-100 text-blue-700'"
+                class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase">
+            {{ r.estado }}
+          </span>
+        </div>
+        <div class="mt-3 flex items-center justify-between text-xs text-gray-400">
+          <span>Creada: {{ r.creadaEn | date:'dd/MM/yyyy HH:mm' }}</span>
+          <span>{{ r.detalles.length }} medicamento(s)</span>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="!cargando() && recetas().length === 0 && error() === ''" class="mt-4 text-center py-8 border-2 border-dashed border-gray-50 rounded-2xl">
+      <p class="text-sm text-gray-400">No hay resultados que mostrar</p>
+    </div>
+  </div>
+
+  <!-- Modal/Vista de Dispensación -->
+  <div *ngIf="recetaSeleccionada()" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
+    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
+      <!-- Header -->
+      <div class="px-8 py-6 bg-gray-50 border-b flex justify-between items-center">
+        <div>
+          <span class="text-[10px] font-bold text-blue-600 uppercase tracking-widest">Dispensación de Receta</span>
+          <h3 class="text-xl font-bold text-gray-900">
+            {{ recetaSeleccionada().paciente.nombres }} {{ recetaSeleccionada().paciente.apellidos }}
+          </h3>
+        </div>
+        <button (click)="cerrarDetalle()" class="p-2 hover:bg-gray-200 rounded-full transition-colors">
+          <svg class="w-6 h-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Contenido -->
+      <div class="p-8 overflow-y-auto flex-1">
+        <div *ngIf="error()" class="mb-6 p-4 bg-red-50 border border-red-100 text-red-700 rounded-xl text-sm flex items-center gap-3">
+          <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          {{ error() }}
+        </div>
+
+        <form [formGroup]="form">
+          <div class="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm">
+            <table class="w-full text-sm">
+              <thead class="bg-gray-50 border-b border-gray-100">
+                <tr>
+                  <th class="px-4 py-4 text-left font-bold text-gray-600">Medicamento / Posología</th>
+                  <th class="px-4 py-4 text-center font-bold text-gray-600">Prescrita</th>
+                  <th class="px-4 py-4 text-center font-bold text-gray-600">Entregada</th>
+                  <th class="px-4 py-4 text-center font-bold text-gray-600">Pendiente</th>
+                  <th class="px-4 py-4 text-right font-bold text-blue-600">A Entregar Ahora</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-50" formArrayName="detalles">
+                <tr *ngFor="let ctrl of detallesForm; let i = index" [formGroupName]="i" class="hover:bg-blue-50/30 transition-colors">
+                  <td class="px-4 py-4">
+                    <div class="font-bold text-gray-900">{{ ctrl.get('medicamento')?.value }}</div>
+                    <div class="text-[11px] text-gray-500 mt-0.5">{{ ctrl.get('dosis')?.value }}</div>
+                  </td>
+                  <td class="px-4 py-4 text-center font-medium">{{ ctrl.get('cantidadPrescrita')?.value }}</td>
+                  <td class="px-4 py-4 text-center text-gray-500">{{ ctrl.get('cantidadEntregada')?.value }}</td>
+                  <td class="px-4 py-4 text-center">
+                    <span class="px-2 py-1 bg-orange-50 text-orange-700 rounded-lg font-bold text-xs">
+                      {{ ctrl.get('cantidadPendiente')?.value }}
+                    </span>
+                  </td>
+                  <td class="px-4 py-4 text-right">
+                    <input type="number" 
+                           formControlName="cantidadADispensar"
+                           class="w-20 px-2 py-1.5 border border-blue-200 rounded-lg text-right focus:ring-2 focus:ring-blue-500 outline-none font-bold text-blue-700 bg-blue-50/50"/>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </form>
+
+        <!-- Notas adicionales -->
+        <div class="mt-6 p-4 bg-gray-50 rounded-2xl border border-gray-100 text-[11px] text-gray-500">
+          <p><strong>Nota:</strong> El sistema seleccionará automáticamente los lotes más próximos a vencer (FEFO) del inventario local. Si un lote se agota, se continuará con el siguiente lote disponible.</p>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="px-8 py-6 bg-white border-t flex justify-end gap-4">
+        <button (click)="cerrarDetalle()" 
+                class="px-6 py-2.5 text-sm font-bold text-gray-600 hover:bg-gray-100 rounded-xl transition-all">
+          Cancelar
+        </button>
+        <button (click)="confirmarDispensacion()" 
+                [disabled]="procesando() || form.invalid"
+                class="px-8 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-xl shadow-lg shadow-blue-200 disabled:opacity-50 transition-all flex items-center gap-2">
+          <svg *ngIf="procesando()" class="animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          {{ procesando() ? 'Procesando...' : 'Finalizar Dispensación' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

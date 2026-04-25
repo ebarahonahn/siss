@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SISS - Presentación de Sistema</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true, 
+            theme: 'dark',
+            themeVariables: {
+                primaryColor: '#00d2ff',
+                primaryTextColor: '#fff',
+                primaryBorderColor: '#3a7bd5',
+                lineColor: '#ff007a',
+                secondaryColor: '#3a7bd5',
+                tertiaryColor: '#0b0e14',
+                fontFamily: 'Plus Jakarta Sans',
+                fontSize: '14px'
+            }
+        });
+    </script>
+    <style>
+        :root {
+            --primary: #00d2ff;
+            --secondary: #3a7bd5;
+            --accent: #ff007a;
+            --bg: #0b0e14;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --text: #e0e0e0;
+            --text-dim: #a0a0a0;
+            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* Cambiado de center para evitar cortes superiores */
+            align-items: center;
+            padding: 2rem 4rem; /* Reducido el padding superior/inferior */
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateX(50px);
+            background: radial-gradient(circle at 10% 20%, rgba(0, 210, 255, 0.05) 0%, transparent 40%),
+                        radial-gradient(circle at 90% 80%, rgba(58, 123, 213, 0.05) 0%, transparent 40%);
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(0);
+        }
+
+        .slide.prev {
+            transform: translateX(-50px);
+        }
+
+        /* Typography */
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 4rem; /* Reducido de 5rem */
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            line-height: 1.1;
+        }
+
+        h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.5rem; /* Reducido de 3rem */
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            position: relative;
+            display: inline-block;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60%;
+            height: 4px;
+            background: var(--gradient);
+            border-radius: 2px;
+        }
+
+        p {
+            font-size: 1.25rem;
+            color: var(--text-dim);
+            max-width: 800px;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            width: 100%;
+            max-width: 1200px;
+            margin-top: 2rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1.5rem; /* Reducido de 2rem */
+            border-radius: 20px;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            width: 100%;
+        }
+
+        .mermaid {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            overflow: visible;
+        }
+
+        .mermaid svg {
+            max-height: 500px; /* Aumentado de 350px */
+            width: 100% !important;
+            max-width: 100%;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .card h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .card ul {
+            list-style: none;
+            color: var(--text-dim);
+        }
+
+        .card li {
+            margin-bottom: 0.8rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .card li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+
+        /* Navigation */
+        .nav-controls {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            gap: 1rem;
+            z-index: 100;
+        }
+
+        .nav-btn {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-btn:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+            transform: scale(1.1);
+        }
+
+        .progress-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            height: 4px;
+            background: var(--gradient);
+            transition: width 0.3s ease;
+            z-index: 100;
+        }
+
+        .slide-number {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            font-family: 'Outfit', sans-serif;
+            letter-spacing: 2px;
+        }
+
+        /* Custom Visuals */
+        .tech-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: rgba(0, 210, 255, 0.1);
+            border: 1px solid var(--primary);
+            border-radius: 30px;
+            color: var(--primary);
+            font-size: 0.9rem;
+            margin: 0.5rem;
+            font-weight: 600;
+        }
+
+        .status-dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #00ff88;
+            margin-right: 10px;
+            box-shadow: 0 0 10px #00ff88;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="progress-bar" id="progress"></div>
+    <div class="slide-number" id="slideNum">SLIDE 1 / 8</div>
+
+    <div class="presentation-container">
+        <!-- Slide 1: Welcome -->
+        <div class="slide active">
+            <h1 id="main-title">SISS</h1>
+            <h2>Sistema Integral de Servicios de Salud</h2>
+            <p>Estandarización, Eficiencia y Trazabilidad en la Gestión Hospitalaria y Salud Pública.</p>
+            <div style="margin-top: 3rem;">
+                <span class="tech-badge">v1.0.0</span>
+                <span class="tech-badge">Honduras (UTC-6)</span>
+            </div>
+        </div>
+
+        <!-- Slide 2: Tech Stack -->
+        <div class="slide">
+            <h2>Arquitectura Tecnológica</h2>
+            <p>Un ecosistema robusto y moderno construido para el rendimiento y la escalabilidad.</p>
+            <div class="content-grid">
+                <div class="card">
+                    <h3>Frontend</h3>
+                    <ul>
+                        <li>Angular de alta densidad</li>
+                        <li>Diseño UI/UX Premium</li>
+                        <li>Interacción Reactiva</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Backend</h3>
+                    <ul>
+                        <li>NestJS (Arquitectura Modular)</li>
+                        <li>Node.js / TypeScript</li>
+                        <li>Seguridad RBAC integrada</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Datos y Reportes</h3>
+                    <ul>
+                        <li>MySQL + Prisma ORM</li>
+                        <li>Reportes PDF Institucionales</li>
+                        <li>Estandarización CIE-10</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Gestión de Agendas -->
+        <div class="slide">
+            <h2>Gestión de Agendas</h2>
+            <div class="content-grid" style="align-items: center;">
+                <div class="card">
+                    <h3>Flujo de Atención</h3>
+                    <div class="mermaid" style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 10px;">
+                        graph TD
+                            A[Paciente llega] --> B[Recepción/Agenda]
+                            B --> C[Triaje: Signos Vitales]
+                            C --> D[Consulta Médica]
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Planificación</h3>
+                    <ul>
+                        <li><strong>Agenda Base</strong>: Slots por médico.</li>
+                        <li><strong>Excepciones</strong>: Bloqueos por ausencia.</li>
+                        <li><strong>Multi-Sede</strong>: Agendas cruzadas.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Historia Clínica -->
+        <div class="slide">
+            <h2>Historia Clínica (EMR)</h2>
+            <p><strong>Expediente Médico Electrónico</strong>: El núcleo de la atención médica con enfoque en la calidad del dato y la estandarización clínica.</p>
+            <div class="content-grid">
+                <div class="card">
+                    <h3>Metodología SOAP</h3>
+                    <ul>
+                        <li>Subjetivo (Anamnesis)</li>
+                        <li>Objetivo (Físico/Signos)</li>
+                        <li>Análisis (Diagnósticos)</li>
+                        <li>Plan (Tratamiento)</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Diagnósticos Inteligentes</h3>
+                    <ul>
+                        <li>Buscador CIE-10 Integrado</li>
+                        <li>Alertas Epidemiológicas</li>
+                        <li>Validación de Comorbilidades</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Farmacia e Inventario -->
+        <div class="slide">
+            <h2>Farmacia e Inventario</h2>
+            <div class="content-grid" style="align-items: center;">
+                <div class="card">
+                    <h3>Trazabilidad de Suministros</h3>
+                    <div class="mermaid" style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 10px;">
+                        graph TD
+                            A[Médico Prescribe] --> B[Receta PENDIENTE]
+                            B --> C[Paciente va a Farmacia]
+                            C --> D{¿Hay Stock?}
+                            D -- Sí --> E[Dispensación Completa]
+                            D -- No --> F{¿Stock Parcial?}
+                            F -- Sí --> G[Dispensación Parcial]
+                            F -- No --> H[Registro Demanda Insatisfecha]
+                            E --> I[Descargo por Lote]
+                            G --> I
+                            I --> J[Receta Cerrada]
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Control de Existencias</h3>
+                    <ul>
+                        <li>Lote y Vencimiento</li>
+                        <li>Alertas de Stock Mínimo</li>
+                        <li>Trazabilidad FEFO</li>
+                        <li>Entregas Parciales</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Vigilancia Epidemiológica -->
+        <div class="slide">
+            <h2>Vigilancia Epidemiológica</h2>
+            <p>Salud pública accionable mediante detección temprana.</p>
+            <div class="card" style="max-width: 800px;">
+                <ul style="font-size: 1.2rem;">
+                    <li><span class="status-dot"></span>Disparo automático por códigos CIE-10 críticos.</li>
+                    <li><span class="status-dot"></span>Geolocalización precisa del domicilio (Lat/Long).</li>
+                    <li><span class="status-dot"></span>Antecedentes de viaje y mapeo de contactos.</li>
+                    <li><span class="status-dot"></span>Gestión de investigación (Pendiente → Gestionado).</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 7: Módulos Especializados -->
+        <div class="slide">
+            <h2>Módulos de Apoyo Diagnóstico</h2>
+            <p>Integración total con servicios auxiliares.</p>
+            <div class="content-grid">
+                <div class="card">
+                    <h3>Laboratorio</h3>
+                    <ul>
+                        <li>Valores de Referencia</li>
+                        <li>Alertas de Resultados Anormales</li>
+                        <li>Gestión Integral de Solicitudes</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Radiología</h3>
+                    <ul>
+                        <li>Rayos X, Tomografía, Ecografía, Resonancia</li>
+                        <li>Registro de Conclusiones e Hallazgos</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>PAI (Vacunación)</h3>
+                    <ul>
+                        <li>Esquemas Nacionales</li>
+                        <li>Carnet Digital Histórico</li>
+                        <li>Control de Cadena de Frío</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Flujo Completo -->
+        <div class="slide">
+            <h2>Flujo de Atención Integral</h2>
+            <div class="card" style="width: 100%; max-width: 1100px;">
+                <div class="mermaid" style="background: rgba(0,0,0,0.1); padding: 1.5rem; border-radius: 10px;">
+                    graph TD
+                        A[Paciente llega] --> B[Recepción/Agenda]
+                        B --> C[Triaje: Signos Vitales]
+                        C --> D[Consulta Médica: SOAP]
+                        D --> E{Acciones Clínicas}
+                        E --> F[Diagnósticos CIE-10]
+                        E --> G[Recetas/Lab/Rayos X]
+                        E --> H[Referencia Externa]
+                        E --> I[Agendar Próxima Cita]
+                        F --> J{¿Es Epidemiólogico?}
+                        J -- Sí --> K[Alerta y Ficha Epidem.]
+                        J -- No --> L[Finalizar]
+                        G --> L
+                        H --> L
+                        I --> L
+                        K --> L
+                        L --> M[Impresión de Reportes PDF]
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Conclusión -->
+        <div class="slide">
+            <h1>SISS</h1>
+            <h2>Hacia una Salud Digital</h2>
+            <div class="card" style="margin-top: 2rem;">
+                <p>El SISS no es solo un software, es el pilar de la transformación digital en salud pública.</p>
+            </div>
+            <p style="margin-top: 3rem; font-size: 1rem;">Gracias por su atención.</p>
+        </div>
+    </div>
+
+    <div class="nav-controls">
+        <div class="nav-btn" onclick="prevSlide()">←</div>
+        <div class="nav-btn" onclick="nextSlide()">→</div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const progress = document.getElementById('progress');
+        const slideNum = document.getElementById('slideNum');
+
+        function updateSlide() {
+            slides.forEach((slide, index) => {
+                slide.classList.remove('active', 'prev');
+                if (index === currentSlide) {
+                    slide.classList.add('active');
+                } else if (index < currentSlide) {
+                    slide.classList.add('prev');
+                }
+            });
+            
+            const percent = ((currentSlide + 1) / slides.length) * 100;
+            progress.style.width = percent + '%';
+            slideNum.innerText = `SLIDE ${currentSlide + 1} / ${slides.length}`;
+        }
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                updateSlide();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlide();
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+        });
+    </script>
+</body>
+</html>

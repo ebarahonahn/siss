@@ -1,0 +1,747 @@
+ALTER TABLE `roles` COMMENT = 'Representa los roles de usuario en el sistema para control de acceso basado en roles (RBAC)';
+-- Columna: roles.id -> Identificador único autoincremental del rol
+-- Columna: roles.nombre -> Nombre único del rol (ej: ADMIN, MEDICO, ENFERMERA)
+-- Columna: roles.descripcion -> Descripción detallada de las funciones del rol
+-- Columna: roles.permisos -> Objeto JSON que define los permisos específicos del rol por módulo
+-- Columna: roles.usuarios -> Relación con los usuarios que tienen asignado este rol directamente
+-- Columna: roles.asignaciones -> Relación con las asignaciones específicas por establecimiento
+ALTER TABLE `usuarios` COMMENT = 'Representa a los usuarios del sistema (personal médico, administrativo y de enfermería)';
+-- Columna: usuarios.id -> Identificador único autoincremental del usuario
+-- Columna: usuarios.numeroEmpleado -> Número de empleado institucional
+-- Columna: usuarios.nombres -> Nombres del usuario
+-- Columna: usuarios.apellidos -> Apellidos del usuario
+-- Columna: usuarios.correo -> Correo electrónico institucional (usado para login)
+-- Columna: usuarios.contrasenaHash -> Hash de la contraseña del usuario (Bcrypt)
+-- Columna: usuarios.telefono -> Número de teléfono de contacto
+-- Columna: usuarios.especialidadId -> ID de la especialidad primaria del usuario (si aplica)
+-- Columna: usuarios.numeroColegiado -> Número de colegiación profesional (obligatorio para médicos)
+-- Columna: usuarios.activo -> Indica si el usuario está activo en el sistema
+-- Columna: usuarios.ultimoAcceso -> Fecha y hora del último acceso exitoso
+-- Columna: usuarios.rolId -> ID del rol principal asignado
+-- Columna: usuarios.establecimientoId -> ID del establecimiento base donde labora
+-- Columna: usuarios.rol -> Relación con el modelo de Rol
+-- Columna: usuarios.establecimiento -> Relación con el establecimiento base
+-- Columna: usuarios.especialidad -> Relación con la especialidad profesional
+-- Columna: usuarios.asignaciones -> Historial de asignaciones a diferentes establecimientos y servicios
+-- Columna: usuarios.sesiones -> Sesiones activas e históricas del usuario
+-- Columna: usuarios.citasMedico -> Citas médicas donde el usuario actúa como médico tratante
+-- Columna: usuarios.historiales -> Historias clínicas creadas por este usuario
+-- Columna: usuarios.auditLogs -> Registros de auditoría generados por acciones de este usuario
+-- Columna: usuarios.plantillasCreadas -> Plantillas de formularios clínicos creadas por el usuario
+-- Columna: usuarios.triajes -> Triajes realizados por el usuario (en rol de enfermería)
+-- Columna: usuarios.medicamentosCreados -> Medicamentos registrados por este usuario
+-- Columna: usuarios.medicamentosActualizados -> Medicamentos actualizados por este usuario
+-- Columna: usuarios.medicamentosEliminados -> Medicamentos eliminados lógicamente por este usuario
+-- Columna: usuarios.pacientesEliminados -> Pacientes eliminados lógicamente por este usuario
+-- Columna: usuarios.citasCreadas -> Citas registradas por este usuario
+-- Columna: usuarios.citasCanceladas -> Citas canceladas por este usuario
+-- Columna: usuarios.historiasActualizadas -> Historias clínicas actualizadas por este usuario
+-- Columna: usuarios.historiasEliminadas -> Historias clínicas eliminadas por este usuario
+-- Columna: usuarios.establecimientosCreados -> Establecimientos registrados por este usuario
+-- Columna: usuarios.establecimientosActualizados -> Establecimientos actualizados por este usuario
+-- Columna: usuarios.establecimientosEliminados -> Establecimientos eliminados por este usuario
+-- Columna: usuarios.notificacionesGestionadas -> Notificaciones epidemiológicas gestionadas por este usuario
+-- Columna: usuarios.especialidadesCreadas -> Especialidades registradas por este usuario
+-- Columna: usuarios.especialidadesActualizadas -> Especialidades actualizadas por este usuario
+-- Columna: usuarios.inventariosCreados -> Inventarios registrados por este usuario
+-- Columna: usuarios.inventariosActualizados -> Inventarios actualizados por este usuario
+-- Columna: usuarios.inventariosEliminados -> Inventarios eliminados por este usuario
+-- Columna: usuarios.dispensaciones -> Dispensaciones de medicamentos realizadas por este usuario
+-- Columna: usuarios.agendasBase -> Configuraciones de agenda base para este médico
+-- Columna: usuarios.excepcionesAgenda -> Excepciones a la agenda (vacaciones, permisos) de este médico
+-- Columna: usuarios.vacunasAplicadas -> Registros de vacunas aplicadas por este usuario
+-- Columna: usuarios.movimientosVacunas -> Movimientos de inventario de vacunas realizados por este usuario
+-- Columna: usuarios.notificacionesCreadas -> Notificaciones epidemiológicas creadas por este usuario
+ALTER TABLE `sesiones` COMMENT = 'Representa las sesiones de autenticación activas mediante Refresh Tokens';
+-- Columna: sesiones.id -> Identificador único de la sesión
+-- Columna: sesiones.usuarioId -> ID del usuario dueño de la sesión
+-- Columna: sesiones.refreshTokenHash -> Hash del Refresh Token almacenado para validación de seguridad
+-- Columna: sesiones.expiresAt -> Fecha de expiración del token
+-- Columna: sesiones.ip -> Dirección IP desde la cual se inició la sesión
+-- Columna: sesiones.userAgent -> User Agent del navegador/dispositivo que inició la sesión
+-- Columna: sesiones.creadaEn -> Fecha y hora de creación de la sesión
+-- Columna: sesiones.usuario -> Relación con el usuario
+ALTER TABLE `establecimientos` COMMENT = 'Representa los centros de salud, hospitales y clínicas de la red de servicios';
+-- Columna: establecimientos.id -> Identificador único autoincremental
+-- Columna: establecimientos.codigo -> Código institucional único (ej: HNT-001)
+-- Columna: establecimientos.nombre -> Nombre completo del establecimiento
+-- Columna: establecimientos.tipo -> Nivel o tipo de establecimiento (Hospital, Centro de Salud, etc.)
+-- Columna: establecimientos.departamentoId -> ID del departamento geográfico donde se ubica
+-- Columna: establecimientos.municipioId -> ID del municipio donde se ubica
+-- Columna: establecimientos.telefono -> Teléfono de contacto institucional
+-- Columna: establecimientos.activo -> Indica si el establecimiento está operativo
+-- Columna: establecimientos.creadoEn -> Fecha de registro en el sistema
+-- Columna: establecimientos.actualizadoEn -> Fecha de última actualización de datos
+-- Columna: establecimientos.eliminadoEn -> Fecha de eliminación lógica (si aplica)
+-- Columna: establecimientos.creadoPorId -> ID del usuario que registró el establecimiento
+-- Columna: establecimientos.actualizadoPorId -> ID del usuario que realizó la última actualización
+-- Columna: establecimientos.eliminadoPorId -> ID del usuario que realizó la eliminación lógica
+-- Columna: establecimientos.departamento -> Relación con el departamento
+-- Columna: establecimientos.municipio -> Relación con el municipio
+-- Columna: establecimientos.creadoPor -> Relación con el usuario creador
+-- Columna: establecimientos.actualizadoPor -> Relación con el usuario actualizador
+-- Columna: establecimientos.eliminadoPor -> Relación con el usuario eliminador
+-- Columna: establecimientos.usuarios -> Usuarios asociados a este establecimiento
+-- Columna: establecimientos.pacientes -> Pacientes registrados en este establecimiento
+-- Columna: establecimientos.citas -> Citas programadas en este establecimiento
+-- Columna: establecimientos.inventarios -> Inventarios de farmacia de este establecimiento
+-- Columna: establecimientos.laboratorios -> Exámenes de laboratorio disponibles en este establecimiento
+-- Columna: establecimientos.radiologia -> Estudios de radiología disponibles en este establecimiento
+-- Columna: establecimientos.solicitudesLab -> Solicitudes de laboratorio realizadas desde/hacia este establecimiento
+-- Columna: establecimientos.solicitudesRad -> Solicitudes de radiología realizadas desde/hacia este establecimiento
+-- Columna: establecimientos.servicios -> Servicios (unidades funcionales) habilitados en este establecimiento
+-- Columna: establecimientos.referidosOrigen -> Referencias emitidas por este establecimiento
+-- Columna: establecimientos.referidosDestino -> Referencias recibidas por este establecimiento
+-- Columna: establecimientos.asignaciones -> Personal asignado a este establecimiento
+-- Columna: establecimientos.recetas -> Recetas emitidas en este establecimiento
+-- Columna: establecimientos.dispensaciones -> Dispensaciones realizadas en la farmacia de este establecimiento
+-- Columna: establecimientos.agendasBase -> Configuraciones de agenda base en este establecimiento
+-- Columna: establecimientos.excepcionesAgenda -> Excepciones temporales a la agenda en este establecimiento
+-- Columna: establecimientos.lotesVacunas -> Lotes de vacunas almacenados en este establecimiento
+-- Columna: establecimientos.registrosVacunas -> Registros de vacunación aplicados en este establecimiento
+ALTER TABLE `cat_servicios` COMMENT = 'Catálogo maestro de servicios o unidades funcionales (ej: Emergencias, Farmacia)';
+-- Columna: cat_servicios.id -> Identificador único
+-- Columna: cat_servicios.nombre -> Nombre único del servicio
+-- Columna: cat_servicios.descripcion -> Descripción de las funciones del servicio
+-- Columna: cat_servicios.activo -> Indica si el servicio está activo para ser asignado
+-- Columna: cat_servicios.servicios -> Relación con las instancias de este servicio en diferentes establecimientos
+ALTER TABLE `reportes_disponibles` COMMENT = 'Registro de reportes analíticos disponibles en la plataforma';
+-- Columna: reportes_disponibles.id -> Identificador único
+-- Columna: reportes_disponibles.nombre -> Nombre legible del reporte
+-- Columna: reportes_disponibles.descripcion -> Descripción de la utilidad y datos que contiene
+-- Columna: reportes_disponibles.categoria -> Categoría para agrupación en la UI (MEDICA, FARMACIA, etc.)
+-- Columna: reportes_disponibles.slug -> Identificador interno para la lógica de generación
+-- Columna: reportes_disponibles.tipo -> Formato de salida (EXCEL, PDF)
+-- Columna: reportes_disponibles.permiso -> Permiso granular requerido para acceder a este reporte
+-- Columna: reportes_disponibles.icono -> Nombre del icono decorativo en la UI
+-- Columna: reportes_disponibles.activo -> Indica si el reporte está disponible actualmente
+-- Columna: reportes_disponibles.orden -> Orden de aparición en el listado
+ALTER TABLE `servicios` COMMENT = 'Representa la habilitación de un servicio del catálogo en un establecimiento específico';
+-- Columna: servicios.id -> Identificador único
+-- Columna: servicios.activo -> Indica si el servicio está operativo en este establecimiento
+-- Columna: servicios.establecimientoId -> ID del establecimiento
+-- Columna: servicios.catServicioId -> ID del servicio del catálogo
+-- Columna: servicios.establecimiento -> Relación con el establecimiento
+-- Columna: servicios.catServicio -> Relación con el catálogo de servicios
+-- Columna: servicios.asignaciones -> Personal asignado específicamente a esta unidad funcional
+ALTER TABLE `asignaciones_usuario` COMMENT = 'Permite la gestión de personal en múltiples establecimientos y servicios con roles diferenciados';
+-- Columna: asignaciones_usuario.id -> Identificador único
+-- Columna: asignaciones_usuario.usuarioId -> ID del usuario asignado
+-- Columna: asignaciones_usuario.establecimientoId -> ID del establecimiento de la asignación
+-- Columna: asignaciones_usuario.servicioId -> ID del servicio (opcional) si la asignación es a una unidad funcional específica
+-- Columna: asignaciones_usuario.rolId -> ID del rol (opcional) si el usuario tiene un rol distinto en este establecimiento
+-- Columna: asignaciones_usuario.especialidadId -> ID de la especialidad (opcional) si ejerce una especialidad distinta aquí
+-- Columna: asignaciones_usuario.activo -> Indica si la asignación está vigente
+-- Columna: asignaciones_usuario.permisos -> Sobrescritura opcional de permisos específicos para esta asignación
+-- Columna: asignaciones_usuario.creadoEn -> Fecha de creación de la asignación
+-- Columna: asignaciones_usuario.actualizadoEn -> Fecha de última modificación
+-- Columna: asignaciones_usuario.usuario -> Relación con el usuario
+-- Columna: asignaciones_usuario.establecimiento -> Relación con el establecimiento
+-- Columna: asignaciones_usuario.servicio -> Relación con el servicio específico
+-- Columna: asignaciones_usuario.rol -> Relación con el rol específico
+-- Columna: asignaciones_usuario.especialidad -> Relación con la especialidad específica
+ALTER TABLE `especialidades` COMMENT = 'Catálogo de especialidades médicas (ej: Pediatría, Ginecología)';
+-- Columna: especialidades.id -> Identificador único
+-- Columna: especialidades.codigo -> Código abreviado de la especialidad (ej: PED, GIN)
+-- Columna: especialidades.nombre -> Nombre completo de la especialidad
+-- Columna: especialidades.descripcion -> Breve descripción del alcance de la especialidad
+-- Columna: especialidades.activa -> Indica si la especialidad está activa para nuevas asignaciones
+-- Columna: especialidades.creadoEn -> Fecha de registro
+-- Columna: especialidades.actualizadoEn -> Fecha de última actualización
+-- Columna: especialidades.creadoPorId -> ID del usuario que registró la especialidad
+-- Columna: especialidades.actualizadoPorId -> ID del usuario que realizó la última actualización
+-- Columna: especialidades.creadoPor -> Relación con el usuario creador
+-- Columna: especialidades.actualizadoPor -> Relación con el usuario actualizador
+-- Columna: especialidades.plantillas -> Plantillas de formularios clínicos asociadas a esta especialidad
+-- Columna: especialidades.usuarios -> Usuarios (médicos) que tienen esta especialidad como primaria
+-- Columna: especialidades.asignaciones -> Asignaciones de personal donde se ejerce esta especialidad
+-- Columna: especialidades.citas -> Citas médicas programadas para esta especialidad
+ALTER TABLE `pacientes` COMMENT = 'Registro central de datos personales y demográficos de los pacientes';
+-- Columna: pacientes.id -> Identificador único autoincremental
+-- Columna: pacientes.numeroExpediente -> Número de expediente único generado por el sistema
+-- Columna: pacientes.dni -> Documento Nacional de Identificación (Honduras)
+-- Columna: pacientes.nombres -> Nombres del paciente
+-- Columna: pacientes.apellidos -> Apellidos del paciente
+-- Columna: pacientes.fechaNacimiento -> Fecha de nacimiento
+-- Columna: pacientes.sexoId -> ID del catálogo de sexos
+-- Columna: pacientes.tipoSangreId -> ID del catálogo de tipos de sangre
+-- Columna: pacientes.telefono -> Teléfono de contacto
+-- Columna: pacientes.telefonoEmergencia -> Teléfono de contacto para emergencias
+-- Columna: pacientes.correo -> Correo electrónico (opcional)
+-- Columna: pacientes.direccion -> Dirección de domicilio detallada
+-- Columna: pacientes.departamentoId -> ID del departamento de domicilio
+-- Columna: pacientes.municipioId -> ID del municipio de domicilio
+-- Columna: pacientes.comunidad -> Nombre de la comunidad, barrio o colonia
+-- Columna: pacientes.escolaridadId -> ID del catálogo de escolaridad
+-- Columna: pacientes.ocupacionId -> ID del catálogo de ocupaciones
+-- Columna: pacientes.estadoCivilId -> ID del catálogo de estado civil
+-- Columna: pacientes.activo -> Indica si el paciente está activo para atención
+-- Columna: pacientes.fechaRegistro -> Fecha de registro inicial en el sistema
+-- Columna: pacientes.actualizadoEn -> Fecha de última actualización de datos demográficos
+-- Columna: pacientes.eliminadoEn -> Fecha de eliminación lógica
+-- Columna: pacientes.establecimientoId -> ID del establecimiento donde se registró el paciente
+-- Columna: pacientes.creadoPorId -> ID del usuario que registró al paciente
+-- Columna: pacientes.actualizadoPorId -> ID del usuario que realizó la última actualización
+-- Columna: pacientes.eliminadoPorId -> ID del usuario que realizó la eliminación lógica
+-- Columna: pacientes.establecimiento -> Relación con el establecimiento de registro
+-- Columna: pacientes.departamento -> Relación con el departamento
+-- Columna: pacientes.municipio -> Relación con el municipio
+-- Columna: pacientes.sexo -> Relación con el catálogo de sexos
+-- Columna: pacientes.tipoSangre -> Relación con el catálogo de tipos de sangre
+-- Columna: pacientes.escolaridad -> Relación con el catálogo de escolaridad
+-- Columna: pacientes.ocupacion -> Relación con el catálogo de ocupaciones
+-- Columna: pacientes.estadoCivil -> Relación con el catálogo de estado civil
+-- Columna: pacientes.eliminadoPor -> Relación con el usuario que eliminó el registro
+-- Columna: pacientes.alergias -> Historial de alergias del paciente
+-- Columna: pacientes.citas -> Historial de citas médicas
+-- Columna: pacientes.historialClinico -> Historial de atenciones (Historia Clínica)
+-- Columna: pacientes.medicamentosActivos -> Listado de medicamentos de uso crónico o actual
+-- Columna: pacientes.triajes -> Historial de triajes realizados
+-- Columna: pacientes.recetas -> Historial de recetas emitidas
+-- Columna: pacientes.solicitudesLab -> Solicitudes de laboratorio realizadas
+-- Columna: pacientes.solicitudesRad -> Solicitudes de radiología realizadas
+-- Columna: pacientes.vacunas -> Historial de vacunación PAI
+-- Columna: pacientes.notificacionesEpidemiologicas -> Notificaciones epidemiológicas asociadas al paciente
+ALTER TABLE `cat_sexos` COMMENT = 'Catálogo de sexos para registro demográfico';
+-- Columna: cat_sexos.id -> Identificador único
+-- Columna: cat_sexos.nombre -> Nombre del sexo (Masculino, Femenino)
+-- Columna: cat_sexos.pacientes -> Pacientes asociados a este sexo
+ALTER TABLE `cat_tipos_sangre` COMMENT = 'Catálogo de tipos de sangre y factor RH';
+-- Columna: cat_tipos_sangre.id -> Identificador único
+-- Columna: cat_tipos_sangre.nombre -> Nombre del tipo de sangre (ej: O+, A-)
+-- Columna: cat_tipos_sangre.pacientes -> Pacientes asociados a este tipo de sangre
+ALTER TABLE `cat_escolaridades` COMMENT = 'Catálogo de niveles de escolaridad alcanzados';
+-- Columna: cat_escolaridades.id -> Identificador único
+-- Columna: cat_escolaridades.nombre -> Nombre del nivel (ej: Primaria, Universitaria)
+-- Columna: cat_escolaridades.pacientes -> Pacientes con este nivel de escolaridad
+ALTER TABLE `cat_estados_civiles` COMMENT = 'Catálogo de estados civiles';
+-- Columna: cat_estados_civiles.id -> Identificador único
+-- Columna: cat_estados_civiles.nombre -> Nombre del estado (ej: Soltero, Casado)
+-- Columna: cat_estados_civiles.pacientes -> Pacientes con este estado civil
+ALTER TABLE `cat_ocupaciones` COMMENT = 'Catálogo de ocupaciones o profesiones';
+-- Columna: cat_ocupaciones.id -> Identificador único
+-- Columna: cat_ocupaciones.nombre -> Nombre de la ocupación
+-- Columna: cat_ocupaciones.pacientes -> Pacientes que ejercen esta ocupación
+ALTER TABLE `alergias` COMMENT = 'Registro de alergias conocidas de un paciente';
+-- Columna: alergias.id -> Identificador único
+-- Columna: alergias.pacienteId -> ID del paciente afectado
+-- Columna: alergias.tipo -> Categoría de la alergia (Medicamento, Alimento, etc.)
+-- Columna: alergias.descripcion -> Descripción de la sustancia y reacción
+-- Columna: alergias.severidad -> Grado de peligrosidad de la alergia
+-- Columna: alergias.paciente -> Relación con el paciente
+ALTER TABLE `citas` COMMENT = 'Gestión de citas médicas y programación de consultas';
+-- Columna: citas.id -> Identificador único
+-- Columna: citas.pacienteId -> ID del paciente que solicita la cita
+-- Columna: citas.medicoId -> ID del médico asignado (opcional si es urgencia)
+-- Columna: citas.establecimientoId -> ID del establecimiento donde se realizará la cita
+-- Columna: citas.fechaHora -> Fecha y hora programada para la atención
+-- Columna: citas.duracionMinutos -> Tiempo estimado de duración del encuentro médico
+-- Columna: citas.tipo -> Tipo de atención solicitada
+-- Columna: citas.estado -> Estado actual de la cita (Programada, Atendida, etc.)
+-- Columna: citas.motivo -> Motivo breve de la consulta
+-- Columna: citas.notas -> Observaciones adicionales
+-- Columna: citas.creadaEn -> Fecha de registro de la cita
+-- Columna: citas.creadoPorId -> ID del usuario (recepcionista) que registró la cita
+-- Columna: citas.canceladoPorId -> ID del usuario que canceló la cita (si aplica)
+-- Columna: citas.especialidadId -> ID de la especialidad bajo la cual se atiende la cita
+-- Columna: citas.paciente -> Relación con el paciente
+-- Columna: citas.medico -> Relación con el médico tratante
+-- Columna: citas.establecimiento -> Relación con el establecimiento
+-- Columna: citas.creadoPor -> Relación con el usuario creador
+-- Columna: citas.canceladoPor -> Relación con el usuario que canceló
+-- Columna: citas.especialidad -> Relación con la especialidad
+-- Columna: citas.historia -> Historia clínica resultante de esta cita
+-- Columna: citas.triaje -> Datos de triaje previo a la consulta
+-- Columna: citas.historiaOrigen -> Relación con la atención previa que originó esta cita (si fue una re-cita)
+ALTER TABLE `historia_clinica` COMMENT = 'Representa el encuentro clínico (consulta) y el registro médico del paciente';
+-- Columna: historia_clinica.id -> Identificador único
+-- Columna: historia_clinica.pacienteId -> ID del paciente atendido
+-- Columna: historia_clinica.medicoId -> ID del médico tratante
+-- Columna: historia_clinica.citaId -> ID de la cita asociada
+-- Columna: historia_clinica.plantillaId -> ID de la plantilla de formulario utilizada
+-- Columna: historia_clinica.fecha -> Fecha y hora de la atención
+-- Columna: historia_clinica.subjetivo -> [S]ubjetivo: Motivo de consulta, síntomas y anamnesis
+-- Columna: historia_clinica.objetivo -> [O]bjetivo: Hallazgos del examen físico
+-- Columna: historia_clinica.analisis -> [A]nálisis: Razonamiento médico y diagnósticos presuntivos
+-- Columna: historia_clinica.plan -> [P]lan: Tratamiento, medicamentos, exámenes y recomendaciones
+-- Columna: historia_clinica.presionSistolica -> Tensión arterial sistólica (mmHg)
+-- Columna: historia_clinica.presionDiastolica -> Tensión arterial diastólica (mmHg)
+-- Columna: historia_clinica.frecuenciaCardiaca -> Latidos por minuto
+-- Columna: historia_clinica.temperatura -> Temperatura corporal (°C)
+-- Columna: historia_clinica.peso -> Peso del paciente (kg)
+-- Columna: historia_clinica.talla -> Estatura del paciente (cm)
+-- Columna: historia_clinica.saturacionO2 -> Porcentaje de saturación de oxígeno
+-- Columna: historia_clinica.semanaEpidemiologica -> Número de semana epidemiológica (1-52)
+-- Columna: historia_clinica.actualizadoEn -> Fecha de la última modificación
+-- Columna: historia_clinica.eliminadoEn -> Fecha de eliminación lógica
+-- Columna: historia_clinica.actualizadoPorId -> ID del usuario que actualizó el registro
+-- Columna: historia_clinica.eliminadoPorId -> ID del usuario que eliminó el registro
+-- Columna: historia_clinica.paciente -> Relación con el paciente
+-- Columna: historia_clinica.medico -> Relación con el médico
+-- Columna: historia_clinica.actualizadoPor -> Relación con el usuario actualizador
+-- Columna: historia_clinica.eliminadoPor -> Relación con el usuario eliminador
+-- Columna: historia_clinica.cita -> Relación con la cita
+-- Columna: historia_clinica.plantilla -> Relación con la plantilla de formulario
+-- Columna: historia_clinica.proximaCitaId -> ID de la próxima cita programada
+-- Columna: historia_clinica.proximaCita -> Relación con la próxima cita
+-- Columna: historia_clinica.diagnosticos -> Listado de diagnósticos realizados en la consulta
+-- Columna: historia_clinica.recetas -> Recetas emitidas
+-- Columna: historia_clinica.referidos -> Referencias emitidas
+-- Columna: historia_clinica.resultadosLab -> Resultados de laboratorio asociados
+-- Columna: historia_clinica.solicitudesLab -> Solicitudes de laboratorio generadas
+-- Columna: historia_clinica.solicitudesRad -> Solicitudes de radiología generadas
+-- Columna: historia_clinica.respuestaFormulario -> Respuestas detalladas del formulario dinámico
+-- Columna: historia_clinica.incapacidades -> Registro de incapacidades (si aplica)
+-- Columna: historia_clinica.notificacionEpidemiologica -> Notificación epidemiológica obligatoria
+ALTER TABLE `diagnosticos` COMMENT = 'Diagnósticos asociados a una atención médica (basados en CIE-10)';
+-- Columna: diagnosticos.id -> Identificador único
+-- Columna: diagnosticos.historiaId -> ID de la historia clínica asociada
+-- Columna: diagnosticos.codigoCIE10 -> Código alfanumérico CIE-10
+-- Columna: diagnosticos.descripcion -> Descripción del diagnóstico según catálogo
+-- Columna: diagnosticos.tipo -> Importancia del diagnóstico (Principal, Secundario)
+-- Columna: diagnosticos.historia -> Relación con la historia clínica
+ALTER TABLE `incapacidades` COMMENT = 'Registro de incapacidades médicas otorgadas al paciente';
+-- Columna: incapacidades.id -> Identificador único
+-- Columna: incapacidades.historiaId -> ID de la historia clínica asociada
+-- Columna: incapacidades.fechaInicio -> Fecha de inicio del reposo
+-- Columna: incapacidades.fechaFin -> Fecha de finalización del reposo
+-- Columna: incapacidades.dias -> Total de días de incapacidad
+-- Columna: incapacidades.tipo -> Ámbito de la incapacidad (Laboral, Escolar)
+-- Columna: incapacidades.motivo -> Descripción de la justificación médica
+-- Columna: incapacidades.historia -> Relación con la historia clínica
+ALTER TABLE `medicamentos` COMMENT = 'Catálogo maestro de medicamentos y productos farmacéuticos';
+-- Columna: medicamentos.id -> Identificador único
+-- Columna: medicamentos.codigo -> Código de barras o SKU del medicamento
+-- Columna: medicamentos.nombreGenerico -> Denominación Común Internacional (DCI)
+-- Columna: medicamentos.nombreComercial -> Nombre bajo el cual se comercializa (opcional)
+-- Columna: medicamentos.presentacion -> Forma farmacéutica (ej: Tabletas, Jarabe)
+-- Columna: medicamentos.concentracion -> Cantidad de principio activo (ej: 500mg)
+-- Columna: medicamentos.via -> Método de ingreso al organismo
+-- Columna: medicamentos.grupoTerapeutico -> Clasificación terapéutica (ej: Antibióticos)
+-- Columna: medicamentos.requiereReceta -> Indica si requiere autorización médica para dispensar
+-- Columna: medicamentos.esControlado -> Indica si el medicamento es psicotrópico o estupefaciente
+-- Columna: medicamentos.activo -> Indica si el medicamento está disponible en el catálogo
+-- Columna: medicamentos.creadoEn -> Fecha de registro inicial
+-- Columna: medicamentos.actualizadoEn -> Fecha de última actualización de ficha técnica
+-- Columna: medicamentos.eliminadoEn -> Fecha de eliminación lógica
+-- Columna: medicamentos.creadoPorId -> ID del usuario que registró el medicamento
+-- Columna: medicamentos.actualizadoPorId -> ID del usuario que realizó la última actualización
+-- Columna: medicamentos.eliminadoPorId -> ID del usuario que realizó la eliminación lógica
+-- Columna: medicamentos.creadoPor -> Relación con el usuario creador
+-- Columna: medicamentos.actualizadoPor -> Relación con el usuario actualizador
+-- Columna: medicamentos.eliminadoPor -> Relación con el usuario eliminador
+-- Columna: medicamentos.inventario -> Existencias de este medicamento en distintos establecimientos
+-- Columna: medicamentos.detallesReceta -> Apariciones de este medicamento en recetas emitidas
+ALTER TABLE `inventario` COMMENT = 'Control de existencias físicas de medicamentos por establecimiento y lote';
+-- Columna: inventario.id -> Identificador único
+-- Columna: inventario.medicamentoId -> ID del medicamento asociado
+-- Columna: inventario.establecimientoId -> ID del establecimiento que posee el stock
+-- Columna: inventario.cantidadActual -> Cantidad disponible actualmente para dispensar
+-- Columna: inventario.cantidadMinima -> Nivel mínimo antes de generar alertas de reabastecimiento
+-- Columna: inventario.lote -> Código del lote de fabricación para trazabilidad
+-- Columna: inventario.fechaVencimiento -> Fecha de expiración del lote
+-- Columna: inventario.ubicacion -> Ubicación física dentro de la bodega/farmacia
+-- Columna: inventario.activo -> Indica si este stock está disponible para uso
+-- Columna: inventario.creadoEn -> Fecha de registro del ingreso inicial
+-- Columna: inventario.actualizadoEn -> Fecha de último movimiento o ajuste
+-- Columna: inventario.eliminadoEn -> Fecha de eliminación (si aplica)
+-- Columna: inventario.creadoPorId -> ID del usuario que registró el ingreso
+-- Columna: inventario.actualizadoPorId -> ID del usuario que realizó la última modificación
+-- Columna: inventario.eliminadoPorId -> ID del usuario que eliminó el registro
+-- Columna: inventario.medicamento -> Relación con la ficha del medicamento
+-- Columna: inventario.establecimiento -> Relación con el establecimiento de salud
+-- Columna: inventario.creadoPor -> Relación con el usuario creador
+-- Columna: inventario.actualizadoPor -> Relación con el usuario actualizador
+-- Columna: inventario.eliminadoPor -> Relación con el usuario eliminador
+-- Columna: inventario.movimientos -> Historial de entradas y salidas asociadas a este inventario
+-- Columna: inventario.dispensaciones -> Detalles de dispensaciones realizadas desde este stock
+ALTER TABLE `movimientos_inventario` COMMENT = 'Registro histórico de transacciones que afectan el stock de medicamentos';
+-- Columna: movimientos_inventario.id -> Identificador único
+-- Columna: movimientos_inventario.inventarioId -> ID del registro de inventario afectado
+-- Columna: movimientos_inventario.tipo -> Tipo de transacción (Entrada, Salida, etc.)
+-- Columna: movimientos_inventario.cantidad -> Cantidad de unidades involucradas en el movimiento
+-- Columna: movimientos_inventario.motivo -> Explicación del porqué del movimiento
+-- Columna: movimientos_inventario.usuarioId -> ID del usuario que realizó la transacción
+-- Columna: movimientos_inventario.fecha -> Fecha y hora del registro
+-- Columna: movimientos_inventario.inventario -> Relación con el inventario
+ALTER TABLE `recetas` COMMENT = 'Documento de prescripción médica para un paciente';
+-- Columna: recetas.id -> Identificador único
+-- Columna: recetas.historiaId -> ID de la historia clínica donde se originó la receta
+-- Columna: recetas.pacienteId -> ID del paciente beneficiario
+-- Columna: recetas.establecimientoId -> ID del establecimiento donde se emitió
+-- Columna: recetas.estado -> Estado actual del flujo de dispensación
+-- Columna: recetas.creadaEn -> Fecha de emisión
+-- Columna: recetas.dispensadaEn -> Fecha en la que se completó la entrega total
+-- Columna: recetas.historia -> Relación con la historia clínica
+-- Columna: recetas.paciente -> Relación con el paciente
+-- Columna: recetas.establecimiento -> Relación con el establecimiento
+-- Columna: recetas.detalles -> Listado de medicamentos prescritos
+-- Columna: recetas.dispensaciones -> Historial de entregas asociadas a esta receta
+ALTER TABLE `detalles_receta` COMMENT = 'Especificación de un medicamento individual dentro de una receta';
+-- Columna: detalles_receta.id -> Identificador único
+-- Columna: detalles_receta.recetaId -> ID de la receta a la que pertenece
+-- Columna: detalles_receta.medicamentoId -> ID del medicamento prescrito
+-- Columna: detalles_receta.dosis -> Cantidad y unidad por toma (ej: 1 tableta)
+-- Columna: detalles_receta.frecuencia -> Intervalo de tiempo (ej: Cada 8 horas)
+-- Columna: detalles_receta.duracion -> Tiempo total de tratamiento (ej: 7 días)
+-- Columna: detalles_receta.cantidad -> Cantidad total de unidades a dispensar
+-- Columna: detalles_receta.cantidadEntregada -> Acumulado de unidades ya entregadas
+-- Columna: detalles_receta.ultimaDispensacion -> Fecha del último despacho parcial
+-- Columna: detalles_receta.indicaciones -> Consejos adicionales para el paciente
+-- Columna: detalles_receta.receta -> Relación con la receta cabecera
+-- Columna: detalles_receta.medicamento -> Relación con la ficha del medicamento
+-- Columna: detalles_receta.dispensaciones -> Relación con los despachos físicos realizados
+ALTER TABLE `paciente_medicamentos` COMMENT = 'Historial de medicación activa (tratamientos crónicos) de un paciente';
+-- Columna: paciente_medicamentos.id -> Identificador único
+-- Columna: paciente_medicamentos.pacienteId -> ID del paciente
+-- Columna: paciente_medicamentos.medicamentoId -> ID del medicamento
+-- Columna: paciente_medicamentos.dosis -> Dosis del tratamiento
+-- Columna: paciente_medicamentos.frecuencia -> Frecuencia de administración
+-- Columna: paciente_medicamentos.inicio -> Fecha de inicio del tratamiento
+-- Columna: paciente_medicamentos.fin -> Fecha estimada de finalización (null si es permanente)
+-- Columna: paciente_medicamentos.paciente -> Relación con el paciente
+ALTER TABLE `cat_examenes_laboratorio` COMMENT = 'Catálogo maestro de exámenes de laboratorio clínico disponibles';
+-- Columna: cat_examenes_laboratorio.id -> Identificador único
+-- Columna: cat_examenes_laboratorio.codigo -> Código interno único del examen
+-- Columna: cat_examenes_laboratorio.nombre -> Nombre descriptivo del examen
+-- Columna: cat_examenes_laboratorio.categoria -> Área del laboratorio (ej: Hematología, Química)
+-- Columna: cat_examenes_laboratorio.indicaciones -> Requisitos para el paciente (ej: Ayuno 8h)
+-- Columna: cat_examenes_laboratorio.activo -> Indica si el examen está disponible en el catálogo general
+-- Columna: cat_examenes_laboratorio.establecimientos -> Establecimientos que ofrecen este examen
+-- Columna: cat_examenes_laboratorio.detallesSolicitud -> Solicitudes que incluyen este examen
+ALTER TABLE `examen_establecimientos` COMMENT = 'Tabla asociativa de exámenes habilitados por cada establecimiento';
+-- Columna: examen_establecimientos.establecimientoId -> ID del establecimiento
+-- Columna: examen_establecimientos.examenId -> ID del examen del catálogo
+-- Columna: examen_establecimientos.establecimiento -> Relación con el establecimiento
+-- Columna: examen_establecimientos.examen -> Relación con el catálogo de exámenes
+ALTER TABLE `solicitudes_laboratorio` COMMENT = 'Orden de laboratorio clínico emitida durante una consulta';
+-- Columna: solicitudes_laboratorio.id -> Identificador único
+-- Columna: solicitudes_laboratorio.historiaId -> ID de la historia clínica origen
+-- Columna: solicitudes_laboratorio.pacienteId -> ID del paciente
+-- Columna: solicitudes_laboratorio.establecimientoId -> ID del establecimiento donde se procesará
+-- Columna: solicitudes_laboratorio.estado -> Estado actual del flujo de laboratorio
+-- Columna: solicitudes_laboratorio.urgente -> Prioridad de procesamiento
+-- Columna: solicitudes_laboratorio.observaciones -> Notas médicas adicionales para el laboratorista
+-- Columna: solicitudes_laboratorio.creadaEn -> Fecha de emisión de la orden
+-- Columna: solicitudes_laboratorio.historia -> Relación con la historia clínica
+-- Columna: solicitudes_laboratorio.paciente -> Relación con el paciente
+-- Columna: solicitudes_laboratorio.establecimiento -> Relación con el establecimiento
+-- Columna: solicitudes_laboratorio.detalles -> Listado de exámenes específicos solicitados
+-- Columna: solicitudes_laboratorio.resultados -> Resultados cargados para esta solicitud
+ALTER TABLE `detalles_solicitud_laboratorio` COMMENT = 'Detalle de cada examen incluido en una orden de laboratorio';
+-- Columna: detalles_solicitud_laboratorio.id -> Identificador único
+-- Columna: detalles_solicitud_laboratorio.solicitudId -> ID de la solicitud cabecera
+-- Columna: detalles_solicitud_laboratorio.examenId -> ID del examen específico
+-- Columna: detalles_solicitud_laboratorio.observaciones -> Observaciones específicas para este examen
+-- Columna: detalles_solicitud_laboratorio.solicitud -> Relación con la solicitud
+-- Columna: detalles_solicitud_laboratorio.examen -> Relación con el catálogo de exámenes
+ALTER TABLE `resultados_laboratorio` COMMENT = 'Registro de resultados numéricos o cualitativos de exámenes de laboratorio';
+-- Columna: resultados_laboratorio.id -> Identificador único
+-- Columna: resultados_laboratorio.solicitudId -> ID de la solicitud a la que pertenece el resultado
+-- Columna: resultados_laboratorio.historiaId -> ID opcional de la historia clínica para vinculación directa
+-- Columna: resultados_laboratorio.prueba -> Nombre del parámetro o prueba analizada
+-- Columna: resultados_laboratorio.valor -> Resultado obtenido
+-- Columna: resultados_laboratorio.unidad -> Unidad de medida (ej: mg/dL, %)
+-- Columna: resultados_laboratorio.valorReferencia -> Rango esperado para un paciente sano
+-- Columna: resultados_laboratorio.anormal -> Indica si el valor está fuera de los rangos normales
+-- Columna: resultados_laboratorio.observaciones -> Interpretación del microbiólogo o analista
+-- Columna: resultados_laboratorio.fecha -> Fecha y hora de validación del resultado
+-- Columna: resultados_laboratorio.solicitud -> Relación con la solicitud cabecera
+-- Columna: resultados_laboratorio.historia -> Relación con la historia clínica
+ALTER TABLE `cat_examenes_radiologia` COMMENT = 'Catálogo maestro de estudios radiológicos e imagenología';
+-- Columna: cat_examenes_radiologia.id -> Identificador único
+-- Columna: cat_examenes_radiologia.codigo -> Código interno único (ej: RX-01, TAC-05)
+-- Columna: cat_examenes_radiologia.nombre -> Nombre del estudio (ej: Rayos X de Tórax)
+-- Columna: cat_examenes_radiologia.categoria -> Modalidad de imagen (RX, ECO, TAC, RM, etc.)
+-- Columna: cat_examenes_radiologia.indicaciones -> Requisitos técnicos o del paciente
+-- Columna: cat_examenes_radiologia.activo -> Indica si el estudio está disponible en el catálogo
+-- Columna: cat_examenes_radiologia.establecimientos -> Establecimientos que cuentan con el equipo para este estudio
+-- Columna: cat_examenes_radiologia.detallesSolicitud -> Solicitudes que incluyen este estudio
+ALTER TABLE `estudio_radiologia_establecimientos` COMMENT = 'Tabla asociativa de estudios de imagen habilitados por establecimiento';
+-- Columna: estudio_radiologia_establecimientos.establecimientoId -> ID del establecimiento
+-- Columna: estudio_radiologia_establecimientos.estudioId -> ID del estudio del catálogo
+-- Columna: estudio_radiologia_establecimientos.establecimiento -> Relación con el establecimiento
+-- Columna: estudio_radiologia_establecimientos.estudio -> Relación con el catálogo de radiología
+ALTER TABLE `solicitudes_radiologia` COMMENT = 'Orden de estudios de imagenología emitida por un médico';
+-- Columna: solicitudes_radiologia.id -> Identificador único
+-- Columna: solicitudes_radiologia.historiaId -> ID de la historia clínica origen
+-- Columna: solicitudes_radiologia.pacienteId -> ID del paciente
+-- Columna: solicitudes_radiologia.establecimientoId -> ID del establecimiento de destino
+-- Columna: solicitudes_radiologia.estado -> Estado del flujo (Solicitado, Completado)
+-- Columna: solicitudes_radiologia.urgente -> Prioridad de atención
+-- Columna: solicitudes_radiologia.observaciones -> Justificación clínica del estudio
+-- Columna: solicitudes_radiologia.creadaEn -> Fecha de emisión de la orden
+-- Columna: solicitudes_radiologia.historia -> Relación con la historia clínica
+-- Columna: solicitudes_radiologia.paciente -> Relación con el paciente
+-- Columna: solicitudes_radiologia.establecimiento -> Relación con el establecimiento
+-- Columna: solicitudes_radiologia.detalles -> Listado de estudios específicos requeridos
+-- Columna: solicitudes_radiologia.resultados -> Interpretaciones de los resultados
+ALTER TABLE `detalles_solicitud_radiologia` COMMENT = 'Detalle de cada estudio individual en una orden de radiología';
+-- Columna: detalles_solicitud_radiologia.id -> Identificador único
+-- Columna: detalles_solicitud_radiologia.solicitudId -> ID de la solicitud cabecera
+-- Columna: detalles_solicitud_radiologia.estudioId -> ID del estudio específico
+-- Columna: detalles_solicitud_radiologia.observaciones -> Observaciones o sospechas diagnósticas para el radiólogo
+-- Columna: detalles_solicitud_radiologia.solicitud -> Relación con la solicitud
+-- Columna: detalles_solicitud_radiologia.estudio -> Relación con el catálogo de estudios
+ALTER TABLE `resultados_radiologia` COMMENT = 'Registro de la interpretación médica de un estudio de imagen';
+-- Columna: resultados_radiologia.id -> Identificador único
+-- Columna: resultados_radiologia.solicitudId -> ID de la solicitud a la que pertenece el informe
+-- Columna: resultados_radiologia.hallazgos -> Descripción detallada de lo observado en la imagen
+-- Columna: resultados_radiologia.conclusion -> Diagnóstico radiológico final
+-- Columna: resultados_radiologia.imageUrl -> Enlace al visor PACS o almacenamiento de la imagen digital
+-- Columna: resultados_radiologia.fecha -> Fecha y hora del informe
+-- Columna: resultados_radiologia.solicitud -> Relación con la solicitud cabecera
+ALTER TABLE `referidos` COMMENT = 'Gestión de referencias de pacientes entre establecimientos de la red';
+-- Columna: referidos.id -> Identificador único
+-- Columna: referidos.historiaId -> ID de la historia clínica donde se origina el referido
+-- Columna: referidos.establecimientoOrigenId -> Establecimiento que envía al paciente
+-- Columna: referidos.establecimientoDestinoId -> Establecimiento que recibirá al paciente
+-- Columna: referidos.especialidadDestino -> Especialidad a la que se remite
+-- Columna: referidos.motivo -> Justificación clínica del traslado
+-- Columna: referidos.urgente -> Prioridad de la referencia
+-- Columna: referidos.estado -> Estado del trámite administrativo
+-- Columna: referidos.creadoEn -> Fecha de emisión
+-- Columna: referidos.historia -> Relación con la historia clínica
+-- Columna: referidos.origen -> Relación con el centro de origen
+-- Columna: referidos.destino -> Relación con el centro de destino
+ALTER TABLE `plantillas_formulario` COMMENT = 'Definición de formularios clínicos dinámicos por especialidad';
+-- Columna: plantillas_formulario.id -> Identificador único
+-- Columna: plantillas_formulario.especialidadId -> ID de la especialidad a la que pertenece el formulario
+-- Columna: plantillas_formulario.nombre -> Nombre descriptivo del formulario (ej: Control Prenatal)
+-- Columna: plantillas_formulario.descripcion -> Propósito del formulario
+-- Columna: plantillas_formulario.version -> Número de versión para control de cambios
+-- Columna: plantillas_formulario.activa -> Indica si es la versión que se muestra actualmente
+-- Columna: plantillas_formulario.creadoPorId -> ID del usuario que diseñó la plantilla
+-- Columna: plantillas_formulario.creadoEn -> Fecha de creación
+-- Columna: plantillas_formulario.actualizadoEn -> Fecha de última modificación
+-- Columna: plantillas_formulario.especialidad -> Relación con la especialidad
+-- Columna: plantillas_formulario.creadoPor -> Relación con el usuario diseñador
+-- Columna: plantillas_formulario.secciones -> Secciones que componen el formulario
+-- Columna: plantillas_formulario.historiales -> Historias clínicas que han utilizado esta plantilla
+-- Columna: plantillas_formulario.respuestas -> Datos capturados mediante esta plantilla
+ALTER TABLE `secciones_formulario` COMMENT = 'Agrupador de campos dentro de un formulario dinámico';
+-- Columna: secciones_formulario.id -> Identificador único
+-- Columna: secciones_formulario.plantillaId -> ID de la plantilla padre
+-- Columna: secciones_formulario.nombre -> Título de la sección
+-- Columna: secciones_formulario.descripcion -> Texto de ayuda para la sección
+-- Columna: secciones_formulario.orden -> Posición relativa en el formulario
+-- Columna: secciones_formulario.colapsable -> Indica si la sección se puede contraer en la UI
+-- Columna: secciones_formulario.visible -> Indica si la sección se muestra por defecto
+-- Columna: secciones_formulario.plantilla -> Relación con la plantilla
+-- Columna: secciones_formulario.campos -> Campos contenidos en esta sección
+ALTER TABLE `campos_formulario` COMMENT = 'Definición de un campo individual de captura de datos';
+-- Columna: campos_formulario.id -> Identificador único
+-- Columna: campos_formulario.seccionId -> ID de la sección contenedora
+-- Columna: campos_formulario.tipo -> Tipo de control de entrada (Texto, Número, etc.)
+-- Columna: campos_formulario.etiqueta -> Texto que ve el usuario (Label)
+-- Columna: campos_formulario.clave -> Nombre técnico del campo para almacenamiento
+-- Columna: campos_formulario.placeholder -> Texto sugerido dentro del campo
+-- Columna: campos_formulario.ayuda -> Texto de ayuda u orientación médica
+-- Columna: campos_formulario.requerido -> Indica si el campo es obligatorio
+-- Columna: campos_formulario.orden -> Posición dentro de la sección
+-- Columna: campos_formulario.ancho -> Porcentaje de ancho que ocupa en la pantalla
+-- Columna: campos_formulario.visible -> Indica si el campo es visible inicialmente
+-- Columna: campos_formulario.configuracion -> Objeto JSON con validaciones u opciones adicionales
+-- Columna: campos_formulario.condicionVisibilidad -> Lógica JSON para mostrar/ocultar según otros campos
+-- Columna: campos_formulario.seccion -> Relación con la sección
+ALTER TABLE `respuestas_formulario` COMMENT = 'Almacenamiento de los datos capturados en un formulario dinámico';
+-- Columna: respuestas_formulario.id -> Identificador único
+-- Columna: respuestas_formulario.historiaId -> ID de la historia clínica vinculada
+-- Columna: respuestas_formulario.plantillaId -> ID de la plantilla utilizada
+-- Columna: respuestas_formulario.respuestas -> Objeto JSON con los valores capturados (Clave-Valor)
+-- Columna: respuestas_formulario.completado -> Indica si se completaron todos los campos requeridos
+-- Columna: respuestas_formulario.creadoEn -> Fecha de registro de datos
+-- Columna: respuestas_formulario.actualizadoEn -> Fecha de última modificación de los datos
+-- Columna: respuestas_formulario.historia -> Relación con la historia clínica
+-- Columna: respuestas_formulario.plantilla -> Relación con la plantilla
+ALTER TABLE `triajes` COMMENT = 'Evaluación inicial de signos vitales y priorización de atención';
+-- Columna: triajes.id -> Identificador único
+-- Columna: triajes.citaId -> ID de la cita para la cual se realiza el triaje
+-- Columna: triajes.pacienteId -> ID del paciente evaluado
+-- Columna: triajes.enfermeraId -> ID de la enfermera que realiza la evaluación
+-- Columna: triajes.motivoConsulta -> Descripción breve del síntoma principal
+-- Columna: triajes.presionSistolica -> Tensión arterial sistólica (mmHg)
+-- Columna: triajes.presionDiastolica -> Tensión arterial diastólica (mmHg)
+-- Columna: triajes.frecuenciaCardiaca -> Latidos por minuto
+-- Columna: triajes.frecuenciaRespiratoria -> Respiraciones por minuto
+-- Columna: triajes.temperatura -> Temperatura corporal (°C)
+-- Columna: triajes.saturacionO2 -> Porcentaje de oxígeno en sangre
+-- Columna: triajes.glucometria -> Nivel de azúcar en sangre (mg/dL)
+-- Columna: triajes.peso -> Peso actual (kg)
+-- Columna: triajes.talla -> Estatura actual (cm)
+-- Columna: triajes.escalaDolor -> Intensidad del dolor percibido (0-10)
+-- Columna: triajes.nivelConciencia -> Estado neurológico del paciente
+-- Columna: triajes.categoria -> Clasificación de prioridad según colores (Manchester/Sistema local)
+-- Columna: triajes.observaciones -> Hallazgos adicionales de enfermería
+-- Columna: triajes.creadoEn -> Fecha y hora de la evaluación
+-- Columna: triajes.cita -> Relación con la cita
+-- Columna: triajes.paciente -> Relación con el paciente
+-- Columna: triajes.enfermera -> Relación con el personal de enfermería
+ALTER TABLE `cat_diagnostico` COMMENT = 'Catálogo oficial de enfermedades CIE-10 (Clasificación Internacional de Enfermedades)';
+-- Columna: cat_diagnostico.id -> Identificador único
+-- Columna: cat_diagnostico.codigo -> Código alfanumérico estándar (ej: A00.0)
+-- Columna: cat_diagnostico.descripcion -> Descripción clínica de la patología
+-- Columna: cat_diagnostico.capitulo -> Grupo o capítulo al que pertenece la enfermedad
+-- Columna: cat_diagnostico.activo -> Indica si el diagnóstico está vigente
+-- Columna: cat_diagnostico.notificable -> Indica si la enfermedad es de reporte obligatorio a vigilancia
+-- Columna: cat_diagnostico.notificacionInmediata -> Indica si se debe notificar en menos de 24 horas
+ALTER TABLE `audit_logs` COMMENT = 'Registro de trazabilidad de acciones críticas realizadas en el sistema';
+-- Columna: audit_logs.id -> Identificador único
+-- Columna: audit_logs.usuarioId -> ID del usuario que realizó la acción
+-- Columna: audit_logs.accion -> Tipo de operación (CREATE, UPDATE, DELETE, LOGIN)
+-- Columna: audit_logs.entidad -> Nombre de la tabla o entidad afectada
+-- Columna: audit_logs.entidadId -> ID del registro específico afectado
+-- Columna: audit_logs.detalle -> Descripción detallada del cambio o error
+-- Columna: audit_logs.ip -> Dirección IP del cliente
+-- Columna: audit_logs.duracionMs -> Tiempo de respuesta del servidor en milisegundos
+-- Columna: audit_logs.timestamp -> Fecha y hora exacta del evento
+-- Columna: audit_logs.usuario -> Relación con el usuario (si aplica)
+ALTER TABLE `parametros_sistema` COMMENT = 'Configuración global de variables de operación del sistema';
+-- Columna: parametros_sistema.id -> Identificador único
+-- Columna: parametros_sistema.clave -> Nombre único de la variable (ej: TIEMPO_SESION)
+-- Columna: parametros_sistema.valor -> Valor asignado a la configuración
+-- Columna: parametros_sistema.descripcion -> Explicación del impacto del parámetro en el sistema
+-- Columna: parametros_sistema.creadoEn -> Fecha de creación inicial
+-- Columna: parametros_sistema.actualizadoEn -> Fecha de última actualización
+ALTER TABLE `dispensaciones` COMMENT = 'Registro de la entrega física de medicamentos al paciente';
+-- Columna: dispensaciones.id -> Identificador único
+-- Columna: dispensaciones.recetaId -> ID de la receta que se está surtiendo
+-- Columna: dispensaciones.usuarioId -> ID del usuario de farmacia que entrega
+-- Columna: dispensaciones.establecimientoId -> ID del establecimiento donde ocurre la entrega
+-- Columna: dispensaciones.fecha -> Fecha y hora de la entrega
+-- Columna: dispensaciones.receta -> Relación con la receta
+-- Columna: dispensaciones.usuario -> Relación con el usuario farmacéutico
+-- Columna: dispensaciones.establecimiento -> Relación con el establecimiento
+-- Columna: dispensaciones.detalles -> Medicamentos específicos entregados en esta transacción
+ALTER TABLE `dispensacion_detalles` COMMENT = 'Detalle de las unidades entregadas por cada ítem de la receta';
+-- Columna: dispensacion_detalles.id -> Identificador único
+-- Columna: dispensacion_detalles.dispensacionId -> ID de la transacción de dispensación
+-- Columna: dispensacion_detalles.detalleRecetaId -> ID del renglón de la receta original
+-- Columna: dispensacion_detalles.inventarioId -> ID del registro de inventario (lote) de donde salió el producto
+-- Columna: dispensacion_detalles.cantidad -> Cantidad física entregada al paciente
+-- Columna: dispensacion_detalles.dispensacion -> Relación con la cabecera de dispensación
+-- Columna: dispensacion_detalles.detalleReceta -> Relación con el detalle de la receta
+-- Columna: dispensacion_detalles.inventario -> Relación con el lote de inventario
+ALTER TABLE `departamentos` COMMENT = 'Listado de los 18 departamentos de Honduras';
+-- Columna: departamentos.id -> Identificador único (Código INE)
+-- Columna: departamentos.codigo -> Código alfanumérico de 2 dígitos (ej: 01, 08)
+-- Columna: departamentos.nombre -> Nombre oficial del departamento
+-- Columna: departamentos.municipios -> Municipios pertenecientes al departamento
+-- Columna: departamentos.establecimientos -> Establecimientos de salud ubicados en el departamento
+-- Columna: departamentos.pacientes -> Pacientes que residen en el departamento
+ALTER TABLE `municipios` COMMENT = 'Listado de los 298 municipios de Honduras';
+-- Columna: municipios.id -> Identificador único (Código INE de 4 dígitos)
+-- Columna: municipios.codigo -> Código alfanumérico de 4 dígitos (ej: 0801)
+-- Columna: municipios.nombre -> Nombre oficial del municipio
+-- Columna: municipios.departamentoId -> ID del departamento al que pertenece
+-- Columna: municipios.departamento -> Relación con el departamento padre
+-- Columna: municipios.establecimientos -> Establecimientos de salud ubicados en el municipio
+-- Columna: municipios.pacientes -> Pacientes que residen en el municipio
+ALTER TABLE `agendas_base` COMMENT = 'Definición de horarios laborales recurrentes de los médicos';
+-- Columna: agendas_base.id -> Identificador único
+-- Columna: agendas_base.medicoId -> ID del médico dueño de la agenda
+-- Columna: agendas_base.establecimientoId -> ID del establecimiento donde labora en este horario
+-- Columna: agendas_base.diaSemana -> Día de la semana (0=Domingo, 1=Lunes, ..., 6=Sábado)
+-- Columna: agendas_base.horaInicio -> Hora de inicio de la jornada (formato HH:mm)
+-- Columna: agendas_base.horaFin -> Hora de fin de la jornada (formato HH:mm)
+-- Columna: agendas_base.activo -> Indica si este horario está vigente
+-- Columna: agendas_base.creadoEn -> Fecha de registro de la agenda
+-- Columna: agendas_base.actualizadoEn -> Fecha de última modificación de horarios
+-- Columna: agendas_base.medico -> Relación con el usuario médico
+-- Columna: agendas_base.establecimiento -> Relación con el establecimiento
+ALTER TABLE `excepciones_agenda` COMMENT = 'Registro de ausencias o cambios temporales en la disponibilidad médica';
+-- Columna: excepciones_agenda.id -> Identificador único
+-- Columna: excepciones_agenda.medicoId -> ID del médico afectado por la excepción
+-- Columna: excepciones_agenda.establecimientoId -> ID del establecimiento donde aplica la excepción
+-- Columna: excepciones_agenda.tipo -> Motivo de la ausencia (Vacaciones, Incapacidad, etc.)
+-- Columna: excepciones_agenda.fechaInicio -> Fecha y hora de inicio de la excepción
+-- Columna: excepciones_agenda.fechaFin -> Fecha y hora de fin de la excepción
+-- Columna: excepciones_agenda.descripcion -> Descripción detallada o notas administrativas
+-- Columna: excepciones_agenda.creadoEn -> Fecha de registro del evento
+-- Columna: excepciones_agenda.creadoPorId -> ID del usuario que registró la excepción
+-- Columna: excepciones_agenda.medico -> Relación con el usuario médico
+-- Columna: excepciones_agenda.establecimiento -> Relación con el establecimiento
+ALTER TABLE `cat_vacunas` COMMENT = 'Catálogo maestro de vacunas autorizadas (Esquema PAI)';
+-- Columna: cat_vacunas.id -> Identificador único
+-- Columna: cat_vacunas.nombre -> Nombre oficial de la vacuna (ej: BCG, Sabin)
+-- Columna: cat_vacunas.descripcion -> Descripción de la enfermedad que previene
+-- Columna: cat_vacunas.tipo -> Naturaleza biológica de la vacuna
+-- Columna: cat_vacunas.poblacionMeta -> Grupo de edad o condición para la cual está indicada
+-- Columna: cat_vacunas.activo -> Indica si la vacuna está vigente en el esquema nacional
+-- Columna: cat_vacunas.creadoEn -> Fecha de registro en el catálogo
+-- Columna: cat_vacunas.esquemas -> Definiciones de dosis para esta vacuna
+-- Columna: cat_vacunas.lotes -> Lotes físicos recibidos de esta vacuna
+-- Columna: cat_vacunas.registros -> Registros históricos de aplicaciones
+ALTER TABLE `esquemas_vacunacion` COMMENT = 'Definición de las dosis y tiempos de aplicación por cada vacuna';
+-- Columna: esquemas_vacunacion.id -> Identificador único
+-- Columna: esquemas_vacunacion.vacunaId -> ID de la vacuna asociada
+-- Columna: esquemas_vacunacion.numeroDosis -> Orden de la dosis (1=Primera, 2=Segunda, 3=Tercera, 4=Refuerzo)
+-- Columna: esquemas_vacunacion.edadRecomendadaMeses -> Edad ideal del paciente en meses para la dosis
+-- Columna: esquemas_vacunacion.intervaloMinimoDias -> Tiempo mínimo de espera desde la dosis previa
+-- Columna: esquemas_vacunacion.descripcion -> Notas sobre la aplicación (ej: Dosis única)
+-- Columna: esquemas_vacunacion.vacuna -> Relación con la vacuna
+-- Columna: esquemas_vacunacion.registros -> Registros de pacientes que han recibido esta dosis específica
+ALTER TABLE `lotes_vacunas` COMMENT = 'Gestión de lotes específicos de vacunas y su inventario';
+-- Columna: lotes_vacunas.id -> Identificador único
+-- Columna: lotes_vacunas.vacunaId -> ID de la vacuna
+-- Columna: lotes_vacunas.codigoLote -> Código alfanumérico del lote (fabricante)
+-- Columna: lotes_vacunas.fabricante -> Laboratorio productor del biológico
+-- Columna: lotes_vacunas.fechaVencimiento -> Fecha de caducidad del lote
+-- Columna: lotes_vacunas.cantidadInicial -> Cantidad de dosis recibidas originalmente
+-- Columna: lotes_vacunas.cantidadActual -> Dosis disponibles actualmente
+-- Columna: lotes_vacunas.establecimientoId -> ID del establecimiento custodio del lote
+-- Columna: lotes_vacunas.activo -> Indica si el lote puede ser utilizado
+-- Columna: lotes_vacunas.creadoEn -> Fecha de registro en el sistema
+-- Columna: lotes_vacunas.vacuna -> Relación con la vacuna
+-- Columna: lotes_vacunas.establecimiento -> Relación con el establecimiento
+-- Columna: lotes_vacunas.registros -> Aplicaciones realizadas con este lote
+-- Columna: lotes_vacunas.movimientos -> Historial de movimientos (ingresos, pérdidas) del lote
+ALTER TABLE `movimientos_vacunas` COMMENT = 'Registro detallado de transacciones físicas de biológicos';
+-- Columna: movimientos_vacunas.id -> Identificador único
+-- Columna: movimientos_vacunas.loteId -> ID del lote afectado
+-- Columna: movimientos_vacunas.tipo -> Tipo de transacción de inventario
+-- Columna: movimientos_vacunas.cantidad -> Número de dosis (positivo para ingresos, negativo para egresos)
+-- Columna: movimientos_vacunas.motivo -> Explicación del movimiento
+-- Columna: movimientos_vacunas.usuarioId -> ID del usuario que registró la transacción
+-- Columna: movimientos_vacunas.fecha -> Fecha y hora del registro
+-- Columna: movimientos_vacunas.lote -> Relación con el lote
+-- Columna: movimientos_vacunas.usuario -> Relación con el usuario
+ALTER TABLE `registros_vacunacion` COMMENT = 'Registro histórico de la aplicación de una dosis a un paciente';
+-- Columna: registros_vacunacion.id -> Identificador único
+-- Columna: registros_vacunacion.pacienteId -> ID del paciente inmunizado
+-- Columna: registros_vacunacion.vacunaId -> ID de la vacuna aplicada
+-- Columna: registros_vacunacion.esquemaId -> ID de la dosis dentro del esquema (si aplica)
+-- Columna: registros_vacunacion.loteId -> ID del lote físico utilizado
+-- Columna: registros_vacunacion.fechaAplicacion -> Fecha y hora de la aplicación
+-- Columna: registros_vacunacion.sitioAplicacion -> Lugar anatómico (ej: Brazo derecho)
+-- Columna: registros_vacunacion.viaAplicacion -> Técnica utilizada (ej: Intramuscular)
+-- Columna: registros_vacunacion.observaciones -> Notas sobre reacciones adversas o incidentes
+-- Columna: registros_vacunacion.establecimientoId -> Establecimiento donde se aplicó
+-- Columna: registros_vacunacion.aplicadoPorId -> Usuario (enfermera/médico) que administró la dosis
+-- Columna: registros_vacunacion.paciente -> Relación con el paciente
+-- Columna: registros_vacunacion.vacuna -> Relación con la ficha de la vacuna
+-- Columna: registros_vacunacion.esquema -> Relación con la dosis del esquema
+-- Columna: registros_vacunacion.lote -> Relación con el lote físico
+-- Columna: registros_vacunacion.establecimiento -> Relación con el establecimiento
+-- Columna: registros_vacunacion.aplicadoPor -> Relación con el vacunador
+ALTER TABLE `notificaciones_epidemiologicas` COMMENT = 'Reporte de enfermedades de vigilancia obligatoria para salud pública';
+-- Columna: notificaciones_epidemiologicas.id -> Identificador único
+-- Columna: notificaciones_epidemiologicas.pacienteId -> ID del paciente afectado
+-- Columna: notificaciones_epidemiologicas.historiaId -> ID del encuentro clínico donde se detectó
+-- Columna: notificaciones_epidemiologicas.diagnosticoCIE10 -> Código CIE-10 de la enfermedad sospechosa/confirmada
+-- Columna: notificaciones_epidemiologicas.latitud -> Coordenada geográfica (Eje Y) para mapas de calor
+-- Columna: notificaciones_epidemiologicas.longitud -> Coordenada geográfica (Eje X) para mapas de calor
+-- Columna: notificaciones_epidemiologicas.direccionDetallada -> Croquis o puntos de referencia del domicilio
+-- Columna: notificaciones_epidemiologicas.fechaInicioSintomas -> Fecha estimada del primer síntoma reportado
+-- Columna: notificaciones_epidemiologicas.antecedentesViaje -> Historial de desplazamientos recientes del paciente
+-- Columna: notificaciones_epidemiologicas.lugaresVisitados -> Centros poblados o áreas visitadas
+-- Columna: notificaciones_epidemiologicas.observaciones -> Información epidemiológica adicional
+-- Columna: notificaciones_epidemiologicas.creadoEn -> Fecha de creación del reporte
+-- Columna: notificaciones_epidemiologicas.creadoPorId -> ID del médico que detectó el caso
+-- Columna: notificaciones_epidemiologicas.estado -> Estado del proceso de investigación (PENDIENTE, NOTIFICADO)
+-- Columna: notificaciones_epidemiologicas.gestionadoEn -> Fecha de cierre o escalamiento de la investigación
+-- Columna: notificaciones_epidemiologicas.gestionadoPorId -> ID del epidemiólogo que validó el caso
+-- Columna: notificaciones_epidemiologicas.paciente -> Relación con el paciente
+-- Columna: notificaciones_epidemiologicas.historia -> Relación con la historia clínica
+-- Columna: notificaciones_epidemiologicas.creadoPor -> Relación con el capturador inicial
+-- Columna: notificaciones_epidemiologicas.gestionadoPor -> Relación con el gestor epidemiológico

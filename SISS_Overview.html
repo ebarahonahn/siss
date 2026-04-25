@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SISS - Documentación de Sistema</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true, 
+            theme: 'dark',
+            themeVariables: {
+                primaryColor: '#00d2ff',
+                primaryTextColor: '#fff',
+                primaryBorderColor: '#3a7bd5',
+                lineColor: '#ff007a',
+                secondaryColor: '#3a7bd5',
+                tertiaryColor: '#0b0e14',
+                fontFamily: 'Plus Jakarta Sans',
+                fontSize: '14px'
+            }
+        });
+    </script>
+    <style>
+        :root {
+            --primary: #00d2ff;
+            --secondary: #3a7bd5;
+            --accent: #ff007a;
+            --bg: #0b0e14;
+            --card-bg: #161b22;
+            --border: rgba(255, 255, 255, 0.1);
+            --text: #e6edf3;
+            --text-dim: #8b949e;
+            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: var(--text-dim);
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+        }
+
+        .doc-section {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h2::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: var(--gradient);
+            border-radius: 2px;
+        }
+
+        h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.4rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        p {
+            margin-bottom: 1.2rem;
+            color: var(--text);
+            opacity: 0.9;
+        }
+
+        ul {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.8rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        strong {
+            color: var(--primary);
+        }
+
+        .mermaid {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            border: 1px solid var(--border);
+            display: flex;
+            justify-content: center;
+        }
+
+        .note {
+            background: rgba(0, 210, 255, 0.1);
+            border-left: 4px solid var(--primary);
+            padding: 1.5rem;
+            border-radius: 0 8px 8px 0;
+            margin: 2rem 0;
+            font-style: italic;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 4rem;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            padding: 2rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-right: 8px;
+        }
+
+        /* Print optimization */
+        @media print {
+            body { background: white; color: black; }
+            .doc-section { box-shadow: none; border: 1px solid #ccc; background: white; }
+            h1, h2, h3, strong { color: black !important; -webkit-text-fill-color: black !important; }
+            .mermaid { border: 1px solid #ccc; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>SISS Overview</h1>
+            <div class="subtitle">Sistema Integral de Servicios de Salud</div>
+            <div style="margin-top: 1.5rem;">
+                <span class="badge">Versión 1.0</span>
+                <span class="badge">Actualizado: 25 Abril, 2026</span>
+                <span class="badge">Honduras (UTC-6)</span>
+            </div>
+        </header>
+
+        <div class="doc-section">
+            <h2>1. Introducción</h2>
+            <p>El <strong>SISS</strong> es una plataforma integral de gestión hospitalaria y salud pública diseñada para estandarizar la atención médica, el control de inventarios de biológicos (PAI) y la vigilancia epidemiológica. El sistema destaca por su arquitectura <strong>multi-establecimiento</strong>, permitiendo que el personal rote entre centros de salud manteniendo un control granular de permisos y auditoría.</p>
+        </div>
+
+        <div class="doc-section">
+            <h2>2. Arquitectura Tecnológica</h2>
+            <ul>
+                <li><strong>Frontend</strong>: Angular con una interfaz de alta densidad de información, optimizada para entornos clínicos.</li>
+                <li><strong>Backend</strong>: NestJS (Node.js) con arquitectura modular.</li>
+                <li><strong>Base de Datos</strong>: MySQL gestionado a través de <strong>Prisma ORM</strong>.</li>
+                <li><strong>Reportes</strong>: Motor de generación de PDF integrado para recetas, carnets de vacunación y referencias.</li>
+                <li><strong>Estandarización</strong>: Uso estricto de la zona horaria de Honduras (UTC-6) y catálogos internacionales como <strong>CIE-10</strong>.</li>
+            </ul>
+        </div>
+
+        <div class="doc-section">
+            <h2>3. Módulos Principales</h2>
+            
+            <h3>A. Gestión de Agendas y Citas</h3>
+            <p>El módulo de agendas es el motor operativo del sistema, permitiendo una planificación precisa de los recursos humanos.</p>
+            <ul>
+                <li><strong>Agenda Base</strong>: Define la jornada laboral y duración estimada por cita (slots) por médico y establecimiento.</li>
+                <li><strong>Excepciones</strong>: Gestión de ausencias (Vacaciones, Incapacidades, Congresos).</li>
+                <li><strong>Flujo de la Cita</strong>: Programada → En Sala → Triaje → Atendida.</li>
+            </ul>
+
+            <h3>B. Historia Clínica Digital (EMR)</h3>
+            <p><strong>Expediente Médico Electrónico</strong>: El núcleo de la atención médica con enfoque en la calidad del dato y la estandarización clínica.</p>
+            <ul>
+                <li><strong>Metodología SOAP</strong>: Estructuración de notas médicas (Subjetivo, Objetivo, Análisis, Plan).</li>
+                <li><strong>Diagnósticos CIE-10</strong>: Buscador integrado con codificación internacional.</li>
+            </ul>
+
+            <h3>C. Farmacia e Inventario</h3>
+            <p>Este módulo garantiza el uso racional de medicamentos y el control estricto de los insumos estatales.</p>
+            <ul>
+                <li><strong>Gestión por Lotes</strong>: Control granular por número de lote y fecha de vencimiento.</li>
+                <li><strong>Alertas de Stock</strong>: Notificaciones visuales cuando las existencias caen por debajo del nivel mínimo.</li>
+                <li><strong>Trazabilidad FEFO</strong>: Descargo automático priorizando lotes próximos a vencer.</li>
+                <li><strong>Demanda Insatisfecha</strong>: Registro crítico de medicamentos solicitados no entregados.</li>
+            </ul>
+
+            <div class="mermaid">
+                graph TD
+                    A[Médico Prescribe] --> B[Receta PENDIENTE]
+                    B --> C[Paciente va a Farmacia]
+                    C --> D{¿Hay Stock?}
+                    D -- Sí --> E[Dispensación Completa]
+                    D -- No --> F{¿Stock Parcial?}
+                    F -- Sí --> G[Dispensación Parcial]
+                    F -- No --> H[Registro Demanda Insatisfecha]
+                    E --> I[Descargo por Lote]
+                    G --> I
+                    I --> J[Receta Cerrada]
+            </div>
+
+            <h3>D. Programa Ampliado de Inmunizaciones (PAI)</h3>
+            <p>Este módulo gestiona el esquema nacional de vacunación y el inventario crítico de biológicos.</p>
+            <ul>
+                <li><strong>Inmunización Segura</strong>: Control estricto de dosis aplicadas según la edad del paciente y esquema vigente.</li>
+                <li><strong>Gestión de Biológicos</strong>: Control de lotes físicos, fabricantes y fechas de vencimiento.</li>
+                <li><strong>Cadena de Frío</strong>: Trazabilidad térmica de los biológicos y registro de pérdidas.</li>
+                <li><strong>Carnet Digital</strong>: Historial completo de inmunizaciones con generación de carnets.</li>
+            </ul>
+
+            <h3>E. Vigilancia Epidemiológica y Alertas</h3>
+            <p>Integra la detección clínica con la respuesta de salud pública de manera automática.</p>
+            <ul>
+                <li><strong>Disparo por Diagnóstico</strong>: Alerta inmediata al médico basada en códigos CIE-10 críticos.</li>
+                <li><strong>Ficha Epidemiológica</strong>: Captura obligatoria de síntomas, viajes y contactos de riesgo.</li>
+                <li><strong>Geolocalización (GIS)</strong>: Registro de coordenadas (Latitud/Longitud) para mapas de calor.</li>
+                <li><strong>Gestión de Casos</strong>: Flujo de investigación (Pendiente -> Notificado -> Gestionado).</li>
+            </ul>
+
+            <h3>F. Apoyo Diagnóstico: Laboratorio y Radiología</h3>
+            <ul>
+                <li><strong>Laboratorio</strong>: Solicitudes con valores de referencia y alertas anormales.</li>
+                <li><strong>Radiología</strong>: Rayos X, Tomografía, Ecografía y Resonancia con hallazgos vinculados al PACS.</li>
+            </ul>
+        </div>
+
+        <div class="doc-section">
+            <h2>4. Flujo Operativo Integral</h2>
+            <div class="mermaid">
+                graph TD
+                    A[Paciente llega] --> B[Recepción/Agenda]
+                    B --> C[Triaje: Signos Vitales]
+                    C --> D[Consulta Médica: SOAP]
+                    D --> E{Acciones Clínicas}
+                    E --> F[Diagnósticos CIE-10]
+                    E --> G[Recetas/Lab/Rayos X]
+                    E --> H[Referencia Externa]
+                    E --> I[Agendar Próxima Cita]
+                    F --> J{¿Es Epidemiólogico?}
+                    J -- Sí --> K[Alerta y Ficha Epidem.]
+                    J -- No --> L[Finalizar]
+                    G --> L
+                    H --> L
+                    I --> L
+                    K --> L
+                    L --> M[Impresión de Reportes PDF]
+            </div>
+        </div>
+
+        <div class="note">
+            <strong>Nota:</strong> Documentación técnica oficial generada para el equipo de desarrollo y administración del SISS.
+        </div>
+
+        <footer>
+            &copy; 2026 SISS - Sistema Integral de Servicios de Salud. Todos los derechos reservados.
+        </footer>
+    </div>
+
+</body>
+</html>

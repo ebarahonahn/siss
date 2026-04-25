@@ -1,0 +1,396 @@
+<div class="min-h-screen bg-gray-50 flex flex-col">
+
+  <!-- Barra superior -->
+  <div class="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between shadow-sm flex-shrink-0 z-20">
+    <div class="flex items-center gap-5">
+      <a routerLink="/mantenimiento/formularios"
+         class="w-10 h-10 bg-gray-50 rounded-xl flex items-center justify-center text-gray-400 hover:text-blue-600 hover:bg-blue-50 transition-all">
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+        </svg>
+      </a>
+      <div *ngIf="plantilla">
+        <div class="flex items-center gap-2">
+            <h1 class="text-lg font-black text-gray-900 tracking-tight leading-none">{{ plantilla.nombre }}</h1>
+            <span class="text-[10px] font-black bg-blue-100 text-blue-600 px-2 py-0.5 rounded-lg border border-blue-200 uppercase tracking-widest">
+                v{{ plantilla.version }}
+            </span>
+        </div>
+        <p class="text-xs text-gray-500 mt-1 uppercase font-bold tracking-tighter">{{ plantilla.especialidad?.nombre }}</p>
+      </div>
+    </div>
+    
+    <div class="flex gap-3">
+      <button (click)="preview = !preview"
+              [class.bg-blue-600]="preview"
+              [class.text-white]="preview"
+              [class.border-blue-600]="preview"
+              class="px-6 py-2 text-sm font-bold border border-gray-300 rounded-xl hover:shadow-md transition-all flex items-center gap-2">
+        <svg *ngIf="!preview" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+        <svg *ngIf="preview" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+        {{ preview ? 'VOLVER A EDITOR' : 'PREVISUALIZAR' }}
+      </button>
+      
+      <button *ngIf="!plantilla?.activa" (click)="activar()"
+              class="px-6 py-2 text-sm font-bold bg-green-600 text-white rounded-xl hover:bg-green-700 transition-all shadow-lg shadow-green-100">
+        ACTIVAR PLANTILLA
+      </button>
+      <span *ngIf="plantilla?.activa"
+            class="px-6 py-2 text-sm bg-green-100 text-green-700 rounded-xl font-black border border-green-200 flex items-center gap-2">
+        <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+        ACTIVA
+      </span>
+    </div>
+  </div>
+
+  <div class="flex-1 flex overflow-hidden">
+
+    <!-- Panel de tipos (Solo en Editor) -->
+    <div *ngIf="!preview" class="w-64 bg-white border-r border-gray-100 p-5 overflow-y-auto flex-shrink-0 z-10 custom-scrollbar">
+      <p class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-6">Componentes Disponibles</p>
+      <div class="space-y-3">
+        <button *ngFor="let tipo of tiposCampo"
+             (click)="agregarCampoDesdeSidebar(tipo.tipo)"
+             [disabled]="!seccionActivaId()"
+             class="w-full group flex items-center gap-3 p-3 bg-gray-50 border border-transparent rounded-2xl
+                    text-sm text-gray-700 font-bold transition-all hover:bg-blue-600 hover:text-white hover:border-blue-700
+                    disabled:opacity-50 disabled:cursor-not-allowed">
+          <span class="w-10 h-10 bg-white rounded-xl shadow-sm flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+            {{ tipo.icono }}
+          </span>
+          <span class="flex-1 text-left">{{ tipo.etiqueta }}</span>
+          <div class="w-1.5 h-1.5 bg-gray-200 rounded-full opacity-0 group-hover:opacity-100 group-hover:bg-blue-300 transition-all"></div>
+        </button>
+      </div>
+      
+      <div class="mt-10 p-5 bg-blue-50 rounded-[2rem] border border-blue-100">
+         <p class="text-[10px] font-black text-blue-400 uppercase tracking-widest mb-2">Ayuda</p>
+         <p class="text-xs text-blue-700 leading-relaxed font-medium">Haga clic en los botones "+" dentro de cada sección para añadir componentes.</p>
+      </div>
+    </div>
+
+    <!-- Área de construcción / Previsualización -->
+    <div class="flex-1 overflow-y-auto p-8 custom-scrollbar bg-[#f8fafc]">
+      
+      <!-- ════════════════════════════════════
+           VISTA: EDITOR (CONSTRUCTOR)
+      ════════════════════════════════════ -->
+      <div *ngIf="!preview" class="max-w-4xl mx-auto space-y-8 pb-20">
+
+        <!-- Lista de Secciones -->
+        <div *ngFor="let seccion of plantilla?.secciones; let si = index"
+             (click)="seleccionarSeccion(seccion.id)"
+             [class.ring-4]="seccionActivaId() == seccion.id"
+             [class.ring-blue-100]="seccionActivaId() == seccion.id"
+             [class.border-blue-400]="seccionActivaId() == seccion.id"
+             class="bg-white rounded-[2.5rem] shadow-sm overflow-hidden border border-gray-100 group cursor-pointer transition-all">
+
+          <!-- Header sección -->
+          <div class="flex items-center gap-4 px-8 py-6 bg-gray-50/50 border-b border-gray-50">
+            <div class="w-10 h-10 rounded-xl shadow-sm flex items-center justify-center font-black text-xs transition-all"
+                 [class.bg-blue-600]="seccionActivaId() == seccion.id"
+                 [class.text-white]="seccionActivaId() == seccion.id"
+                 [class.bg-white]="seccionActivaId() != seccion.id"
+                 [class.text-gray-400]="seccionActivaId() != seccion.id">
+                {{ si + 1 }}
+            </div>
+            <input [(ngModel)]="seccion.nombre"
+                   (blur)="guardarSeccion(seccion)"
+                   placeholder="Nombre de la sección..."
+                   class="flex-1 text-base font-black bg-transparent outline-none
+                          focus:ring-2 focus:ring-blue-100 rounded-xl px-4 py-2 text-gray-800 placeholder-gray-300 transition-all" />
+            
+            <div *ngIf="seccionActivaId() == seccion.id" 
+                 class="flex items-center gap-2 px-3 py-1.5 bg-blue-50 rounded-full border border-blue-100 animate-in fade-in zoom-in duration-300">
+                <div class="w-1.5 h-1.5 bg-blue-500 rounded-full animate-pulse"></div>
+                <span class="text-[9px] font-black text-blue-600 uppercase tracking-tighter">Sección Seleccionada</span>
+            </div>
+
+            <button (click)="eliminarSeccion(seccion, si); $event.stopPropagation()"
+                    class="p-2 text-gray-300 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all opacity-0 group-hover:opacity-100">
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+            </button>
+          </div>
+
+          <!-- Lista de campos dentro de la sección -->
+          <div class="px-8 py-6 space-y-3 min-h-[5rem]">
+            <div *ngIf="seccion.campos?.length === 0"
+                 class="flex flex-col items-center justify-center py-10 border-2 border-dashed border-gray-100 rounded-[2rem] bg-gray-50/30">
+               <svg class="w-10 h-10 text-gray-200 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+               <p class="text-sm font-bold text-gray-300 uppercase tracking-widest">Sin campos agregados</p>
+            </div>
+
+            <div *ngFor="let campo of seccion.campos; let ci = index"
+                 class="flex items-center gap-6 p-5 bg-white border border-gray-100 rounded-[1.8rem] group/item hover:border-blue-200 hover:shadow-md hover:shadow-blue-50 transition-all cursor-default">
+              
+              <div class="w-12 h-12 bg-gray-50 rounded-2xl flex items-center justify-center text-xl shadow-sm border border-gray-50 group-hover/item:bg-blue-50 transition-colors">
+                <span>{{ getIconoTipo(campo.tipo) }}</span>
+              </div>
+
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-3">
+                    <p class="text-sm font-black text-gray-900 truncate uppercase">{{ campo.etiqueta }}</p>
+                    <span *ngIf="campo.requerido" class="text-[9px] font-black bg-red-50 text-red-500 px-2 py-0.5 rounded-lg border border-red-100 uppercase leading-none">Obligatorio</span>
+                </div>
+                <div class="flex items-center gap-3 mt-1.5 font-bold text-[10px] text-gray-400 uppercase tracking-widest">
+                  <span class="text-blue-500">{{ campo.tipo }}</span>
+                  <span class="w-1 h-1 bg-gray-200 rounded-full"></span>
+                  <span>ID: <code class="font-mono text-gray-600 lowercase bg-gray-100 px-1.5 py-0.5 rounded-md">{{ campo.clave }}</code></span>
+                  <span class="w-1 h-1 bg-gray-200 rounded-full"></span>
+                  <span>ANCHO: {{ campo.ancho || 'COMPLETO' }}</span>
+                </div>
+              </div>
+
+              <div class="flex gap-2 opacity-0 group-hover/item:opacity-100 transition-all scale-95 group-hover/item:scale-100">
+                <button (click)="editarCampo(campo)"
+                        class="p-2.5 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white rounded-xl transition-all shadow-sm">
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                </button>
+                <button (click)="eliminarCampo(campo.id, seccion, ci)"
+                        class="p-2.5 bg-red-50 text-red-500 hover:bg-red-600 hover:text-white rounded-xl transition-all shadow-sm">
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Acciones de añadir campo a sección -->
+          <div class="px-8 py-5 flex gap-2 flex-wrap bg-gray-50/10 border-t border-gray-50 group-hover:bg-blue-50/20 transition-all">
+            <button *ngFor="let tipo of tiposCampo"
+                    (click)="agregarCampoASeccion(tipo.tipo, seccion); $event.stopPropagation()"
+                    class="px-4 py-2 bg-white border border-gray-200 text-[9px] font-black text-gray-400 hover:text-blue-600 hover:border-blue-300 hover:shadow-md hover:scale-105 rounded-xl transition-all uppercase flex items-center gap-2">
+              <span class="text-xs group-hover:rotate-12 transition-transform">{{ tipo.icono }}</span>
+              {{ tipo.etiqueta }}
+            </button>
+          </div>
+        </div>
+
+        <!-- Botón nueva sección -->
+        <button (click)="agregarSeccion()"
+                class="w-full py-10 border-4 border-dashed border-gray-200 rounded-[3rem]
+                       text-base font-black text-gray-400 hover:border-blue-200 hover:text-blue-500 hover:bg-blue-50/30
+                       transition-all group flex flex-col items-center justify-center gap-3">
+          <div class="w-14 h-14 bg-white rounded-[1.5rem] shadow-sm flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">✨</div>
+          <p class="uppercase tracking-[0.2em] ml-2">Añadir Nueva Sección</p>
+        </button>
+
+      </div>
+
+      <!-- ════════════════════════════════════
+           VISTA: PREVIEW (RESULTADO)
+      ════════════════════════════════════ -->
+      <div *ngIf="preview" class="max-w-5xl mx-auto pb-20 animate-in fade-in duration-300">
+        
+        <div class="bg-blue-600 rounded-[3rem] p-10 mb-8 text-white shadow-xl shadow-blue-100 relative overflow-hidden">
+            <div class="absolute top-0 right-0 p-8 opacity-10">
+                <svg class="w-40 h-40" fill="currentColor" viewBox="0 0 24 24"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+            </div>
+            <div class="relative z-10">
+                <h2 class="text-3xl font-black tracking-tight mb-2 uppercase">Vista Previa del Formulario</h2>
+                <p class="text-blue-100 font-bold opacity-80 uppercase tracking-widest text-xs">Así es como el médico visualizará los campos durante la consulta</p>
+            </div>
+        </div>
+
+        <div class="space-y-12">
+            <div *ngFor="let seccion of plantilla?.secciones" class="space-y-6">
+                <!-- Título de Sección -->
+                <div class="flex items-center gap-4">
+                    <h3 class="text-xs font-black text-blue-600 uppercase tracking-[0.3em] whitespace-nowrap">{{ seccion.nombre }}</h3>
+                    <div class="h-px bg-blue-100 w-full"></div>
+                </div>
+
+                <!-- Grid de Campos -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div *ngFor="let campo of seccion.campos" [class]="getAnchoClass(campo.ancho)">
+                        
+                        <!-- Etiqueta -->
+                        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 ml-1">
+                            {{ campo.etiqueta }}
+                            <span *ngIf="campo.requerido" class="text-red-500 ml-0.5">*</span>
+                        </label>
+
+                        <!-- Renderizado según tipo -->
+                        <ng-container [ngSwitch]="campo.tipo">
+                            
+                            <!-- Texto Largo -->
+                            <textarea *ngSwitchCase="'TEXTAREA'"
+                                      class="w-full px-5 py-4 bg-white border-2 border-gray-100 rounded-3xl outline-none focus:border-blue-500 transition-all text-sm font-bold text-gray-700 resize-none"
+                                      rows="4" [placeholder]="campo.ayuda || ''"></textarea>
+
+                            <!-- Seleccionable -->
+                            <select *ngSwitchCase="'SELECT'"
+                                    class="w-full px-5 py-4 bg-white border-2 border-gray-100 rounded-2xl outline-none focus:border-blue-500 transition-all text-sm font-bold text-gray-700">
+                                <option value="">{{ campo.ayuda || 'Seleccione una opción...' }}</option>
+                                <ng-container *ngIf="campo.configuracion?.opciones?.length">
+                                  <option *ngFor="let op of campo.configuracion.opciones" [value]="op">{{ op }}</option>
+                                </ng-container>
+                            </select>
+
+                            <!-- Escala (1-10) -->
+                            <div *ngSwitchCase="'ESCALA'" class="flex justify-between items-center bg-white p-3 border-2 border-gray-100 rounded-2xl">
+                                <div *ngFor="let n of [1,2,3,4,5,6,7,8,9,10]" 
+                                     class="w-8 h-8 rounded-lg flex items-center justify-center text-[10px] font-black text-gray-400 border border-gray-50 cursor-pointer hover:bg-blue-50">
+                                    {{ n }}
+                                </div>
+                            </div>
+
+                            <!-- Booleano (Toggle) -->
+                            <div *ngSwitchCase="'BOOLEANO'" class="flex items-center gap-3 bg-white px-5 py-4 border-2 border-gray-100 rounded-2xl">
+                                <div class="w-12 h-6 bg-gray-200 rounded-full relative">
+                                    <div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full"></div>
+                                </div>
+                                <span class="text-xs font-bold text-gray-400 uppercase">NO / SÍ</span>
+                            </div>
+
+                            <!-- Separador (Línea) -->
+                            <div *ngSwitchCase="'SEPARADOR'" class="py-4">
+                                <div class="h-1 bg-gray-100 w-full rounded-full border-2 border-gray-50"></div>
+                            </div>
+
+                            <!-- Default: Input de texto o número -->
+                            <input *ngSwitchDefault
+                                   [type]="campo.tipo === 'NUMERO' || campo.tipo === 'DECIMAL' ? 'number' : (campo.tipo === 'FECHA' ? 'date' : 'text')"
+                                   [placeholder]="campo.ayuda || ''"
+                                   class="w-full px-5 py-4 bg-white border-2 border-gray-100 rounded-2xl outline-none focus:border-blue-500 transition-all text-sm font-bold text-gray-700 shadow-sm" />
+
+                        </ng-container>
+
+                        <!-- Texto de ayuda (si existe) -->
+                        <p *ngIf="campo.ayuda && campo.tipo !== 'SELECT' && campo.tipo !== 'TEXTAREA'" 
+                           class="text-[9px] text-gray-300 font-bold uppercase mt-2 ml-1 italic">{{ campo.ayuda }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mensaje de fin de preview -->
+        <div class="mt-20 text-center py-10 border-t border-gray-100">
+            <p class="text-[10px] font-black text-gray-300 uppercase tracking-[0.4em]">Fin de la Previsualización</p>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Modal edición de campo (Sidebar simulado) -->
+  <div *ngIf="campoEditando"
+       class="fixed inset-0 bg-black/60 backdrop-blur-md flex items-center justify-end z-[60] p-0 animate-in fade-in duration-300 ml-64"
+       (click)="campoEditando = null">
+    <div class="bg-white h-full w-full max-w-md shadow-2xl p-10 flex flex-col animate-in slide-in-from-right duration-300"
+         (click)="$event.stopPropagation()">
+      
+      <div class="flex items-center justify-between mb-10">
+          <div>
+              <p class="text-[10px] font-black text-blue-500 uppercase tracking-widest mb-1">Configuración de Componente</p>
+              <h3 class="text-2xl font-black text-gray-900 leading-tight">Editar Campo</h3>
+          </div>
+          <button (click)="campoEditando = null" class="w-10 h-10 bg-gray-50 rounded-xl flex items-center justify-center text-gray-400 hover:text-red-500 transition-all">
+              <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+      </div>
+
+      <div class="flex-1 overflow-y-auto space-y-8 pr-2 custom-scrollbar">
+        
+        <div>
+          <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 ml-1">Tipo de Componente</label>
+          <div class="w-full px-5 py-4 bg-gray-50 border-2 border-gray-100 rounded-2xl text-sm font-bold text-gray-400 flex items-center gap-3">
+              <span class="text-lg">⚙️</span>
+              {{ campoEditando.tipo }}
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 ml-1">Etiqueta Visibilidad Médica</label>
+          <input [(ngModel)]="campoEditando.etiqueta"
+                 placeholder="Ej: Peso del Paciente"
+                 class="w-full px-5 py-4 bg-gray-50 border-2 border-transparent focus:border-blue-500 focus:bg-white rounded-2xl text-sm font-bold text-gray-700 outline-none transition-all" />
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 ml-1">Identificador Clave (ID)</label>
+              <input [(ngModel)]="campoEditando.clave"
+                     placeholder="ej_peso"
+                     class="w-full px-5 py-4 bg-gray-50 border-2 border-transparent focus:border-blue-500 focus:bg-white rounded-2xl text-sm font-mono font-bold text-blue-600 outline-none transition-all" />
+            </div>
+            <div>
+              <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 ml-1">Ancho en Diseño</label>
+              <select [(ngModel)]="campoEditando.ancho"
+                      class="w-full px-5 py-4 bg-gray-50 border-2 border-transparent focus:border-blue-500 focus:bg-white rounded-2xl text-sm font-bold text-gray-700 outline-none transition-all appearance-none cursor-pointer">
+                <option value="COMPLETO">COMPLETO (100%)</option>
+                <option value="MEDIO">MEDIO (50%)</option>
+                <option value="TERCIO">TERCIO (33%)</option>
+                <option value="CUARTO">CUARTO (25%)</option>
+              </select>
+            </div>
+        </div>
+
+        <div>
+          <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 ml-1">Texto de Sugerencia (Ayuda)</label>
+          <input [(ngModel)]="campoEditando.ayuda"
+                 placeholder="Instrucción para el médico móvil..."
+                 class="w-full px-5 py-4 bg-gray-50 border-2 border-transparent focus:border-blue-500 focus:bg-white rounded-2xl text-sm font-bold text-gray-700 outline-none transition-all" />
+        </div>
+
+        <!-- Opciones (SELECT / RADIO / MULTISELECT / CHECKBOX_GRUPO) -->
+        <div *ngIf="tieneOpciones()" class="space-y-3">
+          <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">
+            Opciones de Respuesta
+          </label>
+
+          <!-- Lista de opciones existentes -->
+          <div class="space-y-2">
+            <div *ngFor="let op of getOpciones(); let i = index"
+                 class="flex items-center gap-2 px-4 py-3 bg-gray-50 border-2 border-gray-100 rounded-2xl group">
+              <span class="w-5 h-5 rounded-full bg-blue-100 text-blue-600 text-[10px] font-black flex items-center justify-center flex-shrink-0">
+                {{ i + 1 }}
+              </span>
+              <span class="flex-1 text-sm font-bold text-gray-700 truncate">{{ op }}</span>
+              <button type="button" (click)="eliminarOpcion(i)"
+                      class="flex-shrink-0 w-7 h-7 flex items-center justify-center rounded-xl text-gray-300 hover:text-red-500 hover:bg-red-50 transition-all">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+              </button>
+            </div>
+
+            <p *ngIf="getOpciones().length === 0"
+               class="text-center text-xs text-gray-300 font-bold py-3 border-2 border-dashed border-gray-100 rounded-2xl">
+              Sin opciones aún. Agrega la primera abajo.
+            </p>
+          </div>
+
+          <!-- Input para nueva opción -->
+          <div class="flex gap-2">
+            <input [(ngModel)]="nuevaOpcion"
+                   (keydown.enter)="agregarOpcion(); $event.preventDefault()"
+                   placeholder="Escribir opción y presionar +"
+                   class="flex-1 px-4 py-3 bg-gray-50 border-2 border-transparent focus:border-blue-500 focus:bg-white rounded-2xl text-sm font-bold text-gray-700 outline-none transition-all" />
+            <button type="button" (click)="agregarOpcion()"
+                    [disabled]="!nuevaOpcion.trim()"
+                    class="px-4 py-3 bg-blue-600 text-white rounded-2xl font-black text-sm hover:bg-blue-700 transition-all disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1.5">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-4 p-5 bg-blue-50 rounded-3xl border border-blue-100 shadow-sm shadow-blue-50">
+          <input [(ngModel)]="campoEditando.requerido" type="checkbox"
+                 id="campo-req" class="w-6 h-6 rounded-lg border-blue-200 text-blue-600 focus:ring-blue-500 transition-all cursor-pointer" />
+          <label for="campo-req" class="flex-1 text-xs font-black text-blue-700 uppercase tracking-widest cursor-pointer">Requerido para Guardar</label>
+        </div>
+      </div>
+
+      <div class="pt-10 flex gap-4">
+        <button (click)="guardarCampo()"
+                class="flex-1 py-4 bg-blue-600 text-white text-sm font-black rounded-2xl hover:bg-blue-700 transition-all shadow-xl shadow-blue-100 uppercase tracking-widest">
+          GUARDAR TODO
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>

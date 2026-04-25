@@ -1,0 +1,97 @@
+# Node.js
+node_modules/
+dist/
+lib-cov/
+*.seed
+*.log
+*.csv
+*.dat
+*.out
+*.pid
+*.gz
+*.swp
+*.avi
+*.mp4
+pids
+lib-cov
+coverage
+.nyc_output
+.eslintcache
+.stylelintcache
+.prettiercache
+.node_repl_history
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.sample
+.env.test
+.env.development
+.env.production
+
+# Angular
+.angular/
+.cache/
+.editorconfig
+.browserslistrc
+src/assets/i18n/*.json
+!src/assets/i18n/en.json
+tmp/
+out-tsc/
+bazel-out/
+
+# NestJS
+/dist
+/node_modules
+
+# Prisma
+/prisma/migrations
+/prisma/dev.db
+/prisma/dev.db-journal
+
+# IDEs / Editors
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.project
+.classpath
+.settings/
+.factorypath
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Temporary files
+tmp/
+temp/
+
+# SISS Specific
+/siss-backend/dist/
+/siss-frontend/dist/
+/siss-frontend/.angular/
+**/node_modules/

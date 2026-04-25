@@ -1,0 +1,362 @@
+<div class="space-y-5">
+
+  <!-- ════════════════════════════════════════════
+       VISTA A: LISTA DE CITAS PENDIENTES
+  ════════════════════════════════════════════ -->
+  <ng-container *ngIf="paso() === 'lista'">
+
+    <div class="flex flex-wrap items-center justify-between gap-3">
+      <div>
+        <h2 class="text-xl font-bold text-gray-900">Triaje de pacientes</h2>
+        <p class="text-sm text-gray-500 mt-0.5">Protocolo SESAL — Sistema de clasificación por color</p>
+      </div>
+      <input type="date" [(ngModel)]="fechaFiltro" (change)="cargar()"
+             class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"/>
+    </div>
+
+    <!-- Leyenda de colores -->
+    <div class="flex flex-wrap gap-2">
+      <div *ngFor="let c of categorias"
+           class="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold"
+           [ngClass]="[c.bg, c.text]">
+        <span>{{ c.valor }}</span>
+        <span class="opacity-80">{{ c.tiempo }}</span>
+      </div>
+    </div>
+
+    <div *ngIf="cargando()" class="bg-white rounded-xl border border-gray-200 p-12 text-center text-gray-400 text-sm">
+      Cargando citas…
+    </div>
+
+    <div *ngIf="!cargando() && citas().length === 0"
+         class="bg-white rounded-xl border border-gray-200 p-12 text-center">
+      <svg class="w-12 h-12 text-gray-200 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+      </svg>
+      <p class="text-gray-500 font-medium">No hay citas programadas para esta fecha.</p>
+    </div>
+
+    <div *ngIf="!cargando() && citas().length > 0" class="space-y-3">
+      <div *ngFor="let cita of citas()"
+           class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+
+        <!-- Barra de categoría triaje (si ya tiene) -->
+        <div *ngIf="cita.triaje"
+             class="h-1.5"
+             [ngClass]="categoriaInfo(cita.triaje.categoria)?.bg ?? 'bg-gray-200'">
+        </div>
+
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4">
+
+          <div class="flex items-center gap-4 min-w-0">
+            <!-- Hora -->
+            <div class="text-center flex-shrink-0 w-14">
+              <p class="text-xl font-bold text-gray-800 leading-none">{{ cita.fechaHora | date:'h:mm a' }}</p>
+              <p class="text-xs text-gray-400 mt-0.5">{{ cita.fechaHora | date:'dd/MM' }}</p>
+            </div>
+
+            <div class="min-w-0">
+              <div class="flex items-center gap-2 flex-wrap">
+                <p class="font-semibold text-gray-900">
+                  {{ cita.paciente.nombres }} {{ cita.paciente.apellidos }}
+                </p>
+                <span [ngClass]="tipoBadge(cita.tipo)"
+                      class="text-xs font-medium px-2 py-0.5 rounded-full flex-shrink-0">
+                  {{ cita.tipo.replace('_', ' ') }}
+                </span>
+                <!-- Badge si ya tiene triaje -->
+                <span *ngIf="cita.triaje"
+                      class="text-xs font-bold px-2 py-0.5 rounded-full flex-shrink-0"
+                      [ngClass]="[categoriaInfo(cita.triaje.categoria)?.bg ?? 'bg-gray-100',
+                                  categoriaInfo(cita.triaje.categoria)?.text ?? 'text-gray-700']">
+                  {{ cita.triaje.categoria }}
+                </span>
+              </div>
+              <p class="text-xs text-gray-500 mt-0.5">
+                DNI: {{ cita.paciente.dni }} &nbsp;·&nbsp;
+                Exp: {{ cita.paciente.numeroExpediente }} &nbsp;·&nbsp;
+                {{ edad(cita.paciente.fechaNacimiento) }} años &nbsp;·&nbsp;
+                Dr. {{ cita.medico.apellidos }}
+              </p>
+              <p *ngIf="cita.motivo" class="text-xs text-gray-400 mt-0.5 italic truncate max-w-sm">
+                "{{ cita.motivo }}"
+              </p>
+            </div>
+          </div>
+
+          <div class="flex-shrink-0">
+            <button *ngIf="!cita.triaje" (click)="iniciarTriaje(cita)"
+                    class="flex items-center gap-1.5 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+              </svg>
+              Realizar triaje
+            </button>
+            <button *ngIf="cita.triaje" (click)="iniciarTriaje(cita)"
+                    class="flex items-center gap-1.5 px-4 py-2 border border-gray-200 text-gray-600 hover:bg-gray-50 text-sm font-medium rounded-lg transition-colors">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+              </svg>
+              Ver triaje
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </ng-container>
+
+  <!-- ════════════════════════════════════════════
+       VISTA B: FORMULARIO DE TRIAJE
+  ════════════════════════════════════════════ -->
+  <ng-container *ngIf="paso() === 'form' && citaSeleccionada()">
+
+    <!-- Banner paciente -->
+    <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div class="flex items-center gap-4">
+        <div class="w-12 h-12 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">
+          {{ citaSeleccionada()!.paciente.nombres.charAt(0) }}{{ citaSeleccionada()!.paciente.apellidos.charAt(0) }}
+        </div>
+        <div>
+          <h2 class="font-bold text-gray-900">
+            {{ citaSeleccionada()!.paciente.apellidos }}, {{ citaSeleccionada()!.paciente.nombres }}
+          </h2>
+          <p class="text-xs text-gray-500">
+            DNI {{ citaSeleccionada()!.paciente.dni }} &nbsp;·&nbsp;
+            Exp {{ citaSeleccionada()!.paciente.numeroExpediente }} &nbsp;·&nbsp;
+            {{ edad(citaSeleccionada()!.paciente.fechaNacimiento) }} años &nbsp;·&nbsp;
+            Cita {{ citaSeleccionada()!.fechaHora | date:'h:mm a' }} — Dr. {{ citaSeleccionada()!.medico.apellidos }}
+          </p>
+        </div>
+      </div>
+      <button (click)="volver()" class="text-sm text-gray-500 hover:text-gray-700 flex items-center gap-1">
+        ← Volver a lista
+      </button>
+    </div>
+
+    <!-- Aviso solo lectura -->
+    <div *ngIf="soloLectura()"
+         class="flex items-center gap-3 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 text-sm text-amber-800">
+      <svg class="w-5 h-5 text-amber-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+      </svg>
+      <span>
+        Triaje registrado el
+        <strong>{{ triajeCargado()?.creadoEn | date:'dd/MM/yyyy h:mm a' }}</strong>
+        por <strong>{{ triajeCargado()?.enfermera?.nombres }} {{ triajeCargado()?.enfermera?.apellidos }}</strong>.
+        Solo lectura.
+      </span>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="guardar()" class="space-y-5">
+
+      <!-- 1. Motivo de consulta -->
+      <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+        <div class="px-5 py-3 bg-gray-50 border-b border-gray-100">
+          <h3 class="text-sm font-bold text-gray-700 uppercase tracking-wider">Motivo de consulta</h3>
+        </div>
+        <div class="p-5">
+          <textarea formControlName="motivoConsulta" rows="3"
+                    placeholder="Describa el motivo principal de consulta del paciente…"
+                    [ngClass]="invalido('motivoConsulta') ? 'border-red-300 focus:ring-red-400' : 'border-gray-200 focus:ring-blue-500'"
+                    class="w-full px-4 py-3 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:border-transparent resize-none"></textarea>
+          <p *ngIf="invalido('motivoConsulta')" class="text-red-500 text-xs mt-1">Campo requerido</p>
+        </div>
+      </div>
+
+      <!-- 2. Signos vitales -->
+      <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+        <div class="px-5 py-3 bg-gray-50 border-b border-gray-100 flex items-center gap-2">
+          <svg class="w-4 h-4 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+          </svg>
+          <h3 class="text-sm font-bold text-gray-700 uppercase tracking-wider">Signos vitales</h3>
+        </div>
+        <div class="p-5 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+
+          <div>
+            <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">P. Sistólica</label>
+            <div class="relative">
+              <input type="number" formControlName="presionSistolica"
+                     class="w-full px-3 py-2 bg-gray-50 border-transparent focus:bg-white focus:ring-2 focus:ring-blue-500 rounded-lg text-sm outline-none"/>
+              <span class="absolute right-2 top-2 text-[10px] text-gray-400 pointer-events-none">mmHg</span>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">P. Diastólica</label>
+            <div class="relative">
+              <input type="number" formControlName="presionDiastolica"
+                     class="w-full px-3 py-2 bg-gray-50 border-transparent focus:bg-white focus:ring-2 focus:ring-blue-500 rounded-lg text-sm outline-none"/>
+              <span class="absolute right-2 top-2 text-[10px] text-gray-400 pointer-events-none">mmHg</span>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Frec. Cardíaca</label>
+            <div class="relative">
+              <input type="number" formControlName="frecuenciaCardiaca"
+                     class="w-full px-3 py-2 bg-gray-50 border-transparent focus:bg-white focus:ring-2 focus:ring-blue-500 rounded-lg text-sm outline-none"/>
+              <span class="absolute right-2 top-2 text-[10px] text-gray-400 pointer-events-none">lpm</span>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Frec. Respiratoria</label>
+            <div class="relative">
+              <input type="number" formControlName="frecuenciaRespiratoria"
+                     class="w-full px-3 py-2 bg-gray-50 border-transparent focus:bg-white focus:ring-2 focus:ring-blue-500 rounded-lg text-sm outline-none"/>
+              <span class="absolute right-2 top-2 text-[10px] text-gray-400 pointer-events-none">rpm</span>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Temperatura</label>
+            <div class="relative">
+              <input type="number" formControlName="temperatura" step="0.1"
+                     class="w-full px-3 py-2 bg-gray-50 border-transparent focus:bg-white focus:ring-2 focus:ring-blue-500 rounded-lg text-sm outline-none"/>
+              <span class="absolute right-2 top-2 text-[10px] text-gray-400 pointer-events-none">°C</span>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Saturación O₂</label>
+            <div class="relative">
+              <input type="number" formControlName="saturacionO2" min="0" max="100"
+                     class="w-full px-3 py-2 bg-gray-50 border-transparent focus:bg-white focus:ring-2 focus:ring-blue-500 rounded-lg text-sm outline-none"/>
+              <span class="absolute right-2 top-2 text-[10px] text-gray-400 pointer-events-none">%</span>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Glucometría</label>
+            <div class="relative">
+              <input type="number" formControlName="glucometria" step="0.1"
+                     class="w-full px-3 py-2 bg-gray-50 border-transparent focus:bg-white focus:ring-2 focus:ring-blue-500 rounded-lg text-sm outline-none"/>
+              <span class="absolute right-2 top-2 text-[10px] text-gray-400 pointer-events-none">mg/dL</span>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Peso</label>
+            <div class="relative">
+              <input type="number" formControlName="peso" step="0.1"
+                     class="w-full px-3 py-2 bg-gray-50 border-transparent focus:bg-white focus:ring-2 focus:ring-blue-500 rounded-lg text-sm outline-none"/>
+              <span class="absolute right-2 top-2 text-[10px] text-gray-400 pointer-events-none">kg</span>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Talla</label>
+            <div class="relative">
+              <input type="number" formControlName="talla" max="999.9"
+                     class="w-full px-3 py-2 bg-gray-50 border-transparent focus:bg-white focus:ring-2 focus:ring-blue-500 rounded-lg text-sm outline-none"/>
+              <span class="absolute right-2 top-2 text-[10px] text-gray-400 pointer-events-none">cm</span>
+            </div>
+            <p *ngIf="invalido('talla')" class="text-red-500 text-[10px] mt-1">Máx 999.9 cm</p>
+          </div>
+
+          <!-- IMC calculado -->
+          <div *ngIf="imc()" class="flex flex-col justify-end">
+            <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">IMC</label>
+            <div class="px-3 py-2 bg-blue-50 rounded-lg text-sm font-bold text-blue-700">
+              {{ imc() }} kg/m²
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- 3. Escala de dolor (EVA) -->
+      <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+        <h3 class="text-sm font-bold text-gray-700 uppercase tracking-wider mb-4">
+          Escala de dolor — EVA &nbsp;
+          <span class="text-blue-600 font-bold text-base">
+            {{ form.get('escalaDolor')?.value ?? '—' }}/10
+          </span>
+        </h3>
+        <input type="range" formControlName="escalaDolor" min="0" max="10" step="1"
+               class="w-full h-2 rounded-full appearance-none cursor-pointer
+                      bg-gradient-to-r from-green-400 via-yellow-400 to-red-500"/>
+        <div class="flex justify-between text-xs text-gray-400 mt-1">
+          <span>0 Sin dolor</span>
+          <span>5 Moderado</span>
+          <span>10 Insoportable</span>
+        </div>
+      </div>
+
+      <!-- 4. Nivel de conciencia AVDI -->
+      <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+        <h3 class="text-sm font-bold text-gray-700 uppercase tracking-wider mb-4">Nivel de conciencia — AVDI</h3>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <button *ngFor="let c of conciencias" type="button"
+                  (click)="form.patchValue({ nivelConciencia: c.valor })"
+                  [ngClass]="form.get('nivelConciencia')?.value === c.valor
+                    ? 'bg-blue-600 border-blue-600 text-white'
+                    : 'bg-white border-gray-200 text-gray-700 hover:border-blue-300'"
+                  class="flex flex-col items-center gap-1 p-3 border-2 rounded-xl text-center transition-all">
+            <span class="font-bold text-sm">{{ c.label.split('—')[0].trim() }}</span>
+            <span class="text-xs opacity-80">{{ c.desc }}</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 5. Clasificación de triaje -->
+      <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+        <h3 class="text-sm font-bold text-gray-700 uppercase tracking-wider mb-1">
+          Clasificación de triaje <span class="text-red-500">*</span>
+        </h3>
+        <p class="text-xs text-gray-400 mb-4">Protocolo SESAL — Sistema Manchester adaptado</p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-5 gap-3">
+          <button *ngFor="let cat of categorias" type="button"
+                  (click)="seleccionarCategoria(cat.valor)"
+                  [ngClass]="form.get('categoria')?.value === cat.valor
+                    ? [cat.bg, cat.text, 'ring-4', cat.ring, 'scale-105 shadow-lg']
+                    : 'bg-gray-50 border border-gray-200 text-gray-700 hover:scale-102'"
+                  class="flex flex-col items-center gap-2 p-4 rounded-xl transition-all font-bold text-center">
+            <div class="text-2xl">
+              <span *ngIf="cat.valor==='ROJO'">🔴</span>
+              <span *ngIf="cat.valor==='NARANJA'">🟠</span>
+              <span *ngIf="cat.valor==='AMARILLO'">🟡</span>
+              <span *ngIf="cat.valor==='VERDE'">🟢</span>
+              <span *ngIf="cat.valor==='AZUL'">🔵</span>
+            </div>
+            <span class="text-sm">{{ cat.valor }}</span>
+            <span class="text-xs font-normal opacity-80">{{ cat.tiempo }}</span>
+          </button>
+        </div>
+        <p *ngIf="invalido('categoria')" class="text-red-500 text-xs mt-2">Debe seleccionar una categoría</p>
+      </div>
+
+      <!-- 6. Observaciones -->
+      <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+        <h3 class="text-sm font-bold text-gray-700 uppercase tracking-wider mb-3">Observaciones</h3>
+        <textarea formControlName="observaciones" rows="3"
+                  placeholder="Notas adicionales del triaje, alergias conocidas, medicamentos actuales…"
+                  class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"></textarea>
+      </div>
+
+      <!-- Botones -->
+      <div class="flex justify-end gap-3 pb-4">
+        <button type="button" (click)="volver()"
+                class="px-5 py-2.5 text-sm font-medium text-gray-600 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors">
+          {{ soloLectura() ? 'Cerrar' : 'Cancelar' }}
+        </button>
+        <button *ngIf="!soloLectura()" type="submit" [disabled]="guardando()"
+                class="px-8 py-2.5 text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition-colors disabled:opacity-50 shadow-md">
+          {{ guardando() ? 'Guardando…' : 'Registrar triaje' }}
+        </button>
+      </div>
+
+    </form>
+
+  </ng-container>
+
+</div>

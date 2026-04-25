@@ -1,0 +1,343 @@
+<div class="space-y-5">
+
+  <!-- Cabecera -->
+  <div class="flex flex-wrap items-center justify-between gap-3">
+    <div>
+      <h2 class="text-xl font-bold text-gray-900">Usuarios del sistema</h2>
+      <p class="text-sm text-gray-500 mt-0.5">{{ total() }} usuario(s) registrado(s)</p>
+    </div>
+    <button (click)="abrirCrear()"
+            class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors">
+      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+      </svg>
+      Nuevo usuario
+    </button>
+  </div>
+
+  <!-- Buscador -->
+  <div class="relative">
+    <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0"/>
+    </svg>
+    <input type="text" placeholder="Buscar por nombre, correo o número de empleado…"
+           (input)="buscar($event)"
+           class="w-full pl-9 pr-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"/>
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="error()" class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+    {{ error() }}
+  </div>
+
+  <!-- Tabla -->
+  <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+    <div *ngIf="cargando()" class="flex items-center justify-center py-16 text-gray-400 text-sm">
+      Cargando…
+    </div>
+
+    <table *ngIf="!cargando()" class="w-full text-sm">
+      <thead class="bg-gray-50 border-b border-gray-200">
+        <tr>
+          <th class="px-4 py-3 text-left font-semibold text-gray-600">Empleado</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-600">Correo</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-600">Rol</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-600">Establecimiento</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-600">Estado</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-600">Último acceso</th>
+          <th class="px-4 py-3 text-right font-semibold text-gray-600">Acciones</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-100">
+        <tr *ngFor="let u of usuarios()" class="hover:bg-gray-50 transition-colors">
+          <td class="px-4 py-3">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-bold text-xs flex-shrink-0">
+                {{ u.nombres.charAt(0) }}{{ u.apellidos.charAt(0) }}
+              </div>
+              <div>
+                <p class="font-medium text-gray-900">{{ u.nombres }} {{ u.apellidos }}</p>
+                <p class="text-xs text-gray-500">{{ u.numeroEmpleado }}</p>
+              </div>
+            </div>
+          </td>
+          <td class="px-4 py-3 text-gray-600">{{ u.correo }}</td>
+          <td class="px-4 py-3">
+            <span [ngClass]="rolColor(u.rol.nombre)"
+                  class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium">
+              {{ u.rol.nombre }}
+            </span>
+          </td>
+          <td class="px-4 py-3 text-gray-600 text-xs">{{ u.establecimiento.nombre }}</td>
+          <td class="px-4 py-3">
+            <span [ngClass]="u.activo ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'"
+                  class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium">
+              {{ u.activo ? 'Activo' : 'Inactivo' }}
+            </span>
+          </td>
+          <td class="px-4 py-3 text-gray-500 text-xs">
+            {{ u.ultimoAcceso ? (u.ultimoAcceso | date:'dd/MM/yyyy HH:mm') : '—' }}
+          </td>
+          <td class="px-4 py-3 text-right">
+            <div class="flex items-center justify-end gap-1">
+              <button (click)="abrirEditar(u)" title="Editar"
+                      class="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                </svg>
+              </button>
+              <button (click)="toggle(u)" [title]="u.activo ? 'Desactivar' : 'Activar'"
+                      class="p-1.5 rounded-lg transition-colors"
+                      [ngClass]="u.activo ? 'text-gray-400 hover:text-red-500 hover:bg-red-50' : 'text-gray-400 hover:text-green-600 hover:bg-green-50'">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path *ngIf="u.activo" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/>
+                  <path *ngIf="!u.activo" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+              </button>
+            </div>
+          </td>
+        </tr>
+        <tr *ngIf="usuarios().length === 0">
+          <td colspan="7" class="px-4 py-12 text-center text-gray-400 text-sm">
+            No se encontraron usuarios.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Paginación -->
+    <div *ngIf="!cargando() && totalPaginas() > 1"
+         class="flex items-center justify-between px-4 py-3 border-t border-gray-200 bg-gray-50">
+      <span class="text-xs text-gray-500">Página {{ pagina() }} de {{ totalPaginas() }}</span>
+      <div class="flex gap-1">
+        <button (click)="irPagina(pagina() - 1)" [disabled]="pagina() === 1"
+                class="px-3 py-1.5 text-xs rounded-lg border border-gray-300 disabled:opacity-40 hover:bg-gray-100 transition-colors">
+          Anterior
+        </button>
+        <button (click)="irPagina(pagina() + 1)" [disabled]="pagina() === totalPaginas()"
+                class="px-3 py-1.5 text-xs rounded-lg border border-gray-300 disabled:opacity-40 hover:bg-gray-100 transition-colors">
+          Siguiente
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL ═══════════════════════════════════════════════════════════════ -->
+<div *ngIf="modalAbierto()"
+     class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+  <div class="bg-white rounded-2xl shadow-xl w-full max-w-xl max-h-[90vh] overflow-y-auto">
+
+    <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+      <h3 class="text-base font-semibold text-gray-900">
+        {{ editandoId() ? 'Editar usuario' : 'Nuevo usuario' }}
+      </h3>
+      <button (click)="cerrarModal()" class="text-gray-400 hover:text-gray-600 p-1 rounded-lg hover:bg-gray-100">
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="guardar()" class="px-6 py-4 space-y-4">
+
+      <!-- Error global -->
+      <div *ngIf="errorModal()" class="bg-red-50 border border-red-200 text-red-700 px-3 py-2 rounded-lg text-sm">
+        {{ errorModal() }}
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+
+        <div>
+          <label class="block text-xs font-medium text-gray-700 mb-1">N° Empleado <span class="text-red-500">*</span></label>
+          <input formControlName="numeroEmpleado" type="text"
+                 [attr.readonly]="editandoId() ? true : null"
+                 [ngClass]="invalido('numeroEmpleado') ? 'border-red-400 focus:ring-red-400' : 'border-gray-300 focus:ring-blue-500'"
+                 class="w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:border-transparent
+                        disabled:bg-gray-50"/>
+          <p *ngIf="invalido('numeroEmpleado')" class="text-red-500 text-xs mt-0.5">Requerido</p>
+        </div>
+
+        <div>
+          <label class="block text-xs font-medium text-gray-700 mb-1">Rol <span class="text-red-500">*</span></label>
+          <select formControlName="rol"
+                  [attr.disabled]="editandoId() ? true : null"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+            <option *ngFor="let r of roles" [value]="r">{{ r }}</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-medium text-gray-700 mb-1">Nombres <span class="text-red-500">*</span></label>
+          <input formControlName="nombres" type="text"
+                 [ngClass]="invalido('nombres') ? 'border-red-400 focus:ring-red-400' : 'border-gray-300 focus:ring-blue-500'"
+                 class="w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:border-transparent"/>
+          <p *ngIf="invalido('nombres')" class="text-red-500 text-xs mt-0.5">Requerido</p>
+        </div>
+
+        <div>
+          <label class="block text-xs font-medium text-gray-700 mb-1">Apellidos <span class="text-red-500">*</span></label>
+          <input formControlName="apellidos" type="text"
+                 [ngClass]="invalido('apellidos') ? 'border-red-400 focus:ring-red-400' : 'border-gray-300 focus:ring-blue-500'"
+                 class="w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:border-transparent"/>
+          <p *ngIf="invalido('apellidos')" class="text-red-500 text-xs mt-0.5">Requerido</p>
+        </div>
+
+        <div class="col-span-2">
+          <label class="block text-xs font-medium text-gray-700 mb-1">Correo electrónico <span class="text-red-500">*</span></label>
+          <input formControlName="correo" type="email"
+                 [ngClass]="invalido('correo') ? 'border-red-400 focus:ring-red-400' : 'border-gray-300 focus:ring-blue-500'"
+                 class="w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:border-transparent"/>
+          <p *ngIf="invalido('correo')" class="text-red-500 text-xs mt-0.5">Correo válido requerido</p>
+        </div>
+
+        <div>
+          <label class="block text-xs font-medium text-gray-700 mb-1">
+            Contraseña {{ editandoId() ? '(dejar vacío para no cambiar)' : '*' }}
+          </label>
+          <div class="relative">
+            <input formControlName="contrasena" [type]="mostrarContrasena() ? 'text' : 'password'"
+                   [ngClass]="invalido('contrasena') ? 'border-red-400 focus:ring-red-400' : 'border-gray-300 focus:ring-blue-500'"
+                   class="w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:border-transparent pr-10"/>
+            <button
+              type="button"
+              (click)="mostrarContrasena.set(!mostrarContrasena())"
+              class="absolute right-3 top-2 text-gray-400 hover:text-gray-600 focus:outline-none">
+              <svg *ngIf="!mostrarContrasena()" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+              </svg>
+              <svg *ngIf="mostrarContrasena()" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" />
+              </svg>
+            </button>
+          </div>
+          <p *ngIf="invalido('contrasena')" class="text-red-500 text-xs mt-0.5">Mínimo 8 caracteres, 1 mayúscula y 1 número</p>
+        </div>
+
+        <div>
+          <label class="block text-xs font-medium text-gray-700 mb-1">Teléfono</label>
+          <input formControlName="telefono" type="text"
+                 class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"/>
+        </div>
+
+        <div *ngIf="form.get('rol')?.value === 'MEDICO'">
+          <label class="block text-xs font-medium text-gray-700 mb-1">Especialidad</label>
+          <select formControlName="especialidadId"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+            <option [ngValue]="null">Seleccione especialidad...</option>
+            <option *ngFor="let esp of especialidades()" [ngValue]="esp.id">{{ esp.nombre }}</option>
+          </select>
+        </div>
+
+        <div *ngIf="form.get('rol')?.value === 'MEDICO'">
+          <label class="block text-xs font-medium text-gray-700 mb-1">N° Colegiado</label>
+          <input formControlName="numeroColegiado" type="text"
+                 class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"/>
+        </div>
+
+        <div *ngIf="editandoId()">
+          <label class="block text-xs font-medium text-gray-700 mb-2">Estado</label>
+          <label class="inline-flex items-center gap-2 cursor-pointer">
+            <input formControlName="activo" type="checkbox" class="rounded border-gray-300 text-blue-600"/>
+            <span class="text-sm text-gray-700">Usuario activo</span>
+          </label>
+        </div>
+
+      </div>
+
+      <!-- ── Gestión de Asignaciones (Visible en Creación y Edición) ── -->
+      <div class="mt-6 border-t pt-4 space-y-4">
+        <div class="flex items-center justify-between">
+          <div class="flex flex-col">
+            <h4 class="text-sm font-bold text-gray-800">Centros de Trabajo y Servicios</h4>
+            <p class="text-[10px] text-gray-500">Un usuario puede estar en múltiples servicios.</p>
+          </div>
+          <span class="px-2 py-0.5 bg-blue-100 text-blue-700 text-[10px] font-bold rounded-full">
+            {{ asignaciones().length }} asignados
+          </span>
+        </div>
+        
+        <!-- Lista de asignaciones -->
+        <div class="grid grid-cols-1 gap-2">
+          <div *ngFor="let asig of asignaciones()" 
+               class="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-100 hover:border-blue-200 transition-colors group">
+            <div class="text-xs">
+              <div class="font-bold text-gray-900">{{ asig.establecimiento.nombre }}</div>
+              <div class="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-gray-500 mt-0.5">
+                <span>Servicio: <span class="font-medium text-gray-700">{{ asig.servicio?.catServicio?.nombre || asig.servicio?.nombre || 'General' }}</span></span>
+                <span class="w-1 h-1 rounded-full bg-gray-300"></span>
+                <span>Especialidad: <span class="font-medium text-purple-700">{{ asig.especialidad?.nombre || 'General' }}</span></span>
+                <span class="w-1 h-1 rounded-full bg-gray-300"></span>
+                <span>Rol: <span class="font-medium text-blue-700">{{ asig.rol?.nombre || 'Default' }}</span></span>
+              </div>
+            </div>
+            <button (click)="quitarAsig(asig.id)" type="button" 
+                    title="Remover asignación"
+                    class="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all opacity-0 group-hover:opacity-100">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+              </svg>
+            </button>
+          </div>
+
+          <div *ngIf="asignaciones().length === 0" class="border-2 border-dashed border-gray-100 rounded-xl p-4 text-center">
+            <p class="text-xs text-gray-400">No hay centros asignados aún. Use el panel de abajo.</p>
+          </div>
+        </div>
+
+        <!-- Nueva Asignación -->
+        <div class="bg-blue-50/50 p-4 rounded-xl border border-blue-100/50">
+          <p class="text-[10px] font-bold text-blue-600 uppercase tracking-wider mb-3">Vincular a nuevo centro</p>
+          <div [formGroup]="asigForm" class="grid grid-cols-2 gap-3 mb-3">
+            <div>
+              <label class="block text-[10px] font-medium text-gray-500 mb-1">Establecimiento</label>
+              <select formControlName="establecimientoId" 
+                      (change)="onEstablecimientoChange(+$any($event.target).value)"
+                      class="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                <option [ngValue]="null">Seleccione centro...</option>
+                <option *ngFor="let est of establecimientos()" [value]="est.id">{{ est.nombre }}</option>
+              </select>
+            </div>
+            <div *ngIf="esRolMedico(asigForm.get('rol')?.value)">
+              <label class="block text-[10px] font-medium text-gray-500 mb-1">Servicio</label>
+              <select formControlName="servicioId"
+                      class="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                <option [ngValue]="null">Servicio General</option>
+                <option *ngFor="let serv of servicios()" [value]="serv.id">{{ serv.catServicio?.nombre }}</option>
+              </select>
+            </div>
+            <div class="col-span-2" *ngIf="esRolMedico(asigForm.get('rol')?.value)">
+              <label class="block text-[10px] font-medium text-gray-500 mb-1">Especialidad en este centro</label>
+              <select formControlName="especialidadId"
+                      class="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                <option [ngValue]="null">Mismo del perfil / Medicina General</option>
+                <option *ngFor="let esp of especialidades()" [value]="esp.id">{{ esp.nombre }}</option>
+              </select>
+            </div>
+          </div>
+          <button (click)="agregarAsig()" type="button"
+                  [disabled]="asigForm.invalid"
+                  class="w-full bg-white border border-blue-200 text-blue-700 font-bold py-2 rounded-lg hover:bg-blue-50 text-xs transition-all disabled:opacity-50">
+            + Añadir a la lista
+          </button>
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-3 pt-2 border-t border-gray-100">
+        <button type="button" (click)="cerrarModal()"
+                class="px-4 py-2 text-sm text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+          Cancelar
+        </button>
+        <button type="submit" [disabled]="guardando()"
+                class="px-5 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors disabled:opacity-50">
+          {{ guardando() ? 'Guardando…' : (editandoId() ? 'Actualizar' : 'Crear usuario') }}
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>
