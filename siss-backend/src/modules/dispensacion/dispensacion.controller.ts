@@ -8,19 +8,24 @@ import {
   Req,
   ParseIntPipe,
 } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { DispensacionService } from './dispensacion.service';
 import { CreateDispensacionDto } from './dto/create-dispensacion.dto';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { Permissions } from '../../common/decorators/permissions.decorator';
 import { PermissionsGuard } from '../../common/guards/permissions.guard';
 
+@ApiTags('Farmacia - Dispensación')
+@ApiBearerAuth()
 @Controller('dispensacion')
 @UseGuards(JwtAuthGuard, PermissionsGuard)
 export class DispensacionController {
   constructor(private service: DispensacionService) {}
 
-  @Get('recetas-pendientes')
+  @ApiOperation({ summary: 'Buscar recetas pendientes de dispensar', description: 'Busca recetas en estado PENDIENTE o PARCIAL para un paciente.' })
+  @ApiQuery({ name: 'identificador', description: 'DNI, Exp o Nombre del paciente' })
   @Permissions('farmacia:leer')
+  @Get('recetas-pendientes')
   listarPendientes(
     @Query('identificador') identificador: string,
     @Req() req: any,
@@ -31,8 +36,10 @@ export class DispensacionController {
     );
   }
 
-  @Post()
+  @ApiOperation({ summary: 'Registrar una dispensación (Entrega)', description: 'Realiza el descargo de inventario por lotes (FEFO) y actualiza el estado de la receta.' })
+  @ApiResponse({ status: 201, description: 'Dispensación registrada exitosamente' })
   @Permissions('farmacia:crear')
+  @Post()
   dispensar(@Body() dto: CreateDispensacionDto, @Req() req: any) {
     return this.service.dispensar(dto, req.user.id, req.user.establecimientoId);
   }

@@ -90,18 +90,26 @@ El sistema implementa un modelo de seguridad robusto:
 
 ---
 
-## 6. Módulos Críticos y Flujos
+## 6. Módulos Críticos y Lógica de Alta Complejidad
 
-### Flujo de Dispensación de Medicamentos
-```mermaid
-graph TD
-    A[Médico Prescribe] --> B[Receta PENDIENTE]
-    B --> C[Validación en Farmacia]
-    C --> D{Stock Disponible?}
-    D -- Sí --> E[Dispensación Completa]
-    D -- No --> F[Registro Demanda Insatisfecha]
-    E --> G[Descargo FEFO de Lotes]
-```
+### A. Gestión de Dispensación (Farmacia)
+Este módulo implementa lógica crítica para el control de suministros médicos:
+*   **Algoritmo FEFO (First Expired, First Out)**: Al dispensar, el sistema selecciona automáticamente los lotes más próximos a vencer, garantizando la rotación eficiente del inventario.
+*   **Validación de Traslape de Tratamiento**: El sistema calcula si un paciente ya tiene un tratamiento activo del mismo medicamento basándose en la dosis y frecuencia, previniendo duplicidades peligrosas o desperdicio.
+*   **Descargo Transaccional**: La operación de inventario es atómica; si falla el registro de la entrega, no se descuenta el stock, asegurando consistencia absoluta.
+
+### B. Encuentro Médico Orquestado (Historia Clínica)
+El registro de una consulta es la operación con mayor número de interacciones en el sistema:
+*   **Orquestación de Entidades**: En una sola transacción, el sistema crea la nota clínica (SOAP), diagnósticos CIE-10, recetas, solicitudes de laboratorio, incapacidades y referencias.
+*   **Vigilancia Epidemiológica**: El sistema detecta diagnósticos de notificación obligatoria y genera automáticamente fichas epidemiológicas vinculadas a la semana epidemiológica calculada.
+*   **Automatización de Citas**: Cierra el encuentro actual y puede programar el seguimiento (próxima cita) vinculándolo directamente a la historia del paciente.
+
+### C. Gestión de Agendas y Disponibilidad
+Módulo encargado de la coordinación de recursos humanos y espacios físicos:
+*   **Motor de Disponibilidad**: Calcula en tiempo real si un médico está disponible para una cita cruzando su "Agenda Base" (horarios recurrentes) con la tabla de "Excepciones" (licencias, vacaciones, feriados).
+*   **Validación de Cruce de Establecimientos**: El sistema impide programar citas en horarios donde el médico ya tiene asignada una jornada en otro establecimiento del sistema integral.
+*   **Persistencia Temporal**: Utiliza comparaciones de cadenas para horas (`HH:mm`) y fechas UTC para garantizar que las zonas horarias no afecten la programación de citas.
 
 ---
+
 *Documentación generada automáticamente el 29 de abril de 2026.*

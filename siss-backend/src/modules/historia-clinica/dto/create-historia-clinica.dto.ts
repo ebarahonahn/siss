@@ -9,6 +9,7 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { TipoCita } from '@prisma/client';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export enum TipoDiagnostico {
   PRINCIPAL = 'PRINCIPAL',
@@ -73,12 +74,20 @@ export class NotificacionEpidemiologicaDto {
 }
 
 export class CreateHistoriaClinicaDto {
+  @ApiProperty({ description: 'ID del paciente', example: 1 })
   @IsNumber() @IsNotEmpty() pacienteId: number;
 
   // SOAP
+  @ApiProperty({ description: 'Nota subjetiva (Motivo, síntomas)', example: 'Paciente refiere dolor abdominal' })
   @IsString() @IsNotEmpty() subjetivo: string;
+
+  @ApiProperty({ description: 'Nota objetiva (Exploración física)', example: 'Abdomen blando, dolor a la palpación' })
   @IsString() @IsNotEmpty() objetivo: string;
+
+  @ApiProperty({ description: 'Análisis clínico', example: 'Sospecha de gastritis' })
   @IsString() @IsNotEmpty() analisis: string;
+
+  @ApiProperty({ description: 'Plan de tratamiento', example: 'Dieta blanda y antiácidos' })
   @IsString() @IsNotEmpty() plan: string;
 
   // Signos Vitales
