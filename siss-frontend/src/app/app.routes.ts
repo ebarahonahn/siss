@@ -9,6 +9,7 @@ export const routes: Routes = [
 
   {
     path: 'login',
+    data: { title: 'Acceso' },
     loadComponent: () =>
       import('./modules/auth/login/login.component').then((m) => m.LoginComponent),
   },
@@ -21,6 +22,7 @@ export const routes: Routes = [
     children: [
       {
         path: 'dashboard',
+        data: { title: 'Dashboard' },
         loadComponent: () =>
           import('./modules/dashboard/dashboard.component').then(
             (m) => m.DashboardComponent,
@@ -29,7 +31,7 @@ export const routes: Routes = [
       {
         path: 'pacientes',
         canActivate: [roleGuard],
-        data: { roles: ['MEDICO', 'ENFERMERA', 'ADMIN', 'RECEPCIONISTA', 'ADMIN_ESTABLECIMIENTO'] },
+        data: { title: 'Pacientes', roles: ['MEDICO', 'ENFERMERA', 'ADMIN', 'RECEPCIONISTA', 'ADMIN_ESTABLECIMIENTO'] },
         loadComponent: () =>
           import('./modules/pacientes/pacientes.component').then(
             (m) => m.PacientesComponent,
@@ -38,7 +40,7 @@ export const routes: Routes = [
       {
         path: 'citas',
         canActivate: [roleGuard],
-        data: { roles: ['MEDICO', 'ENFERMERA', 'ADMIN', 'RECEPCIONISTA', 'ADMIN_ESTABLECIMIENTO'] },
+        data: { title: 'Citas Médicas', roles: ['MEDICO', 'ENFERMERA', 'ADMIN', 'RECEPCIONISTA', 'ADMIN_ESTABLECIMIENTO'] },
         loadComponent: () =>
           import('./modules/citas/citas.component').then((m) => m.CitasComponent),
       },
@@ -78,6 +80,7 @@ export const routes: Routes = [
         children: [
           {
             path: '',
+            data: { title: 'Historia Clínica' },
             loadComponent: () =>
               import('./modules/historia-clinica/historia-clinica.component').then(
                 (m) => m.HistoriaClinicaComponent,
@@ -93,16 +96,47 @@ export const routes: Routes = [
         ]
       },
       {
+        path: 'hospitalizacion',
+        canActivate: [roleGuard],
+        data: { roles: ['ADMIN', 'RECEPCIONISTA', 'ENFERMERA', 'MEDICO', 'ADMIN_ESTABLECIMIENTO'] },
+        children: [
+          {
+            path: '',
+            data: { title: 'Gestión Hospitalaria' },
+            loadComponent: () =>
+              import('./modules/hospitalizacion/gestion-hospitalizacion.component').then(
+                (m) => m.GestionHospitalizacionComponent,
+              ),
+          },
+          {
+            path: 'estadisticas',
+            loadComponent: () =>
+              import('./modules/hospitalizacion/pages/estadisticas/estadisticas-hospitalarias.component').then(
+                (m) => m.EstadisticasHospitalariasComponent,
+              ),
+          }
+        ]
+      },
+      {
         path: 'farmacia',
         canActivate: [roleGuard],
-        data: { roles: ['FARMACEUTICO', 'ADMIN'] },
+        data: { title: 'Farmacia', roles: ['FARMACEUTICO', 'ADMIN'] },
         loadComponent: () =>
           import('./modules/farmacia/farmacia.component').then((m) => m.FarmaciaComponent),
       },
       {
+        path: 'servicios/recetas-paciente',
+        canActivate: [roleGuard],
+        data: { roles: ['FARMACEUTICO', 'ADMIN', 'MEDICO', 'ADMIN_ESTABLECIMIENTO'] },
+        loadComponent: () =>
+          import('./modules/recetas-paciente/recetas-paciente.component').then(
+            (m) => m.RecetasPacienteComponent,
+          ),
+      },
+      {
         path: 'laboratorio',
         canActivate: [roleGuard],
-        data: { roles: ['MEDICO', 'ENFERMERA', 'ADMIN'] },
+        data: { title: 'Laboratorio', roles: ['MEDICO', 'ENFERMERA', 'ADMIN'] },
         loadComponent: () =>
           import('./modules/laboratorio/laboratorio.component').then(
             (m) => m.LaboratorioComponent,
@@ -172,6 +206,15 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'inventario/movimientos',
+        canActivate: [roleGuard],
+        data: { roles: ['ADMIN', 'FARMACEUTICO', 'ADMIN_ESTABLECIMIENTO'] },
+        loadComponent: () =>
+          import('./modules/movimientos-inventario/movimientos-inventario.component').then(
+            (m) => m.MovimientosInventarioComponent,
+          ),
+      },
+      {
         path: 'mantenimiento/laboratorio',
         canActivate: [roleGuard],
         data: { roles: ['ADMIN'] },
@@ -196,6 +239,15 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./modules/mantenimiento-establecimientos/mantenimiento-establecimientos.component').then(
             (m) => m.MantenimientoEstablecimientosComponent,
+          ),
+      },
+      {
+        path: 'mantenimiento/login',
+        canActivate: [roleGuard],
+        data: { roles: ['ADMIN'] },
+        loadComponent: () =>
+          import('./modules/mantenimiento-login/mantenimiento-login.component').then(
+            (m) => m.MantenimientoLoginComponent,
           ),
       },
       {

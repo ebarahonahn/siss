@@ -7,6 +7,7 @@ import { AuthService } from '../../core/services/auth.service';
 import { EstablecimientosService } from '../../core/services/establecimientos.service';
 import { NotificationService } from '../../core/services/notification.service';
 import { ReportePdfService } from '../../core/services/reporte-pdf.service';
+import { DateValidators } from '../../core/validators/date.validator';
 
 @Component({
   selector: 'app-inventario-vacunas',
@@ -354,7 +355,7 @@ export class InventarioVacunasComponent implements OnInit {
       vacunaId: [null, Validators.required],
       codigoLote: ['', Validators.required],
       fabricante: ['', Validators.required],
-      fechaVencimiento: ['', Validators.required],
+      fechaVencimiento: ['', [Validators.required, DateValidators.dateReal()]],
       cantidadInicial: [null, [Validators.required, Validators.min(1)]],
       establecimientoId: [this.establecimientoId, Validators.required]
     });

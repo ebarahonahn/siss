@@ -87,4 +87,22 @@ export class InventarioService {
   cargaMasiva(dto: any): Observable<any> {
     return this.http.post<any>(`${this.base}/carga-masiva`, dto).pipe(map(r => r.data ?? r));
   }
+
+  obtenerMovimientos(id: number): Observable<MovimientoInventario[]> {
+    return this.http.get<any>(`${this.base}/${id}/movimientos`).pipe(map(r => r.data ?? r));
+  }
+}
+
+export interface MovimientoInventario {
+  id: number;
+  inventarioId: number;
+  tipo: 'ENTRADA' | 'SALIDA' | 'AJUSTE' | 'CONSUMO';
+  cantidad: number;
+  motivo: string | null;
+  fecha: string;
+  usuario: {
+    id: number;
+    nombres: string;
+    apellidos: string;
+  };
 }

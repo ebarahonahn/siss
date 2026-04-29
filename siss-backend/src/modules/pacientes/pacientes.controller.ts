@@ -10,6 +10,7 @@ import {
   UseGuards,
   DefaultValuePipe,
 } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { PacientesService } from './pacientes.service';
 import { RnpService } from './rnp.service';
 import { CreatePacienteDto } from './dto/create-paciente.dto';
@@ -18,6 +19,8 @@ import { Permissions } from '../../common/decorators/permissions.decorator';
 import { PermissionsGuard } from '../../common/guards/permissions.guard';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 
+@ApiTags('Pacientes')
+@ApiBearerAuth()
 @Controller('pacientes')
 @UseGuards(JwtAuthGuard, PermissionsGuard)
 export class PacientesController {
@@ -26,6 +29,9 @@ export class PacientesController {
     private rnpService: RnpService,
   ) {}
 
+  @ApiOperation({ summary: 'Validar DNI con el RNP', description: 'Consulta el servicio del RNP para validar la existencia de un ciudadano.' })
+  @ApiResponse({ status: 200, description: 'Ciudadano encontrado' })
+  @ApiResponse({ status: 404, description: 'Ciudadano no encontrado' })
   @Get('validar-rnp/:dni')
   @Permissions('pacientes:leer')
   validarRnp(@Param('dni') dni: string) {

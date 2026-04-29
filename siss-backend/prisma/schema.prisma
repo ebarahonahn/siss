@@ -13,140 +13,152 @@ datasource db {
 
 /// Representa los roles de usuario en el sistema para control de acceso basado en roles (RBAC)
 model Rol {
-  /// Identificador único autoincremental del rol
-  id          Int       @id @default(autoincrement())
-  /// Nombre único del rol (ej: ADMIN, MEDICO, ENFERMERA)
-  nombre      String    @unique @db.VarChar(50)
-  /// Descripción detallada de las funciones del rol
-  descripcion String?   @db.VarChar(200)
-  /// Objeto JSON que define los permisos específicos del rol por módulo
-  permisos    Json
-  /// Relación con los usuarios que tienen asignado este rol directamente
-  usuarios    Usuario[]
-  /// Relación con las asignaciones específicas por establecimiento
+  /// Identificador Ãºnico autoincremental del rol
+  id           Int                 @id @default(autoincrement())
+  /// Nombre Ãºnico del rol (ej: ADMIN, MEDICO, ENFERMERA)
+  nombre       String              @unique @db.VarChar(50)
+  /// DescripciÃ³n detallada de las funciones del rol
+  descripcion  String?             @db.VarChar(200)
+  /// Objeto JSON que define los permisos especÃ­ficos del rol por mÃ³dulo
+  permisos     Json
+  /// RelaciÃ³n con los usuarios que tienen asignado este rol directamente
+  usuarios     Usuario[]
+  /// RelaciÃ³n con las asignaciones especÃ­ficas por establecimiento
   asignaciones AsignacionUsuario[]
 
   @@map("roles")
 }
 
-/// Representa a los usuarios del sistema (personal médico, administrativo y de enfermería)
+/// Representa a los usuarios del sistema (personal mÃ©dico, administrativo y de enfermerÃ­a)
 model Usuario {
-  /// Identificador único autoincremental del usuario
-  id               Int       @id @default(autoincrement())
-  /// Número de empleado institucional
-  numeroEmpleado   String    @unique @db.VarChar(20)
+  /// Identificador Ãºnico autoincremental del usuario
+  id                Int       @id @default(autoincrement())
+  /// NÃºmero de empleado institucional
+  numeroEmpleado    String    @unique @db.VarChar(20)
   /// Nombres del usuario
-  nombres          String    @db.VarChar(100)
+  nombres           String    @db.VarChar(100)
   /// Apellidos del usuario
-  apellidos        String    @db.VarChar(100)
-  /// Correo electrónico institucional (usado para login)
-  correo           String    @unique @db.VarChar(150)
-  /// Hash de la contraseña del usuario (Bcrypt)
-  contrasenaHash   String    @db.VarChar(255)
-  /// Número de teléfono de contacto
-  telefono         String?   @db.VarChar(20)
+  apellidos         String    @db.VarChar(100)
+  /// Correo electrÃ³nico institucional (usado para login)
+  correo            String    @unique @db.VarChar(150)
+  /// Hash de la contraseÃ±a del usuario (Bcrypt)
+  contrasenaHash    String    @db.VarChar(255)
+  /// NÃºmero de telÃ©fono de contacto
+  telefono          String?   @db.VarChar(20)
   /// ID de la especialidad primaria del usuario (si aplica)
-  especialidadId   Int?
-  /// Número de colegiación profesional (obligatorio para médicos)
-  numeroColegiado  String?   @db.VarChar(50)
-  /// Indica si el usuario está activo en el sistema
-  activo           Boolean   @default(true)
-  /// Fecha y hora del último acceso exitoso
-  ultimoAcceso     DateTime?
+  especialidadId    Int?
+  /// NÃºmero de colegiaciÃ³n profesional (obligatorio para mÃ©dicos)
+  numeroColegiado   String?   @db.VarChar(50)
+  /// Indica si el usuario estÃ¡ activo en el sistema
+  activo            Boolean   @default(true)
+  /// Indica si el usuario debe cambiar su contraseña en el próximo inicio de sesión
+  requiereCambioContrasena Boolean @default(false)
+  /// Fecha y hora del Ãºltimo acceso exitoso
+  ultimoAcceso      DateTime?
   /// ID del rol principal asignado
-  rolId            Int?
+  rolId             Int?
   /// ID del establecimiento base donde labora
   establecimientoId Int?
 
-  /// Relación con el modelo de Rol
-  rol               Rol?                @relation(fields: [rolId], references: [id])
-  /// Relación con el establecimiento base
-  establecimiento   Establecimiento?    @relation(fields: [establecimientoId], references: [id])
-  /// Relación con la especialidad profesional
-  especialidad      Especialidad?       @relation(fields: [especialidadId], references: [id])
+  /// RelaciÃ³n con el modelo de Rol
+  rol                          Rol?                         @relation(fields: [rolId], references: [id])
+  /// RelaciÃ³n con el establecimiento base
+  establecimiento              Establecimiento?             @relation(fields: [establecimientoId], references: [id])
+  /// RelaciÃ³n con la especialidad profesional
+  especialidad                 Especialidad?                @relation(fields: [especialidadId], references: [id])
   /// Historial de asignaciones a diferentes establecimientos y servicios
-  asignaciones      AsignacionUsuario[]
-  /// Sesiones activas e históricas del usuario
-  sesiones          Sesion[]
-  /// Citas médicas donde el usuario actúa como médico tratante
-  citasMedico       Cita[]              @relation("CitaMedico")
-  /// Historias clínicas creadas por este usuario
-  historiales       HistoriaClinica[]
-  /// Registros de auditoría generados por acciones de este usuario
-  auditLogs         AuditLog[]
-  /// Plantillas de formularios clínicos creadas por el usuario
-  plantillasCreadas PlantillaFormulario[]
-  /// Triajes realizados por el usuario (en rol de enfermería)
-  triajes           Triaje[]            @relation("TriajeEnfermera")
+  asignaciones                 AsignacionUsuario[]
+  /// Sesiones activas e histÃ³ricas del usuario
+  sesiones                     Sesion[]
+  /// Citas mÃ©dicas donde el usuario actÃºa como mÃ©dico tratante
+  citasMedico                  Cita[]                       @relation("CitaMedico")
+  /// Historias clÃ­nicas creadas por este usuario
+  historiales                  HistoriaClinica[]
+  /// Registros de auditorÃ­a generados por acciones de este usuario
+  auditLogs                    AuditLog[]
+  /// Plantillas de formularios clÃ­nicos creadas por el usuario
+  plantillasCreadas            PlantillaFormulario[]
+  /// Triajes realizados por el usuario (en rol de enfermerÃ­a)
+  triajes                      Triaje[]                     @relation("TriajeEnfermera")
   /// Medicamentos registrados por este usuario
-  medicamentosCreados          Medicamento[]       @relation("MedicamentoCreadoPor")
+  medicamentosCreados          Medicamento[]                @relation("MedicamentoCreadoPor")
   /// Medicamentos actualizados por este usuario
-  medicamentosActualizados     Medicamento[]       @relation("MedicamentoActualizadoPor")
-  /// Medicamentos eliminados lógicamente por este usuario
-  medicamentosEliminados       Medicamento[]       @relation("MedicamentoEliminadoPor")
-  /// Pacientes eliminados lógicamente por este usuario
-  pacientesEliminados          Paciente[]          @relation("PacienteEliminadoPor")
+  medicamentosActualizados     Medicamento[]                @relation("MedicamentoActualizadoPor")
+  /// Medicamentos eliminados lÃ³gicamente por este usuario
+  medicamentosEliminados       Medicamento[]                @relation("MedicamentoEliminadoPor")
+  /// Pacientes eliminados lÃ³gicamente por este usuario
+  pacientesEliminados          Paciente[]                   @relation("PacienteEliminadoPor")
   /// Citas registradas por este usuario
-  citasCreadas                 Cita[]              @relation("CitaCreadaPor")
+  citasCreadas                 Cita[]                       @relation("CitaCreadaPor")
   /// Citas canceladas por este usuario
-  citasCanceladas              Cita[]              @relation("CitaCanceladaPor")
-  /// Historias clínicas actualizadas por este usuario
-  historiasActualizadas        HistoriaClinica[]   @relation("HistoriaActualizadaPor")
-  /// Historias clínicas eliminadas por este usuario
-  historiasEliminadas          HistoriaClinica[]   @relation("HistoriaEliminadaPor")
+  citasCanceladas              Cita[]                       @relation("CitaCanceladaPor")
+  /// Historias clÃ­nicas actualizadas por este usuario
+  historiasActualizadas        HistoriaClinica[]            @relation("HistoriaActualizadaPor")
+  /// Historias clÃ­nicas eliminadas por este usuario
+  historiasEliminadas          HistoriaClinica[]            @relation("HistoriaEliminadaPor")
   /// Establecimientos registrados por este usuario
-  establecimientosCreados      Establecimiento[]   @relation("EstablecimientoCreadoPor")
+  establecimientosCreados      Establecimiento[]            @relation("EstablecimientoCreadoPor")
   /// Establecimientos actualizados por este usuario
-  establecimientosActualizados Establecimiento[]   @relation("EstablecimientoActualizadoPor")
+  establecimientosActualizados Establecimiento[]            @relation("EstablecimientoActualizadoPor")
   /// Establecimientos eliminados por este usuario
-  establecimientosEliminados   Establecimiento[]   @relation("EstablecimientoEliminadoPor")
-  /// Notificaciones epidemiológicas gestionadas por este usuario
+  establecimientosEliminados   Establecimiento[]            @relation("EstablecimientoEliminadoPor")
+  /// Notificaciones epidemiolÃ³gicas gestionadas por este usuario
   notificacionesGestionadas    NotificacionEpidemiologica[] @relation("GestionadoPor")
   /// Especialidades registradas por este usuario
-  especialidadesCreadas        Especialidad[]      @relation("EspecialidadCreadaPor")
+  especialidadesCreadas        Especialidad[]               @relation("EspecialidadCreadaPor")
   /// Especialidades actualizadas por este usuario
-  especialidadesActualizadas   Especialidad[]      @relation("EspecialidadActualizadaPor")
+  especialidadesActualizadas   Especialidad[]               @relation("EspecialidadActualizadaPor")
   /// Inventarios registrados por este usuario
-  inventariosCreados           Inventario[]        @relation("InventarioCreadoPor")
+  inventariosCreados           Inventario[]                 @relation("InventarioCreadoPor")
   /// Inventarios actualizados por este usuario
-  inventariosActualizados      Inventario[]        @relation("InventarioActualizadoPor")
+  inventariosActualizados      Inventario[]                 @relation("InventarioActualizadoPor")
   /// Inventarios eliminados por este usuario
-  inventariosEliminados        Inventario[]        @relation("InventarioEliminadoPor")
+  inventariosEliminados        Inventario[]                 @relation("InventarioEliminadoPor")
   /// Dispensaciones de medicamentos realizadas por este usuario
   dispensaciones               Dispensacion[]
-  /// Configuraciones de agenda base para este médico
-  agendasBase                  AgendaBase[]        @relation("AgendaMedico")
-  /// Excepciones a la agenda (vacaciones, permisos) de este médico
-  excepcionesAgenda            ExcepcionAgenda[]   @relation("ExcepcionMedico")
+  /// Configuraciones de agenda base para este mÃ©dico
+  agendasBase                  AgendaBase[]                 @relation("AgendaMedico")
+  /// Excepciones a la agenda (vacaciones, permisos) de este mÃ©dico
+  excepcionesAgenda            ExcepcionAgenda[]            @relation("ExcepcionMedico")
   /// Registros de vacunas aplicadas por este usuario
   vacunasAplicadas             VacunacionRegistro[]
   /// Movimientos de inventario de vacunas realizados por este usuario
   movimientosVacunas           MovimientoVacuna[]
-  /// Notificaciones epidemiológicas creadas por este usuario
+  /// Notificaciones epidemiolÃ³gicas creadas por este usuario
   notificacionesCreadas        NotificacionEpidemiologica[] @relation("NotificacionCreadaPor")
+  /// Ingresos hospitalarios autorizados por este mÃ©dico
+  ingresosAutorizados          IngresoHospitalario[]        @relation("MedicoIngreso")
+  /// Egresos hospitalarios firmados por este médico
+  egresosFirmados              EgresoHospitalario[]         @relation("MedicoEgreso")
+  /// Notas de evolución realizadas por el médico
+  notasEvolucion               NotaEvolucion[]
+  kardexMedicamentos           KardexMedicamento[]
+  controlSignosVitales         ControlSignosVitales[]
+  /// Movimientos de inventario realizados por este usuario
+  movimientosInventario        MovimientoInventario[]
 
   @@map("usuarios")
 }
 
-/// Representa las sesiones de autenticación activas mediante Refresh Tokens
+/// Representa las sesiones de autenticaciÃ³n activas mediante Refresh Tokens
 model Sesion {
-  /// Identificador único de la sesión
+  /// Identificador Ãºnico de la sesiÃ³n
   id               Int      @id @default(autoincrement())
-  /// ID del usuario dueño de la sesión
+  /// ID del usuario dueÃ±o de la sesiÃ³n
   usuarioId        Int
-  /// Hash del Refresh Token almacenado para validación de seguridad
+  /// Hash del Refresh Token almacenado para validaciÃ³n de seguridad
   refreshTokenHash String   @db.VarChar(255)
-  /// Fecha de expiración del token
+  /// Fecha de expiraciÃ³n del token
   expiresAt        DateTime
-  /// Dirección IP desde la cual se inició la sesión
+  /// DirecciÃ³n IP desde la cual se iniciÃ³ la sesiÃ³n
   ip               String?  @db.VarChar(45)
-  /// User Agent del navegador/dispositivo que inició la sesión
+  /// User Agent del navegador/dispositivo que iniciÃ³ la sesiÃ³n
   userAgent        String?  @db.VarChar(500)
-  /// Fecha y hora de creación de la sesión
+  /// Fecha y hora de creaciÃ³n de la sesiÃ³n
   creadaEn         DateTime @default(now())
 
-  /// Relación con el usuario
-  usuario          Usuario  @relation(fields: [usuarioId], references: [id])
+  /// RelaciÃ³n con el usuario
+  usuario Usuario @relation(fields: [usuarioId], references: [id])
 
   @@map("sesiones")
 }
@@ -155,99 +167,99 @@ model Sesion {
 // ESTABLECIMIENTOS
 // =============================================
 
-/// Representa los centros de salud, hospitales y clínicas de la red de servicios
+/// Representa los centros de salud, hospitales y clÃ­nicas de la red de servicios
 model Establecimiento {
-  /// Identificador único autoincremental
-  id           Int                 @id @default(autoincrement())
-  /// Código institucional único (ej: HNT-001)
-  codigo       String              @unique @db.VarChar(20)
+  /// Identificador Ãºnico autoincremental
+  id               Int                 @id @default(autoincrement())
+  /// CÃ³digo institucional Ãºnico (ej: HNT-001)
+  codigo           String              @unique @db.VarChar(20)
   /// Nombre completo del establecimiento
-  nombre       String              @db.VarChar(200)
+  nombre           String              @db.VarChar(200)
   /// Nivel o tipo de establecimiento (Hospital, Centro de Salud, etc.)
-  tipo         TipoEstablecimiento
-  /// ID del departamento geográfico donde se ubica
-  departamentoId Int
+  tipo             TipoEstablecimiento
+  /// ID del departamento geogrÃ¡fico donde se ubica
+  departamentoId   Int
   /// ID del municipio donde se ubica
-  municipioId    Int
-  /// Teléfono de contacto institucional
-  telefono     String?             @db.VarChar(20)
-  /// Indica si el establecimiento está operativo
-  activo       Boolean             @default(true)
+  municipioId      Int
+  /// TelÃ©fono de contacto institucional
+  telefono         String?             @db.VarChar(20)
+  /// Indica si el establecimiento estÃ¡ operativo
+  activo           Boolean             @default(true)
   /// Fecha de registro en el sistema
-  creadoEn     DateTime            @default(now())
-  /// Fecha de última actualización de datos
-  actualizadoEn DateTime?          @updatedAt
-  /// Fecha de eliminación lógica (si aplica)
-  eliminadoEn  DateTime?
-  /// ID del usuario que registró el establecimiento
-  creadoPorId  Int?
-  /// ID del usuario que realizó la última actualización
+  creadoEn         DateTime            @default(now())
+  /// Fecha de Ãºltima actualizaciÃ³n de datos
+  actualizadoEn    DateTime?           @updatedAt
+  /// Fecha de eliminaciÃ³n lÃ³gica (si aplica)
+  eliminadoEn      DateTime?
+  /// ID del usuario que registrÃ³ el establecimiento
+  creadoPorId      Int?
+  /// ID del usuario que realizÃ³ la Ãºltima actualizaciÃ³n
   actualizadoPorId Int?
-  /// ID del usuario que realizó la eliminación lógica
+  /// ID del usuario que realizÃ³ la eliminaciÃ³n lÃ³gica
   eliminadoPorId   Int?
 
-  /// Relación con el departamento
+  /// RelaciÃ³n con el departamento
   departamento   Departamento @relation(fields: [departamentoId], references: [id])
-  /// Relación con el municipio
+  /// RelaciÃ³n con el municipio
   municipio      Municipio    @relation(fields: [municipioId], references: [id], map: "establecimientos_municipio_fkey_unique")
-  /// Relación con el usuario creador
-  creadoPor      Usuario?     @relation("EstablecimientoCreadoPor",      fields: [creadoPorId],      references: [id])
-  /// Relación con el usuario actualizador
+  /// RelaciÃ³n con el usuario creador
+  creadoPor      Usuario?     @relation("EstablecimientoCreadoPor", fields: [creadoPorId], references: [id])
+  /// RelaciÃ³n con el usuario actualizador
   actualizadoPor Usuario?     @relation("EstablecimientoActualizadoPor", fields: [actualizadoPorId], references: [id])
-  /// Relación con el usuario eliminador
-  eliminadoPor   Usuario?     @relation("EstablecimientoEliminadoPor",   fields: [eliminadoPorId],   references: [id])
+  /// RelaciÃ³n con el usuario eliminador
+  eliminadoPor   Usuario?     @relation("EstablecimientoEliminadoPor", fields: [eliminadoPorId], references: [id])
 
   /// Usuarios asociados a este establecimiento
-  usuarios     Usuario[]
+  usuarios          Usuario[]
   /// Pacientes registrados en este establecimiento
-  pacientes    Paciente[]
+  pacientes         Paciente[]
   /// Citas programadas en este establecimiento
-  citas        Cita[]
+  citas             Cita[]
   /// Inventarios de farmacia de este establecimiento
-  inventarios  Inventario[]
-  /// Exámenes de laboratorio disponibles en este establecimiento
-  laboratorios ExamenEstablecimiento[]
-  /// Estudios de radiología disponibles en este establecimiento
-  radiologia   EstudioRadiologicoEstablecimiento[]
+  inventarios       Inventario[]
+  /// ExÃ¡menes de laboratorio disponibles en este establecimiento
+  laboratorios      ExamenEstablecimiento[]
+  /// Estudios de radiologÃ­a disponibles en este establecimiento
+  radiologia        EstudioRadiologicoEstablecimiento[]
   /// Solicitudes de laboratorio realizadas desde/hacia este establecimiento
-  solicitudesLab SolicitudLaboratorio[]
-  /// Solicitudes de radiología realizadas desde/hacia este establecimiento
-  solicitudesRad SolicitudRadiologia[]
+  solicitudesLab    SolicitudLaboratorio[]
+  /// Solicitudes de radiologÃ­a realizadas desde/hacia este establecimiento
+  solicitudesRad    SolicitudRadiologia[]
   /// Servicios (unidades funcionales) habilitados en este establecimiento
-  servicios      Servicio[]
+  servicios         Servicio[]
   /// Referencias emitidas por este establecimiento
-  referidosOrigen  Referido[] @relation("ReferidoOrigen")
+  referidosOrigen   Referido[]                          @relation("ReferidoOrigen")
   /// Referencias recibidas por este establecimiento
-  referidosDestino Referido[] @relation("ReferidoDestino")
+  referidosDestino  Referido[]                          @relation("ReferidoDestino")
   /// Personal asignado a este establecimiento
-  asignaciones   AsignacionUsuario[]
+  asignaciones      AsignacionUsuario[]
   /// Recetas emitidas en este establecimiento
-  recetas        Receta[]
+  recetas           Receta[]
   /// Dispensaciones realizadas en la farmacia de este establecimiento
-  dispensaciones Dispensacion[]
+  dispensaciones    Dispensacion[]
   /// Configuraciones de agenda base en este establecimiento
-  agendasBase    AgendaBase[]
+  agendasBase       AgendaBase[]
   /// Excepciones temporales a la agenda en este establecimiento
   excepcionesAgenda ExcepcionAgenda[]
   /// Lotes de vacunas almacenados en este establecimiento
-  lotesVacunas   LoteVacuna[]
-  /// Registros de vacunación aplicados en este establecimiento
-  registrosVacunas VacunacionRegistro[]
+  lotesVacunas      LoteVacuna[]
+  /// Registros de vacunaciÃ³n aplicados en este establecimiento
+  registrosVacunas  VacunacionRegistro[]
 
   @@map("establecimientos")
 }
 
-/// Clasificación oficial de establecimientos de salud en Honduras
+/// ClasificaciÃ³n oficial de establecimientos de salud en Honduras
 enum TipoEstablecimiento {
   /// Hospital de referencia nacional
   HOSPITAL_NACIONAL
   /// Hospital departamental o regional
   HOSPITAL_REGIONAL
-  /// Centro de salud con atención médica
+  /// Centro de salud con atenciÃ³n mÃ©dica
   CENTRO_SALUD
-  /// Clínica de atención de emergencias periférica
+  /// ClÃ­nica de atenciÃ³n de emergencias perifÃ©rica
   CLINICA_PERIFERICA
-  /// Centro de Salud con Médico y Odontólogo
+  /// Centro de Salud con MÃ©dico y OdontÃ³logo
   CESAMO
   /// Centro de Salud Rural
   CESAR
@@ -257,107 +269,230 @@ enum TipoEstablecimiento {
 // SERVICIOS / UNIDADES FUNCIONALES
 // =============================================
 
-/// Catálogo maestro de servicios o unidades funcionales (ej: Emergencias, Farmacia)
+/// CatÃ¡logo maestro de servicios o unidades funcionales (ej: Emergencias, Farmacia)
 model CatServicio {
-  /// Identificador único
+  /// Identificador Ãºnico
   id          Int        @id @default(autoincrement())
-  /// Nombre único del servicio
+  /// Nombre Ãºnico del servicio
   nombre      String     @unique @db.VarChar(100)
-  /// Descripción de las funciones del servicio
+  /// DescripciÃ³n de las funciones del servicio
   descripcion String?    @db.VarChar(300)
-  /// Indica si el servicio está activo para ser asignado
+  /// Indica si el servicio estÃ¡ activo para ser asignado
   activo      Boolean    @default(true)
-  /// Relación con las instancias de este servicio en diferentes establecimientos
+  /// RelaciÃ³n con las instancias de este servicio en diferentes establecimientos
   servicios   Servicio[]
 
   @@map("cat_servicios")
 }
 
-/// Registro de reportes analíticos disponibles en la plataforma
+/// Registro de reportes analÃ­ticos disponibles en la plataforma
 model ReporteDisponible {
-  /// Identificador único
-  id          Int      @id @default(autoincrement())
+  /// Identificador Ãºnico
+  id          Int     @id @default(autoincrement())
   /// Nombre legible del reporte
-  nombre      String   @db.VarChar(100)
-  /// Descripción de la utilidad y datos que contiene
-  descripcion String?  @db.VarChar(200)
-  /// Categoría para agrupación en la UI (MEDICA, FARMACIA, etc.)
-  categoria   String   @db.VarChar(50)
-  /// Identificador interno para la lógica de generación
-  slug        String   @unique @db.VarChar(50)
+  nombre      String  @db.VarChar(100)
+  /// DescripciÃ³n de la utilidad y datos que contiene
+  descripcion String? @db.VarChar(200)
+  /// CategorÃ­a para agrupaciÃ³n en la UI (MEDICA, FARMACIA, etc.)
+  categoria   String  @db.VarChar(50)
+  /// Identificador interno para la lÃ³gica de generaciÃ³n
+  slug        String  @unique @db.VarChar(50)
   /// Formato de salida (EXCEL, PDF)
-  tipo        String   @db.VarChar(10)
+  tipo        String  @db.VarChar(10)
   /// Permiso granular requerido para acceder a este reporte
-  permiso     String   @db.VarChar(50)
+  permiso     String  @db.VarChar(50)
   /// Nombre del icono decorativo en la UI
-  icono       String?  @db.VarChar(50)
-  /// Indica si el reporte está disponible actualmente
-  activo      Boolean  @default(true)
-  /// Orden de aparición en el listado
-  orden       Int      @default(0)
+  icono       String? @db.VarChar(50)
+  /// Indica si el reporte estÃ¡ disponible actualmente
+  activo      Boolean @default(true)
+  /// Orden de apariciÃ³n en el listado
+  orden       Int     @default(0)
 
   @@map("reportes_disponibles")
 }
 
-/// Representa la habilitación de un servicio del catálogo en un establecimiento específico
+/// Representa la habilitaciÃ³n de un servicio del catÃ¡logo en un establecimiento especÃ­fico
 model Servicio {
-  /// Identificador único
-  id               Int                @id @default(autoincrement())
-  /// Indica si el servicio está operativo en este establecimiento
-  activo           Boolean            @default(true)
-  
+  /// Identificador Ãºnico
+  id     Int     @id @default(autoincrement())
+  /// Indica si el servicio estÃ¡ operativo en este establecimiento
+  activo Boolean @default(true)
+
   /// ID del establecimiento
   establecimientoId Int
-  /// ID del servicio del catálogo
+  /// ID del servicio del catÃ¡logo
   catServicioId     Int
-  
-  /// Relación con el establecimiento
-  establecimiento   Establecimiento    @relation(fields: [establecimientoId], references: [id])
-  /// Relación con el catálogo de servicios
-  catServicio       CatServicio        @relation(fields: [catServicioId], references: [id])
-  /// Personal asignado específicamente a esta unidad funcional
-  asignaciones      AsignacionUsuario[]
+
+  /// RelaciÃ³n con el establecimiento
+  establecimiento Establecimiento       @relation(fields: [establecimientoId], references: [id])
+  /// RelaciÃ³n con el catÃ¡logo de servicios
+  catServicio     CatServicio           @relation(fields: [catServicioId], references: [id])
+  /// Personal asignado especÃ­ficamente a esta unidad funcional
+  asignaciones    AsignacionUsuario[]
+  /// Salas o pabellones pertenecientes a este servicio
+  salas           Sala[]
+  /// Ingresos hospitalarios admitidos en este servicio
+  ingresos        IngresoHospitalario[]
 
   @@map("servicios")
+}
+
+// =============================================
+// INFRAESTRUCTURA HOSPITALARIA
+// =============================================
+
+/// CatÃ¡logo maestro de tipos de habitaciones (ej: Privada, Bipersonal, Sala ComÃºn)
+model CatTipoHabitacion {
+  /// Identificador Ãºnico
+  id           Int          @id @default(autoincrement())
+  /// Nombre del tipo de habitaciÃ³n
+  nombre       String       @unique @db.VarChar(50)
+  /// DescripciÃ³n de las caracterÃ­sticas
+  descripcion  String?      @db.VarChar(200)
+  /// Habitaciones de este tipo
+  habitaciones Habitacion[]
+
+  @@map("cat_tipos_habitacion")
+}
+
+/// CatÃ¡logo maestro de tipos de camas (ej: Cama ElÃ©ctrica, Camilla, Cuna, Incubadora)
+model CatTipoCama {
+  /// Identificador Ãºnico
+  id          Int     @id @default(autoincrement())
+  /// Nombre del tipo de cama
+  nombre      String  @unique @db.VarChar(50)
+  /// DescripciÃ³n tÃ©cnica
+  descripcion String? @db.VarChar(200)
+  /// Camas de este tipo
+  camas       Cama[]
+
+  @@map("cat_tipos_cama")
+}
+
+/// Representa una sala o pabellÃ³n dentro de un servicio mÃ©dico
+model Sala {
+  /// Identificador Ãºnico
+  id     Int     @id @default(autoincrement())
+  /// Nombre descriptivo (ej: Sala de Hombres)
+  nombre String  @db.VarChar(100)
+  /// CÃ³digo interno de la sala
+  codigo String? @db.VarChar(20)
+  /// Indica si la sala estÃ¡ activa
+  activo Boolean @default(true)
+
+  /// ID del servicio al que pertenece
+  servicioId   Int
+  /// RelaciÃ³n con el servicio
+  servicio     Servicio     @relation(fields: [servicioId], references: [id])
+  /// Habitaciones contenidas en la sala
+  habitaciones Habitacion[]
+
+  @@map("salas")
+}
+
+/// Representa una habitaciÃ³n o pieza fÃ­sica dentro de una sala
+model Habitacion {
+  /// Identificador Ãºnico
+  id     Int     @id @default(autoincrement())
+  /// NÃºmero o nombre de la habitaciÃ³n (ej: 101, A-1)
+  numero String  @db.VarChar(20)
+  /// Indica si la habitaciÃ³n estÃ¡ operativa
+  activo Boolean @default(true)
+
+  /// ID de la sala a la que pertenece
+  salaId           Int
+  /// RelaciÃ³n con la sala
+  sala             Sala              @relation(fields: [salaId], references: [id])
+  /// ID del tipo de habitaciÃ³n
+  tipoHabitacionId Int
+  /// RelaciÃ³n con el catÃ¡logo de tipos de habitaciÃ³n
+  tipoHabitacion   CatTipoHabitacion @relation(fields: [tipoHabitacionId], references: [id])
+  /// Camas disponibles en esta habitaciÃ³n
+  camas            Cama[]
+
+  @@map("habitaciones")
+}
+
+/// Representa la unidad funcional final de hospitalizaciÃ³n
+model Cama {
+  /// Identificador Ãºnico
+  id     Int        @id @default(autoincrement())
+  /// CÃ³digo Ãºnico de identificaciÃ³n de la cama
+  codigo String     @unique @db.VarChar(20)
+  /// Estado actual de la cama
+  estado EstadoCama @default(DISPONIBLE)
+  /// Indica si la cama estÃ¡ activa fÃ­sicamente
+  activo Boolean    @default(true)
+
+  /// ID de la habitaciÃ³n a la que pertenece
+  habitacionId       Int
+  /// RelaciÃ³n con la habitaciÃ³n
+  habitacion         Habitacion               @relation(fields: [habitacionId], references: [id])
+  /// ID del tipo de cama
+  tipoCamaId         Int
+  /// RelaciÃ³n con el catÃ¡logo de tipos de cama
+  tipoCama           CatTipoCama              @relation(fields: [tipoCamaId], references: [id])
+  /// Ingresos hospitalarios asociados a esta cama
+  ingresos           IngresoHospitalario[]
+  /// Movimientos donde esta cama fue el origen
+  movimientosOrigen  MovimientoHospitalario[] @relation("CamaOrigen")
+  /// Movimientos donde esta cama fue el destino
+  movimientosDestino MovimientoHospitalario[] @relation("CamaDestino")
+
+  @@map("camas")
+}
+
+/// Estados operativos posibles de una cama
+enum EstadoCama {
+  /// Lista para recibir paciente
+  DISPONIBLE
+  /// Con paciente asignado
+  OCUPADA
+  /// Apartada para un ingreso prÃ³ximo
+  RESERVADA
+  /// Fuera de servicio por desperfecto
+  MANTENIMIENTO
+  /// En proceso de desinfecciÃ³n/limpieza
+  LIMPIEZA
 }
 
 // =============================================
 // ASIGNACIONES DE PERSONAL (MULTI-ESTABLECIMIENTO)
 // =============================================
 
-/// Permite la gestión de personal en múltiples establecimientos y servicios con roles diferenciados
+/// Permite la gestiÃ³n de personal en mÃºltiples establecimientos y servicios con roles diferenciados
 model AsignacionUsuario {
-  /// Identificador único
-  id               Int      @id @default(autoincrement())
+  /// Identificador Ãºnico
+  id                Int      @id @default(autoincrement())
   /// ID del usuario asignado
-  usuarioId        Int
-  /// ID del establecimiento de la asignación
+  usuarioId         Int
+  /// ID del establecimiento de la asignaciÃ³n
   establecimientoId Int
-  /// ID del servicio (opcional) si la asignación es a una unidad funcional específica
-  servicioId       Int?
+  /// ID del servicio (opcional) si la asignaciÃ³n es a una unidad funcional especÃ­fica
+  servicioId        Int?
   /// ID del rol (opcional) si el usuario tiene un rol distinto en este establecimiento
-  rolId            Int?
-  /// ID de la especialidad (opcional) si ejerce una especialidad distinta aquí
-  especialidadId   Int?
-  /// Indica si la asignación está vigente
-  activo           Boolean         @default(true)
-  /// Sobrescritura opcional de permisos específicos para esta asignación
-  permisos         Json?
-  /// Fecha de creación de la asignación
-  creadoEn         DateTime        @default(now())
-  /// Fecha de última modificación
-  actualizadoEn    DateTime @updatedAt
+  rolId             Int?
+  /// ID de la especialidad (opcional) si ejerce una especialidad distinta aquÃ­
+  especialidadId    Int?
+  /// Indica si la asignaciÃ³n estÃ¡ vigente
+  activo            Boolean  @default(true)
+  /// Sobrescritura opcional de permisos especÃ­ficos para esta asignaciÃ³n
+  permisos          Json?
+  /// Fecha de creaciÃ³n de la asignaciÃ³n
+  creadoEn          DateTime @default(now())
+  /// Fecha de Ãºltima modificaciÃ³n
+  actualizadoEn     DateTime @updatedAt
 
-  /// Relación con el usuario
-  usuario          Usuario         @relation(fields: [usuarioId], references: [id])
-  /// Relación con el establecimiento
-  establecimiento   Establecimiento @relation(fields: [establecimientoId], references: [id])
-  /// Relación con el servicio específico
-  servicio         Servicio?       @relation(fields: [servicioId], references: [id])
-  /// Relación con el rol específico
-  rol              Rol?            @relation(fields: [rolId], references: [id])
-  /// Relación con la especialidad específica
-  especialidad      Especialidad?    @relation(fields: [especialidadId], references: [id])
+  /// RelaciÃ³n con el usuario
+  usuario         Usuario         @relation(fields: [usuarioId], references: [id])
+  /// RelaciÃ³n con el establecimiento
+  establecimiento Establecimiento @relation(fields: [establecimientoId], references: [id])
+  /// RelaciÃ³n con el servicio especÃ­fico
+  servicio        Servicio?       @relation(fields: [servicioId], references: [id])
+  /// RelaciÃ³n con el rol especÃ­fico
+  rol             Rol?            @relation(fields: [rolId], references: [id])
+  /// RelaciÃ³n con la especialidad especÃ­fica
+  especialidad    Especialidad?   @relation(fields: [especialidadId], references: [id])
 
   @@unique([usuarioId, establecimientoId, servicioId, especialidadId])
   @@map("asignaciones_usuario")
@@ -367,39 +502,39 @@ model AsignacionUsuario {
 // ESPECIALIDADES
 // =============================================
 
-/// Catálogo de especialidades médicas (ej: Pediatría, Ginecología)
+/// CatÃ¡logo de especialidades mÃ©dicas (ej: PediatrÃ­a, GinecologÃ­a)
 model Especialidad {
-  /// Identificador único
-  id          Int      @id @default(autoincrement())
-  /// Código abreviado de la especialidad (ej: PED, GIN)
-  codigo      String   @unique @db.VarChar(20)
+  /// Identificador Ãºnico
+  id               Int       @id @default(autoincrement())
+  /// CÃ³digo abreviado de la especialidad (ej: PED, GIN)
+  codigo           String    @unique @db.VarChar(20)
   /// Nombre completo de la especialidad
-  nombre      String   @db.VarChar(100)
-  /// Breve descripción del alcance de la especialidad
-  descripcion      String?  @db.VarChar(300)
-  /// Indica si la especialidad está activa para nuevas asignaciones
-  activa           Boolean  @default(true)
+  nombre           String    @db.VarChar(100)
+  /// Breve descripciÃ³n del alcance de la especialidad
+  descripcion      String?   @db.VarChar(300)
+  /// Indica si la especialidad estÃ¡ activa para nuevas asignaciones
+  activa           Boolean   @default(true)
   /// Fecha de registro
-  creadoEn         DateTime @default(now())
-  /// Fecha de última actualización
+  creadoEn         DateTime  @default(now())
+  /// Fecha de Ãºltima actualizaciÃ³n
   actualizadoEn    DateTime? @updatedAt
-  /// ID del usuario que registró la especialidad
+  /// ID del usuario que registrÃ³ la especialidad
   creadoPorId      Int?
-  /// ID del usuario que realizó la última actualización
+  /// ID del usuario que realizÃ³ la Ãºltima actualizaciÃ³n
   actualizadoPorId Int?
 
-  /// Relación con el usuario creador
-  creadoPor        Usuario?              @relation("EspecialidadCreadaPor",      fields: [creadoPorId],      references: [id])
-  /// Relación con el usuario actualizador
-  actualizadoPor   Usuario?              @relation("EspecialidadActualizadaPor", fields: [actualizadoPorId], references: [id])
-  /// Plantillas de formularios clínicos asociadas a esta especialidad
-  plantillas       PlantillaFormulario[]
-  /// Usuarios (médicos) que tienen esta especialidad como primaria
-  usuarios         Usuario[]
+  /// RelaciÃ³n con el usuario creador
+  creadoPor      Usuario?              @relation("EspecialidadCreadaPor", fields: [creadoPorId], references: [id])
+  /// RelaciÃ³n con el usuario actualizador
+  actualizadoPor Usuario?              @relation("EspecialidadActualizadaPor", fields: [actualizadoPorId], references: [id])
+  /// Plantillas de formularios clÃ­nicos asociadas a esta especialidad
+  plantillas     PlantillaFormulario[]
+  /// Usuarios (mÃ©dicos) que tienen esta especialidad como primaria
+  usuarios       Usuario[]
   /// Asignaciones de personal donde se ejerce esta especialidad
-  asignaciones     AsignacionUsuario[]
-  /// Citas médicas programadas para esta especialidad
-  citas            Cita[]
+  asignaciones   AsignacionUsuario[]
+  /// Citas mÃ©dicas programadas para esta especialidad
+  citas          Cita[]
 
   @@map("especialidades")
 }
@@ -408,163 +543,165 @@ model Especialidad {
 // PACIENTES
 // =============================================
 
-/// Registro central de datos personales y demográficos de los pacientes
+/// Registro central de datos personales y demogrÃ¡ficos de los pacientes
 model Paciente {
-  /// Identificador único autoincremental
-  id                 Int          @id @default(autoincrement())
-  /// Número de expediente único generado por el sistema
-  numeroExpediente   String       @unique @db.VarChar(20)
-  /// Documento Nacional de Identificación (Honduras)
-  dni                String       @unique @db.VarChar(13)
+  /// Identificador Ãºnico autoincremental
+  id                 Int       @id @default(autoincrement())
+  /// NÃºmero de expediente Ãºnico generado por el sistema
+  numeroExpediente   String    @unique @db.VarChar(20)
+  /// Documento Nacional de IdentificaciÃ³n (Honduras)
+  dni                String    @unique @db.VarChar(13)
   /// Nombres del paciente
-  nombres            String       @db.VarChar(100)
+  nombres            String    @db.VarChar(100)
   /// Apellidos del paciente
-  apellidos          String       @db.VarChar(100)
+  apellidos          String    @db.VarChar(100)
   /// Fecha de nacimiento
-  fechaNacimiento    DateTime     @db.Date
-  /// ID del catálogo de sexos
+  fechaNacimiento    DateTime  @db.Date
+  /// ID del catÃ¡logo de sexos
   sexoId             Int
-  /// ID del catálogo de tipos de sangre
-  tipoSangreId        Int?
-  /// Teléfono de contacto
-  telefono           String?      @db.VarChar(20)
-  /// Teléfono de contacto para emergencias
-  telefonoEmergencia String?      @db.VarChar(20)
-  /// Correo electrónico (opcional)
-  correo             String?      @db.VarChar(150)
-  /// Dirección de domicilio detallada
-  direccion          String?      @db.VarChar(300)
+  /// ID del catÃ¡logo de tipos de sangre
+  tipoSangreId       Int?
+  /// TelÃ©fono de contacto
+  telefono           String?   @db.VarChar(20)
+  /// TelÃ©fono de contacto para emergencias
+  telefonoEmergencia String?   @db.VarChar(20)
+  /// Correo electrÃ³nico (opcional)
+  correo             String?   @db.VarChar(150)
+  /// DirecciÃ³n de domicilio detallada
+  direccion          String?   @db.VarChar(300)
   /// ID del departamento de domicilio
   departamentoId     Int
   /// ID del municipio de domicilio
   municipioId        Int
   /// Nombre de la comunidad, barrio o colonia
-  comunidad          String?      @db.VarChar(100)
-  /// ID del catálogo de escolaridad
+  comunidad          String?   @db.VarChar(100)
+  /// ID del catÃ¡logo de escolaridad
   escolaridadId      Int?
-  /// ID del catálogo de ocupaciones
+  /// ID del catÃ¡logo de ocupaciones
   ocupacionId        Int?
-  /// ID del catálogo de estado civil
+  /// ID del catÃ¡logo de estado civil
   estadoCivilId      Int?
-  /// Indica si el paciente está activo para atención
-  activo             Boolean      @default(true)
+  /// Indica si el paciente estÃ¡ activo para atenciÃ³n
+  activo             Boolean   @default(true)
   /// Fecha de registro inicial en el sistema
-  fechaRegistro      DateTime     @default(now())
-  /// Fecha de última actualización de datos demográficos
-  actualizadoEn      DateTime?    @updatedAt
-  /// Fecha de eliminación lógica
+  fechaRegistro      DateTime  @default(now())
+  /// Fecha de Ãºltima actualizaciÃ³n de datos demogrÃ¡ficos
+  actualizadoEn      DateTime? @updatedAt
+  /// Fecha de eliminaciÃ³n lÃ³gica
   eliminadoEn        DateTime?
-  /// ID del establecimiento donde se registró el paciente
+  /// ID del establecimiento donde se registrÃ³ el paciente
   establecimientoId  Int
-  /// ID del usuario que registró al paciente
+  /// ID del usuario que registrÃ³ al paciente
   creadoPorId        Int
-  /// ID del usuario que realizó la última actualización
+  /// ID del usuario que realizÃ³ la Ãºltima actualizaciÃ³n
   actualizadoPorId   Int?
-  /// ID del usuario que realizó la eliminación lógica
+  /// ID del usuario que realizÃ³ la eliminaciÃ³n lÃ³gica
   eliminadoPorId     Int?
 
-  /// Relación con el establecimiento de registro
-  establecimiento    Establecimiento       @relation(fields: [establecimientoId], references: [id])
-  /// Relación con el departamento
-  departamento       Departamento          @relation(fields: [departamentoId], references: [id])
-  /// Relación con el municipio
-  municipio          Municipio             @relation(fields: [municipioId], references: [id])
-  /// Relación con el catálogo de sexos
-  sexo              Sexo                  @relation(fields: [sexoId], references: [id])
-  /// Relación con el catálogo de tipos de sangre
-  tipoSangre        TipoSangre?           @relation(fields: [tipoSangreId], references: [id])
-  /// Relación con el catálogo de escolaridad
-  escolaridad       Escolaridad?          @relation(fields: [escolaridadId], references: [id])
-  /// Relación con el catálogo de ocupaciones
-  ocupacion         Ocupacion?            @relation(fields: [ocupacionId], references: [id])
-  /// Relación con el catálogo de estado civil
-  estadoCivil       EstadoCivil?          @relation(fields: [estadoCivilId], references: [id])
-  /// Relación con el usuario que eliminó el registro
-  eliminadoPor       Usuario?     @relation("PacienteEliminadoPor", fields: [eliminadoPorId], references: [id])
+  /// RelaciÃ³n con el establecimiento de registro
+  establecimiento Establecimiento @relation(fields: [establecimientoId], references: [id])
+  /// RelaciÃ³n con el departamento
+  departamento    Departamento    @relation(fields: [departamentoId], references: [id])
+  /// RelaciÃ³n con el municipio
+  municipio       Municipio       @relation(fields: [municipioId], references: [id])
+  /// RelaciÃ³n con el catÃ¡logo de sexos
+  sexo            Sexo            @relation(fields: [sexoId], references: [id])
+  /// RelaciÃ³n con el catÃ¡logo de tipos de sangre
+  tipoSangre      TipoSangre?     @relation(fields: [tipoSangreId], references: [id])
+  /// RelaciÃ³n con el catÃ¡logo de escolaridad
+  escolaridad     Escolaridad?    @relation(fields: [escolaridadId], references: [id])
+  /// RelaciÃ³n con el catÃ¡logo de ocupaciones
+  ocupacion       Ocupacion?      @relation(fields: [ocupacionId], references: [id])
+  /// RelaciÃ³n con el catÃ¡logo de estado civil
+  estadoCivil     EstadoCivil?    @relation(fields: [estadoCivilId], references: [id])
+  /// RelaciÃ³n con el usuario que eliminÃ³ el registro
+  eliminadoPor    Usuario?        @relation("PacienteEliminadoPor", fields: [eliminadoPorId], references: [id])
 
   /// Historial de alergias del paciente
-  alergias           Alergia[]
-  /// Historial de citas médicas
-  citas              Cita[]
-  /// Historial de atenciones (Historia Clínica)
-  historialClinico   HistoriaClinica[]
-  /// Listado de medicamentos de uso crónico o actual
-  medicamentosActivos PacienteMedicamento[]
+  alergias                      Alergia[]
+  /// Historial de citas mÃ©dicas
+  citas                         Cita[]
+  /// Historial de atenciones (Historia ClÃ­nica)
+  historialClinico              HistoriaClinica[]
+  /// Listado de medicamentos de uso crÃ³nico o actual
+  medicamentosActivos           PacienteMedicamento[]
   /// Historial de triajes realizados
-  triajes            Triaje[]
+  triajes                       Triaje[]
   /// Historial de recetas emitidas
-  recetas            Receta[]
+  recetas                       Receta[]
   /// Solicitudes de laboratorio realizadas
-  solicitudesLab     SolicitudLaboratorio[]
-  /// Solicitudes de radiología realizadas
-  solicitudesRad     SolicitudRadiologia[]
-  /// Historial de vacunación PAI
-  vacunas            VacunacionRegistro[]
-  /// Notificaciones epidemiológicas asociadas al paciente
+  solicitudesLab                SolicitudLaboratorio[]
+  /// Solicitudes de radiologÃ­a realizadas
+  solicitudesRad                SolicitudRadiologia[]
+  /// Historial de vacunaciÃ³n PAI
+  vacunas                       VacunacionRegistro[]
+  /// Notificaciones epidemiolÃ³gicas asociadas al paciente
   notificacionesEpidemiologicas NotificacionEpidemiologica[]
+  /// Historial de internamientos hospitalarios
+  ingresos                      IngresoHospitalario[]
 
   @@map("pacientes")
 }
 
 // =============================================
-// CATÁLOGOS NORMALIZADOS
+// CATÃLOGOS NORMALIZADOS
 // =============================================
 
-/// Catálogo de sexos para registro demográfico
+/// CatÃ¡logo de sexos para registro demogrÃ¡fico
 model Sexo {
-  /// Identificador único
-  id        Int       @id @default(autoincrement())
+  /// Identificador Ãºnico
+  id        Int        @id @default(autoincrement())
   /// Nombre del sexo (Masculino, Femenino)
-  nombre    String    @unique @db.VarChar(20)
+  nombre    String     @unique @db.VarChar(20)
   /// Pacientes asociados a este sexo
   pacientes Paciente[]
 
   @@map("cat_sexos")
 }
 
-/// Catálogo de tipos de sangre y factor RH
+/// CatÃ¡logo de tipos de sangre y factor RH
 model TipoSangre {
-  /// Identificador único
-  id        Int       @id @default(autoincrement())
+  /// Identificador Ãºnico
+  id        Int        @id @default(autoincrement())
   /// Nombre del tipo de sangre (ej: O+, A-)
-  nombre    String    @unique @db.VarChar(20)
+  nombre    String     @unique @db.VarChar(20)
   /// Pacientes asociados a este tipo de sangre
   pacientes Paciente[]
 
   @@map("cat_tipos_sangre")
 }
 
-/// Catálogo de niveles de escolaridad alcanzados
+/// CatÃ¡logo de niveles de escolaridad alcanzados
 model Escolaridad {
-  /// Identificador único
-  id        Int       @id @default(autoincrement())
+  /// Identificador Ãºnico
+  id        Int        @id @default(autoincrement())
   /// Nombre del nivel (ej: Primaria, Universitaria)
-  nombre    String    @unique @db.VarChar(50)
+  nombre    String     @unique @db.VarChar(50)
   /// Pacientes con este nivel de escolaridad
   pacientes Paciente[]
 
   @@map("cat_escolaridades")
 }
 
-/// Catálogo de estados civiles
+/// CatÃ¡logo de estados civiles
 model EstadoCivil {
-  /// Identificador único
-  id        Int       @id @default(autoincrement())
+  /// Identificador Ãºnico
+  id        Int        @id @default(autoincrement())
   /// Nombre del estado (ej: Soltero, Casado)
-  nombre    String    @unique @db.VarChar(30)
+  nombre    String     @unique @db.VarChar(30)
   /// Pacientes con este estado civil
   pacientes Paciente[]
 
   @@map("cat_estados_civiles")
 }
 
-/// Catálogo de ocupaciones o profesiones
+/// CatÃ¡logo de ocupaciones o profesiones
 model Ocupacion {
-  /// Identificador único
-  id        Int       @id @default(autoincrement())
-  /// Nombre de la ocupación
-  nombre    String    @unique @db.VarChar(100)
-  /// Pacientes que ejercen esta ocupación
+  /// Identificador Ãºnico
+  id        Int        @id @default(autoincrement())
+  /// Nombre de la ocupaciÃ³n
+  nombre    String     @unique @db.VarChar(100)
+  /// Pacientes que ejercen esta ocupaciÃ³n
   pacientes Paciente[]
 
   @@map("cat_ocupaciones")
@@ -572,66 +709,66 @@ model Ocupacion {
 
 /// Registro de alergias conocidas de un paciente
 model Alergia {
-  /// Identificador único
+  /// Identificador Ãºnico
   id          Int         @id @default(autoincrement())
   /// ID del paciente afectado
   pacienteId  Int
-  /// Categoría de la alergia (Medicamento, Alimento, etc.)
+  /// CategorÃ­a de la alergia (Medicamento, Alimento, etc.)
   tipo        TipoAlergia
-  /// Descripción de la sustancia y reacción
+  /// DescripciÃ³n de la sustancia y reacciÃ³n
   descripcion String      @db.VarChar(300)
   /// Grado de peligrosidad de la alergia
   severidad   Severidad
 
-  /// Relación con el paciente
-  paciente    Paciente    @relation(fields: [pacienteId], references: [id])
+  /// RelaciÃ³n con el paciente
+  paciente Paciente @relation(fields: [pacienteId], references: [id])
 
   @@map("alergias")
 }
 
-/// Clasificación del tipo de alérgeno
+/// ClasificaciÃ³n del tipo de alÃ©rgeno
 enum TipoAlergia {
-  /// Reacción a fármacos
+  /// ReacciÃ³n a fÃ¡rmacos
   MEDICAMENTO
-  /// Reacción a comidas
+  /// ReacciÃ³n a comidas
   ALIMENTO
-  /// Reacción a factores del entorno
+  /// ReacciÃ³n a factores del entorno
   AMBIENTAL
-  /// Reacción específica al látex
+  /// ReacciÃ³n especÃ­fica al lÃ¡tex
   LATEX
   /// Otros tipos de alergias
   OTRO
 }
 
-/// Escala de severidad de la reacción alérgica
+/// Escala de severidad de la reacciÃ³n alÃ©rgica
 enum Severidad {
-  /// Reacción leve, no compromete la vida
+  /// ReacciÃ³n leve, no compromete la vida
   LEVE
-  /// Reacción que requiere tratamiento médico moderado
+  /// ReacciÃ³n que requiere tratamiento mÃ©dico moderado
   MODERADA
-  /// Reacción anafiláctica o de alto riesgo
+  /// ReacciÃ³n anafilÃ¡ctica o de alto riesgo
   SEVERA
 }
 
 // =============================================
-// CITAS MÉDICAS
+// CITAS MÃDICAS
 // =============================================
 
-/// Gestión de citas médicas y programación de consultas
+/// GestiÃ³n de citas mÃ©dicas y programaciÃ³n de consultas
 model Cita {
-  /// Identificador único
+  /// Identificador Ãºnico
   id                Int        @id @default(autoincrement())
   /// ID del paciente que solicita la cita
   pacienteId        Int
-  /// ID del médico asignado (opcional si es urgencia)
+  /// ID del mÃ©dico asignado (opcional si es urgencia)
   medicoId          Int
-  /// ID del establecimiento donde se realizará la cita
+  /// ID del establecimiento donde se realizarÃ¡ la cita
   establecimientoId Int
-  /// Fecha y hora programada para la atención
+  /// Fecha y hora programada para la atenciÃ³n
   fechaHora         DateTime
-  /// Tiempo estimado de duración del encuentro médico
+  /// Tiempo estimado de duraciÃ³n del encuentro mÃ©dico
   duracionMinutos   Int        @default(20)
-  /// Tipo de atención solicitada
+  /// Tipo de atenciÃ³n solicitada
   tipo              TipoCita
   /// Estado actual de la cita (Programada, Atendida, etc.)
   estado            EstadoCita @default(PROGRAMADA)
@@ -641,46 +778,46 @@ model Cita {
   notas             String?    @db.Text
   /// Fecha de registro de la cita
   creadaEn          DateTime   @default(now())
-  /// ID del usuario (recepcionista) que registró la cita
+  /// ID del usuario (recepcionista) que registrÃ³ la cita
   creadoPorId       Int?
-  /// ID del usuario que canceló la cita (si aplica)
+  /// ID del usuario que cancelÃ³ la cita (si aplica)
   canceladoPorId    Int?
   /// ID de la especialidad bajo la cual se atiende la cita
   especialidadId    Int?
 
-  /// Relación con el paciente
-  paciente          Paciente        @relation(fields: [pacienteId], references: [id])
-  /// Relación con el médico tratante
-  medico            Usuario         @relation("CitaMedico", fields: [medicoId], references: [id])
-  /// Relación con el establecimiento
-  establecimiento   Establecimiento @relation(fields: [establecimientoId], references: [id])
-  /// Relación con el usuario creador
-  creadoPor         Usuario?        @relation("CitaCreadaPor",    fields: [creadoPorId],    references: [id])
-  /// Relación con el usuario que canceló
-  canceladoPor      Usuario?        @relation("CitaCanceladaPor", fields: [canceladoPorId], references: [id])
-  /// Relación con la especialidad
-  especialidad      Especialidad?   @relation(fields: [especialidadId], references: [id])
-  /// Historia clínica resultante de esta cita
-  historia          HistoriaClinica?
+  /// RelaciÃ³n con el paciente
+  paciente        Paciente         @relation(fields: [pacienteId], references: [id])
+  /// RelaciÃ³n con el mÃ©dico tratante
+  medico          Usuario          @relation("CitaMedico", fields: [medicoId], references: [id])
+  /// RelaciÃ³n con el establecimiento
+  establecimiento Establecimiento  @relation(fields: [establecimientoId], references: [id])
+  /// RelaciÃ³n con el usuario creador
+  creadoPor       Usuario?         @relation("CitaCreadaPor", fields: [creadoPorId], references: [id])
+  /// RelaciÃ³n con el usuario que cancelÃ³
+  canceladoPor    Usuario?         @relation("CitaCanceladaPor", fields: [canceladoPorId], references: [id])
+  /// RelaciÃ³n con la especialidad
+  especialidad    Especialidad?    @relation(fields: [especialidadId], references: [id])
+  /// Historia clÃ­nica resultante de esta cita
+  historia        HistoriaClinica?
   /// Datos de triaje previo a la consulta
-  triaje            Triaje?
-  /// Relación con la atención previa que originó esta cita (si fue una re-cita)
-  historiaOrigen    HistoriaClinica?      @relation("ProximaCita")
+  triaje          Triaje?
+  /// RelaciÃ³n con la atenciÃ³n previa que originÃ³ esta cita (si fue una re-cita)
+  historiaOrigen  HistoriaClinica? @relation("ProximaCita")
 
   @@map("citas")
 }
 
-/// Clasificación del tipo de encuentro médico
+/// ClasificaciÃ³n del tipo de encuentro mÃ©dico
 enum TipoCita {
-  /// Consulta médica general
+  /// Consulta mÃ©dica general
   CONSULTA_GENERAL
-  /// Consulta con médico especialista
+  /// Consulta con mÃ©dico especialista
   ESPECIALIDAD
   /// Cita de seguimiento o control
   CONTROL
-  /// Atención inmediata por urgencia
+  /// AtenciÃ³n inmediata por urgencia
   URGENCIA
-  /// Cita para aplicación de vacunas
+  /// Cita para aplicaciÃ³n de vacunas
   VACUNACION
   /// Consulta de salud reproductiva
   PLANIFICACION
@@ -688,171 +825,171 @@ enum TipoCita {
 
 /// Estados posibles en el ciclo de vida de una cita
 enum EstadoCita {
-  /// Cita registrada pero pendiente de confirmación/llegada
+  /// Cita registrada pero pendiente de confirmaciÃ³n/llegada
   PROGRAMADA
   /// El paciente ha confirmado su asistencia
   CONFIRMADA
-  /// El encuentro médico ha concluido exitosamente
+  /// El encuentro mÃ©dico ha concluido exitosamente
   ATENDIDA
   /// La cita ha sido anulada por el paciente o el centro
   CANCELADA
-  /// El paciente no se presentó a su cita programada
+  /// El paciente no se presentÃ³ a su cita programada
   NO_ASISTIO
-  /// El paciente está presente en el establecimiento esperando atención
+  /// El paciente estÃ¡ presente en el establecimiento esperando atenciÃ³n
   EN_SALA
 }
 
 // =============================================
-// HISTORIA CLÍNICA
+// HISTORIA CLÃNICA
 // =============================================
 
-/// Representa el encuentro clínico (consulta) y el registro médico del paciente
+/// Representa el encuentro clÃ­nico (consulta) y el registro mÃ©dico del paciente
 model HistoriaClinica {
-  /// Identificador único
-  id                Int      @id @default(autoincrement())
+  /// Identificador Ãºnico
+  id          Int      @id @default(autoincrement())
   /// ID del paciente atendido
-  pacienteId        Int
-  /// ID del médico tratante
-  medicoId          Int
+  pacienteId  Int
+  /// ID del mÃ©dico tratante
+  medicoId    Int
   /// ID de la cita asociada
-  citaId            Int?     @unique
+  citaId      Int?     @unique
   /// ID de la plantilla de formulario utilizada
-  plantillaId       Int?
-  /// Fecha y hora de la atención
-  fecha             DateTime @default(now())
+  plantillaId Int?
+  /// Fecha y hora de la atenciÃ³n
+  fecha       DateTime @default(now())
 
-  /// [S]ubjetivo: Motivo de consulta, síntomas y anamnesis
-  subjetivo         String   @db.Text
-  /// [O]bjetivo: Hallazgos del examen físico
-  objetivo          String   @db.Text
-  /// [A]nálisis: Razonamiento médico y diagnósticos presuntivos
-  analisis          String   @db.Text
-  /// [P]lan: Tratamiento, medicamentos, exámenes y recomendaciones
-  plan              String   @db.Text
+  /// [S]ubjetivo: Motivo de consulta, sÃ­ntomas y anamnesis
+  subjetivo String @db.Text
+  /// [O]bjetivo: Hallazgos del examen fÃ­sico
+  objetivo  String @db.Text
+  /// [A]nÃ¡lisis: Razonamiento mÃ©dico y diagnÃ³sticos presuntivos
+  analisis  String @db.Text
+  /// [P]lan: Tratamiento, medicamentos, exÃ¡menes y recomendaciones
+  plan      String @db.Text
 
-  /// Tensión arterial sistólica (mmHg)
-  presionSistolica   Int?
-  /// Tensión arterial diastólica (mmHg)
-  presionDiastolica  Int?
+  /// TensiÃ³n arterial sistÃ³lica (mmHg)
+  presionSistolica     Int?
+  /// TensiÃ³n arterial diastÃ³lica (mmHg)
+  presionDiastolica    Int?
   /// Latidos por minuto
-  frecuenciaCardiaca Int?
-  /// Temperatura corporal (°C)
-  temperatura        Decimal? @db.Decimal(4, 1)
+  frecuenciaCardiaca   Int?
+  /// Temperatura corporal (Â°C)
+  temperatura          Decimal? @db.Decimal(4, 1)
   /// Peso del paciente (kg)
-  peso               Decimal? @db.Decimal(5, 2)
+  peso                 Decimal? @db.Decimal(5, 2)
   /// Estatura del paciente (cm)
-  talla              Decimal? @db.Decimal(4, 1)
-  /// Porcentaje de saturación de oxígeno
-  saturacionO2       Int?
-  /// Número de semana epidemiológica (1-52)
+  talla                Decimal? @db.Decimal(4, 1)
+  /// Porcentaje de saturaciÃ³n de oxÃ­geno
+  saturacionO2         Int?
+  /// NÃºmero de semana epidemiolÃ³gica (1-52)
   semanaEpidemiologica Int?
 
-  /// Fecha de la última modificación
-  actualizadoEn      DateTime?
-  /// Fecha de eliminación lógica
-  eliminadoEn        DateTime?
-  /// ID del usuario que actualizó el registro
-  actualizadoPorId   Int?
-  /// ID del usuario que eliminó el registro
-  eliminadoPorId     Int?
+  /// Fecha de la Ãºltima modificaciÃ³n
+  actualizadoEn    DateTime?
+  /// Fecha de eliminaciÃ³n lÃ³gica
+  eliminadoEn      DateTime?
+  /// ID del usuario que actualizÃ³ el registro
+  actualizadoPorId Int?
+  /// ID del usuario que eliminÃ³ el registro
+  eliminadoPorId   Int?
 
-  /// Relación con el paciente
-  paciente          Paciente              @relation(fields: [pacienteId], references: [id])
-  /// Relación con el médico
-  medico            Usuario               @relation(fields: [medicoId], references: [id])
-  /// Relación con el usuario actualizador
-  actualizadoPor    Usuario?              @relation("HistoriaActualizadaPor", fields: [actualizadoPorId], references: [id])
-  /// Relación con el usuario eliminador
-  eliminadoPor      Usuario?              @relation("HistoriaEliminadaPor",   fields: [eliminadoPorId],   references: [id])
-  /// Relación con la cita
-  cita              Cita?                 @relation(fields: [citaId], references: [id])
-  /// Relación con la plantilla de formulario
-  plantilla         PlantillaFormulario?  @relation(fields: [plantillaId], references: [id])
-  /// ID de la próxima cita programada
-  proximaCitaId     Int?                  @unique
-  /// Relación con la próxima cita
-  proximaCita       Cita?                 @relation("ProximaCita", fields: [proximaCitaId], references: [id])
-  /// Listado de diagnósticos realizados en la consulta
-  diagnosticos      Diagnostico[]
+  /// RelaciÃ³n con el paciente
+  paciente                   Paciente                    @relation(fields: [pacienteId], references: [id])
+  /// RelaciÃ³n con el mÃ©dico
+  medico                     Usuario                     @relation(fields: [medicoId], references: [id])
+  /// RelaciÃ³n con el usuario actualizador
+  actualizadoPor             Usuario?                    @relation("HistoriaActualizadaPor", fields: [actualizadoPorId], references: [id])
+  /// RelaciÃ³n con el usuario eliminador
+  eliminadoPor               Usuario?                    @relation("HistoriaEliminadaPor", fields: [eliminadoPorId], references: [id])
+  /// RelaciÃ³n con la cita
+  cita                       Cita?                       @relation(fields: [citaId], references: [id])
+  /// RelaciÃ³n con la plantilla de formulario
+  plantilla                  PlantillaFormulario?        @relation(fields: [plantillaId], references: [id])
+  /// ID de la prÃ³xima cita programada
+  proximaCitaId              Int?                        @unique
+  /// RelaciÃ³n con la prÃ³xima cita
+  proximaCita                Cita?                       @relation("ProximaCita", fields: [proximaCitaId], references: [id])
+  /// Listado de diagnÃ³sticos realizados en la consulta
+  diagnosticos               Diagnostico[]
   /// Recetas emitidas
-  recetas           Receta[]
+  recetas                    Receta[]
   /// Referencias emitidas
-  referidos         Referido[]
+  referidos                  Referido[]
   /// Resultados de laboratorio asociados
-  resultadosLab     ResultadoLaboratorio[]
+  resultadosLab              ResultadoLaboratorio[]
   /// Solicitudes de laboratorio generadas
-  solicitudesLab    SolicitudLaboratorio[]
-  /// Solicitudes de radiología generadas
-  solicitudesRad    SolicitudRadiologia[]
-  /// Respuestas detalladas del formulario dinámico
-  respuestaFormulario RespuestaFormulario?
+  solicitudesLab             SolicitudLaboratorio[]
+  /// Solicitudes de radiologÃ­a generadas
+  solicitudesRad             SolicitudRadiologia[]
+  /// Respuestas detalladas del formulario dinÃ¡mico
+  respuestaFormulario        RespuestaFormulario?
   /// Registro de incapacidades (si aplica)
-  incapacidades     Incapacidad[]
-  /// Notificación epidemiológica obligatoria
+  incapacidades              Incapacidad[]
+  /// NotificaciÃ³n epidemiolÃ³gica obligatoria
   notificacionEpidemiologica NotificacionEpidemiologica?
 
   @@map("historia_clinica")
 }
 
-/// Diagnósticos asociados a una atención médica (basados en CIE-10)
+/// DiagnÃ³sticos asociados a una atenciÃ³n mÃ©dica (basados en CIE-10)
 model Diagnostico {
-  /// Identificador único
+  /// Identificador Ãºnico
   id          Int             @id @default(autoincrement())
-  /// ID de la historia clínica asociada
+  /// ID de la historia clÃ­nica asociada
   historiaId  Int
-  /// Código alfanumérico CIE-10
+  /// CÃ³digo alfanumÃ©rico CIE-10
   codigoCIE10 String          @db.VarChar(10)
-  /// Descripción del diagnóstico según catálogo
+  /// DescripciÃ³n del diagnÃ³stico segÃºn catÃ¡logo
   descripcion String          @db.VarChar(500)
-  /// Importancia del diagnóstico (Principal, Secundario)
+  /// Importancia del diagnÃ³stico (Principal, Secundario)
   tipo        TipoDiagnostico
 
-  /// Relación con la historia clínica
-  historia    HistoriaClinica @relation(fields: [historiaId], references: [id])
+  /// RelaciÃ³n con la historia clÃ­nica
+  historia HistoriaClinica @relation(fields: [historiaId], references: [id])
 
   @@map("diagnosticos")
 }
 
-/// Clasificación de la relevancia del diagnóstico
+/// ClasificaciÃ³n de la relevancia del diagnÃ³stico
 enum TipoDiagnostico {
   /// Causa principal de la consulta
   PRINCIPAL
-  /// Patologías adicionales detectadas
+  /// PatologÃ­as adicionales detectadas
   SECUNDARIO
   /// Enfermedades preexistentes relevantes
   COMORBILIDAD
 }
 
-/// Registro de incapacidades médicas otorgadas al paciente
+/// Registro de incapacidades mÃ©dicas otorgadas al paciente
 model Incapacidad {
-  /// Identificador único
+  /// Identificador Ãºnico
   id          Int             @id @default(autoincrement())
-  /// ID de la historia clínica asociada
+  /// ID de la historia clÃ­nica asociada
   historiaId  Int
   /// Fecha de inicio del reposo
   fechaInicio DateTime        @db.Date
-  /// Fecha de finalización del reposo
+  /// Fecha de finalizaciÃ³n del reposo
   fechaFin    DateTime        @db.Date
-  /// Total de días de incapacidad
+  /// Total de dÃ­as de incapacidad
   dias        Int
-  /// Ámbito de la incapacidad (Laboral, Escolar)
+  /// Ãmbito de la incapacidad (Laboral, Escolar)
   tipo        TipoIncapacidad @default(LABORAL)
-  /// Descripción de la justificación médica
+  /// DescripciÃ³n de la justificaciÃ³n mÃ©dica
   motivo      String          @db.VarChar(500)
 
-  /// Relación con la historia clínica
-  historia    HistoriaClinica @relation(fields: [historiaId], references: [id])
+  /// RelaciÃ³n con la historia clÃ­nica
+  historia HistoriaClinica @relation(fields: [historiaId], references: [id])
 
   @@map("incapacidades")
 }
 
-/// Tipo de justificación de ausencia
+/// Tipo de justificaciÃ³n de ausencia
 enum TipoIncapacidad {
   /// Reposo para trabajadores
   LABORAL
-  /// Justificación para estudiantes
+  /// JustificaciÃ³n para estudiantes
   ESCOLAR
-  /// Recomendación para atletas
+  /// RecomendaciÃ³n para atletas
   DEPORTIVA
 }
 
@@ -860,192 +997,195 @@ enum TipoIncapacidad {
 // FARMACIA
 // =============================================
 
-/// Catálogo maestro de medicamentos y productos farmacéuticos
+/// CatÃ¡logo maestro de medicamentos y productos farmacÃ©uticos
 model Medicamento {
-  /// Identificador único
+  /// Identificador Ãºnico
   id               Int               @id @default(autoincrement())
-  /// Código de barras o SKU del medicamento
+  /// CÃ³digo de barras o SKU del medicamento
   codigo           String            @unique @db.VarChar(30)
-  /// Denominación Común Internacional (DCI)
+  /// DenominaciÃ³n ComÃºn Internacional (DCI)
   nombreGenerico   String            @db.VarChar(200)
   /// Nombre bajo el cual se comercializa (opcional)
   nombreComercial  String?           @db.VarChar(200)
-  /// Forma farmacéutica (ej: Tabletas, Jarabe)
+  /// Forma farmacÃ©utica (ej: Tabletas, Jarabe)
   presentacion     String            @db.VarChar(100)
   /// Cantidad de principio activo (ej: 500mg)
   concentracion    String            @db.VarChar(50)
-  /// Método de ingreso al organismo
+  /// MÃ©todo de ingreso al organismo
   via              ViaAdministracion
-  /// Clasificación terapéutica (ej: Antibióticos)
+  /// ClasificaciÃ³n terapÃ©utica (ej: AntibiÃ³ticos)
   grupoTerapeutico String            @db.VarChar(100)
-  /// Indica si requiere autorización médica para dispensar
+  /// Indica si requiere autorizaciÃ³n mÃ©dica para dispensar
   requiereReceta   Boolean           @default(true)
-  /// Indica si el medicamento es psicotrópico o estupefaciente
+  /// Indica si el medicamento es psicotrÃ³pico o estupefaciente
   esControlado     Boolean           @default(false)
-  /// Indica si el medicamento está disponible en el catálogo
+  /// Indica si el medicamento estÃ¡ disponible en el catÃ¡logo
   activo           Boolean           @default(true)
 
   /// Fecha de registro inicial
-  creadoEn         DateTime          @default(now())
-  /// Fecha de última actualización de ficha técnica
-  actualizadoEn    DateTime?         @updatedAt
-  /// Fecha de eliminación lógica
+  creadoEn         DateTime  @default(now())
+  /// Fecha de Ãºltima actualizaciÃ³n de ficha tÃ©cnica
+  actualizadoEn    DateTime? @updatedAt
+  /// Fecha de eliminaciÃ³n lÃ³gica
   eliminadoEn      DateTime?
-  /// ID del usuario que registró el medicamento
+  /// ID del usuario que registrÃ³ el medicamento
   creadoPorId      Int?
-  /// ID del usuario que realizó la última actualización
+  /// ID del usuario que realizÃ³ la Ãºltima actualizaciÃ³n
   actualizadoPorId Int?
-  /// ID del usuario que realizó la eliminación lógica
+  /// ID del usuario que realizÃ³ la eliminaciÃ³n lÃ³gica
   eliminadoPorId   Int?
 
-  /// Relación con el usuario creador
-  creadoPor        Usuario?          @relation("MedicamentoCreadoPor",       fields: [creadoPorId],      references: [id])
-  /// Relación con el usuario actualizador
-  actualizadoPor   Usuario?          @relation("MedicamentoActualizadoPor",  fields: [actualizadoPorId], references: [id])
-  /// Relación con el usuario eliminador
-  eliminadoPor     Usuario?          @relation("MedicamentoEliminadoPor",    fields: [eliminadoPorId],   references: [id])
+  /// RelaciÃ³n con el usuario creador
+  creadoPor      Usuario? @relation("MedicamentoCreadoPor", fields: [creadoPorId], references: [id])
+  /// RelaciÃ³n con el usuario actualizador
+  actualizadoPor Usuario? @relation("MedicamentoActualizadoPor", fields: [actualizadoPorId], references: [id])
+  /// RelaciÃ³n con el usuario eliminador
+  eliminadoPor   Usuario? @relation("MedicamentoEliminadoPor", fields: [eliminadoPorId], references: [id])
 
   /// Existencias de este medicamento en distintos establecimientos
-  inventario       Inventario[]
+  inventario         Inventario[]
   /// Apariciones de este medicamento en recetas emitidas
-  detallesReceta   DetalleReceta[]
+  detallesReceta     DetalleReceta[]
+  kardexMedicamentos KardexMedicamento[]
 
   @@map("medicamentos")
 }
 
-/// Listado de vías de administración de medicamentos
+/// Listado de vÃ­as de administraciÃ³n de medicamentos
 enum ViaAdministracion {
-  /// Ingestión por la boca
+  /// IngestiÃ³n por la boca
   ORAL
-  /// Administración mediante jeringas (IM, IV, SC)
+  /// AdministraciÃ³n mediante jeringas (IM, IV, SC)
   INYECTABLE
-  /// Aplicación sobre la piel
+  /// AplicaciÃ³n sobre la piel
   TOPICA
-  /// Administración por vías respiratorias
+  /// AdministraciÃ³n por vÃ­as respiratorias
   INHALATORIA
   /// Debajo de la lengua
   SUBLINGUAL
-  /// Introducción por el recto
+  /// IntroducciÃ³n por el recto
   RECTAL
-  /// Aplicación en los ojos
+  /// AplicaciÃ³n en los ojos
   OFTALMICA
-  /// Aplicación en los oídos
+  /// AplicaciÃ³n en los oÃ­dos
   OTICA
 }
 
-/// Control de existencias físicas de medicamentos por establecimiento y lote
+/// Control de existencias fÃ­sicas de medicamentos por establecimiento y lote
 model Inventario {
-  /// Identificador único
-  id                Int         @id @default(autoincrement())
+  /// Identificador Ãºnico
+  id                Int       @id @default(autoincrement())
   /// ID del medicamento asociado
   medicamentoId     Int
   /// ID del establecimiento que posee el stock
   establecimientoId Int
   /// Cantidad disponible actualmente para dispensar
-  cantidadActual    Int         @default(0)
-  /// Nivel mínimo antes de generar alertas de reabastecimiento
-  cantidadMinima    Int         @default(10)
-  /// Código del lote de fabricación para trazabilidad
-  lote              String?     @db.VarChar(50)
-  /// Fecha de expiración del lote
-  fechaVencimiento  DateTime?   @db.Date
-  /// Ubicación física dentro de la bodega/farmacia
-  ubicacion         String?     @db.VarChar(100)
-  /// Indica si este stock está disponible para uso
-  activo            Boolean     @default(true)
+  cantidadActual    Int       @default(0)
+  /// Nivel mÃ­nimo antes de generar alertas de reabastecimiento
+  cantidadMinima    Int       @default(10)
+  /// CÃ³digo del lote de fabricaciÃ³n para trazabilidad
+  lote              String?   @db.VarChar(50)
+  /// Fecha de expiraciÃ³n del lote
+  fechaVencimiento  DateTime? @db.Date
+  /// UbicaciÃ³n fÃ­sica dentro de la bodega/farmacia
+  ubicacion         String?   @db.VarChar(100)
+  /// Indica si este stock estÃ¡ disponible para uso
+  activo            Boolean   @default(true)
   /// Fecha de registro del ingreso inicial
-  creadoEn          DateTime    @default(now())
-  /// Fecha de último movimiento o ajuste
-  actualizadoEn     DateTime?   @updatedAt
-  /// Fecha de eliminación (si aplica)
+  creadoEn          DateTime  @default(now())
+  /// Fecha de Ãºltimo movimiento o ajuste
+  actualizadoEn     DateTime? @updatedAt
+  /// Fecha de eliminaciÃ³n (si aplica)
   eliminadoEn       DateTime?
-  /// ID del usuario que registró el ingreso
+  /// ID del usuario que registrÃ³ el ingreso
   creadoPorId       Int?
-  /// ID del usuario que realizó la última modificación
+  /// ID del usuario que realizÃ³ la Ãºltima modificaciÃ³n
   actualizadoPorId  Int?
-  /// ID del usuario que eliminó el registro
+  /// ID del usuario que eliminÃ³ el registro
   eliminadoPorId    Int?
 
-  /// Relación con la ficha del medicamento
-  medicamento       Medicamento  @relation(fields: [medicamentoId], references: [id])
-  /// Relación con el establecimiento de salud
-  establecimiento   Establecimiento @relation(fields: [establecimientoId], references: [id])
-  /// Relación con el usuario creador
-  creadoPor         Usuario?     @relation("InventarioCreadoPor",      fields: [creadoPorId],      references: [id])
-  /// Relación con el usuario actualizador
-  actualizadoPor    Usuario?     @relation("InventarioActualizadoPor", fields: [actualizadoPorId], references: [id])
-  /// Relación con el usuario eliminador
-  eliminadoPor      Usuario?     @relation("InventarioEliminadoPor",   fields: [eliminadoPorId],   references: [id])
+  /// RelaciÃ³n con la ficha del medicamento
+  medicamento     Medicamento            @relation(fields: [medicamentoId], references: [id])
+  /// RelaciÃ³n con el establecimiento de salud
+  establecimiento Establecimiento        @relation(fields: [establecimientoId], references: [id])
+  /// RelaciÃ³n con el usuario creador
+  creadoPor       Usuario?               @relation("InventarioCreadoPor", fields: [creadoPorId], references: [id])
+  /// RelaciÃ³n con el usuario actualizador
+  actualizadoPor  Usuario?               @relation("InventarioActualizadoPor", fields: [actualizadoPorId], references: [id])
+  /// RelaciÃ³n con el usuario eliminador
+  eliminadoPor    Usuario?               @relation("InventarioEliminadoPor", fields: [eliminadoPorId], references: [id])
   /// Historial de entradas y salidas asociadas a este inventario
-  movimientos       MovimientoInventario[]
+  movimientos     MovimientoInventario[]
   /// Detalles de dispensaciones realizadas desde este stock
-  dispensaciones    DispensacionDetalle[]
+  dispensaciones  DispensacionDetalle[]
 
   @@unique([medicamentoId, establecimientoId, lote])
   @@map("inventario")
 }
 
-/// Registro histórico de transacciones que afectan el stock de medicamentos
+/// Registro histÃ³rico de transacciones que afectan el stock de medicamentos
 model MovimientoInventario {
-  /// Identificador único
+  /// Identificador Ãºnico
   id           Int            @id @default(autoincrement())
   /// ID del registro de inventario afectado
   inventarioId Int
-  /// Tipo de transacción (Entrada, Salida, etc.)
+  /// Tipo de transacciÃ³n (Entrada, Salida, etc.)
   tipo         TipoMovimiento
   /// Cantidad de unidades involucradas en el movimiento
   cantidad     Int
-  /// Explicación del porqué del movimiento
+  /// ExplicaciÃ³n del porquÃ© del movimiento
   motivo       String?        @db.VarChar(200)
-  /// ID del usuario que realizó la transacción
+  /// ID del usuario que realizÃ³ la transacciÃ³n
   usuarioId    Int
   /// Fecha y hora del registro
   fecha        DateTime       @default(now())
 
   /// Relación con el inventario
-  inventario   Inventario     @relation(fields: [inventarioId], references: [id])
+  inventario Inventario @relation(fields: [inventarioId], references: [id])
+  /// Relación con el usuario que realizó el movimiento
+  usuario    Usuario    @relation(fields: [usuarioId], references: [id])
 
   @@map("movimientos_inventario")
 }
 
-/// Clasificación de transacciones de inventario
+/// ClasificaciÃ³n de transacciones de inventario
 enum TipoMovimiento {
   /// Ingreso de nuevo stock por compras o donaciones
   ENTRADA
   /// Salida por traslados o suministros internos
   SALIDA
-  /// Correcciones manuales por inventario físico
+  /// Correcciones manuales por inventario fÃ­sico
   AJUSTE
-  /// Eliminación por fecha de vencimiento alcanzada
+  /// EliminaciÃ³n por fecha de vencimiento alcanzada
   CADUCADO
-  /// Salida por daño, robo o extravío
+  /// Salida por daÃ±o, robo o extravÃ­o
   PERDIDA
   /// Entrega directa al paciente mediante receta
   DISPENSACION
 }
 
-/// Documento de prescripción médica para un paciente
+/// Documento de prescripciÃ³n mÃ©dica para un paciente
 model Receta {
-  /// Identificador único
-  id           Int          @id @default(autoincrement())
-  /// ID de la historia clínica donde se originó la receta
-  historiaId   Int
+  /// Identificador Ãºnico
+  id                Int          @id @default(autoincrement())
+  /// ID de la historia clÃ­nica donde se originÃ³ la receta
+  historiaId        Int
   /// ID del paciente beneficiario
-  pacienteId   Int
-  /// ID del establecimiento donde se emitió
+  pacienteId        Int
+  /// ID del establecimiento donde se emitiÃ³
   establecimientoId Int
-  /// Estado actual del flujo de dispensación
-  estado       EstadoReceta @default(PENDIENTE)
-  /// Fecha de emisión
-  creadaEn     DateTime     @default(now())
-  /// Fecha en la que se completó la entrega total
-  dispensadaEn DateTime?
+  /// Estado actual del flujo de dispensaciÃ³n
+  estado            EstadoReceta @default(PENDIENTE)
+  /// Fecha de emisiÃ³n
+  creadaEn          DateTime     @default(now())
+  /// Fecha en la que se completÃ³ la entrega total
+  dispensadaEn      DateTime?
 
-  /// Relación con la historia clínica
+  /// RelaciÃ³n con la historia clÃ­nica
   historia        HistoriaClinica @relation(fields: [historiaId], references: [id])
-  /// Relación con el paciente
+  /// RelaciÃ³n con el paciente
   paciente        Paciente        @relation(fields: [pacienteId], references: [id])
-  /// Relación con el establecimiento
+  /// RelaciÃ³n con el establecimiento
   establecimiento Establecimiento @relation(fields: [establecimientoId], references: [id])
   /// Listado de medicamentos prescritos
   detalles        DetalleReceta[]
@@ -1055,56 +1195,56 @@ model Receta {
   @@map("recetas")
 }
 
-/// Ciclo de vida de una receta médica
+/// Ciclo de vida de una receta mÃ©dica
 enum EstadoReceta {
-  /// Receta emitida pero aún no presentada en farmacia
+  /// Receta emitida pero aÃºn no presentada en farmacia
   PENDIENTE
   /// Se han entregado todos los medicamentos prescritos
   DISPENSADA
   /// Se han entregado solo algunos medicamentos o cantidades
   PARCIAL
-  /// Receta anulada por el médico
+  /// Receta anulada por el mÃ©dico
   CANCELADA
   /// No se pudo dispensar por falta de existencias (stock agotado)
   DEMANDA_INSATISFECHA
 }
 
-/// Especificación de un medicamento individual dentro de una receta
+/// EspecificaciÃ³n de un medicamento individual dentro de una receta
 model DetalleReceta {
-  /// Identificador único
-  id            Int         @id @default(autoincrement())
+  /// Identificador Ãºnico
+  id                 Int       @id @default(autoincrement())
   /// ID de la receta a la que pertenece
-  recetaId      Int
+  recetaId           Int
   /// ID del medicamento prescrito
-  medicamentoId Int
+  medicamentoId      Int
   /// Cantidad y unidad por toma (ej: 1 tableta)
-  dosis         String      @db.VarChar(100)
+  dosis              String    @db.VarChar(100)
   /// Intervalo de tiempo (ej: Cada 8 horas)
-  frecuencia    String      @db.VarChar(100)
-  /// Tiempo total de tratamiento (ej: 7 días)
-  duracion      String      @db.VarChar(100)
+  frecuencia         String    @db.VarChar(100)
+  /// Tiempo total de tratamiento (ej: 7 dÃ­as)
+  duracion           String    @db.VarChar(100)
   /// Cantidad total de unidades a dispensar
-  cantidad      Int
+  cantidad           Int
   /// Acumulado de unidades ya entregadas
-  cantidadEntregada Int     @default(0)
-  /// Fecha del último despacho parcial
+  cantidadEntregada  Int       @default(0)
+  /// Fecha del Ãºltimo despacho parcial
   ultimaDispensacion DateTime?
   /// Consejos adicionales para el paciente
-  indicaciones  String?     @db.VarChar(500)
+  indicaciones       String?   @db.VarChar(500)
 
-  /// Relación con la receta cabecera
-  receta        Receta      @relation(fields: [recetaId], references: [id])
-  /// Relación con la ficha del medicamento
-  medicamento   Medicamento @relation(fields: [medicamentoId], references: [id])
-  /// Relación con los despachos físicos realizados
+  /// RelaciÃ³n con la receta cabecera
+  receta         Receta                @relation(fields: [recetaId], references: [id])
+  /// RelaciÃ³n con la ficha del medicamento
+  medicamento    Medicamento           @relation(fields: [medicamentoId], references: [id])
+  /// RelaciÃ³n con los despachos fÃ­sicos realizados
   dispensaciones DispensacionDetalle[]
 
   @@map("detalles_receta")
 }
 
-/// Historial de medicación activa (tratamientos crónicos) de un paciente
+/// Historial de medicaciÃ³n activa (tratamientos crÃ³nicos) de un paciente
 model PacienteMedicamento {
-  /// Identificador único
+  /// Identificador Ãºnico
   id            Int       @id @default(autoincrement())
   /// ID del paciente
   pacienteId    Int
@@ -1112,15 +1252,15 @@ model PacienteMedicamento {
   medicamentoId Int
   /// Dosis del tratamiento
   dosis         String    @db.VarChar(100)
-  /// Frecuencia de administración
+  /// Frecuencia de administraciÃ³n
   frecuencia    String    @db.VarChar(100)
   /// Fecha de inicio del tratamiento
   inicio        DateTime  @db.Date
-  /// Fecha estimada de finalización (null si es permanente)
+  /// Fecha estimada de finalizaciÃ³n (null si es permanente)
   fin           DateTime? @db.Date
 
-  /// Relación con el paciente
-  paciente      Paciente  @relation(fields: [pacienteId], references: [id])
+  /// RelaciÃ³n con el paciente
+  paciente Paciente @relation(fields: [pacienteId], references: [id])
 
   @@map("paciente_medicamentos")
 }
@@ -1131,102 +1271,102 @@ model PacienteMedicamento {
 // LABORATORIO
 // =============================================
 
-/// Catálogo maestro de exámenes de laboratorio clínico disponibles
+/// CatÃ¡logo maestro de exÃ¡menes de laboratorio clÃ­nico disponibles
 model CatExamenLaboratorio {
-  /// Identificador único
-  id              Int                  @id @default(autoincrement())
-  /// Código interno único del examen
-  codigo          String               @unique @db.VarChar(20)
+  /// Identificador Ãºnico
+  id           Int     @id @default(autoincrement())
+  /// CÃ³digo interno Ãºnico del examen
+  codigo       String  @unique @db.VarChar(20)
   /// Nombre descriptivo del examen
-  nombre          String               @db.VarChar(150)
-  /// Área del laboratorio (ej: Hematología, Química)
-  categoria       String               @db.VarChar(100)
+  nombre       String  @db.VarChar(150)
+  /// Ãrea del laboratorio (ej: HematologÃ­a, QuÃ­mica)
+  categoria    String  @db.VarChar(100)
   /// Requisitos para el paciente (ej: Ayuno 8h)
-  indicaciones    String?              @db.Text
-  /// Indica si el examen está disponible en el catálogo general
-  activo          Boolean              @default(true)
-  
+  indicaciones String? @db.Text
+  /// Indica si el examen estÃ¡ disponible en el catÃ¡logo general
+  activo       Boolean @default(true)
+
   /// Establecimientos que ofrecen este examen
-  establecimientos ExamenEstablecimiento[]
+  establecimientos  ExamenEstablecimiento[]
   /// Solicitudes que incluyen este examen
   detallesSolicitud DetalleSolicitudLaboratorio[]
 
   @@map("cat_examenes_laboratorio")
 }
 
-/// Tabla asociativa de exámenes habilitados por cada establecimiento
+/// Tabla asociativa de exÃ¡menes habilitados por cada establecimiento
 model ExamenEstablecimiento {
   /// ID del establecimiento
   establecimientoId Int
-  /// ID del examen del catálogo
+  /// ID del examen del catÃ¡logo
   examenId          Int
-  
-  /// Relación con el establecimiento
-  establecimiento    Establecimiento      @relation(fields: [establecimientoId], references: [id])
-  /// Relación con el catálogo de exámenes
-  examen             CatExamenLaboratorio @relation(fields: [examenId], references: [id])
+
+  /// RelaciÃ³n con el establecimiento
+  establecimiento Establecimiento      @relation(fields: [establecimientoId], references: [id])
+  /// RelaciÃ³n con el catÃ¡logo de exÃ¡menes
+  examen          CatExamenLaboratorio @relation(fields: [examenId], references: [id])
 
   @@id([establecimientoId, examenId])
   @@map("examen_establecimientos")
 }
 
-/// Orden de laboratorio clínico emitida durante una consulta
+/// Orden de laboratorio clÃ­nico emitida durante una consulta
 model SolicitudLaboratorio {
-  /// Identificador único
-  id             Int       @id @default(autoincrement())
-  /// ID de la historia clínica origen
-  historiaId     Int
+  /// Identificador Ãºnico
+  id                Int       @id @default(autoincrement())
+  /// ID de la historia clÃ­nica origen
+  historiaId        Int
   /// ID del paciente
-  pacienteId     Int
-  /// ID del establecimiento donde se procesará
+  pacienteId        Int
+  /// ID del establecimiento donde se procesarÃ¡
   establecimientoId Int
   /// Estado actual del flujo de laboratorio
-  estado         EstadoLab @default(SOLICITADO)
+  estado            EstadoLab @default(SOLICITADO)
   /// Prioridad de procesamiento
-  urgente        Boolean   @default(false)
-  /// Notas médicas adicionales para el laboratorista
-  observaciones  String?   @db.Text
-  /// Fecha de emisión de la orden
-  creadaEn       DateTime  @default(now())
+  urgente           Boolean   @default(false)
+  /// Notas mÃ©dicas adicionales para el laboratorista
+  observaciones     String?   @db.Text
+  /// Fecha de emisiÃ³n de la orden
+  creadaEn          DateTime  @default(now())
 
-  /// Relación con la historia clínica
-  historia       HistoriaClinica @relation(fields: [historiaId], references: [id])
-  /// Relación con el paciente
-  paciente       Paciente        @relation(fields: [pacienteId], references: [id])
-  /// Relación con el establecimiento
-  establecimiento Establecimiento @relation(fields: [establecimientoId], references: [id])
-  /// Listado de exámenes específicos solicitados
-  detalles       DetalleSolicitudLaboratorio[]
+  /// RelaciÃ³n con la historia clÃ­nica
+  historia        HistoriaClinica               @relation(fields: [historiaId], references: [id])
+  /// RelaciÃ³n con el paciente
+  paciente        Paciente                      @relation(fields: [pacienteId], references: [id])
+  /// RelaciÃ³n con el establecimiento
+  establecimiento Establecimiento               @relation(fields: [establecimientoId], references: [id])
+  /// Listado de exÃ¡menes especÃ­ficos solicitados
+  detalles        DetalleSolicitudLaboratorio[]
   /// Resultados cargados para esta solicitud
-  resultados     ResultadoLaboratorio[]
+  resultados      ResultadoLaboratorio[]
 
   @@map("solicitudes_laboratorio")
 }
 
 /// Detalle de cada examen incluido en una orden de laboratorio
 model DetalleSolicitudLaboratorio {
-  /// Identificador único
-  id            Int                  @id @default(autoincrement())
+  /// Identificador Ãºnico
+  id            Int     @id @default(autoincrement())
   /// ID de la solicitud cabecera
   solicitudId   Int
-  /// ID del examen específico
+  /// ID del examen especÃ­fico
   examenId      Int
-  /// Observaciones específicas para este examen
-  observaciones String?              @db.VarChar(200)
-  
-  /// Relación con la solicitud
-  solicitud     SolicitudLaboratorio @relation(fields: [solicitudId], references: [id])
-  /// Relación con el catálogo de exámenes
-  examen        CatExamenLaboratorio @relation(fields: [examenId], references: [id])
+  /// Observaciones especÃ­ficas para este examen
+  observaciones String? @db.VarChar(200)
+
+  /// RelaciÃ³n con la solicitud
+  solicitud SolicitudLaboratorio @relation(fields: [solicitudId], references: [id])
+  /// RelaciÃ³n con el catÃ¡logo de exÃ¡menes
+  examen    CatExamenLaboratorio @relation(fields: [examenId], references: [id])
 
   @@map("detalles_solicitud_laboratorio")
 }
 
 /// Estados del flujo de trabajo del laboratorio
 enum EstadoLab {
-  /// Orden emitida por el médico
+  /// Orden emitida por el mÃ©dico
   SOLICITADO
-  /// Muestras tomadas o en análisis
+  /// Muestras tomadas o en anÃ¡lisis
   EN_PROCESO
   /// Resultados validados y disponibles
   COMPLETADO
@@ -1234,15 +1374,15 @@ enum EstadoLab {
   CANCELADO
 }
 
-/// Registro de resultados numéricos o cualitativos de exámenes de laboratorio
+/// Registro de resultados numÃ©ricos o cualitativos de exÃ¡menes de laboratorio
 model ResultadoLaboratorio {
-  /// Identificador único
+  /// Identificador Ãºnico
   id              Int      @id @default(autoincrement())
   /// ID de la solicitud a la que pertenece el resultado
   solicitudId     Int
-  /// ID opcional de la historia clínica para vinculación directa
+  /// ID opcional de la historia clÃ­nica para vinculaciÃ³n directa
   historiaId      Int?
-  /// Nombre del parámetro o prueba analizada
+  /// Nombre del parÃ¡metro o prueba analizada
   prueba          String   @db.VarChar(200)
   /// Resultado obtenido
   valor           String   @db.VarChar(200)
@@ -1250,42 +1390,42 @@ model ResultadoLaboratorio {
   unidad          String?  @db.VarChar(50)
   /// Rango esperado para un paciente sano
   valorReferencia String?  @db.VarChar(100)
-  /// Indica si el valor está fuera de los rangos normales
+  /// Indica si el valor estÃ¡ fuera de los rangos normales
   anormal         Boolean  @default(false)
-  /// Interpretación del microbiólogo o analista
+  /// InterpretaciÃ³n del microbiÃ³logo o analista
   observaciones   String?  @db.Text
-  /// Fecha y hora de validación del resultado
+  /// Fecha y hora de validaciÃ³n del resultado
   fecha           DateTime @default(now())
 
-  /// Relación con la solicitud cabecera
-  solicitud       SolicitudLaboratorio @relation(fields: [solicitudId], references: [id])
-  /// Relación con la historia clínica
-  historia        HistoriaClinica?     @relation(fields: [historiaId], references: [id])
+  /// RelaciÃ³n con la solicitud cabecera
+  solicitud SolicitudLaboratorio @relation(fields: [solicitudId], references: [id])
+  /// RelaciÃ³n con la historia clÃ­nica
+  historia  HistoriaClinica?     @relation(fields: [historiaId], references: [id])
 
   @@map("resultados_laboratorio")
 }
 
 // =============================================
-// RADIOLOGÍA E IMAGENOLOGÍA
+// RADIOLOGÃA E IMAGENOLOGÃA
 // =============================================
 
-/// Catálogo maestro de estudios radiológicos e imagenología
+/// CatÃ¡logo maestro de estudios radiolÃ³gicos e imagenologÃ­a
 model CatExamenRadiologico {
-  /// Identificador único
-  id              Int                  @id @default(autoincrement())
-  /// Código interno único (ej: RX-01, TAC-05)
-  codigo          String               @unique @db.VarChar(20)
-  /// Nombre del estudio (ej: Rayos X de Tórax)
-  nombre          String               @db.VarChar(150)
+  /// Identificador Ãºnico
+  id           Int     @id @default(autoincrement())
+  /// CÃ³digo interno Ãºnico (ej: RX-01, TAC-05)
+  codigo       String  @unique @db.VarChar(20)
+  /// Nombre del estudio (ej: Rayos X de TÃ³rax)
+  nombre       String  @db.VarChar(150)
   /// Modalidad de imagen (RX, ECO, TAC, RM, etc.)
-  categoria       String               @db.VarChar(100)
-  /// Requisitos técnicos o del paciente
-  indicaciones    String?              @db.Text
-  /// Indica si el estudio está disponible en el catálogo
-  activo          Boolean              @default(true)
-  
+  categoria    String  @db.VarChar(100)
+  /// Requisitos tÃ©cnicos o del paciente
+  indicaciones String? @db.Text
+  /// Indica si el estudio estÃ¡ disponible en el catÃ¡logo
+  activo       Boolean @default(true)
+
   /// Establecimientos que cuentan con el equipo para este estudio
-  establecimientos EstudioRadiologicoEstablecimiento[]
+  establecimientos  EstudioRadiologicoEstablecimiento[]
   /// Solicitudes que incluyen este estudio
   detallesSolicitud DetalleSolicitudRadiologia[]
 
@@ -1296,87 +1436,87 @@ model CatExamenRadiologico {
 model EstudioRadiologicoEstablecimiento {
   /// ID del establecimiento
   establecimientoId Int
-  /// ID del estudio del catálogo
+  /// ID del estudio del catÃ¡logo
   estudioId         Int
-  
-  /// Relación con el establecimiento
-  establecimiento    Establecimiento      @relation(fields: [establecimientoId], references: [id])
-  /// Relación con el catálogo de radiología
-  estudio            CatExamenRadiologico @relation(fields: [estudioId], references: [id])
+
+  /// RelaciÃ³n con el establecimiento
+  establecimiento Establecimiento      @relation(fields: [establecimientoId], references: [id])
+  /// RelaciÃ³n con el catÃ¡logo de radiologÃ­a
+  estudio         CatExamenRadiologico @relation(fields: [estudioId], references: [id])
 
   @@id([establecimientoId, estudioId])
   @@map("estudio_radiologia_establecimientos")
 }
 
-/// Orden de estudios de imagenología emitida por un médico
+/// Orden de estudios de imagenologÃ­a emitida por un mÃ©dico
 model SolicitudRadiologia {
-  /// Identificador único
-  id             Int       @id @default(autoincrement())
-  /// ID de la historia clínica origen
-  historiaId     Int
+  /// Identificador Ãºnico
+  id                Int       @id @default(autoincrement())
+  /// ID de la historia clÃ­nica origen
+  historiaId        Int
   /// ID del paciente
-  pacienteId     Int
+  pacienteId        Int
   /// ID del establecimiento de destino
   establecimientoId Int
   /// Estado del flujo (Solicitado, Completado)
-  estado         EstadoLab @default(SOLICITADO)
-  /// Prioridad de atención
-  urgente        Boolean   @default(false)
-  /// Justificación clínica del estudio
-  observaciones  String?   @db.Text
-  /// Fecha de emisión de la orden
-  creadaEn       DateTime  @default(now())
+  estado            EstadoLab @default(SOLICITADO)
+  /// Prioridad de atenciÃ³n
+  urgente           Boolean   @default(false)
+  /// JustificaciÃ³n clÃ­nica del estudio
+  observaciones     String?   @db.Text
+  /// Fecha de emisiÃ³n de la orden
+  creadaEn          DateTime  @default(now())
 
-  /// Relación con la historia clínica
-  historia       HistoriaClinica @relation(fields: [historiaId], references: [id])
-  /// Relación con el paciente
-  paciente       Paciente        @relation(fields: [pacienteId], references: [id])
-  /// Relación con el establecimiento
-  establecimiento Establecimiento @relation(fields: [establecimientoId], references: [id])
-  /// Listado de estudios específicos requeridos
-  detalles       DetalleSolicitudRadiologia[]
+  /// RelaciÃ³n con la historia clÃ­nica
+  historia        HistoriaClinica              @relation(fields: [historiaId], references: [id])
+  /// RelaciÃ³n con el paciente
+  paciente        Paciente                     @relation(fields: [pacienteId], references: [id])
+  /// RelaciÃ³n con el establecimiento
+  establecimiento Establecimiento              @relation(fields: [establecimientoId], references: [id])
+  /// Listado de estudios especÃ­ficos requeridos
+  detalles        DetalleSolicitudRadiologia[]
   /// Interpretaciones de los resultados
-  resultados     ResultadoRadiologia[]
+  resultados      ResultadoRadiologia[]
 
   @@map("solicitudes_radiologia")
 }
 
-/// Detalle de cada estudio individual en una orden de radiología
+/// Detalle de cada estudio individual en una orden de radiologÃ­a
 model DetalleSolicitudRadiologia {
-  /// Identificador único
-  id            Int                  @id @default(autoincrement())
+  /// Identificador Ãºnico
+  id            Int     @id @default(autoincrement())
   /// ID de la solicitud cabecera
   solicitudId   Int
-  /// ID del estudio específico
+  /// ID del estudio especÃ­fico
   estudioId     Int
-  /// Observaciones o sospechas diagnósticas para el radiólogo
-  observaciones String?              @db.VarChar(200)
-  
-  /// Relación con la solicitud
-  solicitud     SolicitudRadiologia @relation(fields: [solicitudId], references: [id])
-  /// Relación con el catálogo de estudios
-  estudio       CatExamenRadiologico @relation(fields: [estudioId], references: [id])
+  /// Observaciones o sospechas diagnÃ³sticas para el radiÃ³logo
+  observaciones String? @db.VarChar(200)
+
+  /// RelaciÃ³n con la solicitud
+  solicitud SolicitudRadiologia  @relation(fields: [solicitudId], references: [id])
+  /// RelaciÃ³n con el catÃ¡logo de estudios
+  estudio   CatExamenRadiologico @relation(fields: [estudioId], references: [id])
 
   @@map("detalles_solicitud_radiologia")
 }
 
-/// Registro de la interpretación médica de un estudio de imagen
+/// Registro de la interpretaciÃ³n mÃ©dica de un estudio de imagen
 model ResultadoRadiologia {
-  /// Identificador único
-  id              Int      @id @default(autoincrement())
+  /// Identificador Ãºnico
+  id          Int      @id @default(autoincrement())
   /// ID de la solicitud a la que pertenece el informe
-  solicitudId     Int
-  /// Descripción detallada de lo observado en la imagen
-  hallazgos       String?  @db.Text
-  /// Diagnóstico radiológico final
-  conclusion      String?  @db.Text
+  solicitudId Int
+  /// DescripciÃ³n detallada de lo observado en la imagen
+  hallazgos   String?  @db.Text
+  /// DiagnÃ³stico radiolÃ³gico final
+  conclusion  String?  @db.Text
   /// Enlace al visor PACS o almacenamiento de la imagen digital
-  imageUrl        String?  @db.VarChar(500)
+  imageUrl    String?  @db.VarChar(500)
   /// Fecha y hora del informe
-  fecha           DateTime @default(now())
+  fecha       DateTime @default(now())
 
-  /// Relación con la solicitud cabecera
-  solicitud       SolicitudRadiologia @relation(fields: [solicitudId], references: [id])
+  /// RelaciÃ³n con la solicitud cabecera
+  solicitud SolicitudRadiologia @relation(fields: [solicitudId], references: [id])
 
   @@map("resultados_radiologia")
 }
@@ -1385,40 +1525,40 @@ model ResultadoRadiologia {
 // REFERIDOS
 // =============================================
 
-/// Gestión de referencias de pacientes entre establecimientos de la red
+/// GestiÃ³n de referencias de pacientes entre establecimientos de la red
 model Referido {
-  /// Identificador único
-  id                      Int            @id @default(autoincrement())
-  /// ID de la historia clínica donde se origina el referido
-  historiaId              Int
-  /// Establecimiento que envía al paciente
-  establecimientoOrigenId Int
-  /// Establecimiento que recibirá al paciente
+  /// Identificador Ãºnico
+  id                       Int            @id @default(autoincrement())
+  /// ID de la historia clÃ­nica donde se origina el referido
+  historiaId               Int
+  /// Establecimiento que envÃ­a al paciente
+  establecimientoOrigenId  Int
+  /// Establecimiento que recibirÃ¡ al paciente
   establecimientoDestinoId Int
   /// Especialidad a la que se remite
-  especialidadDestino     String         @db.VarChar(100)
-  /// Justificación clínica del traslado
-  motivo                  String         @db.Text
+  especialidadDestino      String         @db.VarChar(100)
+  /// JustificaciÃ³n clÃ­nica del traslado
+  motivo                   String         @db.Text
   /// Prioridad de la referencia
-  urgente                 Boolean        @default(false)
-  /// Estado del trámite administrativo
-  estado                  EstadoReferido @default(EMITIDO)
-  /// Fecha de emisión
-  creadoEn                DateTime       @default(now())
+  urgente                  Boolean        @default(false)
+  /// Estado del trÃ¡mite administrativo
+  estado                   EstadoReferido @default(EMITIDO)
+  /// Fecha de emisiÃ³n
+  creadoEn                 DateTime       @default(now())
 
-  /// Relación con la historia clínica
-  historia                HistoriaClinica @relation(fields: [historiaId], references: [id])
-  /// Relación con el centro de origen
-  origen                  Establecimiento @relation("ReferidoOrigen",  fields: [establecimientoOrigenId], references: [id])
-  /// Relación con el centro de destino
-  destino                 Establecimiento @relation("ReferidoDestino", fields: [establecimientoDestinoId], references: [id])
+  /// RelaciÃ³n con la historia clÃ­nica
+  historia HistoriaClinica @relation(fields: [historiaId], references: [id])
+  /// RelaciÃ³n con el centro de origen
+  origen   Establecimiento @relation("ReferidoOrigen", fields: [establecimientoOrigenId], references: [id])
+  /// RelaciÃ³n con el centro de destino
+  destino  Establecimiento @relation("ReferidoDestino", fields: [establecimientoDestinoId], references: [id])
 
   @@map("referidos")
 }
 
 /// Estados del proceso de referencia y contrarreferencia
 enum EstadoReferido {
-  /// Referencia emitida por el médico
+  /// Referencia emitida por el mÃ©dico
   EMITIDO
   /// Referencia aceptada por el centro de destino
   RECIBIDO
@@ -1432,86 +1572,86 @@ enum EstadoReferido {
 // FORMULARIOS CONFIGURABLES
 // =============================================
 
-/// Definición de formularios clínicos dinámicos por especialidad
+/// DefiniciÃ³n de formularios clÃ­nicos dinÃ¡micos por especialidad
 model PlantillaFormulario {
-  /// Identificador único
+  /// Identificador Ãºnico
   id             Int      @id @default(autoincrement())
   /// ID de la especialidad a la que pertenece el formulario
   especialidadId Int
   /// Nombre descriptivo del formulario (ej: Control Prenatal)
   nombre         String   @db.VarChar(150)
-  /// Propósito del formulario
+  /// PropÃ³sito del formulario
   descripcion    String?  @db.Text
-  /// Número de versión para control de cambios
+  /// NÃºmero de versiÃ³n para control de cambios
   version        Int      @default(1)
-  /// Indica si es la versión que se muestra actualmente
+  /// Indica si es la versiÃ³n que se muestra actualmente
   activa         Boolean  @default(false)
-  /// ID del usuario que diseñó la plantilla
+  /// ID del usuario que diseÃ±Ã³ la plantilla
   creadoPorId    Int
-  /// Fecha de creación
+  /// Fecha de creaciÃ³n
   creadoEn       DateTime @default(now())
-  /// Fecha de última modificación
+  /// Fecha de Ãºltima modificaciÃ³n
   actualizadoEn  DateTime @updatedAt
 
-  /// Relación con la especialidad
-  especialidad   Especialidad        @relation(fields: [especialidadId], references: [id])
-  /// Relación con el usuario diseñador
-  creadoPor      Usuario             @relation(fields: [creadoPorId], references: [id])
+  /// RelaciÃ³n con la especialidad
+  especialidad Especialidad          @relation(fields: [especialidadId], references: [id])
+  /// RelaciÃ³n con el usuario diseÃ±ador
+  creadoPor    Usuario               @relation(fields: [creadoPorId], references: [id])
   /// Secciones que componen el formulario
-  secciones      SeccionFormulario[]
-  /// Historias clínicas que han utilizado esta plantilla
-  historiales    HistoriaClinica[]
+  secciones    SeccionFormulario[]
+  /// Historias clÃ­nicas que han utilizado esta plantilla
+  historiales  HistoriaClinica[]
   /// Datos capturados mediante esta plantilla
-  respuestas     RespuestaFormulario[]
+  respuestas   RespuestaFormulario[]
 
   @@unique([especialidadId, version])
   @@map("plantillas_formulario")
 }
 
-/// Agrupador de campos dentro de un formulario dinámico
+/// Agrupador de campos dentro de un formulario dinÃ¡mico
 model SeccionFormulario {
-  /// Identificador único
-  id          Int      @id @default(autoincrement())
+  /// Identificador Ãºnico
+  id          Int     @id @default(autoincrement())
   /// ID de la plantilla padre
   plantillaId Int
-  /// Título de la sección
-  nombre      String   @db.VarChar(100)
-  /// Texto de ayuda para la sección
-  descripcion String?  @db.VarChar(300)
-  /// Posición relativa en el formulario
-  orden       Int      @default(0)
-  /// Indica si la sección se puede contraer en la UI
-  colapsable  Boolean  @default(false)
-  /// Indica si la sección se muestra por defecto
-  visible     Boolean  @default(true)
+  /// TÃ­tulo de la secciÃ³n
+  nombre      String  @db.VarChar(100)
+  /// Texto de ayuda para la secciÃ³n
+  descripcion String? @db.VarChar(300)
+  /// PosiciÃ³n relativa en el formulario
+  orden       Int     @default(0)
+  /// Indica si la secciÃ³n se puede contraer en la UI
+  colapsable  Boolean @default(false)
+  /// Indica si la secciÃ³n se muestra por defecto
+  visible     Boolean @default(true)
 
-  /// Relación con la plantilla
-  plantilla   PlantillaFormulario @relation(fields: [plantillaId], references: [id], onDelete: Cascade)
-  /// Campos contenidos en esta sección
-  campos      CampoFormulario[]
+  /// RelaciÃ³n con la plantilla
+  plantilla PlantillaFormulario @relation(fields: [plantillaId], references: [id], onDelete: Cascade)
+  /// Campos contenidos en esta secciÃ³n
+  campos    CampoFormulario[]
 
   @@map("secciones_formulario")
 }
 
-/// Definición de un campo individual de captura de datos
+/// DefiniciÃ³n de un campo individual de captura de datos
 model CampoFormulario {
-  /// Identificador único
+  /// Identificador Ãºnico
   id                   Int        @id @default(autoincrement())
-  /// ID de la sección contenedora
+  /// ID de la secciÃ³n contenedora
   seccionId            Int
-  /// Tipo de control de entrada (Texto, Número, etc.)
+  /// Tipo de control de entrada (Texto, NÃºmero, etc.)
   tipo                 TipoCampo
   /// Texto que ve el usuario (Label)
   etiqueta             String     @db.VarChar(150)
-  /// Nombre técnico del campo para almacenamiento
+  /// Nombre tÃ©cnico del campo para almacenamiento
   clave                String     @db.VarChar(80)
   /// Texto sugerido dentro del campo
   placeholder          String?    @db.VarChar(200)
-  /// Texto de ayuda u orientación médica
+  /// Texto de ayuda u orientaciÃ³n mÃ©dica
   ayuda                String?    @db.VarChar(300)
   /// Indica si el campo es obligatorio
   requerido            Boolean    @default(false)
-  /// Posición dentro de la sección
+  /// PosiciÃ³n dentro de la secciÃ³n
   orden                Int        @default(0)
   /// Porcentaje de ancho que ocupa en la pantalla
   ancho                AnchoCampo @default(COMPLETO)
@@ -1519,20 +1659,20 @@ model CampoFormulario {
   visible              Boolean    @default(true)
   /// Objeto JSON con validaciones u opciones adicionales
   configuracion        Json?
-  /// Lógica JSON para mostrar/ocultar según otros campos
+  /// LÃ³gica JSON para mostrar/ocultar segÃºn otros campos
   condicionVisibilidad Json?
 
-  /// Relación con la sección
-  seccion              SeccionFormulario @relation(fields: [seccionId], references: [id], onDelete: Cascade)
+  /// RelaciÃ³n con la secciÃ³n
+  seccion SeccionFormulario @relation(fields: [seccionId], references: [id], onDelete: Cascade)
 
   @@map("campos_formulario")
 }
 
 /// Tipos de controles de entrada soportados por el generador de formularios
 enum TipoCampo {
-  /// Línea de texto corta
+  /// LÃ­nea de texto corta
   TEXTO
-  /// Área de texto multilinea
+  /// Ãrea de texto multilinea
   TEXTAREA
   /// Valor entero
   NUMERO
@@ -1540,27 +1680,27 @@ enum TipoCampo {
   DECIMAL
   /// Selector de fecha
   FECHA
-  /// Interruptor Sí/No
+  /// Interruptor SÃ­/No
   BOOLEANO
-  /// Lista desplegable de selección única
+  /// Lista desplegable de selecciÃ³n Ãºnica
   SELECT
-  /// Lista de selección múltiple
+  /// Lista de selecciÃ³n mÃºltiple
   MULTISELECT
-  /// Botones de selección única
+  /// Botones de selecciÃ³n Ãºnica
   RADIO
-  /// Grupo de casillas de verificación
+  /// Grupo de casillas de verificaciÃ³n
   CHECKBOX_GRUPO
-  /// Selector de rango numérico
+  /// Selector de rango numÃ©rico
   ESCALA
   /// Grid de captura de datos repetitivos
   TABLA
-  /// Línea divisoria visual
+  /// LÃ­nea divisoria visual
   SEPARADOR
   /// Texto decorativo o encabezado
   TITULO
 }
 
-/// Opciones de diseño responsivo para los campos
+/// Opciones de diseÃ±o responsivo para los campos
 enum AnchoCampo {
   /// 25% del ancho disponible
   CUARTO
@@ -1572,11 +1712,11 @@ enum AnchoCampo {
   COMPLETO
 }
 
-/// Almacenamiento de los datos capturados en un formulario dinámico
+/// Almacenamiento de los datos capturados en un formulario dinÃ¡mico
 model RespuestaFormulario {
-  /// Identificador único
+  /// Identificador Ãºnico
   id            Int      @id @default(autoincrement())
-  /// ID de la historia clínica vinculada
+  /// ID de la historia clÃ­nica vinculada
   historiaId    Int      @unique
   /// ID de la plantilla utilizada
   plantillaId   Int
@@ -1586,13 +1726,13 @@ model RespuestaFormulario {
   completado    Boolean  @default(false)
   /// Fecha de registro de datos
   creadoEn      DateTime @default(now())
-  /// Fecha de última modificación de los datos
+  /// Fecha de Ãºltima modificaciÃ³n de los datos
   actualizadoEn DateTime @updatedAt
 
-  /// Relación con la historia clínica
-  historia      HistoriaClinica     @relation(fields: [historiaId], references: [id])
-  /// Relación con la plantilla
-  plantilla     PlantillaFormulario @relation(fields: [plantillaId], references: [id])
+  /// RelaciÃ³n con la historia clÃ­nica
+  historia  HistoriaClinica     @relation(fields: [historiaId], references: [id])
+  /// RelaciÃ³n con la plantilla
+  plantilla PlantillaFormulario @relation(fields: [plantillaId], references: [id])
 
   @@map("respuestas_formulario")
 }
@@ -1601,105 +1741,105 @@ model RespuestaFormulario {
 // TRIAJE
 // =============================================
 
-/// Evaluación inicial de signos vitales y priorización de atención
+/// EvaluaciÃ³n inicial de signos vitales y priorizaciÃ³n de atenciÃ³n
 model Triaje {
-  /// Identificador único
-  id                     Int             @id @default(autoincrement())
+  /// Identificador Ãºnico
+  id          Int @id @default(autoincrement())
   /// ID de la cita para la cual se realiza el triaje
-  citaId                 Int             @unique
+  citaId      Int @unique
   /// ID del paciente evaluado
-  pacienteId             Int
-  /// ID de la enfermera que realiza la evaluación
-  enfermeraId            Int
+  pacienteId  Int
+  /// ID de la enfermera que realiza la evaluaciÃ³n
+  enfermeraId Int
 
-  /// Descripción breve del síntoma principal
-  motivoConsulta         String          @db.Text
+  /// DescripciÃ³n breve del sÃ­ntoma principal
+  motivoConsulta String @db.Text
 
-  /// Tensión arterial sistólica (mmHg)
+  /// TensiÃ³n arterial sistÃ³lica (mmHg)
   presionSistolica       Int?
-  /// Tensión arterial diastólica (mmHg)
+  /// TensiÃ³n arterial diastÃ³lica (mmHg)
   presionDiastolica      Int?
   /// Latidos por minuto
   frecuenciaCardiaca     Int?
   /// Respiraciones por minuto
   frecuenciaRespiratoria Int?
-  /// Temperatura corporal (°C)
-  temperatura            Decimal?        @db.Decimal(4, 1)
-  /// Porcentaje de oxígeno en sangre
+  /// Temperatura corporal (Â°C)
+  temperatura            Decimal? @db.Decimal(4, 1)
+  /// Porcentaje de oxÃ­geno en sangre
   saturacionO2           Int?
-  /// Nivel de azúcar en sangre (mg/dL)
-  glucometria            Decimal?        @db.Decimal(5, 1)
+  /// Nivel de azÃºcar en sangre (mg/dL)
+  glucometria            Decimal? @db.Decimal(5, 1)
   /// Peso actual (kg)
-  peso                   Decimal?        @db.Decimal(5, 2)
+  peso                   Decimal? @db.Decimal(5, 2)
   /// Estatura actual (cm)
-  talla                  Decimal?        @db.Decimal(4, 1)
+  talla                  Decimal? @db.Decimal(4, 1)
 
   /// Intensidad del dolor percibido (0-10)
-  escalaDolor            Int?
-  /// Estado neurológico del paciente
-  nivelConciencia        NivelConciencia @default(ALERTA)
-  /// Clasificación de prioridad según colores (Manchester/Sistema local)
-  categoria              CategoriaTriaje
-  /// Hallazgos adicionales de enfermería
-  observaciones          String?         @db.Text
+  escalaDolor     Int?
+  /// Estado neurolÃ³gico del paciente
+  nivelConciencia NivelConciencia @default(ALERTA)
+  /// ClasificaciÃ³n de prioridad segÃºn colores (Manchester/Sistema local)
+  categoria       CategoriaTriaje
+  /// Hallazgos adicionales de enfermerÃ­a
+  observaciones   String?         @db.Text
 
-  /// Fecha y hora de la evaluación
-  creadoEn               DateTime        @default(now())
+  /// Fecha y hora de la evaluaciÃ³n
+  creadoEn DateTime @default(now())
 
-  /// Relación con la cita
-  cita                   Cita            @relation(fields: [citaId], references: [id])
-  /// Relación con el paciente
-  paciente               Paciente        @relation(fields: [pacienteId], references: [id])
-  /// Relación con el personal de enfermería
-  enfermera              Usuario         @relation("TriajeEnfermera", fields: [enfermeraId], references: [id])
+  /// RelaciÃ³n con la cita
+  cita      Cita     @relation(fields: [citaId], references: [id])
+  /// RelaciÃ³n con el paciente
+  paciente  Paciente @relation(fields: [pacienteId], references: [id])
+  /// RelaciÃ³n con el personal de enfermerÃ­a
+  enfermera Usuario  @relation("TriajeEnfermera", fields: [enfermeraId], references: [id])
 
   @@map("triajes")
 }
 
-/// Estados de alerta neurológica del paciente (Escala AVDI)
+/// Estados de alerta neurolÃ³gica del paciente (Escala AVDI)
 enum NivelConciencia {
   /// Paciente consciente y orientado
   ALERTA
-  /// Reacciona solo al estímulo verbal
+  /// Reacciona solo al estÃ­mulo verbal
   RESPONDE_VOZ
-  /// Reacciona solo ante estímulos dolorosos
+  /// Reacciona solo ante estÃ­mulos dolorosos
   RESPONDE_DOLOR
-  /// Sin respuesta a ningún estímulo
+  /// Sin respuesta a ningÃºn estÃ­mulo
   INCONSCIENTE
 }
 
-/// Clasificación internacional de urgencias
+/// ClasificaciÃ³n internacional de urgencias
 enum CategoriaTriaje {
-  /// Riesgo vital inmediato (Atención inmediata)
+  /// Riesgo vital inmediato (AtenciÃ³n inmediata)
   ROJO
   /// Muy urgente (Espera < 10-15 min)
   NARANJA
   /// Urgente (Espera < 60 min)
   AMARILLO
-  /// Estándar (Espera < 120 min)
+  /// EstÃ¡ndar (Espera < 120 min)
   VERDE
-  /// No urgente (Atención demorable)
+  /// No urgente (AtenciÃ³n demorable)
   AZUL
 }
 
 // =============================================
-// CATÁLOGO CIE-10
+// CATÃLOGO CIE-10
 // =============================================
 
-/// Catálogo oficial de enfermedades CIE-10 (Clasificación Internacional de Enfermedades)
+/// CatÃ¡logo oficial de enfermedades CIE-10 (ClasificaciÃ³n Internacional de Enfermedades)
 model CatDiagnostico {
-  /// Identificador único
-  id          Int     @id @default(autoincrement())
-  /// Código alfanumérico estándar (ej: A00.0)
-  codigo      String  @unique @db.VarChar(10)
-  /// Descripción clínica de la patología
-  descripcion String  @db.VarChar(500)
-  /// Grupo o capítulo al que pertenece la enfermedad
-  capitulo    String? @db.VarChar(150)
-  /// Indica si el diagnóstico está vigente
-  activo      Boolean @default(true)
+  /// Identificador Ãºnico
+  id                    Int     @id @default(autoincrement())
+  /// CÃ³digo alfanumÃ©rico estÃ¡ndar (ej: A00.0)
+  codigo                String  @unique @db.VarChar(10)
+  /// DescripciÃ³n clÃ­nica de la patologÃ­a
+  descripcion           String  @db.VarChar(500)
+  /// Grupo o capÃ­tulo al que pertenece la enfermedad
+  capitulo              String? @db.VarChar(150)
+  /// Indica si el diagnÃ³stico estÃ¡ vigente
+  activo                Boolean @default(true)
   /// Indica si la enfermedad es de reporte obligatorio a vigilancia
-  notificable          Boolean @default(false)
+  notificable           Boolean @default(false)
   /// Indica si se debe notificar en menos de 24 horas
   notificacionInmediata Boolean @default(false)
 
@@ -1709,61 +1849,61 @@ model CatDiagnostico {
 }
 
 // =============================================
-// AUDITORÍA
+// AUDITORÃA
 // =============================================
 
-/// Registro de trazabilidad de acciones críticas realizadas en el sistema
+/// Registro de trazabilidad de acciones crÃ­ticas realizadas en el sistema
 model AuditLog {
-  /// Identificador único
+  /// Identificador Ãºnico
   id         Int      @id @default(autoincrement())
-  /// ID del usuario que realizó la acción
+  /// ID del usuario que realizÃ³ la acciÃ³n
   usuarioId  Int?
-  /// Tipo de operación (CREATE, UPDATE, DELETE, LOGIN)
+  /// Tipo de operaciÃ³n (CREATE, UPDATE, DELETE, LOGIN)
   accion     String   @db.VarChar(50)
   /// Nombre de la tabla o entidad afectada
   entidad    String   @db.VarChar(100)
-  /// ID del registro específico afectado
+  /// ID del registro especÃ­fico afectado
   entidadId  Int?
-  /// Descripción detallada del cambio o error
+  /// DescripciÃ³n detallada del cambio o error
   detalle    String?  @db.Text
-  /// Dirección IP del cliente
+  /// DirecciÃ³n IP del cliente
   ip         String?  @db.VarChar(45)
   /// Tiempo de respuesta del servidor en milisegundos
   duracionMs Int?
   /// Fecha y hora exacta del evento
   timestamp  DateTime @default(now())
 
-  /// Relación con el usuario (si aplica)
-  usuario    Usuario? @relation(fields: [usuarioId], references: [id])
+  /// RelaciÃ³n con el usuario (si aplica)
+  usuario Usuario? @relation(fields: [usuarioId], references: [id])
 
   @@index([timestamp])
   @@index([usuarioId])
   @@map("audit_logs")
 }
 
-/// Configuración global de variables de operación del sistema
+/// ConfiguraciÃ³n global de variables de operaciÃ³n del sistema
 model ParametroSistema {
-  /// Identificador único
-  id          Int      @id @default(autoincrement())
-  /// Nombre único de la variable (ej: TIEMPO_SESION)
-  clave       String   @unique @db.VarChar(50)
-  /// Valor asignado a la configuración
-  valor       String   @db.VarChar(500)
-  /// Explicación del impacto del parámetro en el sistema
-  descripcion String?  @db.VarChar(200)
-  /// Fecha de creación inicial
-  creadoEn    DateTime @default(now())
-  /// Fecha de última actualización
+  /// Identificador Ãºnico
+  id            Int      @id @default(autoincrement())
+  /// Nombre Ãºnico de la variable (ej: TIEMPO_SESION)
+  clave         String   @unique @db.VarChar(50)
+  /// Valor asignado a la configuraciÃ³n
+  valor         String   @db.VarChar(500)
+  /// ExplicaciÃ³n del impacto del parÃ¡metro en el sistema
+  descripcion   String?  @db.VarChar(200)
+  /// Fecha de creaciÃ³n inicial
+  creadoEn      DateTime @default(now())
+  /// Fecha de Ãºltima actualizaciÃ³n
   actualizadoEn DateTime @updatedAt
 
   @@map("parametros_sistema")
 }
 
-/// Registro de la entrega física de medicamentos al paciente
+/// Registro de la entrega fÃ­sica de medicamentos al paciente
 model Dispensacion {
-  /// Identificador único
+  /// Identificador Ãºnico
   id                Int      @id @default(autoincrement())
-  /// ID de la receta que se está surtiendo
+  /// ID de la receta que se estÃ¡ surtiendo
   recetaId          Int
   /// ID del usuario de farmacia que entrega
   usuarioId         Int
@@ -1772,155 +1912,155 @@ model Dispensacion {
   /// Fecha y hora de la entrega
   fecha             DateTime @default(now())
 
-  /// Relación con la receta
-  receta            Receta          @relation(fields: [recetaId], references: [id])
-  /// Relación con el usuario farmacéutico
-  usuario           Usuario         @relation(fields: [usuarioId], references: [id])
-  /// Relación con el establecimiento
-  establecimiento   Establecimiento @relation(fields: [establecimientoId], references: [id])
-  /// Medicamentos específicos entregados en esta transacción
-  detalles          DispensacionDetalle[]
+  /// RelaciÃ³n con la receta
+  receta          Receta                @relation(fields: [recetaId], references: [id])
+  /// RelaciÃ³n con el usuario farmacÃ©utico
+  usuario         Usuario               @relation(fields: [usuarioId], references: [id])
+  /// RelaciÃ³n con el establecimiento
+  establecimiento Establecimiento       @relation(fields: [establecimientoId], references: [id])
+  /// Medicamentos especÃ­ficos entregados en esta transacciÃ³n
+  detalles        DispensacionDetalle[]
 
   @@map("dispensaciones")
 }
 
-/// Detalle de las unidades entregadas por cada ítem de la receta
+/// Detalle de las unidades entregadas por cada Ã­tem de la receta
 model DispensacionDetalle {
-  /// Identificador único
-  id                Int      @id @default(autoincrement())
-  /// ID de la transacción de dispensación
-  dispensacionId    Int
-  /// ID del renglón de la receta original
-  detalleRecetaId   Int
-  /// ID del registro de inventario (lote) de donde salió el producto
-  inventarioId      Int
-  /// Cantidad física entregada al paciente
-  cantidad          Int
+  /// Identificador Ãºnico
+  id              Int @id @default(autoincrement())
+  /// ID de la transacciÃ³n de dispensaciÃ³n
+  dispensacionId  Int
+  /// ID del renglÃ³n de la receta original
+  detalleRecetaId Int
+  /// ID del registro de inventario (lote) de donde saliÃ³ el producto
+  inventarioId    Int
+  /// Cantidad fÃ­sica entregada al paciente
+  cantidad        Int
 
-  /// Relación con la cabecera de dispensación
-  dispensacion      Dispensacion @relation(fields: [dispensacionId], references: [id])
-  /// Relación con el detalle de la receta
-  detalleReceta     DetalleReceta @relation(fields: [detalleRecetaId], references: [id])
-  /// Relación con el lote de inventario
-  inventario        Inventario    @relation(fields: [inventarioId], references: [id])
+  /// RelaciÃ³n con la cabecera de dispensaciÃ³n
+  dispensacion  Dispensacion  @relation(fields: [dispensacionId], references: [id])
+  /// RelaciÃ³n con el detalle de la receta
+  detalleReceta DetalleReceta @relation(fields: [detalleRecetaId], references: [id])
+  /// RelaciÃ³n con el lote de inventario
+  inventario    Inventario    @relation(fields: [inventarioId], references: [id])
 
   @@map("dispensacion_detalles")
 }
 
 // =============================================
-// GEOGRAFÍA (HONDURAS)
+// GEOGRAFÃA (HONDURAS)
 // =============================================
 
 /// Listado de los 18 departamentos de Honduras
 model Departamento {
-  /// Identificador único (Código INE)
-  id        Int      @id
-  /// Código alfanumérico de 2 dígitos (ej: 01, 08)
-  codigo    String   @unique @db.VarChar(2)
+  /// Identificador Ãºnico (CÃ³digo INE)
+  id     Int    @id
+  /// CÃ³digo alfanumÃ©rico de 2 dÃ­gitos (ej: 01, 08)
+  codigo String @unique @db.VarChar(2)
   /// Nombre oficial del departamento
-  nombre    String   @unique @db.VarChar(50)
+  nombre String @unique @db.VarChar(50)
 
   /// Municipios pertenecientes al departamento
-  municipios      Municipio[]
+  municipios       Municipio[]
   /// Establecimientos de salud ubicados en el departamento
   establecimientos Establecimiento[]
   /// Pacientes que residen en el departamento
-  pacientes       Paciente[]
+  pacientes        Paciente[]
 
   @@map("departamentos")
 }
 
 /// Listado de los 298 municipios de Honduras
 model Municipio {
-  /// Identificador único (Código INE de 4 dígitos)
-  id             Int      @id
-  /// Código alfanumérico de 4 dígitos (ej: 0801)
-  codigo         String   @unique @db.VarChar(4)
+  /// Identificador Ãºnico (CÃ³digo INE de 4 dÃ­gitos)
+  id             Int    @id
+  /// CÃ³digo alfanumÃ©rico de 4 dÃ­gitos (ej: 0801)
+  codigo         String @unique @db.VarChar(4)
   /// Nombre oficial del municipio
-  nombre         String   @db.VarChar(100)
+  nombre         String @db.VarChar(100)
   /// ID del departamento al que pertenece
   departamentoId Int
 
-  /// Relación con el departamento padre
-  departamento  Departamento @relation(fields: [departamentoId], references: [id])
+  /// RelaciÃ³n con el departamento padre
+  departamento     Departamento      @relation(fields: [departamentoId], references: [id])
   /// Establecimientos de salud ubicados en el municipio
   establecimientos Establecimiento[]
   /// Pacientes que residen en el municipio
-  pacientes       Paciente[]
+  pacientes        Paciente[]
 
   @@map("municipios")
 }
 
 // =============================================
-// AGENDAS MÉDICAS
+// AGENDAS MÃDICAS
 // =============================================
 
-/// Definición de horarios laborales recurrentes de los médicos
+/// DefiniciÃ³n de horarios laborales recurrentes de los mÃ©dicos
 model AgendaBase {
-  /// Identificador único
+  /// Identificador Ãºnico
   id                Int      @id @default(autoincrement())
-  /// ID del médico dueño de la agenda
+  /// ID del mÃ©dico dueÃ±o de la agenda
   medicoId          Int
   /// ID del establecimiento donde labora en este horario
   establecimientoId Int      @default(1)
-  /// Día de la semana (0=Domingo, 1=Lunes, ..., 6=Sábado)
-  diaSemana         Int      
+  /// DÃ­a de la semana (0=Domingo, 1=Lunes, ..., 6=SÃ¡bado)
+  diaSemana         Int
   /// Hora de inicio de la jornada (formato HH:mm)
   horaInicio        String   @db.VarChar(5)
   /// Hora de fin de la jornada (formato HH:mm)
   horaFin           String   @db.VarChar(5)
-  /// Indica si este horario está vigente
+  /// Indica si este horario estÃ¡ vigente
   activo            Boolean  @default(true)
   /// Fecha de registro de la agenda
   creadoEn          DateTime @default(now())
-  /// Fecha de última modificación de horarios
+  /// Fecha de Ãºltima modificaciÃ³n de horarios
   actualizadoEn     DateTime @updatedAt
 
-  /// Relación con el usuario médico
-  medico            Usuario  @relation("AgendaMedico", fields: [medicoId], references: [id])
-  /// Relación con el establecimiento
-  establecimiento   Establecimiento @relation(fields: [establecimientoId], references: [id])
+  /// RelaciÃ³n con el usuario mÃ©dico
+  medico          Usuario         @relation("AgendaMedico", fields: [medicoId], references: [id])
+  /// RelaciÃ³n con el establecimiento
+  establecimiento Establecimiento @relation(fields: [establecimientoId], references: [id])
 
   @@unique([medicoId, establecimientoId, diaSemana, horaInicio])
   @@map("agendas_base")
 }
 
-/// Registro de ausencias o cambios temporales en la disponibilidad médica
+/// Registro de ausencias o cambios temporales en la disponibilidad mÃ©dica
 model ExcepcionAgenda {
-  /// Identificador único
-  id                Int            @id @default(autoincrement())
-  /// ID del médico afectado por la excepción
+  /// Identificador Ãºnico
+  id                Int           @id @default(autoincrement())
+  /// ID del mÃ©dico afectado por la excepciÃ³n
   medicoId          Int
-  /// ID del establecimiento donde aplica la excepción
-  establecimientoId Int      @default(1)
+  /// ID del establecimiento donde aplica la excepciÃ³n
+  establecimientoId Int           @default(1)
   /// Motivo de la ausencia (Vacaciones, Incapacidad, etc.)
   tipo              TipoExcepcion
-  /// Fecha y hora de inicio de la excepción
+  /// Fecha y hora de inicio de la excepciÃ³n
   fechaInicio       DateTime
-  /// Fecha y hora de fin de la excepción
+  /// Fecha y hora de fin de la excepciÃ³n
   fechaFin          DateTime
-  /// Descripción detallada o notas administrativas
-  descripcion       String?        @db.VarChar(500)
+  /// DescripciÃ³n detallada o notas administrativas
+  descripcion       String?       @db.VarChar(500)
   /// Fecha de registro del evento
-  creadoEn          DateTime       @default(now())
-  /// ID del usuario que registró la excepción
+  creadoEn          DateTime      @default(now())
+  /// ID del usuario que registrÃ³ la excepciÃ³n
   creadoPorId       Int?
 
-  /// Relación con el usuario médico
-  medico            Usuario        @relation("ExcepcionMedico", fields: [medicoId], references: [id])
-  /// Relación con el establecimiento
-  establecimiento   Establecimiento @relation(fields: [establecimientoId], references: [id])
+  /// RelaciÃ³n con el usuario mÃ©dico
+  medico          Usuario         @relation("ExcepcionMedico", fields: [medicoId], references: [id])
+  /// RelaciÃ³n con el establecimiento
+  establecimiento Establecimiento @relation(fields: [establecimientoId], references: [id])
 
   @@map("excepciones_agenda")
 }
 
-/// Clasificación de los motivos de ausencia médica
+/// ClasificaciÃ³n de los motivos de ausencia mÃ©dica
 enum TipoExcepcion {
-  /// Período de descanso anual
+  /// PerÃ­odo de descanso anual
   VACACIONES_NORMALES
-  /// Descanso obligatorio por exposición a riesgos (ej: Rayos X)
+  /// Descanso obligatorio por exposiciÃ³n a riesgos (ej: Rayos X)
   VACACIONES_PROFILACTICAS
-  /// Ausencia por eventos de educación médica continua
+  /// Ausencia por eventos de educaciÃ³n mÃ©dica continua
   CURSO_CONGRESO
   /// Ausencia justificada por enfermedad propia
   INCAPACIDAD
@@ -1931,37 +2071,37 @@ enum TipoExcepcion {
 }
 
 // =============================================
-// MÓDULO DE VACUNACIÓN (Estándar PAI SESAL)
+// MÃDULO DE VACUNACIÃN (EstÃ¡ndar PAI SESAL)
 // =============================================
 
-/// Catálogo maestro de vacunas autorizadas (Esquema PAI)
+/// CatÃ¡logo maestro de vacunas autorizadas (Esquema PAI)
 model CatVacuna {
-  /// Identificador único
-  id              Int       @id @default(autoincrement())
+  /// Identificador Ãºnico
+  id            Int        @id @default(autoincrement())
   /// Nombre oficial de la vacuna (ej: BCG, Sabin)
-  nombre          String    @unique @db.VarChar(100)
-  /// Descripción de la enfermedad que previene
-  descripcion     String?   @db.VarChar(500)
-  /// Naturaleza biológica de la vacuna
-  tipo            TipoVacuna @default(VIRAL_ATENUADA)
-  /// Grupo de edad o condición para la cual está indicada
-  poblacionMeta   String?   @db.VarChar(100) 
-  /// Indica si la vacuna está vigente en el esquema nacional
-  activo          Boolean   @default(true)
-  /// Fecha de registro en el catálogo
-  creadoEn        DateTime  @default(now())
+  nombre        String     @unique @db.VarChar(100)
+  /// DescripciÃ³n de la enfermedad que previene
+  descripcion   String?    @db.VarChar(500)
+  /// Naturaleza biolÃ³gica de la vacuna
+  tipo          TipoVacuna @default(VIRAL_ATENUADA)
+  /// Grupo de edad o condiciÃ³n para la cual estÃ¡ indicada
+  poblacionMeta String?    @db.VarChar(100)
+  /// Indica si la vacuna estÃ¡ vigente en el esquema nacional
+  activo        Boolean    @default(true)
+  /// Fecha de registro en el catÃ¡logo
+  creadoEn      DateTime   @default(now())
 
   /// Definiciones de dosis para esta vacuna
-  esquemas        EsquemaVacunacion[]
-  /// Lotes físicos recibidos de esta vacuna
-  lotes           LoteVacuna[]
-  /// Registros históricos de aplicaciones
-  registros       VacunacionRegistro[]
+  esquemas  EsquemaVacunacion[]
+  /// Lotes fÃ­sicos recibidos de esta vacuna
+  lotes     LoteVacuna[]
+  /// Registros histÃ³ricos de aplicaciones
+  registros VacunacionRegistro[]
 
   @@map("cat_vacunas")
 }
 
-/// Clasificación biológica de los biológicos
+/// ClasificaciÃ³n biolÃ³gica de los biolÃ³gicos
 enum TipoVacuna {
   /// Virus vivos debilitados
   VIRAL_ATENUADA
@@ -1971,215 +2111,459 @@ enum TipoVacuna {
   BACTERIANA_ATENUADA
   /// Bacterias muertas o inactivadas
   BACTERIANA_INACTIVADA
-  /// Ingeniería genética (ej: Hepatitis B)
+  /// IngenierÃ­a genÃ©tica (ej: Hepatitis B)
   RECOMBINANTE
-  /// Tecnología de ARN (ej: COVID-19)
+  /// TecnologÃ­a de ARN (ej: COVID-19)
   ARN_MENSAJERO
-  /// Basadas en toxinas bacterianas (ej: Tétanos)
+  /// Basadas en toxinas bacterianas (ej: TÃ©tanos)
   TOXOIDE
 }
 
-/// Definición de las dosis y tiempos de aplicación por cada vacuna
+/// DefiniciÃ³n de las dosis y tiempos de aplicaciÃ³n por cada vacuna
 model EsquemaVacunacion {
-  /// Identificador único
-  id              Int       @id @default(autoincrement())
+  /// Identificador Ãºnico
+  id                   Int     @id @default(autoincrement())
   /// ID de la vacuna asociada
-  vacunaId        Int
+  vacunaId             Int
   /// Orden de la dosis (1=Primera, 2=Segunda, 3=Tercera, 4=Refuerzo)
-  numeroDosis     Int       
+  numeroDosis          Int
   /// Edad ideal del paciente en meses para la dosis
-  edadRecomendadaMeses Int  
-  /// Tiempo mínimo de espera desde la dosis previa
-  intervaloMinimoDias  Int? 
-  /// Notas sobre la aplicación (ej: Dosis única)
-  descripcion     String?   @db.VarChar(200)
+  edadRecomendadaMeses Int
+  /// Tiempo mÃ­nimo de espera desde la dosis previa
+  intervaloMinimoDias  Int?
+  /// Notas sobre la aplicaciÃ³n (ej: Dosis Ãºnica)
+  descripcion          String? @db.VarChar(200)
 
-  /// Relación con la vacuna
-  vacuna          CatVacuna @relation(fields: [vacunaId], references: [id])
-  /// Registros de pacientes que han recibido esta dosis específica
-  registros       VacunacionRegistro[]
+  /// RelaciÃ³n con la vacuna
+  vacuna    CatVacuna            @relation(fields: [vacunaId], references: [id])
+  /// Registros de pacientes que han recibido esta dosis especÃ­fica
+  registros VacunacionRegistro[]
 
   @@unique([vacunaId, numeroDosis])
   @@map("esquemas_vacunacion")
 }
 
-/// Gestión de lotes específicos de vacunas y su inventario
+/// GestiÃ³n de lotes especÃ­ficos de vacunas y su inventario
 model LoteVacuna {
-  /// Identificador único
-  id              Int       @id @default(autoincrement())
+  /// Identificador Ãºnico
+  id                Int      @id @default(autoincrement())
   /// ID de la vacuna
-  vacunaId        Int
-  /// Código alfanumérico del lote (fabricante)
-  codigoLote      String    @db.VarChar(50)
-  /// Laboratorio productor del biológico
-  fabricante      String?   @db.VarChar(100)
+  vacunaId          Int
+  /// CÃ³digo alfanumÃ©rico del lote (fabricante)
+  codigoLote        String   @db.VarChar(50)
+  /// Laboratorio productor del biolÃ³gico
+  fabricante        String?  @db.VarChar(100)
   /// Fecha de caducidad del lote
-  fechaVencimiento DateTime
+  fechaVencimiento  DateTime
   /// Cantidad de dosis recibidas originalmente
-  cantidadInicial Int
+  cantidadInicial   Int
   /// Dosis disponibles actualmente
-  cantidadActual  Int
+  cantidadActual    Int
   /// ID del establecimiento custodio del lote
   establecimientoId Int
   /// Indica si el lote puede ser utilizado
-  activo          Boolean   @default(true)
+  activo            Boolean  @default(true)
   /// Fecha de registro en el sistema
-  creadoEn        DateTime  @default(now())
+  creadoEn          DateTime @default(now())
 
-  /// Relación con la vacuna
-  vacuna          CatVacuna       @relation(fields: [vacunaId], references: [id])
-  /// Relación con el establecimiento
-  establecimiento Establecimiento @relation(fields: [establecimientoId], references: [id])
+  /// RelaciÃ³n con la vacuna
+  vacuna          CatVacuna            @relation(fields: [vacunaId], references: [id])
+  /// RelaciÃ³n con el establecimiento
+  establecimiento Establecimiento      @relation(fields: [establecimientoId], references: [id])
   /// Aplicaciones realizadas con este lote
   registros       VacunacionRegistro[]
-  /// Historial de movimientos (ingresos, pérdidas) del lote
+  /// Historial de movimientos (ingresos, pÃ©rdidas) del lote
   movimientos     MovimientoVacuna[]
 
   @@unique([establecimientoId, vacunaId, codigoLote])
   @@map("lotes_vacunas")
 }
 
-/// Registro detallado de transacciones físicas de biológicos
+/// Registro detallado de transacciones fÃ­sicas de biolÃ³gicos
 model MovimientoVacuna {
-  /// Identificador único
-  id           Int            @id @default(autoincrement())
+  /// Identificador Ãºnico
+  id        Int                  @id @default(autoincrement())
   /// ID del lote afectado
-  loteId       Int
-  /// Tipo de transacción de inventario
-  tipo         TipoMovimientoVacuna
-  /// Número de dosis (positivo para ingresos, negativo para egresos)
-  cantidad     Int            
-  /// Explicación del movimiento
-  motivo       String?        @db.VarChar(200)
-  /// ID del usuario que registró la transacción
-  usuarioId    Int
+  loteId    Int
+  /// Tipo de transacciÃ³n de inventario
+  tipo      TipoMovimientoVacuna
+  /// NÃºmero de dosis (positivo para ingresos, negativo para egresos)
+  cantidad  Int
+  /// ExplicaciÃ³n del movimiento
+  motivo    String?              @db.VarChar(200)
+  /// ID del usuario que registrÃ³ la transacciÃ³n
+  usuarioId Int
   /// Fecha y hora del registro
-  fecha        DateTime       @default(now())
+  fecha     DateTime             @default(now())
 
-  /// Relación con el lote
-  lote         LoteVacuna     @relation(fields: [loteId], references: [id])
-  /// Relación con el usuario
-  usuario      Usuario        @relation(fields: [usuarioId], references: [id])
+  /// RelaciÃ³n con el lote
+  lote    LoteVacuna @relation(fields: [loteId], references: [id])
+  /// RelaciÃ³n con el usuario
+  usuario Usuario    @relation(fields: [usuarioId], references: [id])
 
   @@map("movimientos_vacunas")
 }
 
-/// Clasificación de transacciones específicas para vacunas
+/// ClasificaciÃ³n de transacciones especÃ­ficas para vacunas
 enum TipoMovimientoVacuna {
-  /// Recepción de biológicos
+  /// RecepciÃ³n de biolÃ³gicos
   ENTRADA
   /// Traslado a otro establecimiento
   SALIDA
   /// Uso directo en paciente
   APLICACION
-  /// Corrección genérica de stock
+  /// CorrecciÃ³n genÃ©rica de stock
   AJUSTE
-  /// Corrección por sobrantes
+  /// CorrecciÃ³n por sobrantes
   AJUSTE_POSITIVO
-  /// Corrección por faltantes
+  /// CorrecciÃ³n por faltantes
   AJUSTE_NEGATIVO
-  /// Pérdida por interrupción de refrigeración
+  /// PÃ©rdida por interrupciÃ³n de refrigeraciÃ³n
   PERDIDA_CADENA_FRIO
-  /// Accidente físico con el vial
+  /// Accidente fÃ­sico con el vial
   FRASCO_QUEBRADO
-  /// El biológico alcanzó su fecha límite
+  /// El biolÃ³gico alcanzÃ³ su fecha lÃ­mite
   VENCIMIENTO
 }
 
-/// Registro histórico de la aplicación de una dosis a un paciente
+/// Registro histÃ³rico de la aplicaciÃ³n de una dosis a un paciente
 model VacunacionRegistro {
-  /// Identificador único
-  id              Int       @id @default(autoincrement())
+  /// Identificador Ãºnico
+  id              Int      @id @default(autoincrement())
   /// ID del paciente inmunizado
   pacienteId      Int
   /// ID de la vacuna aplicada
   vacunaId        Int
   /// ID de la dosis dentro del esquema (si aplica)
   esquemaId       Int?
-  /// ID del lote físico utilizado
+  /// ID del lote fÃ­sico utilizado
   loteId          Int
-  /// Fecha y hora de la aplicación
-  fechaAplicacion DateTime  @default(now())
-  /// Lugar anatómico (ej: Brazo derecho)
-  sitioAplicacion String?   @db.VarChar(50) 
-  /// Técnica utilizada (ej: Intramuscular)
-  viaAplicacion   String?   @db.VarChar(50) 
+  /// Fecha y hora de la aplicaciÃ³n
+  fechaAplicacion DateTime @default(now())
+  /// Lugar anatÃ³mico (ej: Brazo derecho)
+  sitioAplicacion String?  @db.VarChar(50)
+  /// TÃ©cnica utilizada (ej: Intramuscular)
+  viaAplicacion   String?  @db.VarChar(50)
   /// Notas sobre reacciones adversas o incidentes
-  observaciones   String?   @db.Text
-  
-  /// Establecimiento donde se aplicó
-  establecimientoId Int
-  /// Usuario (enfermera/médico) que administró la dosis
-  aplicadoPorId    Int
+  observaciones   String?  @db.Text
 
-  /// Relación con el paciente
-  paciente        Paciente        @relation(fields: [pacienteId], references: [id])
-  /// Relación con la ficha de la vacuna
-  vacuna          CatVacuna       @relation(fields: [vacunaId], references: [id])
-  /// Relación con la dosis del esquema
+  /// Establecimiento donde se aplicÃ³
+  establecimientoId Int
+  /// Usuario (enfermera/mÃ©dico) que administrÃ³ la dosis
+  aplicadoPorId     Int
+
+  /// RelaciÃ³n con el paciente
+  paciente        Paciente           @relation(fields: [pacienteId], references: [id])
+  /// RelaciÃ³n con la ficha de la vacuna
+  vacuna          CatVacuna          @relation(fields: [vacunaId], references: [id])
+  /// RelaciÃ³n con la dosis del esquema
   esquema         EsquemaVacunacion? @relation(fields: [esquemaId], references: [id])
-  /// Relación con el lote físico
-  lote            LoteVacuna      @relation(fields: [loteId], references: [id])
-  /// Relación con el establecimiento
-  establecimiento Establecimiento @relation(fields: [establecimientoId], references: [id])
-  /// Relación con el vacunador
-  aplicadoPor     Usuario         @relation(fields: [aplicadoPorId], references: [id])
+  /// RelaciÃ³n con el lote fÃ­sico
+  lote            LoteVacuna         @relation(fields: [loteId], references: [id])
+  /// RelaciÃ³n con el establecimiento
+  establecimiento Establecimiento    @relation(fields: [establecimientoId], references: [id])
+  /// RelaciÃ³n con el vacunador
+  aplicadoPor     Usuario            @relation(fields: [aplicadoPorId], references: [id])
 
   @@map("registros_vacunacion")
 }
 
 // =============================================
-// VIGILANCIA EPIDEMIOLÓGICA
+// VIGILANCIA EPIDEMIOLÃGICA
 // =============================================
 
-/// Reporte de enfermedades de vigilancia obligatoria para salud pública
+/// Reporte de enfermedades de vigilancia obligatoria para salud pÃºblica
 model NotificacionEpidemiologica {
-  /// Identificador único
-  id                Int      @id @default(autoincrement())
+  /// Identificador Ãºnico
+  id               Int    @id @default(autoincrement())
   /// ID del paciente afectado
-  pacienteId        Int
-  /// ID del encuentro clínico donde se detectó
-  historiaId        Int      @unique
-  /// Código CIE-10 de la enfermedad sospechosa/confirmada
-  diagnosticoCIE10  String   @db.VarChar(10)
-  
-  /// Coordenada geográfica (Eje Y) para mapas de calor
-  latitud           Decimal? @db.Decimal(10, 8)
-  /// Coordenada geográfica (Eje X) para mapas de calor
-  longitud          Decimal? @db.Decimal(11, 8)
+  pacienteId       Int
+  /// ID del encuentro clÃ­nico donde se detectÃ³
+  historiaId       Int    @unique
+  /// CÃ³digo CIE-10 de la enfermedad sospechosa/confirmada
+  diagnosticoCIE10 String @db.VarChar(10)
+
+  /// Coordenada geogrÃ¡fica (Eje Y) para mapas de calor
+  latitud            Decimal? @db.Decimal(10, 8)
+  /// Coordenada geogrÃ¡fica (Eje X) para mapas de calor
+  longitud           Decimal? @db.Decimal(11, 8)
   /// Croquis o puntos de referencia del domicilio
-  direccionDetallada String? @db.Text
-  
-  /// Fecha estimada del primer síntoma reportado
+  direccionDetallada String?  @db.Text
+
+  /// Fecha estimada del primer sÃ­ntoma reportado
   fechaInicioSintomas DateTime? @db.Date
   /// Historial de desplazamientos recientes del paciente
   antecedentesViaje   String?   @db.Text
-  /// Centros poblados o áreas visitadas
+  /// Centros poblados o Ã¡reas visitadas
   lugaresVisitados    String?   @db.Text
-  /// Información epidemiológica adicional
+  /// InformaciÃ³n epidemiolÃ³gica adicional
   observaciones       String?   @db.Text
-  
-  /// Fecha de creación del reporte
-  creadoEn          DateTime @default(now())
-  /// ID del médico que detectó el caso
-  creadoPorId       Int?
-  
-  /// Estado del proceso de investigación (PENDIENTE, NOTIFICADO)
-  estado            String   @default("PENDIENTE") 
-  /// Fecha de cierre o escalamiento de la investigación
-  gestionadoEn      DateTime?
-  /// ID del epidemiólogo que validó el caso
-  gestionadoPorId   Int?
 
-  /// Relación con el paciente
-  paciente          Paciente        @relation(fields: [pacienteId], references: [id])
-  /// Relación con la historia clínica
-  historia          HistoriaClinica @relation(fields: [historiaId], references: [id])
-  /// Relación con el capturador inicial
-  creadoPor         Usuario?        @relation("NotificacionCreadaPor", fields: [creadoPorId], references: [id])
-  /// Relación con el gestor epidemiológico
-  gestionadoPor     Usuario?        @relation("GestionadoPor", fields: [gestionadoPorId], references: [id])
+  /// Fecha de creaciÃ³n del reporte
+  creadoEn    DateTime @default(now())
+  /// ID del mÃ©dico que detectÃ³ el caso
+  creadoPorId Int?
+
+  /// Estado del proceso de investigaciÃ³n (PENDIENTE, NOTIFICADO)
+  estado          String    @default("PENDIENTE")
+  /// Fecha de cierre o escalamiento de la investigaciÃ³n
+  gestionadoEn    DateTime?
+  /// ID del epidemiÃ³logo que validÃ³ el caso
+  gestionadoPorId Int?
+
+  /// RelaciÃ³n con el paciente
+  paciente      Paciente        @relation(fields: [pacienteId], references: [id])
+  /// RelaciÃ³n con la historia clÃ­nica
+  historia      HistoriaClinica @relation(fields: [historiaId], references: [id])
+  /// RelaciÃ³n con el capturador inicial
+  creadoPor     Usuario?        @relation("NotificacionCreadaPor", fields: [creadoPorId], references: [id])
+  /// RelaciÃ³n con el gestor epidemiolÃ³gico
+  gestionadoPor Usuario?        @relation("GestionadoPor", fields: [gestionadoPorId], references: [id])
 
   @@map("notificaciones_epidemiologicas")
 }
 
+// =============================================
+// HOSPITALIZACIÓN (ADMISIÓN Y EGRESO)
+// =============================================
+
+/// Representa el ingreso de un paciente a una cama del hospital
+model IngresoHospitalario {
+  /// Identificador único
+  id                 Int                   @id @default(autoincrement())
+  /// ID del paciente que ingresa
+  pacienteId         Int
+  /// ID de la cama asignada
+  camaId             Int
+  /// ID del servicio que lo admite
+  servicioId         Int
+  /// Fecha y hora de ingreso
+  fechaIngreso       DateTime              @default(now())
+  /// Motivo clínico del ingreso
+  motivoIngreso      String                @db.Text
+  /// Código CIE-10 presuntivo
+  cie10Ingreso       String?               @db.VarChar(10)
+  /// Descripción del diagnóstico presuntivo
+  diagnosticoIngreso String?               @db.VarChar(500)
+  /// ID del médico que autoriza el ingreso
+  medicoIngresoId    Int
+  /// Estado actual del internamiento
+  estado             EstadoHospitalizacion @default(ACTIVO)
+
+  /// Fecha de registro en el sistema
+  creadoEn    DateTime @default(now())
+  /// ID del usuario que registró el ingreso (admisionista)
+  creadoPorId Int
+
+  /// Relación con el paciente
+  paciente      Paciente                 @relation(fields: [pacienteId], references: [id])
+  /// Relación con la cama
+  cama          Cama                     @relation(fields: [camaId], references: [id])
+  /// Relación con el servicio
+  servicio      Servicio                 @relation(fields: [servicioId], references: [id])
+  /// Relación con el médico tratante
+  medicoIngreso Usuario                  @relation("MedicoIngreso", fields: [medicoIngresoId], references: [id])
+  /// Registro de egreso asociado (si ya se dio de alta)
+  egreso        EgresoHospitalario?
+  /// Historial de movimientos de cama durante la estancia
+  movimientos   MovimientoHospitalario[]
+
+  /// Relación con las notas de evolución
+  notasEvolucion NotaEvolucion[]
+
+  /// Relación con el Kardex de medicamentos
+  kardexMedicamentos KardexMedicamento[]
+  /// Relación con el control de signos vitales de enfermería
+  controlSignos      ControlSignosVitales[]
+
+  @@map("ingresos_hospitalarios")
+}
+
+/// Registro de administración de medicamentos (Kardex)
+model KardexMedicamento {
+  id              Int                  @id @default(autoincrement())
+  ingresoId       Int
+  medicamentoId   Int
+  dosis           String               @db.VarChar(100)
+  via             String?              @db.VarChar(50)
+  fechaProgramada DateTime
+  fechaAplicacion DateTime?
+  estado          EstadoAdministracion @default(PENDIENTE)
+  observaciones   String?              @db.Text
+  enfermeraId     Int
+
+  ingreso     IngresoHospitalario @relation(fields: [ingresoId], references: [id])
+  medicamento Medicamento         @relation(fields: [medicamentoId], references: [id])
+  enfermera   Usuario             @relation(fields: [enfermeraId], references: [id])
+
+  @@map("kardex_medicamentos")
+}
+
+/// Registro frecuente de signos vitales por enfermería
+model ControlSignosVitales {
+  id        Int      @id @default(autoincrement())
+  ingresoId Int
+  fecha     DateTime @default(now())
+
+  frecuenciaCardiaca     Int?
+  frecuenciaRespiratoria Int?
+  presionArterial        String?  @db.VarChar(20)
+  temperatura            Decimal? @db.Decimal(4, 2)
+  saturacionOxigeno      Int?
+  pesoKg                 Decimal? @db.Decimal(5, 2)
+  glucoMetria            Int?
+
+  observaciones String? @db.Text
+  usuarioId     Int
+
+  ingreso IngresoHospitalario @relation(fields: [ingresoId], references: [id])
+  usuario Usuario             @relation(fields: [usuarioId], references: [id])
+
+  @@map("control_signos_vitales")
+}
+
+enum EstadoAdministracion {
+  PENDIENTE
+  ADMINISTRADO
+  OMITIDO
+  RECHAZADO
+}
+
+/// Registro cronológico del progreso médico de un paciente hospitalizado
+model NotaEvolucion {
+  /// Identificador único
+  id        Int      @id @default(autoincrement())
+  /// ID del ingreso hospitalario al que pertenece la nota
+  ingresoId Int
+  /// Fecha y hora de la evaluación
+  fecha     DateTime @default(now())
+  /// Relato médico de la evolución
+  nota      String   @db.Text
+
+  // Signos vitales en el momento de la evolución (opcionales)
+  frecuenciaCardiaca     Int?
+  frecuenciaRespiratoria Int?
+  presionArterial        String?  @db.VarChar(20)
+  temperatura            Decimal? @db.Decimal(4, 2)
+  saturacionOxigeno      Int?
+
+  /// ID del médico que realiza la nota
+  medicoId Int
+
+  /// Relación con el ingreso
+  ingreso IngresoHospitalario @relation(fields: [ingresoId], references: [id])
+  /// Relación con el médico (Usuario)
+  medico  Usuario             @relation(fields: [medicoId], references: [id])
+
+  @@map("notas_evolucion")
+}
+
+/// Representa el alta o egreso de un paciente hospitalizado
+model EgresoHospitalario {
+  /// Identificador único
+  id              Int        @id @default(autoincrement())
+  /// ID del ingreso asociado
+  ingresoId       Int        @unique
+  /// Fecha y hora de egreso
+  fechaEgreso     DateTime   @default(now())
+  /// Tipo de egreso (Alta médica, Traslado, Fallecimiento, Voluntario)
+  tipoEgreso      TipoEgreso
+  /// Condición del paciente al egreso
+  condicionEgreso String     @db.Text
+  /// Código CIE-10 final o de egreso
+  cie10Egreso     String?    @db.VarChar(10)
+  /// Resumen clínico final (Epicrisis)
+  epicrisis       String?    @db.Text
+  /// ID del médico que da el alta
+  medicoEgresoId  Int
+
+  /// Relación con el ingreso
+  ingreso      IngresoHospitalario @relation(fields: [ingresoId], references: [id])
+  /// Relación con el médico que firma el alta
+  medicoEgreso Usuario             @relation("MedicoEgreso", fields: [medicoEgresoId], references: [id])
+
+  @@map("egresos_hospitalarios")
+}
+
+/// Historial de movimientos de cama de un paciente dentro de una misma hospitalización
+model MovimientoHospitalario {
+  /// Identificador único
+  id              Int      @id @default(autoincrement())
+  /// ID del ingreso hospitalario
+  ingresoId       Int
+  /// ID de la cama de origen
+  camaOrigenId    Int
+  /// ID de la cama de destino
+  camaDestinoId   Int
+  /// Fecha y hora del traslado
+  fechaMovimiento DateTime @default(now())
+  /// Motivo del traslado (ej: empeoramiento, paso a cuidados intermedios)
+  motivo          String?  @db.VarChar(250)
+  /// ID del usuario que realizó el traslado en el sistema
+  usuarioId       Int
+
+  /// Relación con el ingreso
+  ingreso     IngresoHospitalario @relation(fields: [ingresoId], references: [id])
+  /// Relación con la cama de origen
+  camaOrigen  Cama                @relation("CamaOrigen", fields: [camaOrigenId], references: [id])
+  /// Relación con la cama de destino
+  camaDestino Cama                @relation("CamaDestino", fields: [camaDestinoId], references: [id])
+
+  @@map("movimientos_hospitalarios")
+}
+
+enum EstadoHospitalizacion {
+  ACTIVO
+  EGRESADO
+  TRASLADADO
+  FALLECIDO
+}
+
+enum TipoEgreso {
+  ALTA_MEDICA
+  ALTA_VOLUNTARIA
+  TRASLADADO_OTRO_HOSPITAL
+  FALLECIMIENTO
+  FUGA
+}
+
+// =============================================
+// CONFIGURACIÓN DE LOGIN
+// =============================================
+
+/// Representa las imágenes que se muestran en el carrusel de la pantalla de login
+model ImagenLogin {
+  /// Identificador único
+  id            Int      @id @default(autoincrement())
+  /// Nombre descriptivo de la imagen
+  nombre        String   @db.VarChar(100)
+  /// Título opcional que se muestra sobre la imagen
+  titulo        String?  @db.VarChar(100)
+  /// Descripción opcional que se muestra sobre la imagen
+  descripcion   String?  @db.VarChar(300)
+  /// Tipo de contenido (image/jpeg, image/png, etc.)
+  mimetype      String   @db.VarChar(50)
+  /// Datos binarios de la imagen
+  datos         Bytes    @db.MediumBlob
+  /// Indica si la imagen está activa para mostrarse
+  activo        Boolean  @default(true)
+  /// Orden de aparición en el carrusel
+  orden         Int      @default(0)
+  /// Fecha de registro
+  creadoEn      DateTime @default(now())
+  /// Fecha de última actualización
+  actualizadoEn DateTime @updatedAt
+
+  @@map("imagenes_login")
+}
+
+model Configuracion {
+  id            Int      @id @default(1)
+  siglasSistema String   @default("SISS") @map("siglas_sistema")
+  nombreSistema String   @default("Sistema Integral de Servicios de Salud") @map("nombre_sistema")
+  logo          Bytes?   @db.MediumBlob
+  logoMimetype  String?  @map("logo_mimetype")
+  actualizadoEn DateTime @updatedAt @map("actualizado_en")
+
+  @@map("configuraciones")
+}

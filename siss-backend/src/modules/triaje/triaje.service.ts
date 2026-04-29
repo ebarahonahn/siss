@@ -103,6 +103,7 @@ export class TriajeService {
             nivelConciencia: dto.nivelConciencia as any,
             categoria: dto.categoria as any,
             observaciones: dto.observaciones,
+            creadoEn: dto.creadoEn ? new Date(dto.creadoEn) : new Date(),
           },
           include: INCLUDE_TRIAJE,
         }),

@@ -40,6 +40,10 @@ export class TriajeComponent implements OnInit {
   soloLectura       = signal(false);
   guardando         = signal(false);
   paso              = signal<'lista' | 'form'>('lista');
+  
+  esFechaValida(fecha: string): boolean {
+    return DateUtils.esFechaValida(fecha);
+  }
 
   readonly categorias  = CATEGORIAS;
   readonly conciencias = CONCIENCIA;
@@ -79,6 +83,10 @@ export class TriajeComponent implements OnInit {
   ngOnInit() { this.cargar(); }
 
   cargar() {
+    if (!DateUtils.esFechaValida(this.fechaFiltro)) {
+      this.citas.set([]);
+      return;
+    }
     this.cargando.set(true);
     this.svc.citasPendientes(this.fechaFiltro).subscribe({
       next: data => { this.citas.set(data ?? []); this.cargando.set(false); },

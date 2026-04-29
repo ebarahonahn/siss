@@ -49,6 +49,11 @@ export class EpidemiologiaController {
     return this.epidemiologiaService.obtenerAlertasTiempo();
   }
 
+  @Get('dashboard/resumen-diagnosticos')
+  async obtenerResumenDiagnosticos() {
+    return this.epidemiologiaService.obtenerResumenDiagnosticos();
+  }
+
   @Post(':id/gestionar')
   async gestionar(
     @Param('id', ParseIntPipe) id: number,

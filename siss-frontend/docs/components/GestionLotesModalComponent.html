@@ -1,0 +1,1472 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>siss-frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">siss-frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  GestionLotesModalComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#styleData" class="nav-link"
+                role="tab" id="styleData-tab" data-bs-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/modules/vacunacion/components/gestion-lotes-modal.component.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                <code>OnInit</code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-gestion-lotes-modal</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                            <code>CommonModule</code>
+                            <code>FormsModule</code>
+                            <code>ReactiveFormsModule</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-3">styles</td>
+                <td class="col-md-9"><code>
+    .scale-in { animation: scaleIn 0.3s ease-out; }
+    @keyframes scaleIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+  </code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">template</td>
+                <td class="col-md-9"><pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm animate__animated animate__fadeIn&quot;&gt;
+  &lt;div class&#x3D;&quot;bg-white w-full max-w-5xl rounded-3xl overflow-hidden shadow-2xl flex flex-col scale-in h-[90vh]&quot;&gt;
+
+    &lt;!-- Header --&gt;
+    &lt;div class&#x3D;&quot;px-8 py-6 bg-gray-900 flex items-center justify-between text-white&quot;&gt;
+      &lt;div&gt;
+        &lt;h2 class&#x3D;&quot;text-xl font-bold flex items-center gap-2 uppercase tracking-tight&quot;&gt;
+          &lt;i class&#x3D;&quot;bi bi-box-seam&quot;&gt;&lt;/i&gt;
+          GESTIÓN DE LOTES PAI
+        &lt;/h2&gt;
+      &lt;/div&gt;
+      &lt;button (click)&#x3D;&quot;cerrar.emit()&quot; class&#x3D;&quot;p-2 hover:bg-gray-800 rounded-xl transition-all&quot;&gt;
+        &lt;i class&#x3D;&quot;bi bi-x-lg text-xl&quot;&gt;&lt;/i&gt;
+      &lt;/button&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Body --&gt;
+    &lt;div class&#x3D;&quot;flex-1 overflow-y-auto p-8 bg-gray-50/30&quot;&gt;
+
+      &lt;!-- Filtro de Establecimiento para Admins --&gt;
+      &lt;div class&#x3D;&quot;bg-blue-600 rounded-3xl p-6 mb-8 text-white shadow-lg shadow-blue-200 flex flex-col md:flex-row md:items-center gap-6&quot; *ngIf&#x3D;&quot;esAdmin&quot;&gt;
+        &lt;div class&#x3D;&quot;flex-1&quot;&gt;
+          &lt;h4 class&#x3D;&quot;font-bold text-lg&quot;&gt;Modo Administrador&lt;/h4&gt;
+          &lt;p class&#x3D;&quot;text-blue-100 text-xs uppercase font-bold tracking-widest mt-1&quot;&gt;Seleccione el establecimiento para gestionar sus lotes&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;flex-[2]&quot;&gt;
+          &lt;select class&#x3D;&quot;w-full px-5 py-3 bg-blue-700 border-transparent text-white rounded-xl text-sm font-bold focus:ring-2 focus:ring-white outline-none transition-all&quot;
+                  [(ngModel)]&#x3D;&quot;establecimientoId&quot; (change)&#x3D;&quot;onEstablecimientoChange()&quot;&gt;
+            &lt;option *ngFor&#x3D;&quot;let est of establecimientos&quot; [value]&#x3D;&quot;est.id&quot;&gt;{{ est.nombre }}&lt;/option&gt;
+          &lt;/select&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Form Card --&gt;
+      &lt;div class&#x3D;&quot;bg-white rounded-3xl shadow-sm border border-gray-100 p-6 mb-8&quot;&gt;
+        &lt;h4 class&#x3D;&quot;text-sm font-bold text-blue-600 uppercase tracking-widest mb-6&quot;&gt;Registrar Entrada de Vacunas&lt;/h4&gt;
+        &lt;form [formGroup]&#x3D;&quot;form&quot; (ngSubmit)&#x3D;&quot;guardar()&quot; class&#x3D;&quot;space-y-6&quot;&gt;
+          &lt;div class&#x3D;&quot;grid grid-cols-1 md:grid-cols-3 gap-6&quot;&gt;
+            &lt;div class&#x3D;&quot;space-y-1&quot;&gt;
+              &lt;label class&#x3D;&quot;text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1&quot;&gt;Vacuna *&lt;/label&gt;
+              &lt;select class&#x3D;&quot;w-full px-4 py-3 bg-gray-50 border-transparent focus:bg-white focus:ring-2 focus:ring-blue-500 rounded-xl text-sm transition-all outline-none font-semibold&quot;
+                      formControlName&#x3D;&quot;vacunaId&quot;&gt;
+                &lt;option [value]&#x3D;&quot;null&quot;&gt;Seleccione...&lt;/option&gt;
+                &lt;option *ngFor&#x3D;&quot;let v of catalogo&quot; [value]&#x3D;&quot;v.id&quot;&gt;{{ v.nombre }}&lt;/option&gt;
+              &lt;/select&gt;
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;space-y-1&quot;&gt;
+              &lt;label class&#x3D;&quot;text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1&quot;&gt;Código de Lote *&lt;/label&gt;
+              &lt;input type&#x3D;&quot;text&quot; class&#x3D;&quot;w-full px-4 py-3 bg-gray-50 border-transparent focus:bg-white focus:ring-2 focus:ring-blue-500 rounded-xl text-sm transition-all outline-none font-semibold&quot;
+                     formControlName&#x3D;&quot;codigoLote&quot; placeholder&#x3D;&quot;VAX-2024-XXX&quot;&gt;
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;space-y-1&quot;&gt;
+              &lt;label class&#x3D;&quot;text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1&quot;&gt;Fabricante *&lt;/label&gt;
+              &lt;input type&#x3D;&quot;text&quot; class&#x3D;&quot;w-full px-4 py-3 bg-gray-50 border-transparent focus:bg-white focus:ring-2 focus:ring-blue-500 rounded-xl text-sm transition-all outline-none font-semibold&quot;
+                     formControlName&#x3D;&quot;fabricante&quot; placeholder&#x3D;&quot;Ej: Pfizer, GSK&quot;&gt;
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;space-y-1&quot;&gt;
+              &lt;input type&#x3D;&quot;date&quot; class&#x3D;&quot;w-full px-4 py-3 bg-gray-50 border-transparent focus:bg-white focus:ring-2 focus:ring-blue-500 rounded-xl text-sm transition-all outline-none font-semibold&quot;
+                     [class.ring-2]&#x3D;&quot;form.get(&#x27;fechaVencimiento&#x27;)?.invalid &amp;&amp; form.get(&#x27;fechaVencimiento&#x27;)?.touched&quot;
+                     [class.ring-red-500]&#x3D;&quot;form.get(&#x27;fechaVencimiento&#x27;)?.invalid &amp;&amp; form.get(&#x27;fechaVencimiento&#x27;)?.touched&quot;
+                     formControlName&#x3D;&quot;fechaVencimiento&quot;&gt;
+              &lt;p *ngIf&#x3D;&quot;form.get(&#x27;fechaVencimiento&#x27;)?.errors?.[&#x27;dateInvalid&#x27;] &amp;&amp; form.get(&#x27;fechaVencimiento&#x27;)?.touched&quot;
+                 class&#x3D;&quot;text-[10px] text-red-500 font-bold uppercase mt-1&quot;&gt;La fecha no existe&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;space-y-1&quot;&gt;
+              &lt;label class&#x3D;&quot;text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1&quot;&gt;Cantidad Inicial *&lt;/label&gt;
+              &lt;input type&#x3D;&quot;number&quot; class&#x3D;&quot;w-full px-4 py-3 bg-gray-50 border-transparent focus:bg-white focus:ring-2 focus:ring-blue-500 rounded-xl text-sm transition-all outline-none font-semibold&quot;
+                     formControlName&#x3D;&quot;cantidadInicial&quot;&gt;
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;flex items-end&quot;&gt;
+              &lt;button type&#x3D;&quot;submit&quot; [disabled]&#x3D;&quot;form.invalid || loading&quot;
+                      class&#x3D;&quot;w-full py-3 bg-blue-600 text-white rounded-xl font-bold shadow-lg shadow-blue-200 hover:bg-blue-700 transition-all disabled:opacity-50 flex items-center justify-center gap-2 uppercase text-xs tracking-widest&quot;&gt;
+                &lt;span *ngIf&#x3D;&quot;loading&quot; class&#x3D;&quot;animate-spin h-3 w-3 border-2 border-white border-b-transparent rounded-full&quot;&gt;&lt;/span&gt;
+                Registrar Lote
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/form&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Inventory List --&gt;
+      &lt;div class&#x3D;&quot;bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden&quot;&gt;
+        &lt;div class&#x3D;&quot;px-6 py-4 bg-gray-50/50 border-b border-gray-100 flex items-center justify-between&quot;&gt;
+          &lt;h4 class&#x3D;&quot;text-[10px] font-bold text-gray-500 uppercase tracking-widest&quot;&gt;Existencias en el Establecimiento&lt;/h4&gt;
+          &lt;span class&#x3D;&quot;text-[10px] font-bold text-blue-600 px-3 py-1 bg-blue-50 rounded-full&quot; *ngIf&#x3D;&quot;esAdmin&quot;&gt;
+            Viendo: {{ nombreEstablecimientoSeleccionado }}
+          &lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;overflow-x-auto&quot;&gt;
+          &lt;table class&#x3D;&quot;w-full text-left&quot;&gt;
+            &lt;thead&gt;
+              &lt;tr class&#x3D;&quot;text-[9px] font-black text-gray-400 uppercase tracking-tighter border-b border-gray-50&quot;&gt;
+                &lt;th class&#x3D;&quot;px-6 py-3&quot;&gt;Vacuna&lt;/th&gt;
+                &lt;th class&#x3D;&quot;px-6 py-3&quot;&gt;Lote&lt;/th&gt;
+                &lt;th class&#x3D;&quot;px-6 py-3&quot;&gt;Vencimiento&lt;/th&gt;
+                &lt;th class&#x3D;&quot;px-6 py-3&quot;&gt;Stock / Inicial&lt;/th&gt;
+                &lt;th class&#x3D;&quot;px-6 py-3&quot;&gt;Estado&lt;/th&gt;
+              &lt;/tr&gt;
+            &lt;/thead&gt;
+            &lt;tbody class&#x3D;&quot;divide-y divide-gray-50&quot;&gt;
+              &lt;tr *ngFor&#x3D;&quot;let l of lotes&quot; class&#x3D;&quot;hover:bg-gray-50/50 transition-colors&quot;&gt;
+                &lt;td class&#x3D;&quot;px-6 py-4 text-sm font-bold text-gray-900&quot;&gt;{{ l.vacuna.nombre }}&lt;/td&gt;
+                &lt;td class&#x3D;&quot;px-6 py-4&quot;&gt;
+                  &lt;span class&#x3D;&quot;px-2 py-1 bg-gray-100 text-gray-600 rounded text-[10px] font-mono font-bold uppercase tracking-tighter border border-gray-200&quot;&gt;
+                    {{ l.codigoLote }}
+                  &lt;/span&gt;
+                &lt;/td&gt;
+                &lt;td class&#x3D;&quot;px-6 py-4 text-xs font-semibold text-gray-500&quot;&gt;{{ l.fechaVencimiento | date:&#x27;dd MMM yyyy&#x27; }}&lt;/td&gt;
+                &lt;td class&#x3D;&quot;px-6 py-4&quot;&gt;
+                  &lt;div class&#x3D;&quot;flex items-center gap-2&quot;&gt;
+                    &lt;span class&#x3D;&quot;text-sm font-black&quot; [ngClass]&#x3D;&quot;l.cantidadActual &lt; 10 ? &#x27;text-red-500&#x27; : &#x27;text-gray-900&#x27;&quot;&gt;{{ l.cantidadActual }}&lt;/span&gt;
+                    &lt;span class&#x3D;&quot;text-[10px] text-gray-400 font-bold&quot;&gt;/ {{ l.cantidadInicial }}&lt;/span&gt;
+                  &lt;/div&gt;
+                &lt;/td&gt;
+                &lt;td class&#x3D;&quot;px-6 py-4&quot;&gt;
+                  &lt;span class&#x3D;&quot;px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-tighter shadow-sm&quot;
+                        [ngClass]&#x3D;&quot;l.cantidadActual &gt; 0 ? &#x27;bg-green-100 text-green-700&#x27; : &#x27;bg-red-100 text-red-700&#x27;&quot;&gt;
+                    {{ l.cantidadActual &gt; 0 ? &#x27;Disponible&#x27; : &#x27;Agotado&#x27; }}
+                  &lt;/span&gt;
+                &lt;/td&gt;
+              &lt;/tr&gt;
+              &lt;tr *ngIf&#x3D;&quot;lotes.length &#x3D;&#x3D;&#x3D; 0&quot;&gt;
+                &lt;td colspan&#x3D;&quot;5&quot; class&#x3D;&quot;px-6 py-12 text-center text-gray-400 text-xs font-bold uppercase tracking-widest&quot;&gt;No hay existencias registradas&lt;/td&gt;
+              &lt;/tr&gt;
+            &lt;/tbody&gt;
+          &lt;/table&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></td>
+            </tr>
+
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#auth" >auth</a>
+                            </li>
+                            <li>
+                                <a href="#catalogo" >catalogo</a>
+                            </li>
+                            <li>
+                                <a href="#esAdmin" >esAdmin</a>
+                            </li>
+                            <li>
+                                <a href="#establecimientoId" >establecimientoId</a>
+                            </li>
+                            <li>
+                                <a href="#establecimientos" >establecimientos</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#estService" >estService</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#fb" >fb</a>
+                            </li>
+                            <li>
+                                <a href="#form" >form</a>
+                            </li>
+                            <li>
+                                <a href="#loading" >loading</a>
+                            </li>
+                            <li>
+                                <a href="#lotes" >lotes</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#notify" >notify</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#vacService" >vacService</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#cargarCatalogo" >cargarCatalogo</a>
+                            </li>
+                            <li>
+                                <a href="#cargarEstablecimientos" >cargarEstablecimientos</a>
+                            </li>
+                            <li>
+                                <a href="#cargarLotes" >cargarLotes</a>
+                            </li>
+                            <li>
+                                <a href="#guardar" >guardar</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#onEstablecimientoChange" >onEstablecimientoChange</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Outputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#cerrar" >cerrar</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Accessors</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                    <a href="#nombreEstablecimientoSeleccionado" >nombreEstablecimientoSeleccionado</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor()</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="168" class="link-to-prism">src/app/modules/vacunacion/components/gestion-lotes-modal.component.ts:168</a></div>
+                            </td>
+                        </tr>
+
+            </tbody>
+        </table>
+</section>
+
+
+    <section data-compodoc="block-outputs">
+    <h3 id="outputs">Outputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="cerrar"></a>
+                        <b>cerrar</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>EventEmitter</code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="154" class="link-to-prism">src/app/modules/vacunacion/components/gestion-lotes-modal.component.ts:154</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+</section>
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargarCatalogo"></a>
+                    <span class="name">
+                        <span ><b>cargarCatalogo</b></span>
+                        <a href="#cargarCatalogo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cargarCatalogo()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="215"
+                                    class="link-to-prism">src/app/modules/vacunacion/components/gestion-lotes-modal.component.ts:215</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargarEstablecimientos"></a>
+                    <span class="name">
+                        <span ><b>cargarEstablecimientos</b></span>
+                        <a href="#cargarEstablecimientos"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cargarEstablecimientos()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="198"
+                                    class="link-to-prism">src/app/modules/vacunacion/components/gestion-lotes-modal.component.ts:198</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargarLotes"></a>
+                    <span class="name">
+                        <span ><b>cargarLotes</b></span>
+                        <a href="#cargarLotes"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cargarLotes()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="221"
+                                    class="link-to-prism">src/app/modules/vacunacion/components/gestion-lotes-modal.component.ts:221</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="guardar"></a>
+                    <span class="name">
+                        <span ><b>guardar</b></span>
+                        <a href="#guardar"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>guardar()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="228"
+                                    class="link-to-prism">src/app/modules/vacunacion/components/gestion-lotes-modal.component.ts:228</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="185"
+                                    class="link-to-prism">src/app/modules/vacunacion/components/gestion-lotes-modal.component.ts:185</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onEstablecimientoChange"></a>
+                    <span class="name">
+                        <span ><b>onEstablecimientoChange</b></span>
+                        <a href="#onEstablecimientoChange"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onEstablecimientoChange()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="210"
+                                    class="link-to-prism">src/app/modules/vacunacion/components/gestion-lotes-modal.component.ts:210</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="auth"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>auth</b></span>
+                        <a href="#auth"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(AuthService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="158" class="link-to-prism">src/app/modules/vacunacion/components/gestion-lotes-modal.component.ts:158</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="catalogo"></a>
+                    <span class="name">
+                        <span ><b>catalogo</b></span>
+                        <a href="#catalogo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>any[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="163" class="link-to-prism">src/app/modules/vacunacion/components/gestion-lotes-modal.component.ts:163</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="esAdmin"></a>
+                    <span class="name">
+                        <span ><b>esAdmin</b></span>
+                        <a href="#esAdmin"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="168" class="link-to-prism">src/app/modules/vacunacion/components/gestion-lotes-modal.component.ts:168</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="establecimientoId"></a>
+                    <span class="name">
+                        <span ><b>establecimientoId</b></span>
+                        <a href="#establecimientoId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>0</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="167" class="link-to-prism">src/app/modules/vacunacion/components/gestion-lotes-modal.component.ts:167</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="establecimientos"></a>
+                    <span class="name">
+                        <span ><b>establecimientos</b></span>
+                        <a href="#establecimientos"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>any[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="165" class="link-to-prism">src/app/modules/vacunacion/components/gestion-lotes-modal.component.ts:165</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="estService"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>estService</b></span>
+                        <a href="#estService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(EstablecimientosService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="159" class="link-to-prism">src/app/modules/vacunacion/components/gestion-lotes-modal.component.ts:159</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="fb"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>fb</b></span>
+                        <a href="#fb"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(FormBuilder)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="156" class="link-to-prism">src/app/modules/vacunacion/components/gestion-lotes-modal.component.ts:156</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="form"></a>
+                    <span class="name">
+                        <span ><b>form</b></span>
+                        <a href="#form"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>FormGroup</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="162" class="link-to-prism">src/app/modules/vacunacion/components/gestion-lotes-modal.component.ts:162</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loading"></a>
+                    <span class="name">
+                        <span ><b>loading</b></span>
+                        <a href="#loading"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="166" class="link-to-prism">src/app/modules/vacunacion/components/gestion-lotes-modal.component.ts:166</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="lotes"></a>
+                    <span class="name">
+                        <span ><b>lotes</b></span>
+                        <a href="#lotes"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>any[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="164" class="link-to-prism">src/app/modules/vacunacion/components/gestion-lotes-modal.component.ts:164</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="notify"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>notify</b></span>
+                        <a href="#notify"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(NotificationService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="160" class="link-to-prism">src/app/modules/vacunacion/components/gestion-lotes-modal.component.ts:160</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="vacService"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>vacService</b></span>
+                        <a href="#vacService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(VacunacionService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="157" class="link-to-prism">src/app/modules/vacunacion/components/gestion-lotes-modal.component.ts:157</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-accessors">
+    <h3 id="accessors">
+        Accessors
+    </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="nombreEstablecimientoSeleccionado"></a>
+                        <span class="name"><b>nombreEstablecimientoSeleccionado</b><a href="#nombreEstablecimientoSeleccionado"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>nombreEstablecimientoSeleccionado()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="194" class="link-to-prism">src/app/modules/vacunacion/components/gestion-lotes-modal.component.ts:194</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+</section>
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, EventEmitter, OnInit, Output, inject } from &#x27;@angular/core&#x27;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from &#x27;@angular/forms&#x27;;
+import { VacunacionService } from &#x27;../vacunacion.service&#x27;;
+import { AuthService } from &#x27;../../../core/services/auth.service&#x27;;
+import { EstablecimientosService } from &#x27;../../../core/services/establecimientos.service&#x27;;
+import { NotificationService } from &#x27;../../../core/services/notification.service&#x27;;
+import { DateValidators } from &#x27;../../../core/validators/date.validator&#x27;;
+
+@Component({
+  selector: &#x27;app-gestion-lotes-modal&#x27;,
+  standalone: true,
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  template: &#x60;
+    &lt;div class&#x3D;&quot;fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm animate__animated animate__fadeIn&quot;&gt;
+      &lt;div class&#x3D;&quot;bg-white w-full max-w-5xl rounded-3xl overflow-hidden shadow-2xl flex flex-col scale-in h-[90vh]&quot;&gt;
+        
+        &lt;!-- Header --&gt;
+        &lt;div class&#x3D;&quot;px-8 py-6 bg-gray-900 flex items-center justify-between text-white&quot;&gt;
+          &lt;div&gt;
+            &lt;h2 class&#x3D;&quot;text-xl font-bold flex items-center gap-2 uppercase tracking-tight&quot;&gt;
+              &lt;i class&#x3D;&quot;bi bi-box-seam&quot;&gt;&lt;/i&gt;
+              GESTIÓN DE LOTES PAI
+            &lt;/h2&gt;
+          &lt;/div&gt;
+          &lt;button (click)&#x3D;&quot;cerrar.emit()&quot; class&#x3D;&quot;p-2 hover:bg-gray-800 rounded-xl transition-all&quot;&gt;
+            &lt;i class&#x3D;&quot;bi bi-x-lg text-xl&quot;&gt;&lt;/i&gt;
+          &lt;/button&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Body --&gt;
+        &lt;div class&#x3D;&quot;flex-1 overflow-y-auto p-8 bg-gray-50/30&quot;&gt;
+          
+          &lt;!-- Filtro de Establecimiento para Admins --&gt;
+          &lt;div class&#x3D;&quot;bg-blue-600 rounded-3xl p-6 mb-8 text-white shadow-lg shadow-blue-200 flex flex-col md:flex-row md:items-center gap-6&quot; *ngIf&#x3D;&quot;esAdmin&quot;&gt;
+            &lt;div class&#x3D;&quot;flex-1&quot;&gt;
+              &lt;h4 class&#x3D;&quot;font-bold text-lg&quot;&gt;Modo Administrador&lt;/h4&gt;
+              &lt;p class&#x3D;&quot;text-blue-100 text-xs uppercase font-bold tracking-widest mt-1&quot;&gt;Seleccione el establecimiento para gestionar sus lotes&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;flex-[2]&quot;&gt;
+              &lt;select class&#x3D;&quot;w-full px-5 py-3 bg-blue-700 border-transparent text-white rounded-xl text-sm font-bold focus:ring-2 focus:ring-white outline-none transition-all&quot; 
+                      [(ngModel)]&#x3D;&quot;establecimientoId&quot; (change)&#x3D;&quot;onEstablecimientoChange()&quot;&gt;
+                &lt;option *ngFor&#x3D;&quot;let est of establecimientos&quot; [value]&#x3D;&quot;est.id&quot;&gt;{{ est.nombre }}&lt;/option&gt;
+              &lt;/select&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;!-- Form Card --&gt;
+          &lt;div class&#x3D;&quot;bg-white rounded-3xl shadow-sm border border-gray-100 p-6 mb-8&quot;&gt;
+            &lt;h4 class&#x3D;&quot;text-sm font-bold text-blue-600 uppercase tracking-widest mb-6&quot;&gt;Registrar Entrada de Vacunas&lt;/h4&gt;
+            &lt;form [formGroup]&#x3D;&quot;form&quot; (ngSubmit)&#x3D;&quot;guardar()&quot; class&#x3D;&quot;space-y-6&quot;&gt;
+              &lt;div class&#x3D;&quot;grid grid-cols-1 md:grid-cols-3 gap-6&quot;&gt;
+                &lt;div class&#x3D;&quot;space-y-1&quot;&gt;
+                  &lt;label class&#x3D;&quot;text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1&quot;&gt;Vacuna *&lt;/label&gt;
+                  &lt;select class&#x3D;&quot;w-full px-4 py-3 bg-gray-50 border-transparent focus:bg-white focus:ring-2 focus:ring-blue-500 rounded-xl text-sm transition-all outline-none font-semibold&quot; 
+                          formControlName&#x3D;&quot;vacunaId&quot;&gt;
+                    &lt;option [value]&#x3D;&quot;null&quot;&gt;Seleccione...&lt;/option&gt;
+                    &lt;option *ngFor&#x3D;&quot;let v of catalogo&quot; [value]&#x3D;&quot;v.id&quot;&gt;{{ v.nombre }}&lt;/option&gt;
+                  &lt;/select&gt;
+                &lt;/div&gt;
+                &lt;div class&#x3D;&quot;space-y-1&quot;&gt;
+                  &lt;label class&#x3D;&quot;text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1&quot;&gt;Código de Lote *&lt;/label&gt;
+                  &lt;input type&#x3D;&quot;text&quot; class&#x3D;&quot;w-full px-4 py-3 bg-gray-50 border-transparent focus:bg-white focus:ring-2 focus:ring-blue-500 rounded-xl text-sm transition-all outline-none font-semibold&quot; 
+                         formControlName&#x3D;&quot;codigoLote&quot; placeholder&#x3D;&quot;VAX-2024-XXX&quot;&gt;
+                &lt;/div&gt;
+                &lt;div class&#x3D;&quot;space-y-1&quot;&gt;
+                  &lt;label class&#x3D;&quot;text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1&quot;&gt;Fabricante *&lt;/label&gt;
+                  &lt;input type&#x3D;&quot;text&quot; class&#x3D;&quot;w-full px-4 py-3 bg-gray-50 border-transparent focus:bg-white focus:ring-2 focus:ring-blue-500 rounded-xl text-sm transition-all outline-none font-semibold&quot; 
+                         formControlName&#x3D;&quot;fabricante&quot; placeholder&#x3D;&quot;Ej: Pfizer, GSK&quot;&gt;
+                &lt;/div&gt;
+                &lt;div class&#x3D;&quot;space-y-1&quot;&gt;
+                  &lt;input type&#x3D;&quot;date&quot; class&#x3D;&quot;w-full px-4 py-3 bg-gray-50 border-transparent focus:bg-white focus:ring-2 focus:ring-blue-500 rounded-xl text-sm transition-all outline-none font-semibold&quot; 
+                         [class.ring-2]&#x3D;&quot;form.get(&#x27;fechaVencimiento&#x27;)?.invalid &amp;&amp; form.get(&#x27;fechaVencimiento&#x27;)?.touched&quot;
+                         [class.ring-red-500]&#x3D;&quot;form.get(&#x27;fechaVencimiento&#x27;)?.invalid &amp;&amp; form.get(&#x27;fechaVencimiento&#x27;)?.touched&quot;
+                         formControlName&#x3D;&quot;fechaVencimiento&quot;&gt;
+                  &lt;p *ngIf&#x3D;&quot;form.get(&#x27;fechaVencimiento&#x27;)?.errors?.[&#x27;dateInvalid&#x27;] &amp;&amp; form.get(&#x27;fechaVencimiento&#x27;)?.touched&quot; 
+                     class&#x3D;&quot;text-[10px] text-red-500 font-bold uppercase mt-1&quot;&gt;La fecha no existe&lt;/p&gt;
+                &lt;/div&gt;
+                &lt;div class&#x3D;&quot;space-y-1&quot;&gt;
+                  &lt;label class&#x3D;&quot;text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1&quot;&gt;Cantidad Inicial *&lt;/label&gt;
+                  &lt;input type&#x3D;&quot;number&quot; class&#x3D;&quot;w-full px-4 py-3 bg-gray-50 border-transparent focus:bg-white focus:ring-2 focus:ring-blue-500 rounded-xl text-sm transition-all outline-none font-semibold&quot; 
+                         formControlName&#x3D;&quot;cantidadInicial&quot;&gt;
+                &lt;/div&gt;
+                &lt;div class&#x3D;&quot;flex items-end&quot;&gt;
+                  &lt;button type&#x3D;&quot;submit&quot; [disabled]&#x3D;&quot;form.invalid || loading&quot;
+                          class&#x3D;&quot;w-full py-3 bg-blue-600 text-white rounded-xl font-bold shadow-lg shadow-blue-200 hover:bg-blue-700 transition-all disabled:opacity-50 flex items-center justify-center gap-2 uppercase text-xs tracking-widest&quot;&gt;
+                    &lt;span *ngIf&#x3D;&quot;loading&quot; class&#x3D;&quot;animate-spin h-3 w-3 border-2 border-white border-b-transparent rounded-full&quot;&gt;&lt;/span&gt;
+                    Registrar Lote
+                  &lt;/button&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/form&gt;
+          &lt;/div&gt;
+
+          &lt;!-- Inventory List --&gt;
+          &lt;div class&#x3D;&quot;bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden&quot;&gt;
+            &lt;div class&#x3D;&quot;px-6 py-4 bg-gray-50/50 border-b border-gray-100 flex items-center justify-between&quot;&gt;
+              &lt;h4 class&#x3D;&quot;text-[10px] font-bold text-gray-500 uppercase tracking-widest&quot;&gt;Existencias en el Establecimiento&lt;/h4&gt;
+              &lt;span class&#x3D;&quot;text-[10px] font-bold text-blue-600 px-3 py-1 bg-blue-50 rounded-full&quot; *ngIf&#x3D;&quot;esAdmin&quot;&gt;
+                Viendo: {{ nombreEstablecimientoSeleccionado }}
+              &lt;/span&gt;
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;overflow-x-auto&quot;&gt;
+              &lt;table class&#x3D;&quot;w-full text-left&quot;&gt;
+                &lt;thead&gt;
+                  &lt;tr class&#x3D;&quot;text-[9px] font-black text-gray-400 uppercase tracking-tighter border-b border-gray-50&quot;&gt;
+                    &lt;th class&#x3D;&quot;px-6 py-3&quot;&gt;Vacuna&lt;/th&gt;
+                    &lt;th class&#x3D;&quot;px-6 py-3&quot;&gt;Lote&lt;/th&gt;
+                    &lt;th class&#x3D;&quot;px-6 py-3&quot;&gt;Vencimiento&lt;/th&gt;
+                    &lt;th class&#x3D;&quot;px-6 py-3&quot;&gt;Stock / Inicial&lt;/th&gt;
+                    &lt;th class&#x3D;&quot;px-6 py-3&quot;&gt;Estado&lt;/th&gt;
+                  &lt;/tr&gt;
+                &lt;/thead&gt;
+                &lt;tbody class&#x3D;&quot;divide-y divide-gray-50&quot;&gt;
+                  &lt;tr *ngFor&#x3D;&quot;let l of lotes&quot; class&#x3D;&quot;hover:bg-gray-50/50 transition-colors&quot;&gt;
+                    &lt;td class&#x3D;&quot;px-6 py-4 text-sm font-bold text-gray-900&quot;&gt;{{ l.vacuna.nombre }}&lt;/td&gt;
+                    &lt;td class&#x3D;&quot;px-6 py-4&quot;&gt;
+                      &lt;span class&#x3D;&quot;px-2 py-1 bg-gray-100 text-gray-600 rounded text-[10px] font-mono font-bold uppercase tracking-tighter border border-gray-200&quot;&gt;
+                        {{ l.codigoLote }}
+                      &lt;/span&gt;
+                    &lt;/td&gt;
+                    &lt;td class&#x3D;&quot;px-6 py-4 text-xs font-semibold text-gray-500&quot;&gt;{{ l.fechaVencimiento | date:&#x27;dd MMM yyyy&#x27; }}&lt;/td&gt;
+                    &lt;td class&#x3D;&quot;px-6 py-4&quot;&gt;
+                      &lt;div class&#x3D;&quot;flex items-center gap-2&quot;&gt;
+                        &lt;span class&#x3D;&quot;text-sm font-black&quot; [ngClass]&#x3D;&quot;l.cantidadActual &lt; 10 ? &#x27;text-red-500&#x27; : &#x27;text-gray-900&#x27;&quot;&gt;{{ l.cantidadActual }}&lt;/span&gt;
+                        &lt;span class&#x3D;&quot;text-[10px] text-gray-400 font-bold&quot;&gt;/ {{ l.cantidadInicial }}&lt;/span&gt;
+                      &lt;/div&gt;
+                    &lt;/td&gt;
+                    &lt;td class&#x3D;&quot;px-6 py-4&quot;&gt;
+                      &lt;span class&#x3D;&quot;px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-tighter shadow-sm&quot;
+                            [ngClass]&#x3D;&quot;l.cantidadActual &gt; 0 ? &#x27;bg-green-100 text-green-700&#x27; : &#x27;bg-red-100 text-red-700&#x27;&quot;&gt;
+                        {{ l.cantidadActual &gt; 0 ? &#x27;Disponible&#x27; : &#x27;Agotado&#x27; }}
+                      &lt;/span&gt;
+                    &lt;/td&gt;
+                  &lt;/tr&gt;
+                  &lt;tr *ngIf&#x3D;&quot;lotes.length &#x3D;&#x3D;&#x3D; 0&quot;&gt;
+                    &lt;td colspan&#x3D;&quot;5&quot; class&#x3D;&quot;px-6 py-12 text-center text-gray-400 text-xs font-bold uppercase tracking-widest&quot;&gt;No hay existencias registradas&lt;/td&gt;
+                  &lt;/tr&gt;
+                &lt;/tbody&gt;
+              &lt;/table&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &#x60;,
+  styles: [&#x60;
+    .scale-in { animation: scaleIn 0.3s ease-out; }
+    @keyframes scaleIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+  &#x60;]
+})
+export class GestionLotesModalComponent implements OnInit {
+  @Output() cerrar &#x3D; new EventEmitter&lt;void&gt;();
+
+  private fb &#x3D; inject(FormBuilder);
+  private vacService &#x3D; inject(VacunacionService);
+  private auth &#x3D; inject(AuthService);
+  private estService &#x3D; inject(EstablecimientosService);
+  private notify &#x3D; inject(NotificationService);
+
+  form: FormGroup;
+  catalogo: any[] &#x3D; [];
+  lotes: any[] &#x3D; [];
+  establecimientos: any[] &#x3D; [];
+  loading &#x3D; false;
+  establecimientoId: number &#x3D; 0;
+  esAdmin: boolean &#x3D; false;
+
+  constructor() {
+    const user &#x3D; this.auth.obtenerUsuario();
+    this.esAdmin &#x3D; user?.rol &#x3D;&#x3D;&#x3D; &#x27;ADMIN&#x27;;
+    this.establecimientoId &#x3D; user?.establecimientoId || 0;
+    
+    this.form &#x3D; this.fb.group({
+      vacunaId: [null, Validators.required],
+      codigoLote: [&#x27;&#x27;, Validators.required],
+      fabricante: [&#x27;&#x27;, Validators.required],
+      fechaVencimiento: [&#x27;&#x27;, [Validators.required, DateValidators.dateReal()]],
+      cantidadInicial: [null, [Validators.required, Validators.min(1)]],
+      establecimientoId: [this.establecimientoId, Validators.required]
+    });
+  }
+
+  ngOnInit() {
+    this.cargarCatalogo();
+    if (this.esAdmin) {
+      this.cargarEstablecimientos();
+    } else {
+      this.cargarLotes();
+    }
+  }
+
+  get nombreEstablecimientoSeleccionado() {
+    return this.establecimientos.find(e &#x3D;&gt; e.id &#x3D;&#x3D; this.establecimientoId)?.nombre || &#x27;Establecimiento Actual&#x27;;
+  }
+
+  cargarEstablecimientos() {
+    this.estService.listarSimplificado().subscribe((res: any) &#x3D;&gt; {
+      this.establecimientos &#x3D; res.data || res;
+      if (this.establecimientos.length &gt; 0 &amp;&amp; !this.establecimientoId) {
+        this.establecimientoId &#x3D; this.establecimientos[0].id;
+        this.onEstablecimientoChange();
+      } else {
+        this.cargarLotes();
+      }
+    });
+  }
+
+  onEstablecimientoChange() {
+    this.form.patchValue({ establecimientoId: this.establecimientoId });
+    this.cargarLotes();
+  }
+
+  cargarCatalogo() {
+    this.vacService.obtenerCatalogo().subscribe((res: any) &#x3D;&gt; {
+      this.catalogo &#x3D; res.data || res;
+    });
+  }
+
+  cargarLotes() {
+    if (!this.establecimientoId) return;
+    this.vacService.obtenerLotes(this.establecimientoId).subscribe((res: any) &#x3D;&gt; {
+      this.lotes &#x3D; res.data || res;
+    });
+  }
+
+  guardar() {
+    if (this.form.invalid) return;
+    this.loading &#x3D; true;
+    this.vacService.crearLote(this.form.value).subscribe({
+      next: () &#x3D;&gt; {
+        this.notify.success(&#x27;Lote registrado con éxito&#x27;);
+        this.cargarLotes();
+        this.form.reset({
+          establecimientoId: this.establecimientoId,
+          vacunaId: null
+        });
+        this.loading &#x3D; false;
+      },
+      error: (err) &#x3D;&gt; {
+        this.notify.error(err.error?.message || &#x27;Error al registrar el lote&#x27;);
+        this.loading &#x3D; false;
+      }
+    });
+  }
+}
+</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="styleData">
+            <pre class="line-numbers"><code class="language-scss">
+    .scale-in { animation: scaleIn 0.3s ease-out; }
+    @keyframes scaleIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+  
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm animate__animated animate__fadeIn">  <div class="bg-white w-full max-w-5xl rounded-3xl overflow-hidden shadow-2xl flex flex-col scale-in h-[90vh]">    <!-- Header -->    <div class="px-8 py-6 bg-gray-900 flex items-center justify-between text-white">      <div>        <h2 class="text-xl font-bold flex items-center gap-2 uppercase tracking-tight">          <i class="bi bi-box-seam"></i>          GESTIÓN DE LOTES PAI        </h2>      </div>      <button (click)="cerrar.emit()" class="p-2 hover:bg-gray-800 rounded-xl transition-all">        <i class="bi bi-x-lg text-xl"></i>      </button>    </div>    <!-- Body -->    <div class="flex-1 overflow-y-auto p-8 bg-gray-50/30">      <!-- Filtro de Establecimiento para Admins -->      <div class="bg-blue-600 rounded-3xl p-6 mb-8 text-white shadow-lg shadow-blue-200 flex flex-col md:flex-row md:items-center gap-6" *ngIf="esAdmin">        <div class="flex-1">          <h4 class="font-bold text-lg">Modo Administrador</h4>          <p class="text-blue-100 text-xs uppercase font-bold tracking-widest mt-1">Seleccione el establecimiento para gestionar sus lotes</p>        </div>        <div class="flex-[2]">          <select class="w-full px-5 py-3 bg-blue-700 border-transparent text-white rounded-xl text-sm font-bold focus:ring-2 focus:ring-white outline-none transition-all"                  [(ngModel)]="establecimientoId" (change)="onEstablecimientoChange()">            <option *ngFor="let est of establecimientos" [value]="est.id">{{ est.nombre }}</option>          </select>        </div>      </div>      <!-- Form Card -->      <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-6 mb-8">        <h4 class="text-sm font-bold text-blue-600 uppercase tracking-widest mb-6">Registrar Entrada de Vacunas</h4>        <form [formGroup]="form" (ngSubmit)="guardar()" class="space-y-6">          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">            <div class="space-y-1">              <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Vacuna *</label>              <select class="w-full px-4 py-3 bg-gray-50 border-transparent focus:bg-white focus:ring-2 focus:ring-blue-500 rounded-xl text-sm transition-all outline-none font-semibold"                      formControlName="vacunaId">                <option [value]="null">Seleccione...</option>                <option *ngFor="let v of catalogo" [value]="v.id">{{ v.nombre }}</option>              </select>            </div>            <div class="space-y-1">              <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Código de Lote *</label>              <input type="text" class="w-full px-4 py-3 bg-gray-50 border-transparent focus:bg-white focus:ring-2 focus:ring-blue-500 rounded-xl text-sm transition-all outline-none font-semibold"                     formControlName="codigoLote" placeholder="VAX-2024-XXX">            </div>            <div class="space-y-1">              <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Fabricante *</label>              <input type="text" class="w-full px-4 py-3 bg-gray-50 border-transparent focus:bg-white focus:ring-2 focus:ring-blue-500 rounded-xl text-sm transition-all outline-none font-semibold"                     formControlName="fabricante" placeholder="Ej: Pfizer, GSK">            </div>            <div class="space-y-1">              <input type="date" class="w-full px-4 py-3 bg-gray-50 border-transparent focus:bg-white focus:ring-2 focus:ring-blue-500 rounded-xl text-sm transition-all outline-none font-semibold"                     [class.ring-2]="form.get(\'fechaVencimiento\')?.invalid && form.get(\'fechaVencimiento\')?.touched"                     [class.ring-red-500]="form.get(\'fechaVencimiento\')?.invalid && form.get(\'fechaVencimiento\')?.touched"                     formControlName="fechaVencimiento">              <p *ngIf="form.get(\'fechaVencimiento\')?.errors?.[\'dateInvalid\'] && form.get(\'fechaVencimiento\')?.touched"                 class="text-[10px] text-red-500 font-bold uppercase mt-1">La fecha no existe</p>            </div>            <div class="space-y-1">              <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Cantidad Inicial *</label>              <input type="number" class="w-full px-4 py-3 bg-gray-50 border-transparent focus:bg-white focus:ring-2 focus:ring-blue-500 rounded-xl text-sm transition-all outline-none font-semibold"                     formControlName="cantidadInicial">            </div>            <div class="flex items-end">              <button type="submit" [disabled]="form.invalid || loading"                      class="w-full py-3 bg-blue-600 text-white rounded-xl font-bold shadow-lg shadow-blue-200 hover:bg-blue-700 transition-all disabled:opacity-50 flex items-center justify-center gap-2 uppercase text-xs tracking-widest">                <span *ngIf="loading" class="animate-spin h-3 w-3 border-2 border-white border-b-transparent rounded-full"></span>                Registrar Lote              </button>            </div>          </div>        </form>      </div>      <!-- Inventory List -->      <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">        <div class="px-6 py-4 bg-gray-50/50 border-b border-gray-100 flex items-center justify-between">          <h4 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Existencias en el Establecimiento</h4>          <span class="text-[10px] font-bold text-blue-600 px-3 py-1 bg-blue-50 rounded-full" *ngIf="esAdmin">            Viendo: {{ nombreEstablecimientoSeleccionado }}          </span>        </div>        <div class="overflow-x-auto">          <table class="w-full text-left">            <thead>              <tr class="text-[9px] font-black text-gray-400 uppercase tracking-tighter border-b border-gray-50">                <th class="px-6 py-3">Vacuna</th>                <th class="px-6 py-3">Lote</th>                <th class="px-6 py-3">Vencimiento</th>                <th class="px-6 py-3">Stock / Inicial</th>                <th class="px-6 py-3">Estado</th>              </tr>            </thead>            <tbody class="divide-y divide-gray-50">              <tr *ngFor="let l of lotes" class="hover:bg-gray-50/50 transition-colors">                <td class="px-6 py-4 text-sm font-bold text-gray-900">{{ l.vacuna.nombre }}</td>                <td class="px-6 py-4">                  <span class="px-2 py-1 bg-gray-100 text-gray-600 rounded text-[10px] font-mono font-bold uppercase tracking-tighter border border-gray-200">                    {{ l.codigoLote }}                  </span>                </td>                <td class="px-6 py-4 text-xs font-semibold text-gray-500">{{ l.fechaVencimiento | date:\'dd MMM yyyy\' }}</td>                <td class="px-6 py-4">                  <div class="flex items-center gap-2">                    <span class="text-sm font-black" [ngClass]="l.cantidadActual < 10 ? \'text-red-500\' : \'text-gray-900\'">{{ l.cantidadActual }}</span>                    <span class="text-[10px] text-gray-400 font-bold">/ {{ l.cantidadInicial }}</span>                  </div>                </td>                <td class="px-6 py-4">                  <span class="px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-tighter shadow-sm"                        [ngClass]="l.cantidadActual > 0 ? \'bg-green-100 text-green-700\' : \'bg-red-100 text-red-700\'">                    {{ l.cantidadActual > 0 ? \'Disponible\' : \'Agotado\' }}                  </span>                </td>              </tr>              <tr *ngIf="lotes.length === 0">                <td colspan="5" class="px-6 py-12 text-center text-gray-400 text-xs font-bold uppercase tracking-widest">No hay existencias registradas</td>              </tr>            </tbody>          </table>        </div>      </div>    </div>  </div></div></div>'
+    var COMPONENTS = [{'name': 'AgendasComponent', 'selector': 'app-agendas'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'BuscadorPacienteComponent', 'selector': 'app-buscador-paciente'},{'name': 'CitasComponent', 'selector': 'app-citas'},{'name': 'ConstructorFormularioComponent', 'selector': 'app-constructor-formulario'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'EpidemiologiaDashboardComponent', 'selector': 'app-epidemiologia-dashboard'},{'name': 'EstadisticasHospitalariasComponent', 'selector': 'app-estadisticas-hospitalarias'},{'name': 'FarmaciaComponent', 'selector': 'app-farmacia'},{'name': 'GestionHospitalizacionComponent', 'selector': 'app-gestion-hospitalizacion'},{'name': 'GestionLotesModalComponent', 'selector': 'app-gestion-lotes-modal'},{'name': 'GestionReportesComponent', 'selector': 'app-gestion-reportes'},{'name': 'HistoriaClinicaComponent', 'selector': 'app-historia-clinica'},{'name': 'InfraestructuraModalComponent', 'selector': 'app-infraestructura-modal'},{'name': 'InventarioVacunasComponent', 'selector': 'app-inventario-vacunas'},{'name': 'LaboratorioComponent', 'selector': 'app-laboratorio'},{'name': 'ListaPlantillasComponent', 'selector': 'app-lista-plantillas'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MainLayoutComponent', 'selector': 'app-main-layout'},{'name': 'MantenimientoDiagnosticosComponent', 'selector': 'app-mantenimiento-diagnosticos'},{'name': 'MantenimientoEstablecimientosComponent', 'selector': 'app-mantenimiento-establecimientos'},{'name': 'MantenimientoInventarioComponent', 'selector': 'app-mantenimiento-inventario'},{'name': 'MantenimientoLaboratorioComponent', 'selector': 'app-mantenimiento-laboratorio'},{'name': 'MantenimientoLoginComponent', 'selector': 'app-mantenimiento-login'},{'name': 'MantenimientoMedicamentosComponent', 'selector': 'app-mantenimiento-medicamentos'},{'name': 'MantenimientoRadiologiaComponent', 'selector': 'app-mantenimiento-radiologia'},{'name': 'MantenimientoRolesComponent', 'selector': 'app-mantenimiento-roles'},{'name': 'MovimientosInventarioComponent', 'selector': 'app-movimientos-inventario'},{'name': 'NotificationComponent', 'selector': 'app-notification'},{'name': 'NuevaConsultaComponent', 'selector': 'app-nueva-consulta'},{'name': 'PacientesComponent', 'selector': 'app-pacientes'},{'name': 'PermisosUsuariosComponent', 'selector': 'app-permisos-usuarios'},{'name': 'RecetasPacienteComponent', 'selector': 'app-recetas-paciente'},{'name': 'RegistroVacunaModalComponent', 'selector': 'app-registro-vacuna-modal'},{'name': 'ReportesComponent', 'selector': 'app-reportes'},{'name': 'TriajeComponent', 'selector': 'app-triaje'},{'name': 'UsuariosComponent', 'selector': 'app-usuarios'},{'name': 'VacunacionComponent', 'selector': 'app-vacunacion'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'GestionLotesModalComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'GestionLotesModalComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

@@ -562,6 +562,8 @@ import { GeoService } from '../../../../core/services/geo.service';
                           <input *ngIf="campo.tipo === 'FECHA'"
                                  type="date"
                                  [(ngModel)]="respuestaDinamica[campo.clave]" [ngModelOptions]="{standalone: true}"
+                                 [class.ring-2]="respuestaDinamica[campo.clave] && !esFechaValida(respuestaDinamica[campo.clave])"
+                                 [class.ring-red-500]="respuestaDinamica[campo.clave] && !esFechaValida(respuestaDinamica[campo.clave])"
                                  [class.border-red-400]="validandoDinamico() && campo.requerido && !respuestaDinamica[campo.clave]"
                                  [class.bg-red-50]="validandoDinamico() && campo.requerido && !respuestaDinamica[campo.clave]"
                                  class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-purple-400 focus:bg-white outline-none transition-all"/>
@@ -2030,7 +2032,7 @@ import { GeoService } from '../../../../core/services/geo.service';
             <!-- Fecha -->
             <div>
               <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Fecha</label>
-              <input type="date" formControlName="fecha"
+              <input type="date" formControlName="fecha" [min]="minFecha" (change)="sugerirHora()"
                      class="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-bold text-slate-700 focus:bg-white focus:ring-4 focus:ring-indigo-100 focus:border-indigo-400 transition-all outline-none">
             </div>
             <!-- Hora -->
@@ -2157,6 +2159,7 @@ export class NuevaConsultaComponent implements OnInit {
   medicosCentroList = signal<any[]>([]);
   minutosEntreConsultas = signal(20);
   esMedico = signal(false);
+  minFecha = DateUtils.getHoyString();
 
   // Lista local para guardar las referencias creadas en esta sesión antes de enviar la consulta
   referenciasCreadas = signal<any[]>([]);
@@ -2227,16 +2230,14 @@ export class NuevaConsultaComponent implements OnInit {
       });
       this.citaForm.get('medicoId')?.disable();
       this.citaForm.get('especialidadId')?.disable();
-      // El médico puede editar fecha y hora si lo desea
-      this.citaForm.get('fecha')?.enable();
-      this.citaForm.get('hora')?.enable();
     } else {
       this.citaForm.get('medicoId')?.enable();
       this.citaForm.get('especialidadId')?.enable();
-      // Para usuarios no médicos, fecha y hora son automáticos y bloqueados
-      this.citaForm.get('fecha')?.disable();
-      this.citaForm.get('hora')?.disable();
     }
+
+    // Siempre habilitar fecha y hora para permitir agendar a futuro
+    this.citaForm.get('fecha')?.enable();
+    this.citaForm.get('hora')?.enable();
 
     if (this.medicosCentroList().length === 0) {
       this.citasSvc.listarMedicosDelCentro().subscribe(medicos => {
@@ -3371,5 +3372,9 @@ export class NuevaConsultaComponent implements OnInit {
       }, 100);
       setTimeout(() => this.map?.invalidateSize(), 500);
     }
+  }
+
+  esFechaValida(fecha: string): boolean {
+    return DateUtils.esFechaValida(fecha);
   }
 }

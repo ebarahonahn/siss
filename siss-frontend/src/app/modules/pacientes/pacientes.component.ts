@@ -9,6 +9,7 @@ import { NotificationService } from '../../core/services/notification.service';
 import { AuthService } from '../../core/services/auth.service';
 import { debounceTime, distinctUntilChanged, BehaviorSubject, switchMap } from 'rxjs';
 import { DateUtils } from '../../core/utils/date-utils';
+import { DateValidators } from '../../core/validators/date.validator';
 
 @Component({
   selector: 'app-pacientes',
@@ -52,6 +53,7 @@ import { DateUtils } from '../../core/utils/date-utils';
                 <th class="text-left px-6 py-4 font-bold text-gray-400 text-[10px] uppercase tracking-wider">Expediente</th>
                 <th class="text-left px-6 py-4 font-bold text-gray-400 text-[10px] uppercase tracking-wider">Paciente / DNI</th>
                 <th class="text-left px-6 py-4 font-bold text-gray-400 text-[10px] uppercase tracking-wider">Ubicación</th>
+                <th class="text-left px-6 py-4 font-bold text-gray-400 text-[10px] uppercase tracking-wider">Establecimiento</th>
                 <th class="text-center px-6 py-4 font-bold text-gray-400 text-[10px] uppercase tracking-wider">Acciones</th>
               </tr>
             </thead>
@@ -67,6 +69,10 @@ import { DateUtils } from '../../core/utils/date-utils';
                 <td class="px-6 py-4">
                   <div class="text-gray-700">{{ p.municipio?.nombre }}</div>
                   <div class="text-[10px] text-gray-400 uppercase font-bold">{{ p.departamento?.nombre }}</div>
+                </td>
+                <td class="px-6 py-4">
+                  <div class="text-[11px] font-bold text-blue-700 uppercase tracking-tight">{{ p.establecimiento?.nombre }}</div>
+                  <div class="text-[9px] text-gray-400 uppercase font-black">Centro de Inscripción</div>
                 </td>
                 <td class="px-6 py-4">
                   <div class="flex items-center justify-center gap-2">
@@ -97,7 +103,7 @@ import { DateUtils } from '../../core/utils/date-utils';
                 </td>
               </tr>
               <tr *ngIf="pacientes.length === 0">
-                <td colspan="4" class="px-6 py-12 text-center text-gray-400 font-medium">
+                <td colspan="5" class="px-6 py-12 text-center text-gray-400 font-medium">
                   {{ searchQuery ? 'No se encontraron resultados' : 'Realice una búsqueda para comenzar' }}
                 </td>
               </tr>
@@ -157,7 +163,14 @@ import { DateUtils } from '../../core/utils/date-utils';
                 <!-- Nacimiento y Sexo -->
                 <div class="md:col-span-4">
                   <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Fecha de Nacimiento *</label>
-                  <input type="date" formControlName="fechaNacimiento" class="w-full px-4 py-2.5 bg-gray-50 border-transparent focus:bg-white focus:ring-2 focus:ring-blue-500 rounded-xl text-sm transition-all outline-none"/>
+                  <input type="date" formControlName="fechaNacimiento" 
+                         [class.ring-2]="form.get('fechaNacimiento')?.invalid && form.get('fechaNacimiento')?.touched"
+                         [class.ring-red-500]="form.get('fechaNacimiento')?.invalid && form.get('fechaNacimiento')?.touched"
+                         class="w-full px-4 py-2.5 bg-gray-50 border-transparent focus:bg-white focus:ring-2 focus:ring-blue-500 rounded-xl text-sm transition-all outline-none"/>
+                  <div *ngIf="form.get('fechaNacimiento')?.invalid && form.get('fechaNacimiento')?.touched" class="mt-1">
+                    <p *ngIf="form.get('fechaNacimiento')?.errors?.['dateInvalid']" class="text-[10px] text-red-500 font-bold uppercase">La fecha ingresada no existe</p>
+                    <p *ngIf="form.get('fechaNacimiento')?.errors?.['dateFuture']" class="text-[10px] text-red-500 font-bold uppercase">La fecha no puede ser futura</p>
+                  </div>
                 </div>
                 <div class="md:col-span-4">
                   <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Sexo *</label>
@@ -284,7 +297,7 @@ export class PacientesComponent {
     nombres: ['', Validators.required],
     apellidos: ['', Validators.required],
     dni: ['', [Validators.required, Validators.pattern(/^\d{13}$/)]],
-    fechaNacimiento: ['', Validators.required],
+    fechaNacimiento: ['', [Validators.required, DateValidators.dateReal(), DateValidators.notFuture()]],
     sexoId: [null as number | null, Validators.required],
     tipoSangreId: [null as number | null],
     telefono: [''],

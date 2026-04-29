@@ -34,4 +34,20 @@ export class AuthController {
   logout(@CurrentUser() user: any) {
     return this.authService.cerrarSesion(user.id);
   }
+
+  @Post('recuperar-contrasena')
+  @HttpCode(HttpStatus.OK)
+  recuperarContrasena(@Body('identificador') identificador: string) {
+    return this.authService.solicitarRecuperacion(identificador);
+  }
+ 
+  @Post('cambiar-contrasena')
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.OK)
+  cambiarContrasena(
+    @CurrentUser() user: any,
+    @Body('nuevaContrasena') nuevaContrasena: string,
+  ) {
+    return this.authService.cambiarContrasena(user.id, nuevaContrasena);
+  }
 }

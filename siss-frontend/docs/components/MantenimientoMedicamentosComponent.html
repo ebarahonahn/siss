@@ -1,0 +1,1759 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>siss-frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">siss-frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  MantenimientoMedicamentosComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/modules/mantenimiento-medicamentos/mantenimiento-medicamentos.component.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                <code>OnInit</code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-mantenimiento-medicamentos</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                            <code>CommonModule</code>
+                            <code>ReactiveFormsModule</code>
+                </td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">template</td>
+                <td class="col-md-9"><pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;space-y-5&quot;&gt;
+
+  &lt;!-- Cabecera --&gt;
+  &lt;div class&#x3D;&quot;flex flex-wrap items-center justify-between gap-3&quot;&gt;
+    &lt;div&gt;
+      &lt;h2 class&#x3D;&quot;text-xl font-bold text-gray-900&quot;&gt;Catálogo de Medicamentos&lt;/h2&gt;
+      &lt;p class&#x3D;&quot;text-sm text-gray-500 mt-0.5&quot;&gt;Gestión del catálogo de medicamentos del sistema&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;button (click)&#x3D;&quot;abrirModal()&quot;
+            class&#x3D;&quot;flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold rounded-lg transition-colors shadow-sm&quot;&gt;
+      &lt;svg class&#x3D;&quot;w-4 h-4&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+        &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M12 4v16m8-8H4&quot;/&gt;
+      &lt;/svg&gt;
+      Nuevo Medicamento
+    &lt;/button&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Barra de búsqueda + filtros --&gt;
+  &lt;div class&#x3D;&quot;bg-white rounded-xl border border-gray-200 p-4 flex flex-wrap gap-3 items-center&quot;&gt;
+    &lt;div class&#x3D;&quot;relative flex-1 min-w-[240px]&quot;&gt;
+      &lt;svg class&#x3D;&quot;absolute left-3 top-2.5 w-4 h-4 text-gray-400&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+        &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z&quot;/&gt;
+      &lt;/svg&gt;
+      &lt;input type&#x3D;&quot;text&quot; placeholder&#x3D;&quot;Buscar por nombre, código, grupo…&quot;
+             (input)&#x3D;&quot;busqueda$.next($any($event.target).value)&quot;
+             class&#x3D;&quot;w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent&quot;/&gt;
+    &lt;/div&gt;
+    &lt;div class&#x3D;&quot;text-xs text-gray-400 flex-shrink-0&quot;&gt;
+      &lt;strong class&#x3D;&quot;text-gray-700&quot;&gt;{{ total() }}&lt;/strong&gt; medicamentos
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Tabla --&gt;
+  &lt;div class&#x3D;&quot;bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm&quot;&gt;
+    &lt;!-- Cargando --&gt;
+    &lt;div *ngIf&#x3D;&quot;cargando()&quot; class&#x3D;&quot;p-12 text-center text-gray-400 text-sm&quot;&gt;Cargando…&lt;/div&gt;
+
+    &lt;!-- Tabla --&gt;
+    &lt;div *ngIf&#x3D;&quot;!cargando()&quot; class&#x3D;&quot;overflow-x-auto&quot;&gt;
+      &lt;table class&#x3D;&quot;w-full text-sm&quot;&gt;
+        &lt;thead class&#x3D;&quot;bg-gray-50 border-b border-gray-100&quot;&gt;
+          &lt;tr&gt;
+            &lt;th class&#x3D;&quot;text-left px-4 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider&quot;&gt;Código&lt;/th&gt;
+            &lt;th class&#x3D;&quot;text-left px-4 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider&quot;&gt;Nombre Genérico&lt;/th&gt;
+            &lt;th class&#x3D;&quot;text-left px-4 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider hidden md:table-cell&quot;&gt;Presentación&lt;/th&gt;
+            &lt;th class&#x3D;&quot;text-left px-4 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider hidden lg:table-cell&quot;&gt;Vía&lt;/th&gt;
+            &lt;th class&#x3D;&quot;text-left px-4 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider hidden lg:table-cell&quot;&gt;Grupo&lt;/th&gt;
+            &lt;th class&#x3D;&quot;text-left px-4 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider&quot;&gt;Estado&lt;/th&gt;
+            &lt;th class&#x3D;&quot;px-4 py-3&quot;&gt;&lt;/th&gt;
+          &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody class&#x3D;&quot;divide-y divide-gray-50&quot;&gt;
+          &lt;tr *ngFor&#x3D;&quot;let m of medicamentos()&quot;
+              class&#x3D;&quot;hover:bg-gray-50 transition-colors&quot;
+              [class.opacity-50]&#x3D;&quot;!m.activo&quot;&gt;
+            &lt;td class&#x3D;&quot;px-4 py-3&quot;&gt;
+              &lt;span class&#x3D;&quot;font-mono text-xs bg-gray-100 text-gray-700 px-2 py-0.5 rounded&quot;&gt;{{ m.codigo }}&lt;/span&gt;
+            &lt;/td&gt;
+            &lt;td class&#x3D;&quot;px-4 py-3&quot;&gt;
+              &lt;p class&#x3D;&quot;font-medium text-gray-900&quot;&gt;{{ m.nombreGenerico }}&lt;/p&gt;
+              &lt;p *ngIf&#x3D;&quot;m.nombreComercial&quot; class&#x3D;&quot;text-xs text-gray-400&quot;&gt;{{ m.nombreComercial }}&lt;/p&gt;
+            &lt;/td&gt;
+            &lt;td class&#x3D;&quot;px-4 py-3 hidden md:table-cell&quot;&gt;
+              &lt;p class&#x3D;&quot;text-gray-600&quot;&gt;{{ m.presentacion }}&lt;/p&gt;
+              &lt;p class&#x3D;&quot;text-xs text-gray-400&quot;&gt;{{ m.concentracion }}&lt;/p&gt;
+            &lt;/td&gt;
+            &lt;td class&#x3D;&quot;px-4 py-3 hidden lg:table-cell&quot;&gt;
+              &lt;span class&#x3D;&quot;text-xs bg-blue-50 text-blue-700 border border-blue-100 px-2 py-0.5 rounded-full&quot;&gt;{{ m.via }}&lt;/span&gt;
+            &lt;/td&gt;
+            &lt;td class&#x3D;&quot;px-4 py-3 hidden lg:table-cell text-xs text-gray-500&quot;&gt;{{ m.grupoTerapeutico }}&lt;/td&gt;
+            &lt;td class&#x3D;&quot;px-4 py-3&quot;&gt;
+              &lt;div class&#x3D;&quot;flex flex-col gap-1&quot;&gt;
+                &lt;span [ngClass]&#x3D;&quot;m.activo ? &#x27;bg-green-100 text-green-700&#x27; : &#x27;bg-gray-100 text-gray-500&#x27;&quot;
+                      class&#x3D;&quot;text-[10px] font-bold px-2 py-0.5 rounded-full w-fit&quot;&gt;
+                  {{ m.activo ? &#x27;ACTIVO&#x27; : &#x27;INACTIVO&#x27; }}
+                &lt;/span&gt;
+                &lt;span *ngIf&#x3D;&quot;m.esControlado&quot;
+                      class&#x3D;&quot;text-[10px] font-bold bg-red-100 text-red-700 px-2 py-0.5 rounded-full w-fit&quot;&gt;CONTROLADO&lt;/span&gt;
+                &lt;span *ngIf&#x3D;&quot;!m.requiereReceta&quot;
+                      class&#x3D;&quot;text-[10px] font-bold bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full w-fit&quot;&gt;SIN RECETA&lt;/span&gt;
+              &lt;/div&gt;
+            &lt;/td&gt;
+            &lt;td class&#x3D;&quot;px-4 py-3&quot;&gt;
+              &lt;div class&#x3D;&quot;flex items-center gap-2 justify-end&quot;&gt;
+                &lt;button (click)&#x3D;&quot;abrirModal(m)&quot; title&#x3D;&quot;Editar&quot;
+                        class&#x3D;&quot;p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors&quot;&gt;
+                  &lt;svg class&#x3D;&quot;w-4 h-4&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+                    &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot;
+                          d&#x3D;&quot;M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z&quot;/&gt;
+                  &lt;/svg&gt;
+                &lt;/button&gt;
+                &lt;button (click)&#x3D;&quot;toggle(m)&quot; [title]&#x3D;&quot;m.activo ? &#x27;Desactivar&#x27; : &#x27;Activar&#x27;&quot;
+                        class&#x3D;&quot;p-1.5 rounded-lg transition-colors&quot;
+                        [ngClass]&#x3D;&quot;m.activo ? &#x27;text-gray-400 hover:text-red-500 hover:bg-red-50&#x27; : &#x27;text-gray-400 hover:text-green-600 hover:bg-green-50&#x27;&quot;&gt;
+                  &lt;svg class&#x3D;&quot;w-4 h-4&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+                    &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot;
+                          d&#x3D;&quot;M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636&quot;/&gt;
+                  &lt;/svg&gt;
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr *ngIf&#x3D;&quot;medicamentos().length &#x3D;&#x3D;&#x3D; 0&quot;&gt;
+            &lt;td colspan&#x3D;&quot;7&quot; class&#x3D;&quot;px-4 py-10 text-center text-gray-400 text-sm&quot;&gt;
+              No se encontraron medicamentos.
+            &lt;/td&gt;
+          &lt;/tr&gt;
+        &lt;/tbody&gt;
+      &lt;/table&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Paginación --&gt;
+    &lt;div *ngIf&#x3D;&quot;totalPaginas() &gt; 1&quot;
+         class&#x3D;&quot;border-t border-gray-100 px-4 py-3 flex items-center justify-between&quot;&gt;
+      &lt;p class&#x3D;&quot;text-xs text-gray-400&quot;&gt;
+        Página &lt;strong&gt;{{ pagina() }}&lt;/strong&gt; de &lt;strong&gt;{{ totalPaginas() }}&lt;/strong&gt;
+      &lt;/p&gt;
+      &lt;div class&#x3D;&quot;flex gap-2&quot;&gt;
+        &lt;button (click)&#x3D;&quot;irPagina(pagina() - 1)&quot; [disabled]&#x3D;&quot;pagina() &#x3D;&#x3D;&#x3D; 1&quot;
+                class&#x3D;&quot;px-3 py-1.5 text-xs font-medium text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50 disabled:opacity-40 transition-colors&quot;&gt;
+          ← Anterior
+        &lt;/button&gt;
+        &lt;button (click)&#x3D;&quot;irPagina(pagina() + 1)&quot; [disabled]&#x3D;&quot;pagina() &#x3D;&#x3D;&#x3D; totalPaginas()&quot;
+                class&#x3D;&quot;px-3 py-1.5 text-xs font-medium text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50 disabled:opacity-40 transition-colors&quot;&gt;
+          Siguiente →
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;!-- ── Modal crear/editar ── --&gt;
+&lt;div *ngIf&#x3D;&quot;modalAbierto()&quot;
+     class&#x3D;&quot;fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4&quot;
+     (click)&#x3D;&quot;cerrarModal()&quot;&gt;
+  &lt;div class&#x3D;&quot;bg-white rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden max-h-[90vh] flex flex-col&quot;
+       (click)&#x3D;&quot;$event.stopPropagation()&quot;&gt;
+
+    &lt;div class&#x3D;&quot;px-6 py-4 border-b border-gray-100 flex items-center justify-between flex-shrink-0&quot;&gt;
+      &lt;h3 class&#x3D;&quot;font-bold text-gray-900&quot;&gt;{{ editando() ? &#x27;Editar Medicamento&#x27; : &#x27;Nuevo Medicamento&#x27; }}&lt;/h3&gt;
+      &lt;button (click)&#x3D;&quot;cerrarModal()&quot; type&#x3D;&quot;button&quot;
+              class&#x3D;&quot;p-1.5 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors&quot;&gt;
+        &lt;svg class&#x3D;&quot;w-5 h-5&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+          &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M6 18L18 6M6 6l12 12&quot;/&gt;
+        &lt;/svg&gt;
+      &lt;/button&gt;
+    &lt;/div&gt;
+
+    &lt;div class&#x3D;&quot;overflow-y-auto flex-1 px-6 py-5&quot;&gt;
+      &lt;form [formGroup]&#x3D;&quot;form&quot; class&#x3D;&quot;space-y-4&quot;&gt;
+
+        &lt;div class&#x3D;&quot;grid grid-cols-2 gap-4&quot;&gt;
+          &lt;div&gt;
+            &lt;label class&#x3D;&quot;block text-xs font-semibold text-gray-500 uppercase mb-1&quot;&gt;Código &lt;span class&#x3D;&quot;text-red-500&quot;&gt;*&lt;/span&gt;&lt;/label&gt;
+            &lt;input formControlName&#x3D;&quot;codigo&quot; type&#x3D;&quot;text&quot; placeholder&#x3D;&quot;MED-XXX&quot;
+                   class&#x3D;&quot;w-full px-3 py-2 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-green-400 font-mono uppercase&quot;/&gt;
+          &lt;/div&gt;
+          &lt;div&gt;
+            &lt;label class&#x3D;&quot;block text-xs font-semibold text-gray-500 uppercase mb-1&quot;&gt;Nombre Genérico &lt;span class&#x3D;&quot;text-red-500&quot;&gt;*&lt;/span&gt;&lt;/label&gt;
+            &lt;input formControlName&#x3D;&quot;nombreGenerico&quot; type&#x3D;&quot;text&quot; placeholder&#x3D;&quot;Ej: Amoxicilina&quot;
+                   class&#x3D;&quot;w-full px-3 py-2 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-green-400&quot;/&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div&gt;
+          &lt;label class&#x3D;&quot;block text-xs font-semibold text-gray-500 uppercase mb-1&quot;&gt;Nombre Comercial&lt;/label&gt;
+          &lt;input formControlName&#x3D;&quot;nombreComercial&quot; type&#x3D;&quot;text&quot; placeholder&#x3D;&quot;Ej: Amoxil&quot;
+                 class&#x3D;&quot;w-full px-3 py-2 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-green-400&quot;/&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;grid grid-cols-2 gap-4&quot;&gt;
+          &lt;div&gt;
+            &lt;label class&#x3D;&quot;block text-xs font-semibold text-gray-500 uppercase mb-1&quot;&gt;Presentación &lt;span class&#x3D;&quot;text-red-500&quot;&gt;*&lt;/span&gt;&lt;/label&gt;
+            &lt;input formControlName&#x3D;&quot;presentacion&quot; type&#x3D;&quot;text&quot; placeholder&#x3D;&quot;Ej: Tableta 500mg&quot;
+                   class&#x3D;&quot;w-full px-3 py-2 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-green-400&quot;/&gt;
+          &lt;/div&gt;
+          &lt;div&gt;
+            &lt;label class&#x3D;&quot;block text-xs font-semibold text-gray-500 uppercase mb-1&quot;&gt;Concentración &lt;span class&#x3D;&quot;text-red-500&quot;&gt;*&lt;/span&gt;&lt;/label&gt;
+            &lt;input formControlName&#x3D;&quot;concentracion&quot; type&#x3D;&quot;text&quot; placeholder&#x3D;&quot;Ej: 500mg&quot;
+                   class&#x3D;&quot;w-full px-3 py-2 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-green-400&quot;/&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;grid grid-cols-2 gap-4&quot;&gt;
+          &lt;div&gt;
+            &lt;label class&#x3D;&quot;block text-xs font-semibold text-gray-500 uppercase mb-1&quot;&gt;Vía de Administración &lt;span class&#x3D;&quot;text-red-500&quot;&gt;*&lt;/span&gt;&lt;/label&gt;
+            &lt;select formControlName&#x3D;&quot;via&quot;
+                    class&#x3D;&quot;w-full px-3 py-2 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-green-400&quot;&gt;
+              &lt;option value&#x3D;&quot;&quot;&gt;Seleccionar…&lt;/option&gt;
+              &lt;option *ngFor&#x3D;&quot;let v of vias&quot; [value]&#x3D;&quot;v&quot;&gt;{{ v }}&lt;/option&gt;
+            &lt;/select&gt;
+          &lt;/div&gt;
+          &lt;div&gt;
+            &lt;label class&#x3D;&quot;block text-xs font-semibold text-gray-500 uppercase mb-1&quot;&gt;Grupo Terapéutico &lt;span class&#x3D;&quot;text-red-500&quot;&gt;*&lt;/span&gt;&lt;/label&gt;
+            &lt;input formControlName&#x3D;&quot;grupoTerapeutico&quot; type&#x3D;&quot;text&quot; placeholder&#x3D;&quot;Ej: Antibiótico - Penicilina&quot;
+                   class&#x3D;&quot;w-full px-3 py-2 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-green-400&quot;/&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;flex gap-6 pt-1&quot;&gt;
+          &lt;label class&#x3D;&quot;flex items-center gap-2 cursor-pointer&quot;&gt;
+            &lt;input formControlName&#x3D;&quot;requiereReceta&quot; type&#x3D;&quot;checkbox&quot;
+                   class&#x3D;&quot;w-4 h-4 rounded border-gray-300 text-green-600 focus:ring-green-400&quot;/&gt;
+            &lt;span class&#x3D;&quot;text-sm text-gray-700&quot;&gt;Requiere receta médica&lt;/span&gt;
+          &lt;/label&gt;
+          &lt;label class&#x3D;&quot;flex items-center gap-2 cursor-pointer&quot;&gt;
+            &lt;input formControlName&#x3D;&quot;esControlado&quot; type&#x3D;&quot;checkbox&quot;
+                   class&#x3D;&quot;w-4 h-4 rounded border-gray-300 text-red-600 focus:ring-red-400&quot;/&gt;
+            &lt;span class&#x3D;&quot;text-sm text-gray-700&quot;&gt;Medicamento controlado&lt;/span&gt;
+          &lt;/label&gt;
+        &lt;/div&gt;
+
+      &lt;/form&gt;
+    &lt;/div&gt;
+
+    &lt;div class&#x3D;&quot;px-6 py-4 border-t border-gray-100 flex justify-end gap-3 flex-shrink-0&quot;&gt;
+      &lt;button (click)&#x3D;&quot;cerrarModal()&quot; type&#x3D;&quot;button&quot;
+              class&#x3D;&quot;px-5 py-2 border border-gray-200 text-gray-600 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors&quot;&gt;
+        Cancelar
+      &lt;/button&gt;
+      &lt;button (click)&#x3D;&quot;guardar()&quot; [disabled]&#x3D;&quot;form.invalid || enviando()&quot;
+              class&#x3D;&quot;px-6 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold rounded-lg transition-colors disabled:opacity-50&quot;&gt;
+        {{ enviando() ? &#x27;Guardando…&#x27; : (editando() ? &#x27;Actualizar&#x27; : &#x27;Crear Medicamento&#x27;) }}
+      &lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></td>
+            </tr>
+
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#busqueda$" >busqueda$</a>
+                            </li>
+                            <li>
+                                <a href="#cargando" >cargando</a>
+                            </li>
+                            <li>
+                                <a href="#editando" >editando</a>
+                            </li>
+                            <li>
+                                <a href="#enviando" >enviando</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#fb" >fb</a>
+                            </li>
+                            <li>
+                                <a href="#form" >form</a>
+                            </li>
+                            <li>
+                                <a href="#medicamentos" >medicamentos</a>
+                            </li>
+                            <li>
+                                <a href="#modalAbierto" >modalAbierto</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#notification" >notification</a>
+                            </li>
+                            <li>
+                                <a href="#pagina" >pagina</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#svc" >svc</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#terminoBusqueda" >terminoBusqueda</a>
+                            </li>
+                            <li>
+                                <a href="#total" >total</a>
+                            </li>
+                            <li>
+                                <a href="#totalPaginas" >totalPaginas</a>
+                            </li>
+                            <li>
+                                <a href="#vias" >vias</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#abrirModal" >abrirModal</a>
+                            </li>
+                            <li>
+                                <a href="#cargar" >cargar</a>
+                            </li>
+                            <li>
+                                <a href="#cerrarModal" >cerrarModal</a>
+                            </li>
+                            <li>
+                                <a href="#guardar" >guardar</a>
+                            </li>
+                            <li>
+                                <a href="#irPagina" >irPagina</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#toggle" >toggle</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="abrirModal"></a>
+                    <span class="name">
+                        <span ><b>abrirModal</b></span>
+                        <a href="#abrirModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>abrirModal(med?: <a href="../interfaces/Medicamento.html" target="_self">Medicamento</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="307"
+                                    class="link-to-prism">src/app/modules/mantenimiento-medicamentos/mantenimiento-medicamentos.component.ts:307</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>med</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Medicamento.html" target="_self" >Medicamento</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargar"></a>
+                    <span class="name">
+                        <span ><b>cargar</b></span>
+                        <a href="#cargar"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cargar()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="287"
+                                    class="link-to-prism">src/app/modules/mantenimiento-medicamentos/mantenimiento-medicamentos.component.ts:287</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cerrarModal"></a>
+                    <span class="name">
+                        <span ><b>cerrarModal</b></span>
+                        <a href="#cerrarModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cerrarModal()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="317"
+                                    class="link-to-prism">src/app/modules/mantenimiento-medicamentos/mantenimiento-medicamentos.component.ts:317</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="guardar"></a>
+                    <span class="name">
+                        <span ><b>guardar</b></span>
+                        <a href="#guardar"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>guardar()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="323"
+                                    class="link-to-prism">src/app/modules/mantenimiento-medicamentos/mantenimiento-medicamentos.component.ts:323</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="irPagina"></a>
+                    <span class="name">
+                        <span ><b>irPagina</b></span>
+                        <a href="#irPagina"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>irPagina(p: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="301"
+                                    class="link-to-prism">src/app/modules/mantenimiento-medicamentos/mantenimiento-medicamentos.component.ts:301</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>p</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="275"
+                                    class="link-to-prism">src/app/modules/mantenimiento-medicamentos/mantenimiento-medicamentos.component.ts:275</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toggle"></a>
+                    <span class="name">
+                        <span ><b>toggle</b></span>
+                        <a href="#toggle"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>toggle(med: <a href="../interfaces/Medicamento.html" target="_self">Medicamento</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="345"
+                                    class="link-to-prism">src/app/modules/mantenimiento-medicamentos/mantenimiento-medicamentos.component.ts:345</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>med</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Medicamento.html" target="_self" >Medicamento</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="busqueda$"></a>
+                    <span class="name">
+                        <span ><b>busqueda$</b></span>
+                        <a href="#busqueda$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Subject&lt;string&gt;()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="260" class="link-to-prism">src/app/modules/mantenimiento-medicamentos/mantenimiento-medicamentos.component.ts:260</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargando"></a>
+                    <span class="name">
+                        <span ><b>cargando</b></span>
+                        <a href="#cargando"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(true)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="251" class="link-to-prism">src/app/modules/mantenimiento-medicamentos/mantenimiento-medicamentos.component.ts:251</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="editando"></a>
+                    <span class="name">
+                        <span ><b>editando</b></span>
+                        <a href="#editando"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;Medicamento | null&gt;(null)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="256" class="link-to-prism">src/app/modules/mantenimiento-medicamentos/mantenimiento-medicamentos.component.ts:256</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="enviando"></a>
+                    <span class="name">
+                        <span ><b>enviando</b></span>
+                        <a href="#enviando"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="257" class="link-to-prism">src/app/modules/mantenimiento-medicamentos/mantenimiento-medicamentos.component.ts:257</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="fb"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>fb</b></span>
+                        <a href="#fb"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(FormBuilder)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="248" class="link-to-prism">src/app/modules/mantenimiento-medicamentos/mantenimiento-medicamentos.component.ts:248</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="form"></a>
+                    <span class="name">
+                        <span ><b>form</b></span>
+                        <a href="#form"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this.fb.group({
+    codigo:           [&#x27;&#x27;, Validators.required],
+    nombreGenerico:   [&#x27;&#x27;, Validators.required],
+    nombreComercial:  [&#x27;&#x27;],
+    presentacion:     [&#x27;&#x27;, Validators.required],
+    concentracion:    [&#x27;&#x27;, Validators.required],
+    via:              [&#x27;&#x27;, Validators.required],
+    grupoTerapeutico: [&#x27;&#x27;, Validators.required],
+    requiereReceta:   [true],
+    esControlado:     [false],
+  })</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="263" class="link-to-prism">src/app/modules/mantenimiento-medicamentos/mantenimiento-medicamentos.component.ts:263</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="medicamentos"></a>
+                    <span class="name">
+                        <span ><b>medicamentos</b></span>
+                        <a href="#medicamentos"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;Medicamento[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="250" class="link-to-prism">src/app/modules/mantenimiento-medicamentos/mantenimiento-medicamentos.component.ts:250</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="modalAbierto"></a>
+                    <span class="name">
+                        <span ><b>modalAbierto</b></span>
+                        <a href="#modalAbierto"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="255" class="link-to-prism">src/app/modules/mantenimiento-medicamentos/mantenimiento-medicamentos.component.ts:255</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="notification"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>notification</b></span>
+                        <a href="#notification"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(NotificationService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="247" class="link-to-prism">src/app/modules/mantenimiento-medicamentos/mantenimiento-medicamentos.component.ts:247</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="pagina"></a>
+                    <span class="name">
+                        <span ><b>pagina</b></span>
+                        <a href="#pagina"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(1)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="253" class="link-to-prism">src/app/modules/mantenimiento-medicamentos/mantenimiento-medicamentos.component.ts:253</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="svc"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>svc</b></span>
+                        <a href="#svc"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(MedicamentosService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="246" class="link-to-prism">src/app/modules/mantenimiento-medicamentos/mantenimiento-medicamentos.component.ts:246</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="terminoBusqueda"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>terminoBusqueda</b></span>
+                        <a href="#terminoBusqueda"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="261" class="link-to-prism">src/app/modules/mantenimiento-medicamentos/mantenimiento-medicamentos.component.ts:261</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="total"></a>
+                    <span class="name">
+                        <span ><b>total</b></span>
+                        <a href="#total"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(0)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="252" class="link-to-prism">src/app/modules/mantenimiento-medicamentos/mantenimiento-medicamentos.component.ts:252</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="totalPaginas"></a>
+                    <span class="name">
+                        <span ><b>totalPaginas</b></span>
+                        <a href="#totalPaginas"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(1)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="254" class="link-to-prism">src/app/modules/mantenimiento-medicamentos/mantenimiento-medicamentos.component.ts:254</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="vias"></a>
+                    <span class="name">
+                        <span ><b>vias</b></span>
+                        <a href="#vias"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>VIAS</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="258" class="link-to-prism">src/app/modules/mantenimiento-medicamentos/mantenimiento-medicamentos.component.ts:258</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, inject, OnInit, signal } from &#x27;@angular/core&#x27;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
+import { ReactiveFormsModule, FormBuilder, Validators } from &#x27;@angular/forms&#x27;;
+import { Subject, debounceTime, distinctUntilChanged, switchMap } from &#x27;rxjs&#x27;;
+import { MedicamentosService, Medicamento } from &#x27;../../core/services/medicamentos.service&#x27;;
+import { NotificationService } from &#x27;../../core/services/notification.service&#x27;;
+
+const VIAS &#x3D; [&#x27;ORAL&#x27;,&#x27;INYECTABLE&#x27;,&#x27;TOPICA&#x27;,&#x27;INHALATORIA&#x27;,&#x27;SUBLINGUAL&#x27;,&#x27;RECTAL&#x27;,&#x27;OFTALMICA&#x27;,&#x27;OTICA&#x27;];
+
+@Component({
+  selector: &#x27;app-mantenimiento-medicamentos&#x27;,
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule],
+  template: &#x60;
+    &lt;div class&#x3D;&quot;space-y-5&quot;&gt;
+
+      &lt;!-- Cabecera --&gt;
+      &lt;div class&#x3D;&quot;flex flex-wrap items-center justify-between gap-3&quot;&gt;
+        &lt;div&gt;
+          &lt;h2 class&#x3D;&quot;text-xl font-bold text-gray-900&quot;&gt;Catálogo de Medicamentos&lt;/h2&gt;
+          &lt;p class&#x3D;&quot;text-sm text-gray-500 mt-0.5&quot;&gt;Gestión del catálogo de medicamentos del sistema&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;button (click)&#x3D;&quot;abrirModal()&quot;
+                class&#x3D;&quot;flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold rounded-lg transition-colors shadow-sm&quot;&gt;
+          &lt;svg class&#x3D;&quot;w-4 h-4&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+            &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M12 4v16m8-8H4&quot;/&gt;
+          &lt;/svg&gt;
+          Nuevo Medicamento
+        &lt;/button&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Barra de búsqueda + filtros --&gt;
+      &lt;div class&#x3D;&quot;bg-white rounded-xl border border-gray-200 p-4 flex flex-wrap gap-3 items-center&quot;&gt;
+        &lt;div class&#x3D;&quot;relative flex-1 min-w-[240px]&quot;&gt;
+          &lt;svg class&#x3D;&quot;absolute left-3 top-2.5 w-4 h-4 text-gray-400&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+            &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z&quot;/&gt;
+          &lt;/svg&gt;
+          &lt;input type&#x3D;&quot;text&quot; placeholder&#x3D;&quot;Buscar por nombre, código, grupo…&quot;
+                 (input)&#x3D;&quot;busqueda$.next($any($event.target).value)&quot;
+                 class&#x3D;&quot;w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent&quot;/&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;text-xs text-gray-400 flex-shrink-0&quot;&gt;
+          &lt;strong class&#x3D;&quot;text-gray-700&quot;&gt;{{ total() }}&lt;/strong&gt; medicamentos
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Tabla --&gt;
+      &lt;div class&#x3D;&quot;bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm&quot;&gt;
+        &lt;!-- Cargando --&gt;
+        &lt;div *ngIf&#x3D;&quot;cargando()&quot; class&#x3D;&quot;p-12 text-center text-gray-400 text-sm&quot;&gt;Cargando…&lt;/div&gt;
+
+        &lt;!-- Tabla --&gt;
+        &lt;div *ngIf&#x3D;&quot;!cargando()&quot; class&#x3D;&quot;overflow-x-auto&quot;&gt;
+          &lt;table class&#x3D;&quot;w-full text-sm&quot;&gt;
+            &lt;thead class&#x3D;&quot;bg-gray-50 border-b border-gray-100&quot;&gt;
+              &lt;tr&gt;
+                &lt;th class&#x3D;&quot;text-left px-4 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider&quot;&gt;Código&lt;/th&gt;
+                &lt;th class&#x3D;&quot;text-left px-4 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider&quot;&gt;Nombre Genérico&lt;/th&gt;
+                &lt;th class&#x3D;&quot;text-left px-4 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider hidden md:table-cell&quot;&gt;Presentación&lt;/th&gt;
+                &lt;th class&#x3D;&quot;text-left px-4 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider hidden lg:table-cell&quot;&gt;Vía&lt;/th&gt;
+                &lt;th class&#x3D;&quot;text-left px-4 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider hidden lg:table-cell&quot;&gt;Grupo&lt;/th&gt;
+                &lt;th class&#x3D;&quot;text-left px-4 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider&quot;&gt;Estado&lt;/th&gt;
+                &lt;th class&#x3D;&quot;px-4 py-3&quot;&gt;&lt;/th&gt;
+              &lt;/tr&gt;
+            &lt;/thead&gt;
+            &lt;tbody class&#x3D;&quot;divide-y divide-gray-50&quot;&gt;
+              &lt;tr *ngFor&#x3D;&quot;let m of medicamentos()&quot;
+                  class&#x3D;&quot;hover:bg-gray-50 transition-colors&quot;
+                  [class.opacity-50]&#x3D;&quot;!m.activo&quot;&gt;
+                &lt;td class&#x3D;&quot;px-4 py-3&quot;&gt;
+                  &lt;span class&#x3D;&quot;font-mono text-xs bg-gray-100 text-gray-700 px-2 py-0.5 rounded&quot;&gt;{{ m.codigo }}&lt;/span&gt;
+                &lt;/td&gt;
+                &lt;td class&#x3D;&quot;px-4 py-3&quot;&gt;
+                  &lt;p class&#x3D;&quot;font-medium text-gray-900&quot;&gt;{{ m.nombreGenerico }}&lt;/p&gt;
+                  &lt;p *ngIf&#x3D;&quot;m.nombreComercial&quot; class&#x3D;&quot;text-xs text-gray-400&quot;&gt;{{ m.nombreComercial }}&lt;/p&gt;
+                &lt;/td&gt;
+                &lt;td class&#x3D;&quot;px-4 py-3 hidden md:table-cell&quot;&gt;
+                  &lt;p class&#x3D;&quot;text-gray-600&quot;&gt;{{ m.presentacion }}&lt;/p&gt;
+                  &lt;p class&#x3D;&quot;text-xs text-gray-400&quot;&gt;{{ m.concentracion }}&lt;/p&gt;
+                &lt;/td&gt;
+                &lt;td class&#x3D;&quot;px-4 py-3 hidden lg:table-cell&quot;&gt;
+                  &lt;span class&#x3D;&quot;text-xs bg-blue-50 text-blue-700 border border-blue-100 px-2 py-0.5 rounded-full&quot;&gt;{{ m.via }}&lt;/span&gt;
+                &lt;/td&gt;
+                &lt;td class&#x3D;&quot;px-4 py-3 hidden lg:table-cell text-xs text-gray-500&quot;&gt;{{ m.grupoTerapeutico }}&lt;/td&gt;
+                &lt;td class&#x3D;&quot;px-4 py-3&quot;&gt;
+                  &lt;div class&#x3D;&quot;flex flex-col gap-1&quot;&gt;
+                    &lt;span [ngClass]&#x3D;&quot;m.activo ? &#x27;bg-green-100 text-green-700&#x27; : &#x27;bg-gray-100 text-gray-500&#x27;&quot;
+                          class&#x3D;&quot;text-[10px] font-bold px-2 py-0.5 rounded-full w-fit&quot;&gt;
+                      {{ m.activo ? &#x27;ACTIVO&#x27; : &#x27;INACTIVO&#x27; }}
+                    &lt;/span&gt;
+                    &lt;span *ngIf&#x3D;&quot;m.esControlado&quot;
+                          class&#x3D;&quot;text-[10px] font-bold bg-red-100 text-red-700 px-2 py-0.5 rounded-full w-fit&quot;&gt;CONTROLADO&lt;/span&gt;
+                    &lt;span *ngIf&#x3D;&quot;!m.requiereReceta&quot;
+                          class&#x3D;&quot;text-[10px] font-bold bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full w-fit&quot;&gt;SIN RECETA&lt;/span&gt;
+                  &lt;/div&gt;
+                &lt;/td&gt;
+                &lt;td class&#x3D;&quot;px-4 py-3&quot;&gt;
+                  &lt;div class&#x3D;&quot;flex items-center gap-2 justify-end&quot;&gt;
+                    &lt;button (click)&#x3D;&quot;abrirModal(m)&quot; title&#x3D;&quot;Editar&quot;
+                            class&#x3D;&quot;p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors&quot;&gt;
+                      &lt;svg class&#x3D;&quot;w-4 h-4&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+                        &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot;
+                              d&#x3D;&quot;M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z&quot;/&gt;
+                      &lt;/svg&gt;
+                    &lt;/button&gt;
+                    &lt;button (click)&#x3D;&quot;toggle(m)&quot; [title]&#x3D;&quot;m.activo ? &#x27;Desactivar&#x27; : &#x27;Activar&#x27;&quot;
+                            class&#x3D;&quot;p-1.5 rounded-lg transition-colors&quot;
+                            [ngClass]&#x3D;&quot;m.activo ? &#x27;text-gray-400 hover:text-red-500 hover:bg-red-50&#x27; : &#x27;text-gray-400 hover:text-green-600 hover:bg-green-50&#x27;&quot;&gt;
+                      &lt;svg class&#x3D;&quot;w-4 h-4&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+                        &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot;
+                              d&#x3D;&quot;M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636&quot;/&gt;
+                      &lt;/svg&gt;
+                    &lt;/button&gt;
+                  &lt;/div&gt;
+                &lt;/td&gt;
+              &lt;/tr&gt;
+              &lt;tr *ngIf&#x3D;&quot;medicamentos().length &#x3D;&#x3D;&#x3D; 0&quot;&gt;
+                &lt;td colspan&#x3D;&quot;7&quot; class&#x3D;&quot;px-4 py-10 text-center text-gray-400 text-sm&quot;&gt;
+                  No se encontraron medicamentos.
+                &lt;/td&gt;
+              &lt;/tr&gt;
+            &lt;/tbody&gt;
+          &lt;/table&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Paginación --&gt;
+        &lt;div *ngIf&#x3D;&quot;totalPaginas() &gt; 1&quot;
+             class&#x3D;&quot;border-t border-gray-100 px-4 py-3 flex items-center justify-between&quot;&gt;
+          &lt;p class&#x3D;&quot;text-xs text-gray-400&quot;&gt;
+            Página &lt;strong&gt;{{ pagina() }}&lt;/strong&gt; de &lt;strong&gt;{{ totalPaginas() }}&lt;/strong&gt;
+          &lt;/p&gt;
+          &lt;div class&#x3D;&quot;flex gap-2&quot;&gt;
+            &lt;button (click)&#x3D;&quot;irPagina(pagina() - 1)&quot; [disabled]&#x3D;&quot;pagina() &#x3D;&#x3D;&#x3D; 1&quot;
+                    class&#x3D;&quot;px-3 py-1.5 text-xs font-medium text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50 disabled:opacity-40 transition-colors&quot;&gt;
+              ← Anterior
+            &lt;/button&gt;
+            &lt;button (click)&#x3D;&quot;irPagina(pagina() + 1)&quot; [disabled]&#x3D;&quot;pagina() &#x3D;&#x3D;&#x3D; totalPaginas()&quot;
+                    class&#x3D;&quot;px-3 py-1.5 text-xs font-medium text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50 disabled:opacity-40 transition-colors&quot;&gt;
+              Siguiente →
+            &lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+    &lt;/div&gt;
+
+    &lt;!-- ── Modal crear/editar ── --&gt;
+    &lt;div *ngIf&#x3D;&quot;modalAbierto()&quot;
+         class&#x3D;&quot;fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4&quot;
+         (click)&#x3D;&quot;cerrarModal()&quot;&gt;
+      &lt;div class&#x3D;&quot;bg-white rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden max-h-[90vh] flex flex-col&quot;
+           (click)&#x3D;&quot;$event.stopPropagation()&quot;&gt;
+
+        &lt;div class&#x3D;&quot;px-6 py-4 border-b border-gray-100 flex items-center justify-between flex-shrink-0&quot;&gt;
+          &lt;h3 class&#x3D;&quot;font-bold text-gray-900&quot;&gt;{{ editando() ? &#x27;Editar Medicamento&#x27; : &#x27;Nuevo Medicamento&#x27; }}&lt;/h3&gt;
+          &lt;button (click)&#x3D;&quot;cerrarModal()&quot; type&#x3D;&quot;button&quot;
+                  class&#x3D;&quot;p-1.5 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors&quot;&gt;
+            &lt;svg class&#x3D;&quot;w-5 h-5&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+              &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M6 18L18 6M6 6l12 12&quot;/&gt;
+            &lt;/svg&gt;
+          &lt;/button&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;overflow-y-auto flex-1 px-6 py-5&quot;&gt;
+          &lt;form [formGroup]&#x3D;&quot;form&quot; class&#x3D;&quot;space-y-4&quot;&gt;
+
+            &lt;div class&#x3D;&quot;grid grid-cols-2 gap-4&quot;&gt;
+              &lt;div&gt;
+                &lt;label class&#x3D;&quot;block text-xs font-semibold text-gray-500 uppercase mb-1&quot;&gt;Código &lt;span class&#x3D;&quot;text-red-500&quot;&gt;*&lt;/span&gt;&lt;/label&gt;
+                &lt;input formControlName&#x3D;&quot;codigo&quot; type&#x3D;&quot;text&quot; placeholder&#x3D;&quot;MED-XXX&quot;
+                       class&#x3D;&quot;w-full px-3 py-2 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-green-400 font-mono uppercase&quot;/&gt;
+              &lt;/div&gt;
+              &lt;div&gt;
+                &lt;label class&#x3D;&quot;block text-xs font-semibold text-gray-500 uppercase mb-1&quot;&gt;Nombre Genérico &lt;span class&#x3D;&quot;text-red-500&quot;&gt;*&lt;/span&gt;&lt;/label&gt;
+                &lt;input formControlName&#x3D;&quot;nombreGenerico&quot; type&#x3D;&quot;text&quot; placeholder&#x3D;&quot;Ej: Amoxicilina&quot;
+                       class&#x3D;&quot;w-full px-3 py-2 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-green-400&quot;/&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div&gt;
+              &lt;label class&#x3D;&quot;block text-xs font-semibold text-gray-500 uppercase mb-1&quot;&gt;Nombre Comercial&lt;/label&gt;
+              &lt;input formControlName&#x3D;&quot;nombreComercial&quot; type&#x3D;&quot;text&quot; placeholder&#x3D;&quot;Ej: Amoxil&quot;
+                     class&#x3D;&quot;w-full px-3 py-2 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-green-400&quot;/&gt;
+            &lt;/div&gt;
+
+            &lt;div class&#x3D;&quot;grid grid-cols-2 gap-4&quot;&gt;
+              &lt;div&gt;
+                &lt;label class&#x3D;&quot;block text-xs font-semibold text-gray-500 uppercase mb-1&quot;&gt;Presentación &lt;span class&#x3D;&quot;text-red-500&quot;&gt;*&lt;/span&gt;&lt;/label&gt;
+                &lt;input formControlName&#x3D;&quot;presentacion&quot; type&#x3D;&quot;text&quot; placeholder&#x3D;&quot;Ej: Tableta 500mg&quot;
+                       class&#x3D;&quot;w-full px-3 py-2 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-green-400&quot;/&gt;
+              &lt;/div&gt;
+              &lt;div&gt;
+                &lt;label class&#x3D;&quot;block text-xs font-semibold text-gray-500 uppercase mb-1&quot;&gt;Concentración &lt;span class&#x3D;&quot;text-red-500&quot;&gt;*&lt;/span&gt;&lt;/label&gt;
+                &lt;input formControlName&#x3D;&quot;concentracion&quot; type&#x3D;&quot;text&quot; placeholder&#x3D;&quot;Ej: 500mg&quot;
+                       class&#x3D;&quot;w-full px-3 py-2 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-green-400&quot;/&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div class&#x3D;&quot;grid grid-cols-2 gap-4&quot;&gt;
+              &lt;div&gt;
+                &lt;label class&#x3D;&quot;block text-xs font-semibold text-gray-500 uppercase mb-1&quot;&gt;Vía de Administración &lt;span class&#x3D;&quot;text-red-500&quot;&gt;*&lt;/span&gt;&lt;/label&gt;
+                &lt;select formControlName&#x3D;&quot;via&quot;
+                        class&#x3D;&quot;w-full px-3 py-2 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-green-400&quot;&gt;
+                  &lt;option value&#x3D;&quot;&quot;&gt;Seleccionar…&lt;/option&gt;
+                  &lt;option *ngFor&#x3D;&quot;let v of vias&quot; [value]&#x3D;&quot;v&quot;&gt;{{ v }}&lt;/option&gt;
+                &lt;/select&gt;
+              &lt;/div&gt;
+              &lt;div&gt;
+                &lt;label class&#x3D;&quot;block text-xs font-semibold text-gray-500 uppercase mb-1&quot;&gt;Grupo Terapéutico &lt;span class&#x3D;&quot;text-red-500&quot;&gt;*&lt;/span&gt;&lt;/label&gt;
+                &lt;input formControlName&#x3D;&quot;grupoTerapeutico&quot; type&#x3D;&quot;text&quot; placeholder&#x3D;&quot;Ej: Antibiótico - Penicilina&quot;
+                       class&#x3D;&quot;w-full px-3 py-2 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-green-400&quot;/&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div class&#x3D;&quot;flex gap-6 pt-1&quot;&gt;
+              &lt;label class&#x3D;&quot;flex items-center gap-2 cursor-pointer&quot;&gt;
+                &lt;input formControlName&#x3D;&quot;requiereReceta&quot; type&#x3D;&quot;checkbox&quot;
+                       class&#x3D;&quot;w-4 h-4 rounded border-gray-300 text-green-600 focus:ring-green-400&quot;/&gt;
+                &lt;span class&#x3D;&quot;text-sm text-gray-700&quot;&gt;Requiere receta médica&lt;/span&gt;
+              &lt;/label&gt;
+              &lt;label class&#x3D;&quot;flex items-center gap-2 cursor-pointer&quot;&gt;
+                &lt;input formControlName&#x3D;&quot;esControlado&quot; type&#x3D;&quot;checkbox&quot;
+                       class&#x3D;&quot;w-4 h-4 rounded border-gray-300 text-red-600 focus:ring-red-400&quot;/&gt;
+                &lt;span class&#x3D;&quot;text-sm text-gray-700&quot;&gt;Medicamento controlado&lt;/span&gt;
+              &lt;/label&gt;
+            &lt;/div&gt;
+
+          &lt;/form&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;px-6 py-4 border-t border-gray-100 flex justify-end gap-3 flex-shrink-0&quot;&gt;
+          &lt;button (click)&#x3D;&quot;cerrarModal()&quot; type&#x3D;&quot;button&quot;
+                  class&#x3D;&quot;px-5 py-2 border border-gray-200 text-gray-600 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors&quot;&gt;
+            Cancelar
+          &lt;/button&gt;
+          &lt;button (click)&#x3D;&quot;guardar()&quot; [disabled]&#x3D;&quot;form.invalid || enviando()&quot;
+                  class&#x3D;&quot;px-6 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold rounded-lg transition-colors disabled:opacity-50&quot;&gt;
+            {{ enviando() ? &#x27;Guardando…&#x27; : (editando() ? &#x27;Actualizar&#x27; : &#x27;Crear Medicamento&#x27;) }}
+          &lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &#x60;
+})
+export class MantenimientoMedicamentosComponent implements OnInit {
+  private svc          &#x3D; inject(MedicamentosService);
+  private notification &#x3D; inject(NotificationService);
+  private fb           &#x3D; inject(FormBuilder);
+
+  medicamentos  &#x3D; signal&lt;Medicamento[]&gt;([]);
+  cargando      &#x3D; signal(true);
+  total         &#x3D; signal(0);
+  pagina        &#x3D; signal(1);
+  totalPaginas  &#x3D; signal(1);
+  modalAbierto  &#x3D; signal(false);
+  editando      &#x3D; signal&lt;Medicamento | null&gt;(null);
+  enviando      &#x3D; signal(false);
+  vias          &#x3D; VIAS;
+
+  busqueda$ &#x3D; new Subject&lt;string&gt;();
+  private terminoBusqueda &#x3D; &#x27;&#x27;;
+
+  form &#x3D; this.fb.group({
+    codigo:           [&#x27;&#x27;, Validators.required],
+    nombreGenerico:   [&#x27;&#x27;, Validators.required],
+    nombreComercial:  [&#x27;&#x27;],
+    presentacion:     [&#x27;&#x27;, Validators.required],
+    concentracion:    [&#x27;&#x27;, Validators.required],
+    via:              [&#x27;&#x27;, Validators.required],
+    grupoTerapeutico: [&#x27;&#x27;, Validators.required],
+    requiereReceta:   [true],
+    esControlado:     [false],
+  });
+
+  ngOnInit() {
+    this.cargar();
+    this.busqueda$.pipe(
+      debounceTime(350),
+      distinctUntilChanged(),
+    ).subscribe(q &#x3D;&gt; {
+      this.terminoBusqueda &#x3D; q;
+      this.pagina.set(1);
+      this.cargar();
+    });
+  }
+
+  cargar() {
+    this.cargando.set(true);
+    this.svc.listar(this.pagina(), 20, this.terminoBusqueda || undefined).subscribe({
+      next: (res: any) &#x3D;&gt; {
+        const data &#x3D; res.data ?? res;
+        this.medicamentos.set(Array.isArray(data) ? data : (data.data ?? []));
+        this.total.set(res.total ?? data.total ?? 0);
+        this.totalPaginas.set(res.totalPaginas ?? data.totalPaginas ?? 1);
+        this.cargando.set(false);
+      },
+      error: () &#x3D;&gt; this.cargando.set(false),
+    });
+  }
+
+  irPagina(p: number) {
+    if (p &lt; 1 || p &gt; this.totalPaginas()) return;
+    this.pagina.set(p);
+    this.cargar();
+  }
+
+  abrirModal(med?: Medicamento) {
+    this.editando.set(med ?? null);
+    if (med) {
+      this.form.patchValue(med as any);
+    } else {
+      this.form.reset({ requiereReceta: true, esControlado: false });
+    }
+    this.modalAbierto.set(true);
+  }
+
+  cerrarModal() {
+    this.modalAbierto.set(false);
+    this.editando.set(null);
+    this.form.reset({ requiereReceta: true, esControlado: false });
+  }
+
+  guardar() {
+    if (this.form.invalid) return;
+    this.enviando.set(true);
+    const data &#x3D; this.form.value;
+    const req &#x3D; this.editando()
+      ? this.svc.actualizar(this.editando()!.id, data as any)
+      : this.svc.crear(data as any);
+
+    req.subscribe({
+      next: () &#x3D;&gt; {
+        this.notification.success(this.editando() ? &#x27;Medicamento actualizado&#x27; : &#x27;Medicamento creado&#x27;);
+        this.cerrarModal();
+        this.enviando.set(false);
+        this.cargar();
+      },
+      error: (err: any) &#x3D;&gt; {
+        this.enviando.set(false);
+        this.notification.error(err.error?.message ?? &#x27;Error al guardar&#x27;);
+      },
+    });
+  }
+
+  toggle(med: Medicamento) {
+    this.svc.toggleActivo(med.id).subscribe({
+      next: () &#x3D;&gt; {
+        this.notification.info(&#x60;Medicamento ${med.activo ? &#x27;desactivado&#x27; : &#x27;activado&#x27;}&#x60;);
+        this.cargar();
+      },
+      error: () &#x3D;&gt; this.notification.error(&#x27;Error al cambiar el estado&#x27;),
+    });
+  }
+}
+</code></pre>
+    </div>
+
+
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="space-y-5">  <!-- Cabecera -->  <div class="flex flex-wrap items-center justify-between gap-3">    <div>      <h2 class="text-xl font-bold text-gray-900">Catálogo de Medicamentos</h2>      <p class="text-sm text-gray-500 mt-0.5">Gestión del catálogo de medicamentos del sistema</p>    </div>    <button (click)="abrirModal()"            class="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold rounded-lg transition-colors shadow-sm">      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>      </svg>      Nuevo Medicamento    </button>  </div>  <!-- Barra de búsqueda + filtros -->  <div class="bg-white rounded-xl border border-gray-200 p-4 flex flex-wrap gap-3 items-center">    <div class="relative flex-1 min-w-[240px]">      <svg class="absolute left-3 top-2.5 w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>      </svg>      <input type="text" placeholder="Buscar por nombre, código, grupo…"             (input)="busqueda$.next($any($event.target).value)"             class="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"/>    </div>    <div class="text-xs text-gray-400 flex-shrink-0">      <strong class="text-gray-700">{{ total() }}</strong> medicamentos    </div>  </div>  <!-- Tabla -->  <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">    <!-- Cargando -->    <div *ngIf="cargando()" class="p-12 text-center text-gray-400 text-sm">Cargando…</div>    <!-- Tabla -->    <div *ngIf="!cargando()" class="overflow-x-auto">      <table class="w-full text-sm">        <thead class="bg-gray-50 border-b border-gray-100">          <tr>            <th class="text-left px-4 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider">Código</th>            <th class="text-left px-4 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider">Nombre Genérico</th>            <th class="text-left px-4 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider hidden md:table-cell">Presentación</th>            <th class="text-left px-4 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider hidden lg:table-cell">Vía</th>            <th class="text-left px-4 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider hidden lg:table-cell">Grupo</th>            <th class="text-left px-4 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider">Estado</th>            <th class="px-4 py-3"></th>          </tr>        </thead>        <tbody class="divide-y divide-gray-50">          <tr *ngFor="let m of medicamentos()"              class="hover:bg-gray-50 transition-colors"              [class.opacity-50]="!m.activo">            <td class="px-4 py-3">              <span class="font-mono text-xs bg-gray-100 text-gray-700 px-2 py-0.5 rounded">{{ m.codigo }}</span>            </td>            <td class="px-4 py-3">              <p class="font-medium text-gray-900">{{ m.nombreGenerico }}</p>              <p *ngIf="m.nombreComercial" class="text-xs text-gray-400">{{ m.nombreComercial }}</p>            </td>            <td class="px-4 py-3 hidden md:table-cell">              <p class="text-gray-600">{{ m.presentacion }}</p>              <p class="text-xs text-gray-400">{{ m.concentracion }}</p>            </td>            <td class="px-4 py-3 hidden lg:table-cell">              <span class="text-xs bg-blue-50 text-blue-700 border border-blue-100 px-2 py-0.5 rounded-full">{{ m.via }}</span>            </td>            <td class="px-4 py-3 hidden lg:table-cell text-xs text-gray-500">{{ m.grupoTerapeutico }}</td>            <td class="px-4 py-3">              <div class="flex flex-col gap-1">                <span [ngClass]="m.activo ? \'bg-green-100 text-green-700\' : \'bg-gray-100 text-gray-500\'"                      class="text-[10px] font-bold px-2 py-0.5 rounded-full w-fit">                  {{ m.activo ? \'ACTIVO\' : \'INACTIVO\' }}                </span>                <span *ngIf="m.esControlado"                      class="text-[10px] font-bold bg-red-100 text-red-700 px-2 py-0.5 rounded-full w-fit">CONTROLADO</span>                <span *ngIf="!m.requiereReceta"                      class="text-[10px] font-bold bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full w-fit">SIN RECETA</span>              </div>            </td>            <td class="px-4 py-3">              <div class="flex items-center gap-2 justify-end">                <button (click)="abrirModal(m)" title="Editar"                        class="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"                          d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>                  </svg>                </button>                <button (click)="toggle(m)" [title]="m.activo ? \'Desactivar\' : \'Activar\'"                        class="p-1.5 rounded-lg transition-colors"                        [ngClass]="m.activo ? \'text-gray-400 hover:text-red-500 hover:bg-red-50\' : \'text-gray-400 hover:text-green-600 hover:bg-green-50\'">                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"                          d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/>                  </svg>                </button>              </div>            </td>          </tr>          <tr *ngIf="medicamentos().length === 0">            <td colspan="7" class="px-4 py-10 text-center text-gray-400 text-sm">              No se encontraron medicamentos.            </td>          </tr>        </tbody>      </table>    </div>    <!-- Paginación -->    <div *ngIf="totalPaginas() > 1"         class="border-t border-gray-100 px-4 py-3 flex items-center justify-between">      <p class="text-xs text-gray-400">        Página <strong>{{ pagina() }}</strong> de <strong>{{ totalPaginas() }}</strong>      </p>      <div class="flex gap-2">        <button (click)="irPagina(pagina() - 1)" [disabled]="pagina() === 1"                class="px-3 py-1.5 text-xs font-medium text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50 disabled:opacity-40 transition-colors">          ← Anterior        </button>        <button (click)="irPagina(pagina() + 1)" [disabled]="pagina() === totalPaginas()"                class="px-3 py-1.5 text-xs font-medium text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50 disabled:opacity-40 transition-colors">          Siguiente →        </button>      </div>    </div>  </div></div><!-- ── Modal crear/editar ── --><div *ngIf="modalAbierto()"     class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"     (click)="cerrarModal()">  <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden max-h-[90vh] flex flex-col"       (click)="$event.stopPropagation()">    <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between flex-shrink-0">      <h3 class="font-bold text-gray-900">{{ editando() ? \'Editar Medicamento\' : \'Nuevo Medicamento\' }}</h3>      <button (click)="cerrarModal()" type="button"              class="p-1.5 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>        </svg>      </button>    </div>    <div class="overflow-y-auto flex-1 px-6 py-5">      <form [formGroup]="form" class="space-y-4">        <div class="grid grid-cols-2 gap-4">          <div>            <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Código <span class="text-red-500">*</span></label>            <input formControlName="codigo" type="text" placeholder="MED-XXX"                   class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-green-400 font-mono uppercase"/>          </div>          <div>            <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Nombre Genérico <span class="text-red-500">*</span></label>            <input formControlName="nombreGenerico" type="text" placeholder="Ej: Amoxicilina"                   class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-green-400"/>          </div>        </div>        <div>          <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Nombre Comercial</label>          <input formControlName="nombreComercial" type="text" placeholder="Ej: Amoxil"                 class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-green-400"/>        </div>        <div class="grid grid-cols-2 gap-4">          <div>            <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Presentación <span class="text-red-500">*</span></label>            <input formControlName="presentacion" type="text" placeholder="Ej: Tableta 500mg"                   class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-green-400"/>          </div>          <div>            <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Concentración <span class="text-red-500">*</span></label>            <input formControlName="concentracion" type="text" placeholder="Ej: 500mg"                   class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-green-400"/>          </div>        </div>        <div class="grid grid-cols-2 gap-4">          <div>            <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Vía de Administración <span class="text-red-500">*</span></label>            <select formControlName="via"                    class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-green-400">              <option value="">Seleccionar…</option>              <option *ngFor="let v of vias" [value]="v">{{ v }}</option>            </select>          </div>          <div>            <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Grupo Terapéutico <span class="text-red-500">*</span></label>            <input formControlName="grupoTerapeutico" type="text" placeholder="Ej: Antibiótico - Penicilina"                   class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-green-400"/>          </div>        </div>        <div class="flex gap-6 pt-1">          <label class="flex items-center gap-2 cursor-pointer">            <input formControlName="requiereReceta" type="checkbox"                   class="w-4 h-4 rounded border-gray-300 text-green-600 focus:ring-green-400"/>            <span class="text-sm text-gray-700">Requiere receta médica</span>          </label>          <label class="flex items-center gap-2 cursor-pointer">            <input formControlName="esControlado" type="checkbox"                   class="w-4 h-4 rounded border-gray-300 text-red-600 focus:ring-red-400"/>            <span class="text-sm text-gray-700">Medicamento controlado</span>          </label>        </div>      </form>    </div>    <div class="px-6 py-4 border-t border-gray-100 flex justify-end gap-3 flex-shrink-0">      <button (click)="cerrarModal()" type="button"              class="px-5 py-2 border border-gray-200 text-gray-600 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors">        Cancelar      </button>      <button (click)="guardar()" [disabled]="form.invalid || enviando()"              class="px-6 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold rounded-lg transition-colors disabled:opacity-50">        {{ enviando() ? \'Guardando…\' : (editando() ? \'Actualizar\' : \'Crear Medicamento\') }}      </button>    </div>  </div></div></div>'
+    var COMPONENTS = [{'name': 'AgendasComponent', 'selector': 'app-agendas'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'BuscadorPacienteComponent', 'selector': 'app-buscador-paciente'},{'name': 'CitasComponent', 'selector': 'app-citas'},{'name': 'ConstructorFormularioComponent', 'selector': 'app-constructor-formulario'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'EpidemiologiaDashboardComponent', 'selector': 'app-epidemiologia-dashboard'},{'name': 'EstadisticasHospitalariasComponent', 'selector': 'app-estadisticas-hospitalarias'},{'name': 'FarmaciaComponent', 'selector': 'app-farmacia'},{'name': 'GestionHospitalizacionComponent', 'selector': 'app-gestion-hospitalizacion'},{'name': 'GestionLotesModalComponent', 'selector': 'app-gestion-lotes-modal'},{'name': 'GestionReportesComponent', 'selector': 'app-gestion-reportes'},{'name': 'HistoriaClinicaComponent', 'selector': 'app-historia-clinica'},{'name': 'InfraestructuraModalComponent', 'selector': 'app-infraestructura-modal'},{'name': 'InventarioVacunasComponent', 'selector': 'app-inventario-vacunas'},{'name': 'LaboratorioComponent', 'selector': 'app-laboratorio'},{'name': 'ListaPlantillasComponent', 'selector': 'app-lista-plantillas'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MainLayoutComponent', 'selector': 'app-main-layout'},{'name': 'MantenimientoDiagnosticosComponent', 'selector': 'app-mantenimiento-diagnosticos'},{'name': 'MantenimientoEstablecimientosComponent', 'selector': 'app-mantenimiento-establecimientos'},{'name': 'MantenimientoInventarioComponent', 'selector': 'app-mantenimiento-inventario'},{'name': 'MantenimientoLaboratorioComponent', 'selector': 'app-mantenimiento-laboratorio'},{'name': 'MantenimientoLoginComponent', 'selector': 'app-mantenimiento-login'},{'name': 'MantenimientoMedicamentosComponent', 'selector': 'app-mantenimiento-medicamentos'},{'name': 'MantenimientoRadiologiaComponent', 'selector': 'app-mantenimiento-radiologia'},{'name': 'MantenimientoRolesComponent', 'selector': 'app-mantenimiento-roles'},{'name': 'MovimientosInventarioComponent', 'selector': 'app-movimientos-inventario'},{'name': 'NotificationComponent', 'selector': 'app-notification'},{'name': 'NuevaConsultaComponent', 'selector': 'app-nueva-consulta'},{'name': 'PacientesComponent', 'selector': 'app-pacientes'},{'name': 'PermisosUsuariosComponent', 'selector': 'app-permisos-usuarios'},{'name': 'RecetasPacienteComponent', 'selector': 'app-recetas-paciente'},{'name': 'RegistroVacunaModalComponent', 'selector': 'app-registro-vacuna-modal'},{'name': 'ReportesComponent', 'selector': 'app-reportes'},{'name': 'TriajeComponent', 'selector': 'app-triaje'},{'name': 'UsuariosComponent', 'selector': 'app-usuarios'},{'name': 'VacunacionComponent', 'selector': 'app-vacunacion'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'MantenimientoMedicamentosComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'MantenimientoMedicamentosComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

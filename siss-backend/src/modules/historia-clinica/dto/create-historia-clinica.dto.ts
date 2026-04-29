@@ -138,4 +138,8 @@ export class CreateHistoriaClinicaDto {
   @ValidateNested()
   @Type(() => NotificacionEpidemiologicaDto)
   notificacionEpidemiologica?: NotificacionEpidemiologicaDto;
+
+  @IsOptional()
+  @IsString()
+  fecha?: string;
 }

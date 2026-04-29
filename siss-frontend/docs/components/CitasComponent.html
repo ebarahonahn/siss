@@ -1,0 +1,2864 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>siss-frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">siss-frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  CitasComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#styleData" class="nav-link"
+                role="tab" id="styleData-tab" data-bs-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/modules/citas/citas.component.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                <code>OnInit</code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-citas</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                            <code>CommonModule</code>
+                            <code>FormsModule</code>
+                            <code>ReactiveFormsModule</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-3">styles</td>
+                <td class="col-md-9"><code>
+    .animate-in { animation: fadeIn 0.3s ease-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 10px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #c7d2fe;
+      border-radius: 10px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #818cf8;
+    }
+  </code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">template</td>
+                <td class="col-md-9"><pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;p-6 max-w-7xl mx-auto&quot;&gt;
+  &lt;!-- Encabezado con estadísticas rápidas --&gt;
+  &lt;div class&#x3D;&quot;flex justify-between items-center mb-8&quot;&gt;
+    &lt;div&gt;
+      &lt;h1 class&#x3D;&quot;text-3xl font-bold text-gray-900 tracking-tight&quot;&gt;Gestión de Citas&lt;/h1&gt;
+      &lt;p class&#x3D;&quot;text-gray-500 mt-1&quot;&gt;Control de agenda y programación de pacientes&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;button (click)&#x3D;&quot;abrirModal()&quot;
+      class&#x3D;&quot;flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-xl font-semibold transition-all shadow-md active:scale-95&quot;&gt;
+      &lt;svg class&#x3D;&quot;w-5 h-5&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+        &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M12 4v16m8-8H4&quot;/&gt;
+      &lt;/svg&gt;
+      Nueva Cita
+    &lt;/button&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Filtros y Listado --&gt;
+  &lt;div class&#x3D;&quot;bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden mb-8&quot;&gt;
+    &lt;div class&#x3D;&quot;p-4 border-b border-gray-50 flex items-center justify-between bg-gray-50/30&quot;&gt;
+      &lt;h3 class&#x3D;&quot;font-bold text-gray-700&quot;&gt;Agenda para {{ hoy | date:&#x27;fullDate&#x27; }}&lt;/h3&gt;
+      &lt;input type&#x3D;&quot;date&quot; [(ngModel)]&#x3D;&quot;fechaFiltro&quot; (change)&#x3D;&quot;cargarCitas()&quot;
+        [class.ring-2]&#x3D;&quot;!esFechaValida(fechaFiltro)&quot;
+        [class.ring-red-500]&#x3D;&quot;!esFechaValida(fechaFiltro)&quot;
+        class&#x3D;&quot;px-3 py-1.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none&quot;&gt;
+    &lt;/div&gt;
+
+    &lt;div class&#x3D;&quot;overflow-x-auto&quot;&gt;
+      &lt;table class&#x3D;&quot;w-full text-left border-collapse&quot;&gt;
+        &lt;thead&gt;
+          &lt;tr class&#x3D;&quot;bg-gray-50 text-gray-400 text-xs uppercase tracking-wider&quot;&gt;
+            &lt;th class&#x3D;&quot;px-6 py-4 font-semibold&quot;&gt;Hora&lt;/th&gt;
+            &lt;th class&#x3D;&quot;px-6 py-4 font-semibold&quot;&gt;Paciente&lt;/th&gt;
+            &lt;th class&#x3D;&quot;px-6 py-4 font-semibold&quot;&gt;Médico&lt;/th&gt;
+            &lt;th class&#x3D;&quot;px-6 py-4 font-semibold&quot;&gt;Especialidad&lt;/th&gt;
+            &lt;th class&#x3D;&quot;px-6 py-4 font-semibold&quot;&gt;Estado&lt;/th&gt;
+            &lt;th class&#x3D;&quot;px-6 py-4 font-semibold text-right&quot;&gt;Acciones&lt;/th&gt;
+          &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody class&#x3D;&quot;divide-y divide-gray-50&quot;&gt;
+          &lt;tr *ngFor&#x3D;&quot;let cita of citas&quot; class&#x3D;&quot;hover:bg-gray-50/50 transition-colors&quot;&gt;
+            &lt;td class&#x3D;&quot;px-6 py-4 border-l-4&quot; [ngClass]&#x3D;&quot;getEstadoClass(cita.estado)&quot;&gt;
+              &lt;div class&#x3D;&quot;font-bold text-gray-900&quot;&gt;{{ cita.fechaHora | date:&#x27;h:mm a&#x27;:&#x27;UTC&#x27; }}&lt;/div&gt;
+            &lt;/td&gt;
+            &lt;td class&#x3D;&quot;px-6 py-4&quot;&gt;
+              &lt;div class&#x3D;&quot;font-semibold text-gray-900&quot;&gt;{{ cita.paciente.nombres }} {{ cita.paciente.apellidos }}&lt;/div&gt;
+              &lt;div class&#x3D;&quot;text-xs text-gray-400&quot;&gt;DNI: {{ cita.paciente.dni }}&lt;/div&gt;
+            &lt;/td&gt;
+            &lt;td class&#x3D;&quot;px-6 py-4&quot;&gt;
+              &lt;div class&#x3D;&quot;text-sm font-medium text-gray-800&quot;&gt;Dr. {{ cita.medico.apellidos }}&lt;/div&gt;
+              &lt;div class&#x3D;&quot;text-xs text-gray-400 capitalize&quot;&gt;{{ cita.tipo.replace(&#x27;_&#x27;, &#x27; &#x27;) }}&lt;/div&gt;
+            &lt;/td&gt;
+            &lt;td class&#x3D;&quot;px-6 py-4&quot;&gt;
+              &lt;span class&#x3D;&quot;px-2 py-0.5 rounded-full text-xs font-semibold bg-violet-50 text-violet-700&quot;&gt;
+                {{ cita.especialidad?.nombre || &#x27;General&#x27; }}
+              &lt;/span&gt;
+            &lt;/td&gt;
+            &lt;td class&#x3D;&quot;px-6 py-4&quot;&gt;
+              &lt;span class&#x3D;&quot;px-2.5 py-1 rounded-full text-xs font-bold&quot; [ngClass]&#x3D;&quot;getStatusBadgeClass(cita.estado)&quot;&gt;
+                {{ cita.estado }}
+              &lt;/span&gt;
+            &lt;/td&gt;
+            &lt;td class&#x3D;&quot;px-6 py-4 text-right&quot;&gt;
+              &lt;button *ngIf&#x3D;&quot;cita.estado &#x3D;&#x3D;&#x3D; &#x27;PROGRAMADA&#x27;&quot; (click)&#x3D;&quot;cancelarCita(cita.id)&quot;
+                class&#x3D;&quot;text-red-600 hover:bg-red-50 p-2 rounded-lg transition-colors&quot; title&#x3D;&quot;Cancelar Cita&quot;&gt;
+                &lt;svg class&#x3D;&quot;w-5 h-5&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+                  &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M6 18L18 6M6 6l12 12&quot;/&gt;
+                &lt;/svg&gt;
+              &lt;/button&gt;
+            &lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr *ngIf&#x3D;&quot;!citas || citas.length &#x3D;&#x3D;&#x3D; 0&quot;&gt;
+            &lt;td colspan&#x3D;&quot;6&quot; class&#x3D;&quot;py-12 text-center text-gray-400&quot;&gt;
+              No hay citas programadas para esta fecha
+            &lt;/td&gt;
+          &lt;/tr&gt;
+        &lt;/tbody&gt;
+      &lt;/table&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- MODAL NUEVA CITA --&gt;
+  &lt;div *ngIf&#x3D;&quot;mostrarModal&quot; class&#x3D;&quot;fixed inset-0 z-50 flex items-center justify-center p-4&quot;&gt;
+    &lt;div class&#x3D;&quot;absolute inset-0 bg-gray-900/40 backdrop-blur-sm&quot; (click)&#x3D;&quot;cerrarModal()&quot;&gt;&lt;/div&gt;
+
+    &lt;div class&#x3D;&quot;bg-white rounded-2xl shadow-2xl w-full max-w-lg relative overflow-hidden animate-in fade-in zoom-in duration-200&quot;&gt;
+      &lt;div class&#x3D;&quot;p-6 bg-indigo-600 sticky top-0 z-10&quot;&gt;
+        &lt;h3 class&#x3D;&quot;text-xl font-bold text-white&quot;&gt;Programar Cita&lt;/h3&gt;
+        &lt;p class&#x3D;&quot;text-indigo-100 text-sm&quot;&gt;Ingrese los datos para la nueva consulta&lt;/p&gt;
+      &lt;/div&gt;
+
+      &lt;form [formGroup]&#x3D;&quot;citaForm&quot; (ngSubmit)&#x3D;&quot;guardar()&quot;
+            class&#x3D;&quot;p-6 space-y-4 max-h-[calc(100vh-200px)] overflow-y-auto custom-scrollbar&quot;&gt;
+
+        &lt;!-- Buscador de Paciente --&gt;
+        &lt;div class&#x3D;&quot;relative&quot;&gt;
+          &lt;label class&#x3D;&quot;block text-sm font-semibold text-gray-700 mb-1&quot;&gt;Buscar Paciente (Cualquier Centro)&lt;/label&gt;
+          &lt;div class&#x3D;&quot;relative&quot;&gt;
+            &lt;input type&#x3D;&quot;text&quot; [formControl]&#x3D;&quot;searchControl&quot; placeholder&#x3D;&quot;Nombre, Apellido o DNI...&quot;
+              class&#x3D;&quot;w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all pr-10&quot;&gt;
+            &lt;svg class&#x3D;&quot;w-5 h-5 absolute right-3 top-3 text-gray-400&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+              &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z&quot;/&gt;
+            &lt;/svg&gt;
+          &lt;/div&gt;
+
+          &lt;!-- Resultados de búsqueda --&gt;
+          &lt;div *ngIf&#x3D;&quot;pacientes &amp;&amp; pacientes.length &gt; 0 &amp;&amp; !pacienteSeleccionado&quot;
+            class&#x3D;&quot;absolute z-20 w-full mt-1 bg-white border border-gray-200 rounded-xl shadow-lg max-h-48 overflow-y-auto&quot;&gt;
+             &lt;div *ngFor&#x3D;&quot;let p of pacientes&quot; (click)&#x3D;&quot;seleccionarPaciente(p)&quot;
+               class&#x3D;&quot;p-3 hover:bg-indigo-50 cursor-pointer border-b border-gray-50 last:border-0 transition-colors&quot;&gt;
+               &lt;div class&#x3D;&quot;font-bold text-gray-800 text-sm&quot;&gt;{{ p.nombres }} {{ p.apellidos }}&lt;/div&gt;
+               &lt;div class&#x3D;&quot;text-xs text-gray-500 mt-0.5&quot;&gt;DNI: {{ p.dni }} | Exp: {{ p.numeroExpediente }}&lt;/div&gt;
+             &lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;!-- Ficha Compacta de Paciente --&gt;
+          &lt;div *ngIf&#x3D;&quot;pacienteSeleccionado&quot;
+            class&#x3D;&quot;mt-3 bg-indigo-50/50 border border-indigo-100 rounded-xl p-3 animate-in fade-in slide-in-from-top-1&quot;&gt;
+            &lt;div class&#x3D;&quot;flex justify-between items-start mb-2&quot;&gt;
+              &lt;div class&#x3D;&quot;flex items-center gap-2&quot;&gt;
+                &lt;div class&#x3D;&quot;w-8 h-8 rounded-full bg-indigo-200 flex items-center justify-center text-indigo-700 font-bold text-xs&quot;&gt;
+                  {{ pacienteSeleccionado.nombres[0] }}{{ pacienteSeleccionado.apellidos[0] }}
+                &lt;/div&gt;
+                &lt;div&gt;
+                  &lt;h4 class&#x3D;&quot;text-sm font-bold text-gray-900&quot;&gt;{{ pacienteSeleccionado.nombres }} {{ pacienteSeleccionado.apellidos }}&lt;/h4&gt;
+                  &lt;p class&#x3D;&quot;text-[10px] text-gray-500 font-mono&quot;&gt;{{ pacienteSeleccionado.dni }}&lt;/p&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+              &lt;button (click)&#x3D;&quot;pacienteSeleccionado &#x3D; null; searchControl.setValue(&#x27;&#x27;)&quot; type&#x3D;&quot;button&quot; class&#x3D;&quot;text-indigo-300 hover:text-red-500 transition-colors&quot;&gt;
+                &lt;svg class&#x3D;&quot;w-4 h-4&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M6 18L18 6M6 6l12 12&quot;/&gt;&lt;/svg&gt;
+              &lt;/button&gt;
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;flex gap-4 text-[11px] border-t border-indigo-100/50 pt-2&quot;&gt;
+              &lt;span class&#x3D;&quot;text-indigo-600 font-medium&quot;&gt;&lt;b&gt;Edad:&lt;/b&gt; {{ calcularEdad(pacienteSeleccionado.fechaNacimiento) }} años&lt;/span&gt;
+              &lt;span class&#x3D;&quot;text-gray-500&quot;&gt;&lt;b&gt;Centro:&lt;/b&gt; {{ pacienteSeleccionado.establecimiento?.nombre || &#x27;Desconocido&#x27; }}&lt;/span&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;grid grid-cols-1 md:grid-cols-2 gap-4&quot;&gt;
+          &lt;!-- Especialidad --&gt;
+          &lt;div&gt;
+            &lt;label class&#x3D;&quot;block text-sm font-semibold text-gray-700 mb-1&quot;&gt;Especialidad&lt;/label&gt;
+            &lt;select formControlName&#x3D;&quot;especialidadId&quot;
+              class&#x3D;&quot;w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm&quot;
+              (change)&#x3D;&quot;filtrarMedicosPorEspecialidad()&quot;&gt;
+              &lt;option value&#x3D;&quot;&quot;&gt;Todas las especialidades&lt;/option&gt;
+              &lt;option *ngFor&#x3D;&quot;let e of especialidades&quot; [value]&#x3D;&quot;e.id&quot;&gt;{{ e.nombre }}&lt;/option&gt;
+            &lt;/select&gt;
+          &lt;/div&gt;
+
+          &lt;!-- Médico --&gt;
+          &lt;div&gt;
+            &lt;label class&#x3D;&quot;block text-sm font-semibold text-gray-700 mb-1&quot;&gt;Médico Responsable&lt;/label&gt;
+            &lt;select formControlName&#x3D;&quot;medicoId&quot;
+              class&#x3D;&quot;w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm&quot;&gt;
+              &lt;option value&#x3D;&quot;&quot;&gt;Seleccione un médico...&lt;/option&gt;
+              &lt;option *ngFor&#x3D;&quot;let m of medicosFiltrados&quot; [value]&#x3D;&quot;m.id&quot;&gt;
+                {{ m.nombres }} {{ m.apellidos }}
+              &lt;/option&gt;
+            &lt;/select&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;grid grid-cols-1 md:grid-cols-2 gap-4&quot;&gt;
+          &lt;div&gt;
+            &lt;label class&#x3D;&quot;block text-sm font-semibold text-gray-700 mb-1&quot;&gt;Fecha y Hora&lt;/label&gt;
+            &lt;input type&#x3D;&quot;datetime-local&quot; formControlName&#x3D;&quot;fechaHora&quot;
+              [class.ring-2]&#x3D;&quot;citaForm.get(&#x27;fechaHora&#x27;)?.invalid &amp;&amp; citaForm.get(&#x27;fechaHora&#x27;)?.touched&quot;
+              [class.ring-red-500]&#x3D;&quot;citaForm.get(&#x27;fechaHora&#x27;)?.invalid &amp;&amp; citaForm.get(&#x27;fechaHora&#x27;)?.touched&quot;
+              class&#x3D;&quot;w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm disabled:bg-gray-50 disabled:text-gray-500&quot;&gt;
+            &lt;p *ngIf&#x3D;&quot;citaForm.get(&#x27;fechaHora&#x27;)?.errors?.[&#x27;dateInvalid&#x27;] &amp;&amp; citaForm.get(&#x27;fechaHora&#x27;)?.touched&quot;
+               class&#x3D;&quot;text-[10px] text-red-500 font-bold uppercase mt-1&quot;&gt;La fecha no existe&lt;/p&gt;
+          &lt;/div&gt;
+          &lt;div&gt;
+            &lt;label class&#x3D;&quot;block text-sm font-semibold text-gray-700 mb-1&quot;&gt;Tipo&lt;/label&gt;
+            &lt;select formControlName&#x3D;&quot;tipo&quot;
+              class&#x3D;&quot;w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm&quot;&gt;
+              &lt;option *ngFor&#x3D;&quot;let t of tiposCita&quot; [value]&#x3D;&quot;t&quot;&gt;{{ t.replace(&#x27;_&#x27;, &#x27; &#x27;) | titlecase }}&lt;/option&gt;
+            &lt;/select&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div&gt;
+          &lt;label class&#x3D;&quot;block text-sm font-semibold text-gray-700 mb-1&quot;&gt;Motivo / Notas&lt;/label&gt;
+          &lt;textarea formControlName&#x3D;&quot;motivo&quot; rows&#x3D;&quot;2&quot;
+            class&#x3D;&quot;w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none resize-none text-sm&quot;&gt;&lt;/textarea&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;flex gap-3 pt-4 sticky bottom-0 bg-white border-t border-gray-50 mt-4 pb-2&quot;&gt;
+          &lt;button type&#x3D;&quot;button&quot; (click)&#x3D;&quot;cerrarModal()&quot;
+            class&#x3D;&quot;flex-1 px-4 py-2.5 border border-gray-200 text-gray-600 rounded-xl font-semibold hover:bg-gray-50 transition-colors text-sm&quot;&gt;
+            Cancelar
+          &lt;/button&gt;
+          &lt;button type&#x3D;&quot;submit&quot; [disabled]&#x3D;&quot;citaForm.invalid || !pacienteSeleccionado || cargando&quot;
+            class&#x3D;&quot;flex-1 px-4 py-2.5 bg-indigo-600 text-white rounded-xl font-semibold hover:bg-indigo-700 transition-all shadow-md disabled:opacity-50 disabled:cursor-not-allowed text-sm&quot;&gt;
+            {{ cargando ? &#x27;Guardando...&#x27; : &#x27;Confirmar Cita&#x27; }}
+          &lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/form&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Modal confirmar cancelar cita --&gt;
+&lt;div *ngIf&#x3D;&quot;confirmarCancelarId&quot;
+     class&#x3D;&quot;fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4&quot;&gt;
+  &lt;div class&#x3D;&quot;bg-white rounded-2xl shadow-xl w-full max-w-sm p-6 space-y-4&quot;&gt;
+    &lt;div class&#x3D;&quot;flex items-start gap-4&quot;&gt;
+      &lt;div class&#x3D;&quot;w-10 h-10 rounded-xl bg-red-100 flex items-center justify-center flex-shrink-0&quot;&gt;
+        &lt;svg class&#x3D;&quot;w-5 h-5 text-red-600&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+          &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot;
+                d&#x3D;&quot;M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z&quot;/&gt;
+        &lt;/svg&gt;
+      &lt;/div&gt;
+      &lt;div&gt;
+        &lt;h3 class&#x3D;&quot;font-semibold text-gray-900&quot;&gt;¿Cancelar esta cita?&lt;/h3&gt;
+        &lt;p class&#x3D;&quot;text-sm text-gray-500 mt-1&quot;&gt;Esta acción no se puede deshacer.&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class&#x3D;&quot;flex gap-3 justify-end&quot;&gt;
+      &lt;button (click)&#x3D;&quot;confirmarCancelarId &#x3D; null&quot;
+              class&#x3D;&quot;px-4 py-2 text-sm font-medium text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors&quot;&gt;
+        Volver
+      &lt;/button&gt;
+      &lt;button (click)&#x3D;&quot;confirmarCancelar()&quot;
+              class&#x3D;&quot;px-4 py-2 text-sm font-medium text-white bg-red-500 hover:bg-red-600 rounded-lg transition-colors&quot;&gt;
+        Sí, cancelar cita
+      &lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></td>
+            </tr>
+
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#authService" >authService</a>
+                            </li>
+                            <li>
+                                <a href="#cargando" >cargando</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#catalogosSvc" >catalogosSvc</a>
+                            </li>
+                            <li>
+                                <a href="#citaForm" >citaForm</a>
+                            </li>
+                            <li>
+                                <a href="#citas" >citas</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#citasService" >citasService</a>
+                            </li>
+                            <li>
+                                <a href="#confirmarCancelarId" >confirmarCancelarId</a>
+                            </li>
+                            <li>
+                                <a href="#esMedico" >esMedico</a>
+                            </li>
+                            <li>
+                                <a href="#especialidades" >especialidades</a>
+                            </li>
+                            <li>
+                                <a href="#estadosCita" >estadosCita</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#fb" >fb</a>
+                            </li>
+                            <li>
+                                <a href="#fechaFiltro" >fechaFiltro</a>
+                            </li>
+                            <li>
+                                <a href="#hoy" >hoy</a>
+                            </li>
+                            <li>
+                                <a href="#medicos" >medicos</a>
+                            </li>
+                            <li>
+                                <a href="#medicosFiltrados" >medicosFiltrados</a>
+                            </li>
+                            <li>
+                                <a href="#minutosEntreConsultas" >minutosEntreConsultas</a>
+                            </li>
+                            <li>
+                                <a href="#mostrarModal" >mostrarModal</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#notification" >notification</a>
+                            </li>
+                            <li>
+                                <a href="#pacientes" >pacientes</a>
+                            </li>
+                            <li>
+                                <a href="#pacienteSeleccionado" >pacienteSeleccionado</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#pacientesService" >pacientesService</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#paramSvc" >paramSvc</a>
+                            </li>
+                            <li>
+                                <a href="#searchControl" >searchControl</a>
+                            </li>
+                            <li>
+                                <a href="#tiposCita" >tiposCita</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#abrirModal" >abrirModal</a>
+                            </li>
+                            <li>
+                                <a href="#calcularEdad" >calcularEdad</a>
+                            </li>
+                            <li>
+                                <a href="#cancelarCita" >cancelarCita</a>
+                            </li>
+                            <li>
+                                <a href="#cargarCatalogos" >cargarCatalogos</a>
+                            </li>
+                            <li>
+                                <a href="#cargarCitas" >cargarCitas</a>
+                            </li>
+                            <li>
+                                <a href="#cargarMedicos" >cargarMedicos</a>
+                            </li>
+                            <li>
+                                <a href="#cerrarModal" >cerrarModal</a>
+                            </li>
+                            <li>
+                                <a href="#confirmarCancelar" >confirmarCancelar</a>
+                            </li>
+                            <li>
+                                <a href="#esDeMiCentroId" >esDeMiCentroId</a>
+                            </li>
+                            <li>
+                                <a href="#esFechaValida" >esFechaValida</a>
+                            </li>
+                            <li>
+                                <a href="#filtrarMedicosPorEspecialidad" >filtrarMedicosPorEspecialidad</a>
+                            </li>
+                            <li>
+                                <a href="#getEstadoClass" >getEstadoClass</a>
+                            </li>
+                            <li>
+                                <a href="#getStatusBadgeClass" >getStatusBadgeClass</a>
+                            </li>
+                            <li>
+                                <a href="#guardar" >guardar</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#seleccionarPaciente" >seleccionarPaciente</a>
+                            </li>
+                            <li>
+                                <a href="#setupSearch" >setupSearch</a>
+                            </li>
+                            <li>
+                                <a href="#sugerirHora" >sugerirHora</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="abrirModal"></a>
+                    <span class="name">
+                        <span ><b>abrirModal</b></span>
+                        <a href="#abrirModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>abrirModal()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="398"
+                                    class="link-to-prism">src/app/modules/citas/citas.component.ts:398</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="calcularEdad"></a>
+                    <span class="name">
+                        <span ><b>calcularEdad</b></span>
+                        <a href="#calcularEdad"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>calcularEdad(fecha: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="522"
+                                    class="link-to-prism">src/app/modules/citas/citas.component.ts:522</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>fecha</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cancelarCita"></a>
+                    <span class="name">
+                        <span ><b>cancelarCita</b></span>
+                        <a href="#cancelarCita"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cancelarCita(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="488"
+                                    class="link-to-prism">src/app/modules/citas/citas.component.ts:488</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>id</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargarCatalogos"></a>
+                    <span class="name">
+                        <span ><b>cargarCatalogos</b></span>
+                        <a href="#cargarCatalogos"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cargarCatalogos()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="364"
+                                    class="link-to-prism">src/app/modules/citas/citas.component.ts:364</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargarCitas"></a>
+                    <span class="name">
+                        <span ><b>cargarCitas</b></span>
+                        <a href="#cargarCitas"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cargarCitas()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="348"
+                                    class="link-to-prism">src/app/modules/citas/citas.component.ts:348</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargarMedicos"></a>
+                    <span class="name">
+                        <span ><b>cargarMedicos</b></span>
+                        <a href="#cargarMedicos"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cargarMedicos()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="371"
+                                    class="link-to-prism">src/app/modules/citas/citas.component.ts:371</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cerrarModal"></a>
+                    <span class="name">
+                        <span ><b>cerrarModal</b></span>
+                        <a href="#cerrarModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cerrarModal()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="413"
+                                    class="link-to-prism">src/app/modules/citas/citas.component.ts:413</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="confirmarCancelar"></a>
+                    <span class="name">
+                        <span ><b>confirmarCancelar</b></span>
+                        <a href="#confirmarCancelar"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>confirmarCancelar()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="492"
+                                    class="link-to-prism">src/app/modules/citas/citas.component.ts:492</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="esDeMiCentroId"></a>
+                    <span class="name">
+                        <span ><b>esDeMiCentroId</b></span>
+                        <a href="#esDeMiCentroId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>esDeMiCentroId(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="534"
+                                    class="link-to-prism">src/app/modules/citas/citas.component.ts:534</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>id</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="esFechaValida"></a>
+                    <span class="name">
+                        <span ><b>esFechaValida</b></span>
+                        <a href="#esFechaValida"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>esFechaValida(fecha: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="296"
+                                    class="link-to-prism">src/app/modules/citas/citas.component.ts:296</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>fecha</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="filtrarMedicosPorEspecialidad"></a>
+                    <span class="name">
+                        <span ><b>filtrarMedicosPorEspecialidad</b></span>
+                        <a href="#filtrarMedicosPorEspecialidad"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>filtrarMedicosPorEspecialidad()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="385"
+                                    class="link-to-prism">src/app/modules/citas/citas.component.ts:385</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getEstadoClass"></a>
+                    <span class="name">
+                        <span ><b>getEstadoClass</b></span>
+                        <a href="#getEstadoClass"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getEstadoClass(estado: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="501"
+                                    class="link-to-prism">src/app/modules/citas/citas.component.ts:501</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>estado</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>&quot;border-emerald-500&quot; | &quot;border-red-400&quot; | &quot;border-indigo-400&quot; | &quot;border-gray-200&quot;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getStatusBadgeClass"></a>
+                    <span class="name">
+                        <span ><b>getStatusBadgeClass</b></span>
+                        <a href="#getStatusBadgeClass"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getStatusBadgeClass(estado: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="510"
+                                    class="link-to-prism">src/app/modules/citas/citas.component.ts:510</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>estado</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>&quot;bg-emerald-100 text-emerald-700&quot; | &quot;bg-red-100 text-red-700&quot; | &quot;bg-indigo-100 text-indigo-700&quot; | &quot;bg-blue-100 text-blue-700&quot; | &quot;bg-amber-100 text-amber-700&quot; | &quot;bg-gray-100 text-gray-700 border-gray-200&quot; | &quot;bg-gray-100 text-gray-700&quot;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="guardar"></a>
+                    <span class="name">
+                        <span ><b>guardar</b></span>
+                        <a href="#guardar"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>guardar()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="462"
+                                    class="link-to-prism">src/app/modules/citas/citas.component.ts:462</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="310"
+                                    class="link-to-prism">src/app/modules/citas/citas.component.ts:310</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="seleccionarPaciente"></a>
+                    <span class="name">
+                        <span ><b>seleccionarPaciente</b></span>
+                        <a href="#seleccionarPaciente"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>seleccionarPaciente(p: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="417"
+                                    class="link-to-prism">src/app/modules/citas/citas.component.ts:417</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>p</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setupSearch"></a>
+                    <span class="name">
+                        <span ><b>setupSearch</b></span>
+                        <a href="#setupSearch"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>setupSearch()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="327"
+                                    class="link-to-prism">src/app/modules/citas/citas.component.ts:327</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="sugerirHora"></a>
+                    <span class="name">
+                        <span ><b>sugerirHora</b></span>
+                        <a href="#sugerirHora"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>sugerirHora()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="425"
+                                    class="link-to-prism">src/app/modules/citas/citas.component.ts:425</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="authService"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>authService</b></span>
+                        <a href="#authService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(AuthService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="275" class="link-to-prism">src/app/modules/citas/citas.component.ts:275</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargando"></a>
+                    <span class="name">
+                        <span ><b>cargando</b></span>
+                        <a href="#cargando"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="292" class="link-to-prism">src/app/modules/citas/citas.component.ts:292</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="catalogosSvc"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>catalogosSvc</b></span>
+                        <a href="#catalogosSvc"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(CatalogosService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="278" class="link-to-prism">src/app/modules/citas/citas.component.ts:278</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="citaForm"></a>
+                    <span class="name">
+                        <span ><b>citaForm</b></span>
+                        <a href="#citaForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this.fb.group({
+    pacienteId: [0, Validators.required],
+    medicoId: [&#x27;&#x27;, Validators.required],
+    especialidadId: [&#x27;&#x27;],
+    fechaHora: [&#x27;&#x27;, [Validators.required, DateValidators.dateReal()]],
+    tipo: [&#x27;CONSULTA_GENERAL&#x27;, Validators.required],
+    motivo: [&#x27;&#x27;]
+  })</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="301" class="link-to-prism">src/app/modules/citas/citas.component.ts:301</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="citas"></a>
+                    <span class="name">
+                        <span ><b>citas</b></span>
+                        <a href="#citas"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>any[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="282" class="link-to-prism">src/app/modules/citas/citas.component.ts:282</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="citasService"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>citasService</b></span>
+                        <a href="#citasService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(CitasService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="273" class="link-to-prism">src/app/modules/citas/citas.component.ts:273</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="confirmarCancelarId"></a>
+                    <span class="name">
+                        <span ><b>confirmarCancelarId</b></span>
+                        <a href="#confirmarCancelarId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>number | null</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="291" class="link-to-prism">src/app/modules/citas/citas.component.ts:291</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="esMedico"></a>
+                    <span class="name">
+                        <span ><b>esMedico</b></span>
+                        <a href="#esMedico"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="294" class="link-to-prism">src/app/modules/citas/citas.component.ts:294</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="especialidades"></a>
+                    <span class="name">
+                        <span ><b>especialidades</b></span>
+                        <a href="#especialidades"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>literal type[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="285" class="link-to-prism">src/app/modules/citas/citas.component.ts:285</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="estadosCita"></a>
+                    <span class="name">
+                        <span ><b>estadosCita</b></span>
+                        <a href="#estadosCita"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="288" class="link-to-prism">src/app/modules/citas/citas.component.ts:288</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="fb"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>fb</b></span>
+                        <a href="#fb"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(FormBuilder)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="272" class="link-to-prism">src/app/modules/citas/citas.component.ts:272</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="fechaFiltro"></a>
+                    <span class="name">
+                        <span ><b>fechaFiltro</b></span>
+                        <a href="#fechaFiltro"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>DateUtils.getHoyString()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="281" class="link-to-prism">src/app/modules/citas/citas.component.ts:281</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="hoy"></a>
+                    <span class="name">
+                        <span ><b>hoy</b></span>
+                        <a href="#hoy"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Date()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="280" class="link-to-prism">src/app/modules/citas/citas.component.ts:280</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="medicos"></a>
+                    <span class="name">
+                        <span ><b>medicos</b></span>
+                        <a href="#medicos"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>any[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="283" class="link-to-prism">src/app/modules/citas/citas.component.ts:283</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="medicosFiltrados"></a>
+                    <span class="name">
+                        <span ><b>medicosFiltrados</b></span>
+                        <a href="#medicosFiltrados"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>any[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="284" class="link-to-prism">src/app/modules/citas/citas.component.ts:284</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="minutosEntreConsultas"></a>
+                    <span class="name">
+                        <span ><b>minutosEntreConsultas</b></span>
+                        <a href="#minutosEntreConsultas"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>20</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="293" class="link-to-prism">src/app/modules/citas/citas.component.ts:293</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="mostrarModal"></a>
+                    <span class="name">
+                        <span ><b>mostrarModal</b></span>
+                        <a href="#mostrarModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="290" class="link-to-prism">src/app/modules/citas/citas.component.ts:290</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="notification"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>notification</b></span>
+                        <a href="#notification"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(NotificationService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="276" class="link-to-prism">src/app/modules/citas/citas.component.ts:276</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="pacientes"></a>
+                    <span class="name">
+                        <span ><b>pacientes</b></span>
+                        <a href="#pacientes"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>any[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="286" class="link-to-prism">src/app/modules/citas/citas.component.ts:286</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="pacienteSeleccionado"></a>
+                    <span class="name">
+                        <span ><b>pacienteSeleccionado</b></span>
+                        <a href="#pacienteSeleccionado"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="289" class="link-to-prism">src/app/modules/citas/citas.component.ts:289</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="pacientesService"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>pacientesService</b></span>
+                        <a href="#pacientesService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(PacientesService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="274" class="link-to-prism">src/app/modules/citas/citas.component.ts:274</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="paramSvc"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>paramSvc</b></span>
+                        <a href="#paramSvc"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(ParametrosService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="277" class="link-to-prism">src/app/modules/citas/citas.component.ts:277</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="searchControl"></a>
+                    <span class="name">
+                        <span ><b>searchControl</b></span>
+                        <a href="#searchControl"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this.fb.control(&#x27;&#x27;)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="300" class="link-to-prism">src/app/modules/citas/citas.component.ts:300</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="tiposCita"></a>
+                    <span class="name">
+                        <span ><b>tiposCita</b></span>
+                        <a href="#tiposCita"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="287" class="link-to-prism">src/app/modules/citas/citas.component.ts:287</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit, inject } from &#x27;@angular/core&#x27;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
+import { FormsModule, ReactiveFormsModule, FormBuilder, Validators } from &#x27;@angular/forms&#x27;;
+import { CitasService } from &#x27;../../core/services/citas.service&#x27;;
+import { PacientesService } from &#x27;../../core/services/pacientes.service&#x27;;
+import { AuthService } from &#x27;../../core/services/auth.service&#x27;;
+import { NotificationService } from &#x27;../../core/services/notification.service&#x27;;
+import { ParametrosService } from &#x27;../../core/services/parametros.service&#x27;;
+import { CatalogosService } from &#x27;../../core/services/catalogos.service&#x27;;
+import { debounceTime, distinctUntilChanged, switchMap, catchError, of } from &#x27;rxjs&#x27;;
+import { DateUtils } from &#x27;../../core/utils/date-utils&#x27;;
+import { DateValidators } from &#x27;../../core/validators/date.validator&#x27;;
+
+@Component({
+  selector: &#x27;app-citas&#x27;,
+  standalone: true,
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  template: &#x60;
+    &lt;div class&#x3D;&quot;p-6 max-w-7xl mx-auto&quot;&gt;
+      &lt;!-- Encabezado con estadísticas rápidas --&gt;
+      &lt;div class&#x3D;&quot;flex justify-between items-center mb-8&quot;&gt;
+        &lt;div&gt;
+          &lt;h1 class&#x3D;&quot;text-3xl font-bold text-gray-900 tracking-tight&quot;&gt;Gestión de Citas&lt;/h1&gt;
+          &lt;p class&#x3D;&quot;text-gray-500 mt-1&quot;&gt;Control de agenda y programación de pacientes&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;button (click)&#x3D;&quot;abrirModal()&quot; 
+          class&#x3D;&quot;flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-xl font-semibold transition-all shadow-md active:scale-95&quot;&gt;
+          &lt;svg class&#x3D;&quot;w-5 h-5&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+            &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M12 4v16m8-8H4&quot;/&gt;
+          &lt;/svg&gt;
+          Nueva Cita
+        &lt;/button&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Filtros y Listado --&gt;
+      &lt;div class&#x3D;&quot;bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden mb-8&quot;&gt;
+        &lt;div class&#x3D;&quot;p-4 border-b border-gray-50 flex items-center justify-between bg-gray-50/30&quot;&gt;
+          &lt;h3 class&#x3D;&quot;font-bold text-gray-700&quot;&gt;Agenda para {{ hoy | date:&#x27;fullDate&#x27; }}&lt;/h3&gt;
+          &lt;input type&#x3D;&quot;date&quot; [(ngModel)]&#x3D;&quot;fechaFiltro&quot; (change)&#x3D;&quot;cargarCitas()&quot; 
+            [class.ring-2]&#x3D;&quot;!esFechaValida(fechaFiltro)&quot;
+            [class.ring-red-500]&#x3D;&quot;!esFechaValida(fechaFiltro)&quot;
+            class&#x3D;&quot;px-3 py-1.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none&quot;&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;overflow-x-auto&quot;&gt;
+          &lt;table class&#x3D;&quot;w-full text-left border-collapse&quot;&gt;
+            &lt;thead&gt;
+              &lt;tr class&#x3D;&quot;bg-gray-50 text-gray-400 text-xs uppercase tracking-wider&quot;&gt;
+                &lt;th class&#x3D;&quot;px-6 py-4 font-semibold&quot;&gt;Hora&lt;/th&gt;
+                &lt;th class&#x3D;&quot;px-6 py-4 font-semibold&quot;&gt;Paciente&lt;/th&gt;
+                &lt;th class&#x3D;&quot;px-6 py-4 font-semibold&quot;&gt;Médico&lt;/th&gt;
+                &lt;th class&#x3D;&quot;px-6 py-4 font-semibold&quot;&gt;Especialidad&lt;/th&gt;
+                &lt;th class&#x3D;&quot;px-6 py-4 font-semibold&quot;&gt;Estado&lt;/th&gt;
+                &lt;th class&#x3D;&quot;px-6 py-4 font-semibold text-right&quot;&gt;Acciones&lt;/th&gt;
+              &lt;/tr&gt;
+            &lt;/thead&gt;
+            &lt;tbody class&#x3D;&quot;divide-y divide-gray-50&quot;&gt;
+              &lt;tr *ngFor&#x3D;&quot;let cita of citas&quot; class&#x3D;&quot;hover:bg-gray-50/50 transition-colors&quot;&gt;
+                &lt;td class&#x3D;&quot;px-6 py-4 border-l-4&quot; [ngClass]&#x3D;&quot;getEstadoClass(cita.estado)&quot;&gt;
+                  &lt;div class&#x3D;&quot;font-bold text-gray-900&quot;&gt;{{ cita.fechaHora | date:&#x27;h:mm a&#x27;:&#x27;UTC&#x27; }}&lt;/div&gt;
+                &lt;/td&gt;
+                &lt;td class&#x3D;&quot;px-6 py-4&quot;&gt;
+                  &lt;div class&#x3D;&quot;font-semibold text-gray-900&quot;&gt;{{ cita.paciente.nombres }} {{ cita.paciente.apellidos }}&lt;/div&gt;
+                  &lt;div class&#x3D;&quot;text-xs text-gray-400&quot;&gt;DNI: {{ cita.paciente.dni }}&lt;/div&gt;
+                &lt;/td&gt;
+                &lt;td class&#x3D;&quot;px-6 py-4&quot;&gt;
+                  &lt;div class&#x3D;&quot;text-sm font-medium text-gray-800&quot;&gt;Dr. {{ cita.medico.apellidos }}&lt;/div&gt;
+                  &lt;div class&#x3D;&quot;text-xs text-gray-400 capitalize&quot;&gt;{{ cita.tipo.replace(&#x27;_&#x27;, &#x27; &#x27;) }}&lt;/div&gt;
+                &lt;/td&gt;
+                &lt;td class&#x3D;&quot;px-6 py-4&quot;&gt;
+                  &lt;span class&#x3D;&quot;px-2 py-0.5 rounded-full text-xs font-semibold bg-violet-50 text-violet-700&quot;&gt;
+                    {{ cita.especialidad?.nombre || &#x27;General&#x27; }}
+                  &lt;/span&gt;
+                &lt;/td&gt;
+                &lt;td class&#x3D;&quot;px-6 py-4&quot;&gt;
+                  &lt;span class&#x3D;&quot;px-2.5 py-1 rounded-full text-xs font-bold&quot; [ngClass]&#x3D;&quot;getStatusBadgeClass(cita.estado)&quot;&gt;
+                    {{ cita.estado }}
+                  &lt;/span&gt;
+                &lt;/td&gt;
+                &lt;td class&#x3D;&quot;px-6 py-4 text-right&quot;&gt;
+                  &lt;button *ngIf&#x3D;&quot;cita.estado &#x3D;&#x3D;&#x3D; &#x27;PROGRAMADA&#x27;&quot; (click)&#x3D;&quot;cancelarCita(cita.id)&quot; 
+                    class&#x3D;&quot;text-red-600 hover:bg-red-50 p-2 rounded-lg transition-colors&quot; title&#x3D;&quot;Cancelar Cita&quot;&gt;
+                    &lt;svg class&#x3D;&quot;w-5 h-5&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+                      &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M6 18L18 6M6 6l12 12&quot;/&gt;
+                    &lt;/svg&gt;
+                  &lt;/button&gt;
+                &lt;/td&gt;
+              &lt;/tr&gt;
+              &lt;tr *ngIf&#x3D;&quot;!citas || citas.length &#x3D;&#x3D;&#x3D; 0&quot;&gt;
+                &lt;td colspan&#x3D;&quot;6&quot; class&#x3D;&quot;py-12 text-center text-gray-400&quot;&gt;
+                  No hay citas programadas para esta fecha
+                &lt;/td&gt;
+              &lt;/tr&gt;
+            &lt;/tbody&gt;
+          &lt;/table&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- MODAL NUEVA CITA --&gt;
+      &lt;div *ngIf&#x3D;&quot;mostrarModal&quot; class&#x3D;&quot;fixed inset-0 z-50 flex items-center justify-center p-4&quot;&gt;
+        &lt;div class&#x3D;&quot;absolute inset-0 bg-gray-900/40 backdrop-blur-sm&quot; (click)&#x3D;&quot;cerrarModal()&quot;&gt;&lt;/div&gt;
+        
+        &lt;div class&#x3D;&quot;bg-white rounded-2xl shadow-2xl w-full max-w-lg relative overflow-hidden animate-in fade-in zoom-in duration-200&quot;&gt;
+          &lt;div class&#x3D;&quot;p-6 bg-indigo-600 sticky top-0 z-10&quot;&gt;
+            &lt;h3 class&#x3D;&quot;text-xl font-bold text-white&quot;&gt;Programar Cita&lt;/h3&gt;
+            &lt;p class&#x3D;&quot;text-indigo-100 text-sm&quot;&gt;Ingrese los datos para la nueva consulta&lt;/p&gt;
+          &lt;/div&gt;
+
+          &lt;form [formGroup]&#x3D;&quot;citaForm&quot; (ngSubmit)&#x3D;&quot;guardar()&quot; 
+                class&#x3D;&quot;p-6 space-y-4 max-h-[calc(100vh-200px)] overflow-y-auto custom-scrollbar&quot;&gt;
+            
+            &lt;!-- Buscador de Paciente --&gt;
+            &lt;div class&#x3D;&quot;relative&quot;&gt;
+              &lt;label class&#x3D;&quot;block text-sm font-semibold text-gray-700 mb-1&quot;&gt;Buscar Paciente (Cualquier Centro)&lt;/label&gt;
+              &lt;div class&#x3D;&quot;relative&quot;&gt;
+                &lt;input type&#x3D;&quot;text&quot; [formControl]&#x3D;&quot;searchControl&quot; placeholder&#x3D;&quot;Nombre, Apellido o DNI...&quot;
+                  class&#x3D;&quot;w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all pr-10&quot;&gt;
+                &lt;svg class&#x3D;&quot;w-5 h-5 absolute right-3 top-3 text-gray-400&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+                  &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z&quot;/&gt;
+                &lt;/svg&gt;
+              &lt;/div&gt;
+
+              &lt;!-- Resultados de búsqueda --&gt;
+              &lt;div *ngIf&#x3D;&quot;pacientes &amp;&amp; pacientes.length &gt; 0 &amp;&amp; !pacienteSeleccionado&quot; 
+                class&#x3D;&quot;absolute z-20 w-full mt-1 bg-white border border-gray-200 rounded-xl shadow-lg max-h-48 overflow-y-auto&quot;&gt;
+                 &lt;div *ngFor&#x3D;&quot;let p of pacientes&quot; (click)&#x3D;&quot;seleccionarPaciente(p)&quot;
+                   class&#x3D;&quot;p-3 hover:bg-indigo-50 cursor-pointer border-b border-gray-50 last:border-0 transition-colors&quot;&gt;
+                   &lt;div class&#x3D;&quot;font-bold text-gray-800 text-sm&quot;&gt;{{ p.nombres }} {{ p.apellidos }}&lt;/div&gt;
+                   &lt;div class&#x3D;&quot;text-xs text-gray-500 mt-0.5&quot;&gt;DNI: {{ p.dni }} | Exp: {{ p.numeroExpediente }}&lt;/div&gt;
+                 &lt;/div&gt;
+              &lt;/div&gt;
+
+              &lt;!-- Ficha Compacta de Paciente --&gt;
+              &lt;div *ngIf&#x3D;&quot;pacienteSeleccionado&quot; 
+                class&#x3D;&quot;mt-3 bg-indigo-50/50 border border-indigo-100 rounded-xl p-3 animate-in fade-in slide-in-from-top-1&quot;&gt;
+                &lt;div class&#x3D;&quot;flex justify-between items-start mb-2&quot;&gt;
+                  &lt;div class&#x3D;&quot;flex items-center gap-2&quot;&gt;
+                    &lt;div class&#x3D;&quot;w-8 h-8 rounded-full bg-indigo-200 flex items-center justify-center text-indigo-700 font-bold text-xs&quot;&gt;
+                      {{ pacienteSeleccionado.nombres[0] }}{{ pacienteSeleccionado.apellidos[0] }}
+                    &lt;/div&gt;
+                    &lt;div&gt;
+                      &lt;h4 class&#x3D;&quot;text-sm font-bold text-gray-900&quot;&gt;{{ pacienteSeleccionado.nombres }} {{ pacienteSeleccionado.apellidos }}&lt;/h4&gt;
+                      &lt;p class&#x3D;&quot;text-[10px] text-gray-500 font-mono&quot;&gt;{{ pacienteSeleccionado.dni }}&lt;/p&gt;
+                    &lt;/div&gt;
+                  &lt;/div&gt;
+                  &lt;button (click)&#x3D;&quot;pacienteSeleccionado &#x3D; null; searchControl.setValue(&#x27;&#x27;)&quot; type&#x3D;&quot;button&quot; class&#x3D;&quot;text-indigo-300 hover:text-red-500 transition-colors&quot;&gt;
+                    &lt;svg class&#x3D;&quot;w-4 h-4&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M6 18L18 6M6 6l12 12&quot;/&gt;&lt;/svg&gt;
+                  &lt;/button&gt;
+                &lt;/div&gt;
+                &lt;div class&#x3D;&quot;flex gap-4 text-[11px] border-t border-indigo-100/50 pt-2&quot;&gt;
+                  &lt;span class&#x3D;&quot;text-indigo-600 font-medium&quot;&gt;&lt;b&gt;Edad:&lt;/b&gt; {{ calcularEdad(pacienteSeleccionado.fechaNacimiento) }} años&lt;/span&gt;
+                  &lt;span class&#x3D;&quot;text-gray-500&quot;&gt;&lt;b&gt;Centro:&lt;/b&gt; {{ pacienteSeleccionado.establecimiento?.nombre || &#x27;Desconocido&#x27; }}&lt;/span&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div class&#x3D;&quot;grid grid-cols-1 md:grid-cols-2 gap-4&quot;&gt;
+              &lt;!-- Especialidad --&gt;
+              &lt;div&gt;
+                &lt;label class&#x3D;&quot;block text-sm font-semibold text-gray-700 mb-1&quot;&gt;Especialidad&lt;/label&gt;
+                &lt;select formControlName&#x3D;&quot;especialidadId&quot;
+                  class&#x3D;&quot;w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm&quot;
+                  (change)&#x3D;&quot;filtrarMedicosPorEspecialidad()&quot;&gt;
+                  &lt;option value&#x3D;&quot;&quot;&gt;Todas las especialidades&lt;/option&gt;
+                  &lt;option *ngFor&#x3D;&quot;let e of especialidades&quot; [value]&#x3D;&quot;e.id&quot;&gt;{{ e.nombre }}&lt;/option&gt;
+                &lt;/select&gt;
+              &lt;/div&gt;
+
+              &lt;!-- Médico --&gt;
+              &lt;div&gt;
+                &lt;label class&#x3D;&quot;block text-sm font-semibold text-gray-700 mb-1&quot;&gt;Médico Responsable&lt;/label&gt;
+                &lt;select formControlName&#x3D;&quot;medicoId&quot; 
+                  class&#x3D;&quot;w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm&quot;&gt;
+                  &lt;option value&#x3D;&quot;&quot;&gt;Seleccione un médico...&lt;/option&gt;
+                  &lt;option *ngFor&#x3D;&quot;let m of medicosFiltrados&quot; [value]&#x3D;&quot;m.id&quot;&gt;
+                    {{ m.nombres }} {{ m.apellidos }}
+                  &lt;/option&gt;
+                &lt;/select&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div class&#x3D;&quot;grid grid-cols-1 md:grid-cols-2 gap-4&quot;&gt;
+              &lt;div&gt;
+                &lt;label class&#x3D;&quot;block text-sm font-semibold text-gray-700 mb-1&quot;&gt;Fecha y Hora&lt;/label&gt;
+                &lt;input type&#x3D;&quot;datetime-local&quot; formControlName&#x3D;&quot;fechaHora&quot;
+                  [class.ring-2]&#x3D;&quot;citaForm.get(&#x27;fechaHora&#x27;)?.invalid &amp;&amp; citaForm.get(&#x27;fechaHora&#x27;)?.touched&quot;
+                  [class.ring-red-500]&#x3D;&quot;citaForm.get(&#x27;fechaHora&#x27;)?.invalid &amp;&amp; citaForm.get(&#x27;fechaHora&#x27;)?.touched&quot;
+                  class&#x3D;&quot;w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm disabled:bg-gray-50 disabled:text-gray-500&quot;&gt;
+                &lt;p *ngIf&#x3D;&quot;citaForm.get(&#x27;fechaHora&#x27;)?.errors?.[&#x27;dateInvalid&#x27;] &amp;&amp; citaForm.get(&#x27;fechaHora&#x27;)?.touched&quot; 
+                   class&#x3D;&quot;text-[10px] text-red-500 font-bold uppercase mt-1&quot;&gt;La fecha no existe&lt;/p&gt;
+              &lt;/div&gt;
+              &lt;div&gt;
+                &lt;label class&#x3D;&quot;block text-sm font-semibold text-gray-700 mb-1&quot;&gt;Tipo&lt;/label&gt;
+                &lt;select formControlName&#x3D;&quot;tipo&quot; 
+                  class&#x3D;&quot;w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm&quot;&gt;
+                  &lt;option *ngFor&#x3D;&quot;let t of tiposCita&quot; [value]&#x3D;&quot;t&quot;&gt;{{ t.replace(&#x27;_&#x27;, &#x27; &#x27;) | titlecase }}&lt;/option&gt;
+                &lt;/select&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div&gt;
+              &lt;label class&#x3D;&quot;block text-sm font-semibold text-gray-700 mb-1&quot;&gt;Motivo / Notas&lt;/label&gt;
+              &lt;textarea formControlName&#x3D;&quot;motivo&quot; rows&#x3D;&quot;2&quot;
+                class&#x3D;&quot;w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none resize-none text-sm&quot;&gt;&lt;/textarea&gt;
+            &lt;/div&gt;
+
+            &lt;div class&#x3D;&quot;flex gap-3 pt-4 sticky bottom-0 bg-white border-t border-gray-50 mt-4 pb-2&quot;&gt;
+              &lt;button type&#x3D;&quot;button&quot; (click)&#x3D;&quot;cerrarModal()&quot;
+                class&#x3D;&quot;flex-1 px-4 py-2.5 border border-gray-200 text-gray-600 rounded-xl font-semibold hover:bg-gray-50 transition-colors text-sm&quot;&gt;
+                Cancelar
+              &lt;/button&gt;
+              &lt;button type&#x3D;&quot;submit&quot; [disabled]&#x3D;&quot;citaForm.invalid || !pacienteSeleccionado || cargando&quot;
+                class&#x3D;&quot;flex-1 px-4 py-2.5 bg-indigo-600 text-white rounded-xl font-semibold hover:bg-indigo-700 transition-all shadow-md disabled:opacity-50 disabled:cursor-not-allowed text-sm&quot;&gt;
+                {{ cargando ? &#x27;Guardando...&#x27; : &#x27;Confirmar Cita&#x27; }}
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/form&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Modal confirmar cancelar cita --&gt;
+    &lt;div *ngIf&#x3D;&quot;confirmarCancelarId&quot;
+         class&#x3D;&quot;fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4&quot;&gt;
+      &lt;div class&#x3D;&quot;bg-white rounded-2xl shadow-xl w-full max-w-sm p-6 space-y-4&quot;&gt;
+        &lt;div class&#x3D;&quot;flex items-start gap-4&quot;&gt;
+          &lt;div class&#x3D;&quot;w-10 h-10 rounded-xl bg-red-100 flex items-center justify-center flex-shrink-0&quot;&gt;
+            &lt;svg class&#x3D;&quot;w-5 h-5 text-red-600&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+              &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot;
+                    d&#x3D;&quot;M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z&quot;/&gt;
+            &lt;/svg&gt;
+          &lt;/div&gt;
+          &lt;div&gt;
+            &lt;h3 class&#x3D;&quot;font-semibold text-gray-900&quot;&gt;¿Cancelar esta cita?&lt;/h3&gt;
+            &lt;p class&#x3D;&quot;text-sm text-gray-500 mt-1&quot;&gt;Esta acción no se puede deshacer.&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;flex gap-3 justify-end&quot;&gt;
+          &lt;button (click)&#x3D;&quot;confirmarCancelarId &#x3D; null&quot;
+                  class&#x3D;&quot;px-4 py-2 text-sm font-medium text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors&quot;&gt;
+            Volver
+          &lt;/button&gt;
+          &lt;button (click)&#x3D;&quot;confirmarCancelar()&quot;
+                  class&#x3D;&quot;px-4 py-2 text-sm font-medium text-white bg-red-500 hover:bg-red-600 rounded-lg transition-colors&quot;&gt;
+            Sí, cancelar cita
+          &lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &#x60;,
+  styles: [&#x60;
+    .animate-in { animation: fadeIn 0.3s ease-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 10px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #c7d2fe;
+      border-radius: 10px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #818cf8;
+    }
+  &#x60;]
+})
+export class CitasComponent implements OnInit {
+  private fb              &#x3D; inject(FormBuilder);
+  private citasService    &#x3D; inject(CitasService);
+  private pacientesService &#x3D; inject(PacientesService);
+  private authService      &#x3D; inject(AuthService);
+  private notification    &#x3D; inject(NotificationService);
+  private paramSvc        &#x3D; inject(ParametrosService);
+  private catalogosSvc    &#x3D; inject(CatalogosService);
+
+  hoy &#x3D; new Date();
+  fechaFiltro &#x3D; DateUtils.getHoyString();
+  citas: any[] &#x3D; [];
+  medicos: any[] &#x3D; [];
+  medicosFiltrados: any[] &#x3D; [];
+  especialidades: { id: number; nombre: string }[] &#x3D; [];
+  pacientes: any[] &#x3D; [];
+  tiposCita: string[] &#x3D; [];
+  estadosCita: string[] &#x3D; [];
+  pacienteSeleccionado: any &#x3D; null;
+  mostrarModal        &#x3D; false;
+  confirmarCancelarId: number | null &#x3D; null;
+  cargando &#x3D; false;
+  minutosEntreConsultas &#x3D; 20;
+  esMedico &#x3D; false;
+  
+  esFechaValida(fecha: string): boolean {
+    return DateUtils.esFechaValida(fecha);
+  }
+
+  searchControl &#x3D; this.fb.control(&#x27;&#x27;);
+  citaForm &#x3D; this.fb.group({
+    pacienteId: [0, Validators.required],
+    medicoId: [&#x27;&#x27;, Validators.required],
+    especialidadId: [&#x27;&#x27;],
+    fechaHora: [&#x27;&#x27;, [Validators.required, DateValidators.dateReal()]],
+    tipo: [&#x27;CONSULTA_GENERAL&#x27;, Validators.required],
+    motivo: [&#x27;&#x27;]
+  });
+
+  ngOnInit() {
+    this.cargarCitas();
+    this.cargarMedicos();
+    this.cargarCatalogos();
+    this.setupSearch();
+
+    const user &#x3D; this.authService.obtenerUsuario();
+    this.esMedico &#x3D; user?.rol &#x3D;&#x3D;&#x3D; &#x27;MEDICO&#x27;;
+
+    this.paramSvc.obtenerPorClave(&#x27;MINUTOS_ENTRE_CONSULTAS&#x27;).subscribe(p &#x3D;&gt; {
+      this.minutosEntreConsultas &#x3D; parseInt(p.valor);
+    });
+
+    // Escuchar cambios para sugerir hora
+    this.citaForm.get(&#x27;medicoId&#x27;)?.valueChanges.subscribe(() &#x3D;&gt; this.sugerirHora());
+  }
+
+  setupSearch() {
+    this.searchControl.valueChanges.pipe(
+      debounceTime(400),
+      distinctUntilChanged(),
+      switchMap(val &#x3D;&gt; {
+        if (!val || val.length &lt; 1) {
+          this.pacientes &#x3D; [];
+          return of(null);
+        }
+        return this.pacientesService.buscar(val).pipe(
+          catchError(() &#x3D;&gt; of(null))
+        );
+      })
+    ).subscribe(res &#x3D;&gt; {
+      if (!res) { this.pacientes &#x3D; []; return; }
+      // La API devuelve { data: { data: [...], total: N } } — doble anidamiento
+      const payload &#x3D; res?.data;
+      this.pacientes &#x3D; Array.isArray(payload?.data) ? payload.data : (Array.isArray(payload) ? payload : []);
+    });
+  }
+
+  cargarCitas() {
+    if (!DateUtils.esFechaValida(this.fechaFiltro)) {
+      this.citas &#x3D; [];
+      return;
+    }
+    this.citasService.listar(this.fechaFiltro).subscribe(docs &#x3D;&gt; {
+      const data &#x3D; docs || [];
+      // Ordenar: Pendientes/Otras primero, ATENDIDA al final
+      this.citas &#x3D; data.sort((a: any, b: any) &#x3D;&gt; {
+        if (a.estado &#x3D;&#x3D;&#x3D; &#x27;ATENDIDA&#x27; &amp;&amp; b.estado !&#x3D;&#x3D; &#x27;ATENDIDA&#x27;) return 1;
+        if (a.estado !&#x3D;&#x3D; &#x27;ATENDIDA&#x27; &amp;&amp; b.estado &#x3D;&#x3D;&#x3D; &#x27;ATENDIDA&#x27;) return -1;
+        return new Date(a.fechaHora).getTime() - new Date(b.fechaHora).getTime();
+      });
+    });
+  }
+
+  cargarCatalogos() {
+    this.catalogosSvc.obtenerTodos().subscribe(res &#x3D;&gt; {
+      this.tiposCita &#x3D; res.tiposCita || [];
+      this.estadosCita &#x3D; res.estadosCita || [];
+    });
+  }
+
+  cargarMedicos() {
+    this.citasService.listarMedicosDelCentro().subscribe(docs &#x3D;&gt; {
+      this.medicos &#x3D; docs || [];
+      this.medicosFiltrados &#x3D; [...this.medicos];
+
+      // Extraer especialidades únicas de todos los médicos del centro
+      const espMap &#x3D; new Map&lt;number, { id: number; nombre: string }&gt;();
+      this.medicos.forEach(m &#x3D;&gt; {
+        (m.especialidades || []).forEach((e: { id: number; nombre: string }) &#x3D;&gt; espMap.set(e.id, e));
+      });
+      this.especialidades &#x3D; Array.from(espMap.values()).sort((a, b) &#x3D;&gt; a.nombre.localeCompare(b.nombre));
+    });
+  }
+
+  filtrarMedicosPorEspecialidad() {
+    const espId &#x3D; Number(this.citaForm.value.especialidadId);
+    this.citaForm.patchValue({ medicoId: &#x27;&#x27; });
+
+    if (!espId) {
+      this.medicosFiltrados &#x3D; [...this.medicos];
+    } else {
+      this.medicosFiltrados &#x3D; this.medicos.filter(m &#x3D;&gt;
+        (m.especialidades || []).some((e: any) &#x3D;&gt; e.id &#x3D;&#x3D;&#x3D; espId)
+      );
+    }
+  }
+
+  abrirModal() {
+    this.mostrarModal &#x3D; true;
+    this.pacienteSeleccionado &#x3D; null;
+    this.searchControl.setValue(&#x27;&#x27;);
+    this.pacientes &#x3D; [];
+    this.medicosFiltrados &#x3D; [...this.medicos];
+    this.citaForm.reset({ tipo: &#x27;CONSULTA_GENERAL&#x27;, especialidadId: &#x27;&#x27; });
+
+    if (!this.esMedico) {
+      this.citaForm.get(&#x27;fechaHora&#x27;)?.disable();
+    } else {
+      this.citaForm.get(&#x27;fechaHora&#x27;)?.enable();
+    }
+  }
+
+  cerrarModal() {
+    this.mostrarModal &#x3D; false;
+  }
+
+  seleccionarPaciente(p: any) {
+    this.pacienteSeleccionado &#x3D; p;
+    this.citaForm.patchValue({ pacienteId: p.id });
+    this.pacientes &#x3D; [];
+    this.searchControl.setValue(&#x60;${p.nombres} ${p.apellidos}&#x60;);
+    this.sugerirHora();
+  }
+
+  sugerirHora() {
+    const medicoId &#x3D; this.citaForm.get(&#x27;medicoId&#x27;)?.value;
+    if (!medicoId) return;
+
+    const fecha &#x3D; this.fechaFiltro || DateUtils.getHoyString();
+
+    this.citasService.obtenerHorarioDisponible(Number(medicoId), fecha).subscribe({
+      next: (res: any) &#x3D;&gt; {
+        let sugerencia: Date;
+        
+        if (res?.siguienteHoraISO) {
+          sugerencia &#x3D; new Date(res.siguienteHoraISO);
+        } else {
+          sugerencia &#x3D; new Date();
+          sugerencia.setMinutes(sugerencia.getMinutes() + 15); // 15 min de margen por defecto
+        }
+
+        // Redondear minutos al siguiente múltiplo de 5 para que sea más profesional
+        const m &#x3D; sugerencia.getMinutes();
+        const roundedM &#x3D; Math.ceil(m / 5) * 5;
+        sugerencia.setMinutes(roundedM);
+        sugerencia.setSeconds(0);
+        sugerencia.setMilliseconds(0);
+
+        // Formatear a HH:mm local
+        const hh &#x3D; String(sugerencia.getUTCHours()).padStart(2, &#x27;0&#x27;);
+        const mm &#x3D; String(sugerencia.getUTCMinutes()).padStart(2, &#x27;0&#x27;);
+        
+        this.citaForm.get(&#x27;fechaHora&#x27;)?.setValue(&#x60;${fecha}T${hh}:${mm}&#x60;);
+      },
+      error: (err) &#x3D;&gt; {
+        this.notification.error(err.error?.message || &#x27;El médico no tiene agenda disponible para este día&#x27;);
+        this.citaForm.get(&#x27;fechaHora&#x27;)?.setValue(&#x27;&#x27;);
+      }
+    });
+  }
+
+  guardar() {
+    if (this.citaForm.invalid || !this.pacienteSeleccionado) return;
+
+    this.cargando &#x3D; true;
+    const v &#x3D; this.citaForm.getRawValue();
+    const payload &#x3D; {
+      ...v,
+      medicoId: Number(v.medicoId),
+      pacienteId: Number(v.pacienteId),
+      fechaHora: v.fechaHora ? DateUtils.getDateTimeISO(v.fechaHora) : null,
+      especialidadId: v.especialidadId ? Number(v.especialidadId) : undefined,
+    };
+    this.citasService.crear(payload).subscribe({
+      next: () &#x3D;&gt; {
+        this.cargando &#x3D; false;
+        this.cerrarModal();
+        this.cargarCitas();
+        this.notification.success(&#x27;Cita programada exitosamente&#x27;);
+      },
+      error: (err) &#x3D;&gt; {
+        this.cargando &#x3D; false;
+        this.notification.error(err.error?.message || &#x27;Error al programar la cita&#x27;);
+      },
+    });
+  }
+
+  cancelarCita(id: number) {
+    this.confirmarCancelarId &#x3D; id;
+  }
+
+  confirmarCancelar() {
+    if (!this.confirmarCancelarId) return;
+    this.citasService.cancelar(this.confirmarCancelarId).subscribe({
+      next: () &#x3D;&gt; { this.confirmarCancelarId &#x3D; null; this.cargarCitas(); this.notification.success(&#x27;Cita cancelada&#x27;); },
+      error: ()  &#x3D;&gt; { this.confirmarCancelarId &#x3D; null; this.notification.error(&#x27;Error al cancelar la cita&#x27;); },
+    });
+  }
+
+  // Estilos de UI
+  getEstadoClass(estado: string) {
+    switch (estado) {
+      case &#x27;ATENDIDA&#x27;: return &#x27;border-emerald-500&#x27;;
+      case &#x27;CANCELADA&#x27;: return &#x27;border-red-400&#x27;;
+      case &#x27;PROGRAMADA&#x27;: return &#x27;border-indigo-400&#x27;;
+      default: return &#x27;border-gray-200&#x27;;
+    }
+  }
+
+  getStatusBadgeClass(estado: string) {
+    switch (estado) {
+      case &#x27;ATENDIDA&#x27;: return &#x27;bg-emerald-100 text-emerald-700&#x27;;
+      case &#x27;CANCELADA&#x27;: return &#x27;bg-red-100 text-red-700&#x27;;
+      case &#x27;PROGRAMADA&#x27;: return &#x27;bg-indigo-100 text-indigo-700&#x27;;
+      case &#x27;CONFIRMADA&#x27;: return &#x27;bg-blue-100 text-blue-700&#x27;;
+      case &#x27;EN_SALA&#x27;: return &#x27;bg-amber-100 text-amber-700&#x27;;
+      case &#x27;NO_ASISTIO&#x27;: return &#x27;bg-gray-100 text-gray-700 border-gray-200&#x27;;
+      default: return &#x27;bg-gray-100 text-gray-700&#x27;;
+    }
+  }
+
+  calcularEdad(fecha: string): number {
+    if (!fecha) return 0;
+    const born &#x3D; new Date(fecha);
+    const now &#x3D; new Date();
+    let edge &#x3D; now.getFullYear() - born.getFullYear();
+    const month &#x3D; now.getMonth() - born.getMonth();
+    if (month &lt; 0 || (month &#x3D;&#x3D;&#x3D; 0 &amp;&amp; now.getDate() &lt; born.getDate())) {
+      edge--;
+    }
+    return edge;
+  }
+
+  esDeMiCentroId(id: number): boolean {
+    const user &#x3D; this.authService.obtenerUsuario();
+    return user?.establecimientoId &#x3D;&#x3D;&#x3D; id;
+  }
+}
+</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="styleData">
+            <pre class="line-numbers"><code class="language-scss">
+    .animate-in { animation: fadeIn 0.3s ease-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 10px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #c7d2fe;
+      border-radius: 10px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #818cf8;
+    }
+  
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="p-6 max-w-7xl mx-auto">  <!-- Encabezado con estadísticas rápidas -->  <div class="flex justify-between items-center mb-8">    <div>      <h1 class="text-3xl font-bold text-gray-900 tracking-tight">Gestión de Citas</h1>      <p class="text-gray-500 mt-1">Control de agenda y programación de pacientes</p>    </div>    <button (click)="abrirModal()"      class="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-xl font-semibold transition-all shadow-md active:scale-95">      <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>      </svg>      Nueva Cita    </button>  </div>  <!-- Filtros y Listado -->  <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden mb-8">    <div class="p-4 border-b border-gray-50 flex items-center justify-between bg-gray-50/30">      <h3 class="font-bold text-gray-700">Agenda para {{ hoy | date:\'fullDate\' }}</h3>      <input type="date" [(ngModel)]="fechaFiltro" (change)="cargarCitas()"        [class.ring-2]="!esFechaValida(fechaFiltro)"        [class.ring-red-500]="!esFechaValida(fechaFiltro)"        class="px-3 py-1.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">    </div>    <div class="overflow-x-auto">      <table class="w-full text-left border-collapse">        <thead>          <tr class="bg-gray-50 text-gray-400 text-xs uppercase tracking-wider">            <th class="px-6 py-4 font-semibold">Hora</th>            <th class="px-6 py-4 font-semibold">Paciente</th>            <th class="px-6 py-4 font-semibold">Médico</th>            <th class="px-6 py-4 font-semibold">Especialidad</th>            <th class="px-6 py-4 font-semibold">Estado</th>            <th class="px-6 py-4 font-semibold text-right">Acciones</th>          </tr>        </thead>        <tbody class="divide-y divide-gray-50">          <tr *ngFor="let cita of citas" class="hover:bg-gray-50/50 transition-colors">            <td class="px-6 py-4 border-l-4" [ngClass]="getEstadoClass(cita.estado)">              <div class="font-bold text-gray-900">{{ cita.fechaHora | date:\'h:mm a\':\'UTC\' }}</div>            </td>            <td class="px-6 py-4">              <div class="font-semibold text-gray-900">{{ cita.paciente.nombres }} {{ cita.paciente.apellidos }}</div>              <div class="text-xs text-gray-400">DNI: {{ cita.paciente.dni }}</div>            </td>            <td class="px-6 py-4">              <div class="text-sm font-medium text-gray-800">Dr. {{ cita.medico.apellidos }}</div>              <div class="text-xs text-gray-400 capitalize">{{ cita.tipo.replace(\'_\', \' \') }}</div>            </td>            <td class="px-6 py-4">              <span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-violet-50 text-violet-700">                {{ cita.especialidad?.nombre || \'General\' }}              </span>            </td>            <td class="px-6 py-4">              <span class="px-2.5 py-1 rounded-full text-xs font-bold" [ngClass]="getStatusBadgeClass(cita.estado)">                {{ cita.estado }}              </span>            </td>            <td class="px-6 py-4 text-right">              <button *ngIf="cita.estado === \'PROGRAMADA\'" (click)="cancelarCita(cita.id)"                class="text-red-600 hover:bg-red-50 p-2 rounded-lg transition-colors" title="Cancelar Cita">                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>                </svg>              </button>            </td>          </tr>          <tr *ngIf="!citas || citas.length === 0">            <td colspan="6" class="py-12 text-center text-gray-400">              No hay citas programadas para esta fecha            </td>          </tr>        </tbody>      </table>    </div>  </div>  <!-- MODAL NUEVA CITA -->  <div *ngIf="mostrarModal" class="fixed inset-0 z-50 flex items-center justify-center p-4">    <div class="absolute inset-0 bg-gray-900/40 backdrop-blur-sm" (click)="cerrarModal()"></div>    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg relative overflow-hidden animate-in fade-in zoom-in duration-200">      <div class="p-6 bg-indigo-600 sticky top-0 z-10">        <h3 class="text-xl font-bold text-white">Programar Cita</h3>        <p class="text-indigo-100 text-sm">Ingrese los datos para la nueva consulta</p>      </div>      <form [formGroup]="citaForm" (ngSubmit)="guardar()"            class="p-6 space-y-4 max-h-[calc(100vh-200px)] overflow-y-auto custom-scrollbar">        <!-- Buscador de Paciente -->        <div class="relative">          <label class="block text-sm font-semibold text-gray-700 mb-1">Buscar Paciente (Cualquier Centro)</label>          <div class="relative">            <input type="text" [formControl]="searchControl" placeholder="Nombre, Apellido o DNI..."              class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all pr-10">            <svg class="w-5 h-5 absolute right-3 top-3 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>            </svg>          </div>          <!-- Resultados de búsqueda -->          <div *ngIf="pacientes && pacientes.length > 0 && !pacienteSeleccionado"            class="absolute z-20 w-full mt-1 bg-white border border-gray-200 rounded-xl shadow-lg max-h-48 overflow-y-auto">             <div *ngFor="let p of pacientes" (click)="seleccionarPaciente(p)"               class="p-3 hover:bg-indigo-50 cursor-pointer border-b border-gray-50 last:border-0 transition-colors">               <div class="font-bold text-gray-800 text-sm">{{ p.nombres }} {{ p.apellidos }}</div>               <div class="text-xs text-gray-500 mt-0.5">DNI: {{ p.dni }} | Exp: {{ p.numeroExpediente }}</div>             </div>          </div>          <!-- Ficha Compacta de Paciente -->          <div *ngIf="pacienteSeleccionado"            class="mt-3 bg-indigo-50/50 border border-indigo-100 rounded-xl p-3 animate-in fade-in slide-in-from-top-1">            <div class="flex justify-between items-start mb-2">              <div class="flex items-center gap-2">                <div class="w-8 h-8 rounded-full bg-indigo-200 flex items-center justify-center text-indigo-700 font-bold text-xs">                  {{ pacienteSeleccionado.nombres[0] }}{{ pacienteSeleccionado.apellidos[0] }}                </div>                <div>                  <h4 class="text-sm font-bold text-gray-900">{{ pacienteSeleccionado.nombres }} {{ pacienteSeleccionado.apellidos }}</h4>                  <p class="text-[10px] text-gray-500 font-mono">{{ pacienteSeleccionado.dni }}</p>                </div>              </div>              <button (click)="pacienteSeleccionado = null; searchControl.setValue(\'\')" type="button" class="text-indigo-300 hover:text-red-500 transition-colors">                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>              </button>            </div>            <div class="flex gap-4 text-[11px] border-t border-indigo-100/50 pt-2">              <span class="text-indigo-600 font-medium"><b>Edad:</b> {{ calcularEdad(pacienteSeleccionado.fechaNacimiento) }} años</span>              <span class="text-gray-500"><b>Centro:</b> {{ pacienteSeleccionado.establecimiento?.nombre || \'Desconocido\' }}</span>            </div>          </div>        </div>        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">          <!-- Especialidad -->          <div>            <label class="block text-sm font-semibold text-gray-700 mb-1">Especialidad</label>            <select formControlName="especialidadId"              class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm"              (change)="filtrarMedicosPorEspecialidad()">              <option value="">Todas las especialidades</option>              <option *ngFor="let e of especialidades" [value]="e.id">{{ e.nombre }}</option>            </select>          </div>          <!-- Médico -->          <div>            <label class="block text-sm font-semibold text-gray-700 mb-1">Médico Responsable</label>            <select formControlName="medicoId"              class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm">              <option value="">Seleccione un médico...</option>              <option *ngFor="let m of medicosFiltrados" [value]="m.id">                {{ m.nombres }} {{ m.apellidos }}              </option>            </select>          </div>        </div>        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">          <div>            <label class="block text-sm font-semibold text-gray-700 mb-1">Fecha y Hora</label>            <input type="datetime-local" formControlName="fechaHora"              [class.ring-2]="citaForm.get(\'fechaHora\')?.invalid && citaForm.get(\'fechaHora\')?.touched"              [class.ring-red-500]="citaForm.get(\'fechaHora\')?.invalid && citaForm.get(\'fechaHora\')?.touched"              class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm disabled:bg-gray-50 disabled:text-gray-500">            <p *ngIf="citaForm.get(\'fechaHora\')?.errors?.[\'dateInvalid\'] && citaForm.get(\'fechaHora\')?.touched"               class="text-[10px] text-red-500 font-bold uppercase mt-1">La fecha no existe</p>          </div>          <div>            <label class="block text-sm font-semibold text-gray-700 mb-1">Tipo</label>            <select formControlName="tipo"              class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm">              <option *ngFor="let t of tiposCita" [value]="t">{{ t.replace(\'_\', \' \') | titlecase }}</option>            </select>          </div>        </div>        <div>          <label class="block text-sm font-semibold text-gray-700 mb-1">Motivo / Notas</label>          <textarea formControlName="motivo" rows="2"            class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none resize-none text-sm"></textarea>        </div>        <div class="flex gap-3 pt-4 sticky bottom-0 bg-white border-t border-gray-50 mt-4 pb-2">          <button type="button" (click)="cerrarModal()"            class="flex-1 px-4 py-2.5 border border-gray-200 text-gray-600 rounded-xl font-semibold hover:bg-gray-50 transition-colors text-sm">            Cancelar          </button>          <button type="submit" [disabled]="citaForm.invalid || !pacienteSeleccionado || cargando"            class="flex-1 px-4 py-2.5 bg-indigo-600 text-white rounded-xl font-semibold hover:bg-indigo-700 transition-all shadow-md disabled:opacity-50 disabled:cursor-not-allowed text-sm">            {{ cargando ? \'Guardando...\' : \'Confirmar Cita\' }}          </button>        </div>      </form>    </div>  </div></div><!-- Modal confirmar cancelar cita --><div *ngIf="confirmarCancelarId"     class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">  <div class="bg-white rounded-2xl shadow-xl w-full max-w-sm p-6 space-y-4">    <div class="flex items-start gap-4">      <div class="w-10 h-10 rounded-xl bg-red-100 flex items-center justify-center flex-shrink-0">        <svg class="w-5 h-5 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>        </svg>      </div>      <div>        <h3 class="font-semibold text-gray-900">¿Cancelar esta cita?</h3>        <p class="text-sm text-gray-500 mt-1">Esta acción no se puede deshacer.</p>      </div>    </div>    <div class="flex gap-3 justify-end">      <button (click)="confirmarCancelarId = null"              class="px-4 py-2 text-sm font-medium text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">        Volver      </button>      <button (click)="confirmarCancelar()"              class="px-4 py-2 text-sm font-medium text-white bg-red-500 hover:bg-red-600 rounded-lg transition-colors">        Sí, cancelar cita      </button>    </div>  </div></div></div>'
+    var COMPONENTS = [{'name': 'AgendasComponent', 'selector': 'app-agendas'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'BuscadorPacienteComponent', 'selector': 'app-buscador-paciente'},{'name': 'CitasComponent', 'selector': 'app-citas'},{'name': 'ConstructorFormularioComponent', 'selector': 'app-constructor-formulario'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'EpidemiologiaDashboardComponent', 'selector': 'app-epidemiologia-dashboard'},{'name': 'EstadisticasHospitalariasComponent', 'selector': 'app-estadisticas-hospitalarias'},{'name': 'FarmaciaComponent', 'selector': 'app-farmacia'},{'name': 'GestionHospitalizacionComponent', 'selector': 'app-gestion-hospitalizacion'},{'name': 'GestionLotesModalComponent', 'selector': 'app-gestion-lotes-modal'},{'name': 'GestionReportesComponent', 'selector': 'app-gestion-reportes'},{'name': 'HistoriaClinicaComponent', 'selector': 'app-historia-clinica'},{'name': 'InfraestructuraModalComponent', 'selector': 'app-infraestructura-modal'},{'name': 'InventarioVacunasComponent', 'selector': 'app-inventario-vacunas'},{'name': 'LaboratorioComponent', 'selector': 'app-laboratorio'},{'name': 'ListaPlantillasComponent', 'selector': 'app-lista-plantillas'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MainLayoutComponent', 'selector': 'app-main-layout'},{'name': 'MantenimientoDiagnosticosComponent', 'selector': 'app-mantenimiento-diagnosticos'},{'name': 'MantenimientoEstablecimientosComponent', 'selector': 'app-mantenimiento-establecimientos'},{'name': 'MantenimientoInventarioComponent', 'selector': 'app-mantenimiento-inventario'},{'name': 'MantenimientoLaboratorioComponent', 'selector': 'app-mantenimiento-laboratorio'},{'name': 'MantenimientoLoginComponent', 'selector': 'app-mantenimiento-login'},{'name': 'MantenimientoMedicamentosComponent', 'selector': 'app-mantenimiento-medicamentos'},{'name': 'MantenimientoRadiologiaComponent', 'selector': 'app-mantenimiento-radiologia'},{'name': 'MantenimientoRolesComponent', 'selector': 'app-mantenimiento-roles'},{'name': 'MovimientosInventarioComponent', 'selector': 'app-movimientos-inventario'},{'name': 'NotificationComponent', 'selector': 'app-notification'},{'name': 'NuevaConsultaComponent', 'selector': 'app-nueva-consulta'},{'name': 'PacientesComponent', 'selector': 'app-pacientes'},{'name': 'PermisosUsuariosComponent', 'selector': 'app-permisos-usuarios'},{'name': 'RecetasPacienteComponent', 'selector': 'app-recetas-paciente'},{'name': 'RegistroVacunaModalComponent', 'selector': 'app-registro-vacuna-modal'},{'name': 'ReportesComponent', 'selector': 'app-reportes'},{'name': 'TriajeComponent', 'selector': 'app-triaje'},{'name': 'UsuariosComponent', 'selector': 'app-usuarios'},{'name': 'VacunacionComponent', 'selector': 'app-vacunacion'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'CitasComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'CitasComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

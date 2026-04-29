@@ -6,8 +6,10 @@ import { PacientesService } from '../../core/services/pacientes.service';
 import { AuthService } from '../../core/services/auth.service';
 import { NotificationService } from '../../core/services/notification.service';
 import { ParametrosService } from '../../core/services/parametros.service';
+import { CatalogosService } from '../../core/services/catalogos.service';
 import { debounceTime, distinctUntilChanged, switchMap, catchError, of } from 'rxjs';
 import { DateUtils } from '../../core/utils/date-utils';
+import { DateValidators } from '../../core/validators/date.validator';
 
 @Component({
   selector: 'app-citas',
@@ -35,6 +37,8 @@ import { DateUtils } from '../../core/utils/date-utils';
         <div class="p-4 border-b border-gray-50 flex items-center justify-between bg-gray-50/30">
           <h3 class="font-bold text-gray-700">Agenda para {{ hoy | date:'fullDate' }}</h3>
           <input type="date" [(ngModel)]="fechaFiltro" (change)="cargarCitas()" 
+            [class.ring-2]="!esFechaValida(fechaFiltro)"
+            [class.ring-red-500]="!esFechaValida(fechaFiltro)"
             class="px-3 py-1.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
         </div>
 
@@ -179,16 +183,17 @@ import { DateUtils } from '../../core/utils/date-utils';
               <div>
                 <label class="block text-sm font-semibold text-gray-700 mb-1">Fecha y Hora</label>
                 <input type="datetime-local" formControlName="fechaHora"
+                  [class.ring-2]="citaForm.get('fechaHora')?.invalid && citaForm.get('fechaHora')?.touched"
+                  [class.ring-red-500]="citaForm.get('fechaHora')?.invalid && citaForm.get('fechaHora')?.touched"
                   class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm disabled:bg-gray-50 disabled:text-gray-500">
+                <p *ngIf="citaForm.get('fechaHora')?.errors?.['dateInvalid'] && citaForm.get('fechaHora')?.touched" 
+                   class="text-[10px] text-red-500 font-bold uppercase mt-1">La fecha no existe</p>
               </div>
               <div>
                 <label class="block text-sm font-semibold text-gray-700 mb-1">Tipo</label>
                 <select formControlName="tipo" 
                   class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm">
-                  <option value="CONSULTA_GENERAL">Consulta General</option>
-                  <option value="ESPECIALIDAD">Especialidad</option>
-                  <option value="CONTROL">Control</option>
-                  <option value="URGENCIA">Urgencia</option>
+                  <option *ngFor="let t of tiposCita" [value]="t">{{ t.replace('_', ' ') | titlecase }}</option>
                 </select>
               </div>
             </div>
@@ -270,6 +275,7 @@ export class CitasComponent implements OnInit {
   private authService      = inject(AuthService);
   private notification    = inject(NotificationService);
   private paramSvc        = inject(ParametrosService);
+  private catalogosSvc    = inject(CatalogosService);
 
   hoy = new Date();
   fechaFiltro = DateUtils.getHoyString();
@@ -278,19 +284,25 @@ export class CitasComponent implements OnInit {
   medicosFiltrados: any[] = [];
   especialidades: { id: number; nombre: string }[] = [];
   pacientes: any[] = [];
+  tiposCita: string[] = [];
+  estadosCita: string[] = [];
   pacienteSeleccionado: any = null;
   mostrarModal        = false;
   confirmarCancelarId: number | null = null;
   cargando = false;
   minutosEntreConsultas = 20;
   esMedico = false;
+  
+  esFechaValida(fecha: string): boolean {
+    return DateUtils.esFechaValida(fecha);
+  }
 
   searchControl = this.fb.control('');
   citaForm = this.fb.group({
     pacienteId: [0, Validators.required],
     medicoId: ['', Validators.required],
     especialidadId: [''],
-    fechaHora: ['', Validators.required],
+    fechaHora: ['', [Validators.required, DateValidators.dateReal()]],
     tipo: ['CONSULTA_GENERAL', Validators.required],
     motivo: ['']
   });
@@ -298,6 +310,7 @@ export class CitasComponent implements OnInit {
   ngOnInit() {
     this.cargarCitas();
     this.cargarMedicos();
+    this.cargarCatalogos();
     this.setupSearch();
 
     const user = this.authService.obtenerUsuario();
@@ -333,6 +346,10 @@ export class CitasComponent implements OnInit {
   }
 
   cargarCitas() {
+    if (!DateUtils.esFechaValida(this.fechaFiltro)) {
+      this.citas = [];
+      return;
+    }
     this.citasService.listar(this.fechaFiltro).subscribe(docs => {
       const data = docs || [];
       // Ordenar: Pendientes/Otras primero, ATENDIDA al final
@@ -341,6 +358,13 @@ export class CitasComponent implements OnInit {
         if (a.estado !== 'ATENDIDA' && b.estado === 'ATENDIDA') return -1;
         return new Date(a.fechaHora).getTime() - new Date(b.fechaHora).getTime();
       });
+    });
+  }
+
+  cargarCatalogos() {
+    this.catalogosSvc.obtenerTodos().subscribe(res => {
+      this.tiposCita = res.tiposCita || [];
+      this.estadosCita = res.estadosCita || [];
     });
   }
 
@@ -488,6 +512,9 @@ export class CitasComponent implements OnInit {
       case 'ATENDIDA': return 'bg-emerald-100 text-emerald-700';
       case 'CANCELADA': return 'bg-red-100 text-red-700';
       case 'PROGRAMADA': return 'bg-indigo-100 text-indigo-700';
+      case 'CONFIRMADA': return 'bg-blue-100 text-blue-700';
+      case 'EN_SALA': return 'bg-amber-100 text-amber-700';
+      case 'NO_ASISTIO': return 'bg-gray-100 text-gray-700 border-gray-200';
       default: return 'bg-gray-100 text-gray-700';
     }
   }

@@ -1,0 +1,1113 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>siss-frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">siss-frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content interface">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Interfaces</li>
+  <li class="breadcrumb-item"
+  >
+  RecetaHistorial</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/app/modules/recetas-paciente/recetas-paciente.component.ts</code>
+        </p>
+
+
+
+
+        <section data-compodoc="block-index">
+            <h3 id="index">Index</h3>
+            <table class="table table-sm table-bordered index-table">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Properties</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                        <a href="#creadaEn" 
+>
+                                            creadaEn
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#detalles" 
+>
+                                            detalles
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#dispensaciones" 
+>
+                                            dispensaciones
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#dispensadaEn" 
+>
+                                            dispensadaEn
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#establecimiento" 
+>
+                                            establecimiento
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#estado" 
+>
+                                            estado
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#historia" 
+>
+                                            historia
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#id" 
+>
+                                            id
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#paciente" 
+>
+                                            paciente
+                                        </a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+
+
+            <section data-compodoc="block-properties">
+                <h3 id="inputs">Properties</h3>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="creadaEn"></a>
+                                        <span class="name "><b>creadaEn</b>
+                                            <a href="#creadaEn">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>creadaEn:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="detalles"></a>
+                                        <span class="name "><b>detalles</b>
+                                            <a href="#detalles">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>detalles:     <code>literal type[]</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>literal type[]</code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="dispensaciones"></a>
+                                        <span class="name "><b>dispensaciones</b>
+                                            <a href="#dispensaciones">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>dispensaciones:     <code>literal type[]</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>literal type[]</code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="dispensadaEn"></a>
+                                        <span class="name "><b>dispensadaEn</b>
+                                            <a href="#dispensadaEn">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>dispensadaEn:     <code>string | null</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>string | null</code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="establecimiento"></a>
+                                        <span class="name "><b>establecimiento</b>
+                                            <a href="#establecimiento">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>establecimiento:     <code>literal type</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>literal type</code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="estado"></a>
+                                        <span class="name "><b>estado</b>
+                                            <a href="#estado">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>estado:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="historia"></a>
+                                        <span class="name "><b>historia</b>
+                                            <a href="#historia">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>historia:     <code>literal type</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>literal type</code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="id"></a>
+                                        <span class="name "><b>id</b>
+                                            <a href="#id">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>id:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="paciente"></a>
+                                        <span class="name "><b>paciente</b>
+                                            <a href="#paciente">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>paciente:     <code>literal type</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>literal type</code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+            </section>
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, inject, OnInit, OnDestroy } from &#x27;@angular/core&#x27;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
+import { FormsModule } from &#x27;@angular/forms&#x27;;
+import { HttpClient } from &#x27;@angular/common/http&#x27;;
+import { map, Subject, debounceTime, distinctUntilChanged, takeUntil, of, switchMap } from &#x27;rxjs&#x27;;
+import { environment } from &#x27;../../../environments/environment&#x27;;
+import { PacientesService } from &#x27;../../core/services/pacientes.service&#x27;;
+import * as XLSX from &#x27;xlsx&#x27;;
+
+interface RecetaHistorial {
+  id: number;
+  estado: string;
+  creadaEn: string;
+  dispensadaEn: string | null;
+  establecimiento: { nombre: string };
+  historia: {
+    medico: { nombres: string; apellidos: string };
+  };
+  paciente: {
+    id: number;
+    nombres: string;
+    apellidos: string;
+    numeroExpediente: string;
+    dni: string;
+    fechaNacimiento: string;
+  };
+  detalles: {
+    id: number;
+    dosis: string;
+    frecuencia: string;
+    duracion: string;
+    cantidad: number;
+    cantidadEntregada: number;
+    indicaciones: string | null;
+    medicamento: {
+      codigo: string | null;
+      nombreGenerico: string;
+      nombreComercial: string | null;
+      presentacion: string;
+      concentracion: string;
+    };
+  }[];
+  dispensaciones: {
+    id: number;
+    fecha: string;
+    usuario: { nombres: string; apellidos: string };
+    detalles: { cantidad: number; detalleRecetaId: number }[];
+  }[];
+}
+
+@Component({
+  selector: &#x27;app-recetas-paciente&#x27;,
+  standalone: true,
+  imports: [CommonModule, FormsModule],
+  template: &#x60;
+    &lt;div class&#x3D;&quot;min-h-screen bg-gray-50 p-6&quot;&gt;
+
+      &lt;!-- Encabezado --&gt;
+      &lt;div class&#x3D;&quot;mb-6 flex items-start justify-between gap-4&quot;&gt;
+        &lt;div&gt;
+          &lt;h1 class&#x3D;&quot;text-2xl font-bold text-gray-800&quot;&gt;Recetas por Paciente&lt;/h1&gt;
+          &lt;p class&#x3D;&quot;text-sm text-gray-500 mt-1&quot;&gt;Historial completo de recetas y dispensaciones&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;flex gap-2&quot; *ngIf&#x3D;&quot;recetas.length &gt; 0&quot;&gt;
+          &lt;button (click)&#x3D;&quot;exportarExcelResumen()&quot;
+                  class&#x3D;&quot;flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-sm transition-all shadow-sm active:scale-95&quot;&gt;
+            &lt;svg class&#x3D;&quot;w-4 h-4&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+              &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M9 17v-2a4 4 0 014-4h4m0 0l-4-4m4 4l-4 4m6 2a9 9 0 11-18 0 9 9 0 0118 0z&quot;/&gt;
+            &lt;/svg&gt;
+            Exportar Resumen
+          &lt;/button&gt;
+          &lt;button (click)&#x3D;&quot;exportarExcelDetallado()&quot;
+                  class&#x3D;&quot;flex items-center gap-2 px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-sm transition-all shadow-sm active:scale-95&quot;&gt;
+            &lt;svg class&#x3D;&quot;w-4 h-4&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+              &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z&quot;/&gt;
+            &lt;/svg&gt;
+            Exportar Detallado
+          &lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Buscador --&gt;
+      &lt;div class&#x3D;&quot;bg-white rounded-2xl shadow-sm border border-gray-100 p-5 mb-6 relative&quot;&gt;
+        &lt;label class&#x3D;&quot;block text-xs font-bold text-gray-600 mb-2 uppercase tracking-wide&quot;&gt;Buscar Paciente&lt;/label&gt;
+        &lt;div class&#x3D;&quot;flex gap-3&quot;&gt;
+          &lt;div class&#x3D;&quot;relative flex-1&quot;&gt;
+            &lt;input [(ngModel)]&#x3D;&quot;busqueda&quot; (ngModelChange)&#x3D;&quot;onSearchChange()&quot; (keyup.enter)&#x3D;&quot;buscarPacientes()&quot; type&#x3D;&quot;text&quot;
+                   placeholder&#x3D;&quot;DNI, N° expediente o nombre del paciente...&quot;
+                   class&#x3D;&quot;w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-blue-400 focus:bg-white transition-all&quot; /&gt;
+            &lt;svg class&#x3D;&quot;absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+              &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z&quot;/&gt;
+            &lt;/svg&gt;
+
+            &lt;!-- Resultados desplegables --&gt;
+            &lt;div *ngIf&#x3D;&quot;pacientesEncontrados.length &gt; 0 &amp;&amp; !pacienteSeleccionado&quot; 
+                 class&#x3D;&quot;absolute z-50 left-0 right-0 mt-2 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden max-h-60 overflow-y-auto&quot;&gt;
+              &lt;button *ngFor&#x3D;&quot;let p of pacientesEncontrados&quot; (click)&#x3D;&quot;seleccionarPaciente(p)&quot;
+                      class&#x3D;&quot;w-full text-left px-4 py-3 hover:bg-blue-50 transition-colors border-b border-gray-50 last:border-0 flex items-center justify-between&quot;&gt;
+                &lt;div&gt;
+                  &lt;p class&#x3D;&quot;text-sm font-bold text-gray-800&quot;&gt;{{ p.nombres }} {{ p.apellidos }}&lt;/p&gt;
+                  &lt;p class&#x3D;&quot;text-xs text-gray-500&quot;&gt;DNI: {{ p.dni }} | Exp: {{ p.numeroExpediente }}&lt;/p&gt;
+                &lt;/div&gt;
+                &lt;svg class&#x3D;&quot;w-4 h-4 text-gray-300&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+                  &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M9 5l7 7-7 7&quot;/&gt;
+                &lt;/svg&gt;
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;button (click)&#x3D;&quot;buscarPacientes()&quot; [disabled]&#x3D;&quot;!busqueda.trim() || cargando&quot;
+                  class&#x3D;&quot;px-6 py-3 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white font-bold rounded-xl text-sm transition-all active:scale-95&quot;&gt;
+            {{ (cargando &amp;&amp; !pacienteSeleccionado) ? &#x27;Buscando...&#x27; : &#x27;Buscar&#x27; }}
+          &lt;/button&gt;
+          &lt;button *ngIf&#x3D;&quot;recetas.length &gt; 0 || busqueda || pacienteSeleccionado&quot; (click)&#x3D;&quot;limpiar()&quot;
+                  class&#x3D;&quot;px-4 py-3 bg-gray-100 hover:bg-gray-200 text-gray-600 font-semibold rounded-xl text-sm transition-all&quot;&gt;
+            Limpiar
+          &lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Sin búsqueda --&gt;
+      &lt;div *ngIf&#x3D;&quot;!buscado &amp;&amp; !cargando &amp;&amp; !pacienteSeleccionado&quot; class&#x3D;&quot;bg-white rounded-2xl border border-dashed border-gray-200 p-16 text-center&quot;&gt;
+        &lt;div class&#x3D;&quot;w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-4&quot;&gt;
+          &lt;svg class&#x3D;&quot;w-8 h-8 text-gray-400&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+            &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;1.5&quot; d&#x3D;&quot;M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z&quot;/&gt;
+          &lt;/svg&gt;
+        &lt;/div&gt;
+        &lt;p class&#x3D;&quot;text-gray-500 font-semibold mb-1&quot;&gt;Busque un paciente para ver su historial&lt;/p&gt;
+        &lt;p class&#x3D;&quot;text-gray-400 text-sm&quot;&gt;Use DNI, número de expediente o nombre&lt;/p&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Cargando --&gt;
+      &lt;div *ngIf&#x3D;&quot;cargando&quot; class&#x3D;&quot;bg-white rounded-2xl border border-gray-100 shadow-sm p-12 flex flex-col items-center gap-3&quot;&gt;
+        &lt;svg class&#x3D;&quot;animate-spin h-8 w-8 text-blue-500&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot;&gt;
+          &lt;circle class&#x3D;&quot;opacity-25&quot; cx&#x3D;&quot;12&quot; cy&#x3D;&quot;12&quot; r&#x3D;&quot;10&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;4&quot;&gt;&lt;/circle&gt;
+          &lt;path class&#x3D;&quot;opacity-75&quot; fill&#x3D;&quot;currentColor&quot; d&#x3D;&quot;M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z&quot;&gt;&lt;/path&gt;
+        &lt;/svg&gt;
+        &lt;p class&#x3D;&quot;text-sm text-gray-500 font-medium&quot;&gt;{{ pacienteSeleccionado ? &#x27;Cargando recetas...&#x27; : &#x27;Buscando pacientes...&#x27; }}&lt;/p&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Sin resultados --&gt;
+      &lt;div *ngIf&#x3D;&quot;buscado &amp;&amp; !cargando &amp;&amp; recetas.length &#x3D;&#x3D;&#x3D; 0 &amp;&amp; pacienteSeleccionado&quot;
+           class&#x3D;&quot;bg-white rounded-2xl border border-gray-100 shadow-sm p-12 text-center&quot;&gt;
+        &lt;p class&#x3D;&quot;text-gray-400 font-medium&quot;&gt;No se encontraron recetas para este paciente&lt;/p&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Info del paciente (si hay resultados) --&gt;
+      &lt;div *ngIf&#x3D;&quot;paciente&quot; class&#x3D;&quot;bg-blue-50 border border-blue-100 rounded-2xl p-4 mb-4 flex items-center gap-4&quot;&gt;
+        &lt;div class&#x3D;&quot;w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center flex-shrink-0&quot;&gt;
+          &lt;span class&#x3D;&quot;text-white font-bold text-lg&quot;&gt;{{ paciente.nombres.charAt(0) }}{{ paciente.apellidos.charAt(0) }}&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;flex-1&quot;&gt;
+          &lt;p class&#x3D;&quot;font-bold text-blue-800 text-base&quot;&gt;{{ paciente.nombres }} {{ paciente.apellidos }}&lt;/p&gt;
+          &lt;div class&#x3D;&quot;flex gap-4 mt-0.5&quot;&gt;
+            &lt;span class&#x3D;&quot;text-xs text-blue-600 font-medium&quot;&gt;Exp: {{ paciente.numeroExpediente || &#x27;—&#x27; }}&lt;/span&gt;
+            &lt;span class&#x3D;&quot;text-xs text-blue-600 font-medium&quot;&gt;DNI: {{ paciente.dni || &#x27;—&#x27; }}&lt;/span&gt;
+            &lt;span class&#x3D;&quot;text-xs text-blue-600 font-medium&quot;&gt;Nacimiento: {{ formatFecha(paciente.fechaNacimiento) }}&lt;/span&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;text-right flex-shrink-0&quot; *ngIf&#x3D;&quot;recetas.length &gt; 0&quot;&gt;
+          &lt;p class&#x3D;&quot;text-xs font-bold text-blue-500 uppercase tracking-wide&quot;&gt;Total Recetas&lt;/p&gt;
+          &lt;p class&#x3D;&quot;text-3xl font-black text-blue-800&quot;&gt;{{ recetas.length }}&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Tarjetas de resumen --&gt;
+      &lt;div *ngIf&#x3D;&quot;recetas.length &gt; 0&quot; class&#x3D;&quot;grid grid-cols-2 md:grid-cols-5 gap-3 mb-5&quot;&gt;
+        &lt;div *ngFor&#x3D;&quot;let est of estadosResumen&quot; class&#x3D;&quot;bg-white rounded-xl border shadow-sm p-3 text-center&quot;
+             [ngClass]&#x3D;&quot;est.border&quot;&gt;
+          &lt;p class&#x3D;&quot;text-xs font-bold uppercase tracking-wide mb-1&quot; [ngClass]&#x3D;&quot;est.color&quot;&gt;{{ est.label }}&lt;/p&gt;
+          &lt;p class&#x3D;&quot;text-2xl font-black&quot; [ngClass]&#x3D;&quot;est.color&quot;&gt;{{ est.count }}&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Lista de Recetas --&gt;
+      &lt;div *ngIf&#x3D;&quot;recetas.length &gt; 0&quot; class&#x3D;&quot;space-y-4&quot;&gt;
+        &lt;div *ngFor&#x3D;&quot;let receta of recetas&quot;
+             class&#x3D;&quot;bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden&quot;&gt;
+
+          &lt;!-- Cabecera receta --&gt;
+          &lt;div class&#x3D;&quot;flex items-center justify-between px-5 py-3.5 border-b border-gray-50 bg-gray-50/50&quot;&gt;
+            &lt;div class&#x3D;&quot;flex items-center gap-3&quot;&gt;
+              &lt;span class&#x3D;&quot;text-xs font-mono text-gray-400&quot;&gt;#{{ receta.id }}&lt;/span&gt;
+              &lt;span class&#x3D;&quot;text-sm font-bold text-gray-700&quot;&gt;{{ formatFecha(receta.creadaEn) }}&lt;/span&gt;
+              &lt;span *ngIf&#x3D;&quot;receta.establecimiento&quot; class&#x3D;&quot;text-[10px] bg-blue-100 text-blue-700 px-2 py-0.5 rounded-md font-bold&quot;&gt;
+                {{ receta.establecimiento.nombre }}
+              &lt;/span&gt;
+              &lt;span *ngIf&#x3D;&quot;receta.dispensadaEn&quot; class&#x3D;&quot;text-xs text-gray-400&quot;&gt;
+                → Dispensada: {{ formatFecha(receta.dispensadaEn) }}
+              &lt;/span&gt;
+            &lt;/div&gt;
+            &lt;span class&#x3D;&quot;px-3 py-1 rounded-full text-xs font-bold&quot;
+                  [ngClass]&#x3D;&quot;badgeEstado(receta.estado)&quot;&gt;
+              {{ etiquetaEstado(receta.estado) }}
+            &lt;/span&gt;
+          &lt;/div&gt;
+
+          &lt;!-- Medicamentos prescritos --&gt;
+          &lt;div class&#x3D;&quot;px-5 py-4&quot;&gt;
+            &lt;p class&#x3D;&quot;text-xs font-bold text-gray-400 uppercase tracking-wide mb-3&quot;&gt;Medicamentos Prescritos&lt;/p&gt;
+            &lt;div class&#x3D;&quot;space-y-2&quot;&gt;
+              &lt;div *ngFor&#x3D;&quot;let det of receta.detalles&quot;
+                   class&#x3D;&quot;flex items-center justify-between p-3 bg-gray-50 rounded-xl&quot;&gt;
+                &lt;div class&#x3D;&quot;flex-1 min-w-0&quot;&gt;
+                  &lt;p class&#x3D;&quot;text-sm font-bold text-gray-800 truncate&quot;&gt;{{ det.medicamento.nombreGenerico }}&lt;/p&gt;
+                  &lt;p class&#x3D;&quot;text-xs text-gray-500&quot;&gt;
+                    {{ det.medicamento.presentacion }} · {{ det.medicamento.concentracion }} ·
+                    {{ det.dosis }} cada {{ det.frecuencia }} por {{ det.duracion }}
+                  &lt;/p&gt;
+                  &lt;p *ngIf&#x3D;&quot;det.indicaciones&quot; class&#x3D;&quot;text-xs text-blue-600 mt-0.5 italic&quot;&gt;{{ det.indicaciones }}&lt;/p&gt;
+                &lt;/div&gt;
+                &lt;div class&#x3D;&quot;text-right flex-shrink-0 ml-4&quot;&gt;
+                  &lt;p class&#x3D;&quot;text-xs text-gray-500&quot;&gt;Entregado / Recetado&lt;/p&gt;
+                  &lt;p class&#x3D;&quot;text-base font-black&quot;
+                     [ngClass]&#x3D;&quot;det.cantidadEntregada &gt;&#x3D; det.cantidad ? &#x27;text-green-600&#x27; : det.cantidadEntregada &gt; 0 ? &#x27;text-amber-600&#x27; : &#x27;text-gray-700&#x27;&quot;&gt;
+                    {{ det.cantidadEntregada }} / {{ det.cantidad }}
+                  &lt;/p&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;!-- Dispensaciones --&gt;
+          &lt;div *ngIf&#x3D;&quot;receta.dispensaciones.length &gt; 0&quot; class&#x3D;&quot;border-t border-gray-50 px-5 py-3&quot;&gt;
+            &lt;p class&#x3D;&quot;text-xs font-bold text-gray-400 uppercase tracking-wide mb-2&quot;&gt;
+              Entregas ({{ receta.dispensaciones.length }})
+            &lt;/p&gt;
+            &lt;div class&#x3D;&quot;space-y-1.5&quot;&gt;
+              &lt;div *ngFor&#x3D;&quot;let disp of receta.dispensaciones&quot;
+                   class&#x3D;&quot;flex items-center justify-between text-xs py-1.5 px-3 bg-green-50 rounded-lg border border-green-100&quot;&gt;
+                &lt;div class&#x3D;&quot;flex items-center gap-2&quot;&gt;
+                  &lt;div class&#x3D;&quot;w-6 h-6 bg-green-200 rounded-full flex items-center justify-center&quot;&gt;
+                    &lt;span class&#x3D;&quot;text-green-800 text-[9px] font-bold&quot;&gt;
+                      {{ disp.usuario?.nombres?.charAt(0) }}{{ disp.usuario?.apellidos?.charAt(0) }}
+                    &lt;/span&gt;
+                  &lt;/div&gt;
+                  &lt;span class&#x3D;&quot;font-medium text-green-800&quot;&gt;
+                    {{ disp.usuario?.nombres }} {{ disp.usuario?.apellidos }}
+                  &lt;/span&gt;
+                &lt;/div&gt;
+                &lt;span class&#x3D;&quot;text-green-600 font-semibold&quot;&gt;{{ formatFecha(disp.fecha) }}&lt;/span&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &#x60;,
+})
+export class RecetasPacienteComponent implements OnInit, OnDestroy {
+  private http &#x3D; inject(HttpClient);
+  private pacientesService &#x3D; inject(PacientesService);
+  private base &#x3D; &#x60;${environment.apiUrl}/dispensacion&#x60;;
+
+  busqueda &#x3D; &#x27;&#x27;;
+  cargando &#x3D; false;
+  buscado &#x3D; false;
+  recetas: RecetaHistorial[] &#x3D; [];
+  paciente: RecetaHistorial[&#x27;paciente&#x27;] | null &#x3D; null;
+  pacientesEncontrados: any[] &#x3D; [];
+  pacienteSeleccionado &#x3D; false;
+
+  private searchSubject &#x3D; new Subject&lt;string&gt;();
+  private destroy$ &#x3D; new Subject&lt;void&gt;();
+
+  get estadosResumen() {
+    const estados &#x3D; [
+      { key: &#x27;DISPENSADA&#x27;,          label: &#x27;Dispensadas&#x27;,  color: &#x27;text-green-600&#x27;,  border: &#x27;border-green-100&#x27; },
+      { key: &#x27;PENDIENTE&#x27;,           label: &#x27;Pendientes&#x27;,   color: &#x27;text-blue-600&#x27;,   border: &#x27;border-blue-100&#x27;  },
+      { key: &#x27;PARCIAL&#x27;,             label: &#x27;Parciales&#x27;,    color: &#x27;text-amber-600&#x27;,  border: &#x27;border-amber-100&#x27; },
+      { key: &#x27;CANCELADA&#x27;,           label: &#x27;Canceladas&#x27;,   color: &#x27;text-red-500&#x27;,    border: &#x27;border-red-100&#x27;   },
+      { key: &#x27;DEMANDA_INSATISFECHA&#x27;,label: &#x27;Sin Stock&#x27;,    color: &#x27;text-gray-500&#x27;,   border: &#x27;border-gray-100&#x27;  },
+    ];
+    return estados.map(e &#x3D;&gt; ({ ...e, count: this.recetas.filter(r &#x3D;&gt; r.estado &#x3D;&#x3D;&#x3D; e.key).length }));
+  }
+
+  ngOnInit() {
+    this.searchSubject.pipe(
+      debounceTime(400),
+      distinctUntilChanged(),
+      switchMap(term &#x3D;&gt; {
+        if (term.trim().length &lt; 3) {
+          this.pacientesEncontrados &#x3D; [];
+          return of(null);
+        }
+        this.cargando &#x3D; true;
+        return this.pacientesService.buscar(term.trim());
+      }),
+      takeUntil(this.destroy$)
+    ).subscribe((res: any) &#x3D;&gt; {
+      this.cargando &#x3D; false;
+      if (res) {
+        this.pacientesEncontrados &#x3D; res.data?.data || [];
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  onSearchChange() {
+    this.pacienteSeleccionado &#x3D; false;
+    this.searchSubject.next(this.busqueda);
+  }
+
+  buscarPacientes() {
+    if (!this.busqueda.trim()) return;
+    this.cargando &#x3D; true;
+    this.pacientesService.buscar(this.busqueda.trim()).subscribe({
+      next: (res: any) &#x3D;&gt; {
+        this.pacientesEncontrados &#x3D; res.data?.data || [];
+        this.cargando &#x3D; false;
+        if (this.pacientesEncontrados.length &#x3D;&#x3D;&#x3D; 1) {
+          this.seleccionarPaciente(this.pacientesEncontrados[0]);
+        }
+      },
+      error: () &#x3D;&gt; { this.cargando &#x3D; false; }
+    });
+  }
+
+  seleccionarPaciente(paciente: any) {
+    this.pacienteSeleccionado &#x3D; true;
+    this.paciente &#x3D; paciente;
+    this.pacientesEncontrados &#x3D; [];
+    this.busqueda &#x3D; &#x60;${paciente.nombres} ${paciente.apellidos}&#x60;;
+    this.obtenerHistorial(paciente.dni);
+  }
+
+  obtenerHistorial(dni: string) {
+    this.cargando &#x3D; true;
+    this.buscado &#x3D; true;
+    this.recetas &#x3D; [];
+
+    this.http.get&lt;any&gt;(&#x60;${this.base}/historial-paciente&#x60;, { params: { identificador: dni } })
+      .pipe(map(r &#x3D;&gt; r.data ?? r))
+      .subscribe({
+        next: (data: RecetaHistorial[]) &#x3D;&gt; {
+          this.recetas &#x3D; data;
+          this.cargando &#x3D; false;
+        },
+        error: () &#x3D;&gt; { this.cargando &#x3D; false; }
+      });
+  }
+
+  limpiar() {
+    this.busqueda &#x3D; &#x27;&#x27;;
+    this.recetas &#x3D; [];
+    this.paciente &#x3D; null;
+    this.buscado &#x3D; false;
+    this.pacientesEncontrados &#x3D; [];
+    this.pacienteSeleccionado &#x3D; false;
+  }
+
+  formatFecha(fechaISO: string | null): string {
+    if (!fechaISO) return &#x27;—&#x27;;
+    const utc &#x3D; new Date(fechaISO);
+    const local &#x3D; new Date(utc.getTime() - 6 * 60 * 60 * 1000);
+    return &#x60;${String(local.getUTCDate()).padStart(2,&#x27;0&#x27;)}/${String(local.getUTCMonth()+1).padStart(2,&#x27;0&#x27;)}/${local.getUTCFullYear()} ${String(local.getUTCHours()).padStart(2,&#x27;0&#x27;)}:${String(local.getUTCMinutes()).padStart(2,&#x27;0&#x27;)}&#x60;;
+  }
+
+  badgeEstado(estado: string): string {
+    const map: Record&lt;string, string&gt; &#x3D; {
+      DISPENSADA:           &#x27;bg-green-100 text-green-700&#x27;,
+      PENDIENTE:            &#x27;bg-blue-100 text-blue-700&#x27;,
+      PARCIAL:              &#x27;bg-amber-100 text-amber-700&#x27;,
+      CANCELADA:            &#x27;bg-red-100 text-red-700&#x27;,
+      DEMANDA_INSATISFECHA: &#x27;bg-gray-100 text-gray-600&#x27;,
+    };
+    return map[estado] ?? &#x27;bg-gray-100 text-gray-600&#x27;;
+  }
+
+  etiquetaEstado(estado: string): string {
+    const map: Record&lt;string, string&gt; &#x3D; {
+      DISPENSADA:           &#x27;Dispensada&#x27;,
+      PENDIENTE:            &#x27;Pendiente&#x27;,
+      PARCIAL:              &#x27;Parcial&#x27;,
+      CANCELADA:            &#x27;Cancelada&#x27;,
+      DEMANDA_INSATISFECHA: &#x27;Sin Stock&#x27;,
+    };
+    return map[estado] ?? estado;
+  }
+
+  exportarExcelResumen() {
+    if (!this.paciente || this.recetas.length &#x3D;&#x3D;&#x3D; 0) return;
+
+    const ahora &#x3D; new Date();
+    const fechaReporte &#x3D; &#x60;${String(ahora.getDate()).padStart(2,&#x27;0&#x27;)}/${String(ahora.getMonth()+1).padStart(2,&#x27;0&#x27;)}/${ahora.getFullYear()} ${String(ahora.getHours()).padStart(2,&#x27;0&#x27;)}:${String(ahora.getMinutes()).padStart(2,&#x27;0&#x27;)}&#x60;;
+
+    const filas: any[] &#x3D; [];
+    this.recetas.forEach(receta &#x3D;&gt; {
+      receta.detalles.forEach(det &#x3D;&gt; {
+        const ultimaDispensacion &#x3D; receta.dispensaciones[0];
+        filas.push({
+          &#x27;Receta #&#x27;: receta.id,
+          &#x27;Estado&#x27;: this.etiquetaEstado(receta.estado),
+          &#x27;Fecha Receta&#x27;: this.formatFecha(receta.creadaEn),
+          &#x27;Medicamento&#x27;: det.medicamento.nombreGenerico,
+          &#x27;Presentación&#x27;: det.medicamento.presentacion,
+          &#x27;Concentración&#x27;: det.medicamento.concentracion,
+          &#x27;Dosis&#x27;: det.dosis,
+          &#x27;Frecuencia&#x27;: det.frecuencia,
+          &#x27;Duración&#x27;: det.duracion,
+          &#x27;Cantidad Recetada&#x27;: det.cantidad,
+          &#x27;Cantidad Entregada&#x27;: det.cantidadEntregada,
+          &#x27;Dispensado por&#x27;: ultimaDispensacion ? &#x60;${ultimaDispensacion.usuario?.nombres} ${ultimaDispensacion.usuario?.apellidos}&#x60; : &#x27;—&#x27;,
+          &#x27;Fecha Entrega&#x27;: ultimaDispensacion ? this.formatFecha(ultimaDispensacion.fecha) : &#x27;—&#x27;,
+          &#x27;Establecimiento&#x27;: receta.establecimiento?.nombre || &#x27;—&#x27;
+        });
+      });
+    });
+
+    const wb &#x3D; XLSX.utils.book_new();
+    const ws: XLSX.WorkSheet &#x3D; {};
+
+    XLSX.utils.sheet_add_aoa(ws, [
+      [&#x60;Historial de Recetas (Resumen) - ${this.paciente.nombres} ${this.paciente.apellidos}&#x60;],
+      [&#x60;Exp: ${this.paciente.numeroExpediente || &#x27;—&#x27;} | DNI: ${this.paciente.dni || &#x27;—&#x27;}&#x60;],
+      [&#x60;Generado: ${fechaReporte} | Total recetas: ${this.recetas.length}&#x60;],
+      [],
+    ], { origin: &#x27;A1&#x27; });
+
+    XLSX.utils.sheet_add_json(ws, filas, { origin: &#x27;A5&#x27; });
+
+    ws[&#x27;!cols&#x27;] &#x3D; [
+      { wch: 9 }, { wch: 14 }, { wch: 18 }, { wch: 28 }, { wch: 16 },
+      { wch: 16 }, { wch: 14 }, { wch: 16 }, { wch: 12 }, { wch: 14 },
+      { wch: 14 }, { wch: 26 }, { wch: 18 }, { wch: 25 },
+    ];
+
+    const nombreArchivo &#x3D; &#x60;resumen_recetas_${this.paciente.numeroExpediente || this.paciente.dni || &#x27;paciente&#x27;}.xlsx&#x60;;
+    XLSX.utils.book_append_sheet(wb, ws, &#x27;Resumen&#x27;);
+    XLSX.writeFile(wb, nombreArchivo);
+  }
+
+  exportarExcelDetallado() {
+    if (!this.paciente || this.recetas.length &#x3D;&#x3D;&#x3D; 0) return;
+
+    const ahora &#x3D; new Date();
+    const fechaReporte &#x3D; &#x60;${String(ahora.getDate()).padStart(2,&#x27;0&#x27;)}/${String(ahora.getMonth()+1).padStart(2,&#x27;0&#x27;)}/${ahora.getFullYear()} ${String(ahora.getHours()).padStart(2,&#x27;0&#x27;)}:${String(ahora.getMinutes()).padStart(2,&#x27;0&#x27;)}&#x60;;
+
+    const filas: any[] &#x3D; [];
+    this.recetas.forEach(receta &#x3D;&gt; {
+      receta.detalles.forEach(det &#x3D;&gt; {
+        // Buscar todas las dispensaciones que incluyen este medicamento
+        const entregasDeEsteMedicamento &#x3D; receta.dispensaciones.filter(disp &#x3D;&gt; 
+          disp.detalles.some(d &#x3D;&gt; d.detalleRecetaId &#x3D;&#x3D;&#x3D; det.id)
+        );
+
+        if (entregasDeEsteMedicamento.length &#x3D;&#x3D;&#x3D; 0) {
+          // No dispensado
+          filas.push({
+            &#x27;Código&#x27;: det.medicamento.codigo || &#x27;—&#x27;,
+            &#x27;Medicamento&#x27;: det.medicamento.nombreGenerico,
+            &#x27;Fecha Prescripción&#x27;: this.formatFecha(receta.creadaEn),
+            &#x27;Médico&#x27;: &#x60;${receta.historia.medico.nombres} ${receta.historia.medico.apellidos}&#x60;,
+            &#x27;Cant. Prescrita&#x27;: det.cantidad,
+            &#x27;Fecha Dispensación&#x27;: &#x27;—&#x27;,
+            &#x27;Usuario Dispensó&#x27;: &#x27;—&#x27;,
+            &#x27;Cant. Dispensada&#x27;: 0,
+            &#x27;Establecimiento&#x27;: receta.establecimiento?.nombre || &#x27;—&#x27;,
+            &#x27;Estado&#x27;: &#x27;No Dispensado&#x27;
+          });
+        } else {
+          // Una fila por cada evento de dispensación
+          entregasDeEsteMedicamento.forEach(disp &#x3D;&gt; {
+            const detalleDisp &#x3D; disp.detalles.find(d &#x3D;&gt; d.detalleRecetaId &#x3D;&#x3D;&#x3D; det.id);
+            filas.push({
+              &#x27;Código&#x27;: det.medicamento.codigo || &#x27;—&#x27;,
+              &#x27;Medicamento&#x27;: det.medicamento.nombreGenerico,
+              &#x27;Fecha Prescripción&#x27;: this.formatFecha(receta.creadaEn),
+              &#x27;Médico&#x27;: &#x60;${receta.historia.medico.nombres} ${receta.historia.medico.apellidos}&#x60;,
+              &#x27;Cant. Prescrita&#x27;: det.cantidad,
+              &#x27;Fecha Dispensación&#x27;: this.formatFecha(disp.fecha),
+              &#x27;Usuario Dispensó&#x27;: &#x60;${disp.usuario?.nombres} ${disp.usuario?.apellidos}&#x60;,
+              &#x27;Cant. Dispensada&#x27;: detalleDisp?.cantidad || 0,
+              &#x27;Establecimiento&#x27;: receta.establecimiento?.nombre || &#x27;—&#x27;,
+              &#x27;Estado&#x27;: &#x27;Dispensado&#x27;
+            });
+          });
+
+          // Si hay una parte pendiente, podríamos agregarla también
+          if (det.cantidadEntregada &lt; det.cantidad) {
+            filas.push({
+              &#x27;Código&#x27;: det.medicamento.codigo || &#x27;—&#x27;,
+              &#x27;Medicamento&#x27;: det.medicamento.nombreGenerico,
+              &#x27;Fecha Prescripción&#x27;: this.formatFecha(receta.creadaEn),
+              &#x27;Médico&#x27;: &#x60;${receta.historia.medico.nombres} ${receta.historia.medico.apellidos}&#x60;,
+              &#x27;Cant. Prescrita&#x27;: det.cantidad,
+              &#x27;Fecha Dispensación&#x27;: &#x27;—&#x27;,
+              &#x27;Usuario Dispensó&#x27;: &#x27;—&#x27;,
+              &#x27;Cant. Dispensada&#x27;: 0,
+              &#x27;Establecimiento&#x27;: receta.establecimiento?.nombre || &#x27;—&#x27;,
+              &#x27;Estado&#x27;: &#x27;Pendiente&#x27;
+            });
+          }
+        }
+      });
+    });
+
+    const wb &#x3D; XLSX.utils.book_new();
+    const ws: XLSX.WorkSheet &#x3D; {};
+
+    XLSX.utils.sheet_add_aoa(ws, [
+      [&#x60;Reporte Detallado de Medicamentos - ${this.paciente.nombres} ${this.paciente.apellidos}&#x60;],
+      [&#x60;Exp: ${this.paciente.numeroExpediente || &#x27;—&#x27;} | DNI: ${this.paciente.dni || &#x27;—&#x27;}&#x60;],
+      [&#x60;Generado: ${fechaReporte} | Historial completo&#x60;],
+      [],
+    ], { origin: &#x27;A1&#x27; });
+
+    XLSX.utils.sheet_add_json(ws, filas, { origin: &#x27;A5&#x27; });
+
+    ws[&#x27;!cols&#x27;] &#x3D; [
+      { wch: 15 }, { wch: 35 }, { wch: 20 }, { wch: 25 }, { wch: 15 },
+      { wch: 20 }, { wch: 25 }, { wch: 15 }, { wch: 25 }, { wch: 15 }
+    ];
+
+    const nombreArchivo &#x3D; &#x60;detallado_medicamentos_${this.paciente.numeroExpediente || this.paciente.dni || &#x27;paciente&#x27;}.xlsx&#x60;;
+    XLSX.utils.book_append_sheet(wb, ws, &#x27;Detallado&#x27;);
+    XLSX.writeFile(wb, nombreArchivo);
+  }
+}
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
+            var COMPODOC_CURRENT_PAGE_URL = 'RecetaHistorial.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

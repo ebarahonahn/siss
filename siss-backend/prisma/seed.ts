@@ -17,7 +17,7 @@ async function main() {
       create: dept
     });
   }
-  
+
   for (const muni of HONDURAS_GEO_DATA.municipios) {
     await prisma.municipio.upsert({
       where: { id: muni.id },
@@ -29,7 +29,7 @@ async function main() {
 
   // ── Catálogos Normalizados ────────────────────────────────────────────────
   console.log('  Sembrando catálogos...');
-  
+
   const sexos = ['Masculino', 'Femenino'];
   for (const s of sexos) {
     await prisma.sexo.upsert({ where: { nombre: s }, update: {}, create: { nombre: s } });
@@ -163,14 +163,14 @@ async function main() {
   console.log('  Sembrando catálogo de servicios...');
   const catalogoServicios = [
     { nombre: 'CONSULTA EXTERNA', descripcion: 'Atención médica ambulatoria general' },
-    { nombre: 'EMERGENCIAS',      descripcion: 'Atención de urgencias 24/7' },
-    { nombre: 'FARMACIA',         descripcion: 'Despacho de medicamentos' },
-    { nombre: 'LABORATORIO',      descripcion: 'Toma y análisis de muestras' },
-    { nombre: 'RADIOLOGIA',       descripcion: 'Estudios de imagen y rayos X' },
-    { nombre: 'ODONTOLOGIA',      descripcion: 'Salud dental' },
-    { nombre: 'GINECOLOGIA',      descripcion: 'Salud reproductiva y femenina' },
-    { nombre: 'PEDIATRIA',        descripcion: 'Atención infantil' },
-    { nombre: 'PSICOLOGIA',       descripcion: 'Salud mental' },
+    { nombre: 'EMERGENCIAS', descripcion: 'Atención de urgencias 24/7' },
+    { nombre: 'FARMACIA', descripcion: 'Despacho de medicamentos' },
+    { nombre: 'LABORATORIO', descripcion: 'Toma y análisis de muestras' },
+    { nombre: 'RADIOLOGIA', descripcion: 'Estudios de imagen y rayos X' },
+    { nombre: 'ODONTOLOGIA', descripcion: 'Salud dental' },
+    { nombre: 'GINECOLOGIA', descripcion: 'Salud reproductiva y femenina' },
+    { nombre: 'PEDIATRIA', descripcion: 'Atención infantil' },
+    { nombre: 'PSICOLOGIA', descripcion: 'Salud mental' },
   ];
 
   for (const s of catalogoServicios) {
@@ -181,7 +181,7 @@ async function main() {
     });
   }
   console.log(`  ✔ ${catalogoServicios.length} servicios en catálogo creados/verificados`);
-  
+
   // ── Catálogo de Vacunas (PAI) ─────────────────────────────────────────────
   console.log('  Sembrando catálogo de vacunas...');
   const vacunas = [
@@ -236,16 +236,16 @@ async function main() {
 
   // ── Especialidades ────────────────────────────────────────────────────────
   const especialidades = [
-    { codigo: 'MG',   nombre: 'Medicina General',      descripcion: 'Consulta general' },
-    { codigo: 'PED',  nombre: 'Pediatría',              descripcion: 'Atención pediátrica' },
-    { codigo: 'GIN',  nombre: 'Ginecología',            descripcion: 'Salud de la mujer' },
-    { codigo: 'CARD', nombre: 'Cardiología',            descripcion: 'Enfermedades cardiovasculares' },
-    { codigo: 'NEUR', nombre: 'Neurología',             descripcion: 'Sistema nervioso' },
-    { codigo: 'ORTS', nombre: 'Ortopedia',              descripcion: 'Sistema musculoesquelético' },
-    { codigo: 'DERM', nombre: 'Dermatología',           descripcion: 'Enfermedades de la piel' },
-    { codigo: 'OFT',  nombre: 'Oftalmología',           descripcion: 'Salud visual' },
-    { codigo: 'PSIQ', nombre: 'Psiquiatría',            descripcion: 'Salud mental' },
-    { codigo: 'URG',  nombre: 'Urgencias',              descripcion: 'Atención de emergencias' },
+    { codigo: 'MG', nombre: 'Medicina General', descripcion: 'Consulta general' },
+    { codigo: 'PED', nombre: 'Pediatría', descripcion: 'Atención pediátrica' },
+    { codigo: 'GIN', nombre: 'Ginecología', descripcion: 'Salud de la mujer' },
+    { codigo: 'CARD', nombre: 'Cardiología', descripcion: 'Enfermedades cardiovasculares' },
+    { codigo: 'NEUR', nombre: 'Neurología', descripcion: 'Sistema nervioso' },
+    { codigo: 'ORTS', nombre: 'Ortopedia', descripcion: 'Sistema musculoesquelético' },
+    { codigo: 'DERM', nombre: 'Dermatología', descripcion: 'Enfermedades de la piel' },
+    { codigo: 'OFT', nombre: 'Oftalmología', descripcion: 'Salud visual' },
+    { codigo: 'PSIQ', nombre: 'Psiquiatría', descripcion: 'Salud mental' },
+    { codigo: 'URG', nombre: 'Urgencias', descripcion: 'Atención de emergencias' },
   ];
 
   for (const esp of especialidades) {
@@ -364,6 +364,42 @@ async function main() {
   }
   console.log('  ✔ Reportes disponibles creados');
 
+  // ── Infraestructura Hospitalaria ──────────────────────────────────────────
+  console.log('  Sembrando infraestructura hospitalaria...');
+
+  const tiposHabitacion = [
+    { nombre: 'Privada', descripcion: 'Habitación individual con baño privado' },
+    { nombre: 'Semiprivada', descripcion: 'Habitación para dos personas' },
+    { nombre: 'Sala Común', descripcion: 'Área compartida con múltiples camas' },
+    { nombre: 'Aislamiento', descripcion: 'Habitación con control de infecciones' },
+    { nombre: 'UCI', descripcion: 'Unidad de Cuidados Intensivos' },
+  ];
+
+  for (const th of tiposHabitacion) {
+    await prisma.catTipoHabitacion.upsert({
+      where: { nombre: th.nombre },
+      update: { descripcion: th.descripcion },
+      create: th
+    });
+  }
+
+  const tiposCama = [
+    { nombre: 'Cama Hospitalaria Estándar', descripcion: 'Cama manual o eléctrica básica' },
+    { nombre: 'Camilla', descripcion: 'Unidad móvil para emergencias' },
+    { nombre: 'Cuna', descripcion: 'Para pacientes pediátricos' },
+    { nombre: 'Incubadora', descripcion: 'Para neonatos' },
+    { nombre: 'Cama UCI', descripcion: 'Cama articulada con monitoreo avanzado' },
+  ];
+
+  for (const tc of tiposCama) {
+    await prisma.catTipoCama.upsert({
+      where: { nombre: tc.nombre },
+      update: { descripcion: tc.descripcion },
+      create: tc
+    });
+  }
+  console.log('  ✔ Catálogos de infraestructura creados');
+
   // ── Usuario administrador ─────────────────────────────────────────────────
   const rolAdmin = await prisma.rol.findUnique({ where: { nombre: 'ADMIN' } });
   const contrasenaHash = await bcrypt.hash('Admin@123', 10);
@@ -388,7 +424,7 @@ async function main() {
   const rolRecepcion = await prisma.rol.findUnique({ where: { nombre: 'RECEPCIONISTA' } });
   const rolFarmacia = await prisma.rol.findUnique({ where: { nombre: 'FARMACEUTICO' } });
   const rolMedico = await prisma.rol.findUnique({ where: { nombre: 'MEDICO' } });
-  
+
   const contrasenaComun = await bcrypt.hash('Siss@123', 10);
   const contrasenaMedico = await bcrypt.hash('Medico@123', 10);
 
@@ -493,7 +529,7 @@ async function main() {
   const usuariosOperativos = [
     { u: enfermera, r: rolEnfermera },
     { u: recepcion, r: rolRecepcion },
-    { u: farmacia,  r: rolFarmacia  }
+    { u: farmacia, r: rolFarmacia }
   ];
 
   for (const op of usuariosOperativos) {
@@ -511,14 +547,14 @@ async function main() {
   console.log('  Sincronizando servicios por establecimiento...');
   const serviciosCreadosHNT: Record<string, any> = {};
   const serviciosHNT = ['CONSULTA EXTERNA', 'EMERGENCIAS', 'FARMACIA', 'LABORATORIO', 'RADIOLOGIA', 'ODONTOLOGIA'];
-  
+
   for (const nombre of serviciosHNT) {
     const cat = await prisma.catServicio.findFirst({ where: { nombre } });
     if (cat) {
       const existe = await prisma.servicio.findFirst({
         where: { establecimientoId: hospTegus.id, catServicioId: cat.id }
       });
-      
+
       let s;
       if (existe) {
         s = await prisma.servicio.update({
@@ -541,7 +577,7 @@ async function main() {
       const existe = await prisma.servicio.findFirst({
         where: { establecimientoId: csSanJuan.id, catServicioId: cat.id }
       });
-      
+
       if (existe) {
         await prisma.servicio.update({
           where: { id: existe.id },
@@ -558,16 +594,16 @@ async function main() {
   // ── Asignaciones de Personal (Migración/Seed) ──────────────────────────────
   console.log('  Vinculando personal a establecimientos y servicios...');
   const usuariosParaAsignar = [
-    { user: admin,     rol: rolAdmin,     serv: null },
-    { user: medico,    rol: rolMedico,    serv: serviciosCreadosHNT['CONSULTA EXTERNA'] },
+    { user: admin, rol: rolAdmin, serv: null },
+    { user: medico, rol: rolMedico, serv: serviciosCreadosHNT['CONSULTA EXTERNA'] },
     { user: enfermera, rol: rolEnfermera, serv: null },
     { user: recepcion, rol: rolRecepcion, serv: null },
-    { user: farmacia,  rol: rolFarmacia,  serv: null },
+    { user: farmacia, rol: rolFarmacia, serv: null },
   ];
 
   for (const a of usuariosParaAsignar) {
     if (!a.user || !a.rol) continue;
-    
+
     const esMedico = a.rol.nombre === 'MEDICO';
     const servicioId = esMedico ? (a.serv?.id ?? null) : null;
 
@@ -593,9 +629,9 @@ async function main() {
     if (existe) {
       await prisma.asignacionUsuario.update({
         where: { id: existe.id },
-        data: { 
-          rolId: a.rol.id, 
-          activo: true 
+        data: {
+          rolId: a.rol.id,
+          activo: true
         }
       });
     } else {
@@ -611,6 +647,55 @@ async function main() {
     }
   }
   console.log('  ✔ Asignaciones de personal creadas');
+
+  // ── Infraestructura de Hospitalización (HNT-001) ───────────────────────────
+  console.log('  Limpiando e infraestructura de hospitalización...');
+  await prisma.kardexMedicamento.deleteMany();
+  await prisma.controlSignosVitales.deleteMany();
+  await prisma.notaEvolucion.deleteMany();
+  await prisma.movimientoHospitalario.deleteMany();
+  await prisma.egresoHospitalario.deleteMany();
+  await prisma.ingresoHospitalario.deleteMany();
+  await prisma.cama.deleteMany();
+  await prisma.habitacion.deleteMany();
+  await prisma.sala.deleteMany();
+
+  console.log('  Sembrando infraestructura de hospitalización...');
+  const servEmergencias = serviciosCreadosHNT['EMERGENCIAS'];
+
+  if (servEmergencias) {
+    const salaMedInt = await prisma.sala.create({
+      data: {
+        nombre: 'Medicina Interna Varones',
+        codigo: 'MIV-01',
+        servicioId: servEmergencias.id,
+      }
+    });
+
+    const tipoHabNormal = await prisma.catTipoHabitacion.findFirst({ where: { nombre: 'Sala Común' } });
+    const tipoCamaEst = await prisma.catTipoCama.findFirst({ where: { nombre: 'Cama Hospitalaria Estándar' } });
+
+    const habitacion1 = await prisma.habitacion.create({
+      data: {
+        numero: '101',
+        salaId: salaMedInt.id,
+        tipoHabitacionId: tipoHabNormal!.id,
+      }
+    });
+
+    // Crear 5 camas
+    for (let i = 1; i <= 5; i++) {
+      await prisma.cama.create({
+        data: {
+          codigo: `CAMA-10${i}`,
+          habitacionId: habitacion1.id,
+          tipoCamaId: tipoCamaEst!.id,
+          estado: 'DISPONIBLE'
+        }
+      });
+    }
+  }
+  console.log('  ✔ Salas, piezas y camas creadas');
 
   // ── Pacientes reales ──────────────────────────────────────────────────────
   console.log('  Sembrando pacientes iniciales...');
@@ -687,6 +772,30 @@ async function main() {
   });
   console.log('  ✔ Cita y Triaje de prueba creados para Edgar Barahona');
 
+  // ── Ingreso Hospitalario de Prueba (Edgar) ────────────────────────────────
+  const cama101 = await prisma.cama.findUnique({ where: { codigo: 'CAMA-101' } });
+  if (cama101 && pEdgar) {
+    await prisma.ingresoHospitalario.create({
+      data: {
+        pacienteId: pEdgar.id,
+        camaId: cama101.id,
+        servicioId: servEmergencias!.id,
+        medicoIngresoId: medico.id,
+        motivoIngreso: 'Dificultad respiratoria y fiebre',
+        diagnosticoIngreso: 'Neumonía adquirida en la comunidad',
+        estado: 'ACTIVO',
+        fechaIngreso: new Date(),
+        creadoPorId: recepcion.id
+      }
+    });
+    // Marcar cama como ocupada
+    await prisma.cama.update({
+      where: { id: cama101.id },
+      data: { estado: 'OCUPADA' }
+    });
+    console.log('  ✔ Ingreso hospitalario de prueba creado para Edgar');
+  }
+
   // ── Catalogo Laboratorio (Asignación) ─────────────────────────────────────
   console.log('  Asignando exámenes de laboratorio...');
   const laboratoriosCatalogo = [
@@ -757,7 +866,7 @@ async function main() {
       update: rad,
       create: rad
     });
-    
+
     // Asignar todos los estudios al establecimiento para facilitar pruebas en desarrollo
     await prisma.estudioRadiologicoEstablecimiento.upsert({
       where: { establecimientoId_estudioId: { establecimientoId: hospTegus.id, estudioId: r.id } },
@@ -768,7 +877,7 @@ async function main() {
 
   // ── Catálogo de Formularios Clínicos ──────────────────────────────────────
   console.log('  Sembrando formularios clínicos base...');
-  
+
   if (espMG) {
     const plantilla = await prisma.plantillaFormulario.upsert({
       where: { especialidadId_version: { especialidadId: espMG.id, version: 1 } },
@@ -790,35 +899,36 @@ async function main() {
     // Secciones y Campos especializados (que no están en la tabla base)
     const secciones = [
       {
-        nombre: '1. REVISIÓN POR SISTEMAS',
+        nombre: '1. REVISIÓN POR SISTEMAS (MARCAR HALLAZGOS PATOLÓGICOS)',
         orden: 1,
         campos: [
-          { clave: 'rev_piel', tipo: 'RADIO', etiqueta: 'Piel y Faneras', requerido: true, orden: 1, configuracion: { opciones: ['Normal', 'Hallazgo Patológico'] } },
-          { clave: 'rev_cardio', tipo: 'RADIO', etiqueta: 'Cardiopulmonar', requerido: true, orden: 2, configuracion: { opciones: ['Normal', 'Hallazgo Patológico'] } },
-          { clave: 'rev_gastro', tipo: 'RADIO', etiqueta: 'Gastrointestinal', requerido: true, orden: 3, configuracion: { opciones: ['Normal', 'Hallazgo Patológico'] } },
-          { clave: 'rev_urinario', tipo: 'RADIO', etiqueta: 'Genitourinario', requerido: true, orden: 4, configuracion: { opciones: ['Normal', 'Hallazgo Patológico'] } },
-          { clave: 'rev_nervioso', tipo: 'RADIO', etiqueta: 'Neurológico/Psiquiátrico', requerido: true, orden: 5, configuracion: { opciones: ['Normal', 'Hallazgo Patológico'] } },
-          { clave: 'rev_detalles', tipo: 'TEXTAREA', etiqueta: 'Descripción de Hallazgos Patológicos', requerido: false, orden: 6, ayuda: 'Describa solo los sistemas marcados como Hallazgo Patológico' },
+          { clave: 'rev_piel', tipo: 'BOOLEANO', etiqueta: 'Piel y Faneras (Alterado)', requerido: false, orden: 1 },
+          { clave: 'rev_cardio', tipo: 'BOOLEANO', etiqueta: 'Cardiopulmonar (Alterado)', requerido: false, orden: 2 },
+          { clave: 'rev_gastro', tipo: 'BOOLEANO', etiqueta: 'Gastrointestinal (Alterado)', requerido: false, orden: 3 },
+          { clave: 'rev_urinario', tipo: 'BOOLEANO', etiqueta: 'Genitourinario (Alterado)', requerido: false, orden: 4 },
+          { clave: 'rev_nervioso', tipo: 'BOOLEANO', etiqueta: 'Neurológico/Psiquiátrico (Alterado)', requerido: false, orden: 5 },
+          { clave: 'rev_musculo', tipo: 'BOOLEANO', etiqueta: 'Músculo Esquelético (Alterado)', requerido: false, orden: 6 },
         ]
       },
       {
-        nombre: '2. ESTILO DE VIDA Y RIESGOS',
+        nombre: '2. FACTORES DE RIESGO Y ESTILO DE VIDA',
         orden: 2,
         campos: [
-          { clave: 'hab_tabaco', tipo: 'RADIO', etiqueta: 'Tabaquismo', requerido: true, orden: 1, configuracion: { opciones: ['Nunca', 'Ex-fumador', 'Leve (<5/día)', 'Moderado (5-15/día)', 'Severo (>15/día)'] } },
-          { clave: 'hab_alcohol', tipo: 'RADIO', etiqueta: 'Consumo de Alcohol', requerido: true, orden: 2, configuracion: { opciones: ['Abstemio', 'Ocasional/Social', 'Frecuente', 'Dependiente'] } },
-          { clave: 'hab_ejercicio', tipo: 'RADIO', etiqueta: 'Actividad Física', requerido: true, orden: 3, configuracion: { opciones: ['Sedentario', 'Leve (1-2 veces/sem)', 'Moderado (3-4 veces/sem)', 'Intenso (Diario)'] } },
-          { clave: 'hab_sueno', tipo: 'TEXTO', etiqueta: 'Calidad de Sueño (Horas/Dificultad)', requerido: false, orden: 4 },
+          { clave: 'hab_tabaco', tipo: 'BOOLEANO', etiqueta: 'Tabaquismo Activo', requerido: false, orden: 1 },
+          { clave: 'hab_alcohol', tipo: 'BOOLEANO', etiqueta: 'Consumo de Alcohol', requerido: false, orden: 2 },
+          { clave: 'hab_sedentario', tipo: 'BOOLEANO', etiqueta: 'Sedentarismo', requerido: false, orden: 3 },
+          { clave: 'hab_drogas', tipo: 'BOOLEANO', etiqueta: 'Uso de Sustancias', requerido: false, orden: 4 },
         ]
       },
       {
-        nombre: '3. ANTECEDENTES HEREDOFAMILIARES',
+        nombre: '3. ANTECEDENTES PATOLÓGICOS (FAMILIARES/PERSONALES)',
         orden: 3,
         campos: [
           { clave: 'fam_diabetes', tipo: 'BOOLEANO', etiqueta: 'Diabetes Mellitus', requerido: false, orden: 1 },
           { clave: 'fam_hta', tipo: 'BOOLEANO', etiqueta: 'Hipertensión Arterial', requerido: false, orden: 2 },
-          { clave: 'fam_cancer', tipo: 'TEXTO', etiqueta: 'Cáncer (Tipo/Familiar)', requerido: false, orden: 3 },
-          { clave: 'fam_otros', tipo: 'TEXTAREA', etiqueta: 'Otros Antecedentes Familiares', requerido: false, orden: 4 },
+          { clave: 'fam_obesidad', tipo: 'BOOLEANO', etiqueta: 'Obesidad / Dislipidemia', requerido: false, orden: 3 },
+          { clave: 'fam_cancer', tipo: 'BOOLEANO', etiqueta: 'Antecedentes de Cáncer', requerido: false, orden: 4 },
+          { clave: 'fam_asma', tipo: 'BOOLEANO', etiqueta: 'Asma / Alergias Respiratorias', requerido: false, orden: 5 },
         ]
       }
     ];
@@ -839,7 +949,7 @@ async function main() {
               etiqueta: c.etiqueta,
               requerido: c.requerido,
               orden: c.orden,
-              configuracion: c.configuracion || undefined
+              configuracion: (c as any).configuracion || undefined
             }))
           }
         }
@@ -894,10 +1004,10 @@ async function main() {
 
   await prisma.parametroSistema.upsert({
     where: { clave: 'MINUTOS_INACTIVIDAD_SESION' },
-    update: { valor: '2' },
+    update: { valor: '30' },
     create: {
       clave: 'MINUTOS_INACTIVIDAD_SESION',
-      valor: '2',
+      valor: '30',
       descripcion: 'Tiempo de inactividad permitido (en minutos) antes de cerrar la sesión automáticamente'
     }
   });

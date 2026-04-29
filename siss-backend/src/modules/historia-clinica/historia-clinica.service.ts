@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreateHistoriaClinicaDto } from './dto/create-historia-clinica.dto';
-import { getSemanaEpidemiologica } from '../../common/utils/date.utils';
+import { DateUtils } from '../../common/utils/date-utils';
 
 @Injectable()
 export class HistoriaClinicaService {
@@ -34,13 +34,13 @@ export class HistoriaClinicaService {
     return this.prisma
       .$transaction(async (tx) => {
         const { proximaCita, ...rest } = datos;
-        const fechaActual = new Date();
-        const semanaEpidemiologica = getSemanaEpidemiologica(fechaActual);
+        const fechaFinal = dto.fecha ? new Date(dto.fecha) : DateUtils.getLiteralNow();
+        const semanaEpidemiologica = DateUtils.getSemanaEpidemiologica(fechaFinal);
 
         const historia = await tx.historiaClinica.create({
           data: {
             ...rest,
-            fecha: fechaActual,
+            fecha: fechaFinal,
             semanaEpidemiologica,
             pacienteId,
             medicoId,

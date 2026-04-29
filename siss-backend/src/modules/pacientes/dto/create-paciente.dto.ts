@@ -8,6 +8,7 @@ import {
   MaxLength,
   Matches,
 } from 'class-validator';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 enum Sexo {
   MASCULINO = 'MASCULINO',
@@ -40,16 +41,19 @@ enum EstadoCivil {
 }
 
 export class CreatePacienteDto {
+  @ApiProperty({ description: 'Nombres del paciente', example: 'Juan Orlando' })
   @IsString()
   @IsNotEmpty()
   @MaxLength(100)
   nombres: string;
 
+  @ApiProperty({ description: 'Apellidos del paciente', example: 'Pérez' })
   @IsString()
   @IsNotEmpty()
   @MaxLength(100)
   apellidos: string;
 
+  @ApiProperty({ description: 'DNI del paciente (13 dígitos)', example: '0801199012345' })
   @IsString()
   @IsNotEmpty()
   @Matches(/^\d{13}$/, { message: 'El DNI debe tener 13 dígitos' })

@@ -1,0 +1,1708 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>siss-frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">siss-frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  ReportesComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/modules/reportes/reportes-dashboard.component.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                <code>OnInit</code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-reportes</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                            <code>CommonModule</code>
+                            <code>RouterModule</code>
+                            <code>FormsModule</code>
+                </td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">template</td>
+                <td class="col-md-9"><pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;min-h-screen bg-slate-50 p-4 md:p-8&quot;&gt;
+  &lt;div class&#x3D;&quot;max-w-7xl mx-auto&quot;&gt;
+
+    &lt;!-- Header &amp; Filters --&gt;
+    &lt;div class&#x3D;&quot;mb-10 flex flex-col lg:flex-row lg:items-end justify-between gap-6&quot;&gt;
+      &lt;div class&#x3D;&quot;flex-1&quot;&gt;
+        &lt;h1 class&#x3D;&quot;text-3xl font-extrabold text-slate-900 tracking-tight&quot;&gt;Centro de Reportes&lt;/h1&gt;
+        &lt;p class&#x3D;&quot;text-slate-500 mt-2&quot;&gt;Analice el rendimiento médico, administrativo e inventarios en tiempo real.&lt;/p&gt;
+      &lt;/div&gt;
+
+      &lt;div class&#x3D;&quot;bg-white p-2 rounded-2xl shadow-sm border border-slate-100 flex flex-wrap items-center gap-2&quot;&gt;
+        &lt;div class&#x3D;&quot;flex flex-col px-3 border-r border-slate-100&quot;&gt;
+          &lt;label class&#x3D;&quot;text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1&quot;&gt;Rango de Fecha&lt;/label&gt;
+          &lt;div class&#x3D;&quot;flex items-center gap-2&quot;&gt;
+            &lt;input type&#x3D;&quot;date&quot; [(ngModel)]&#x3D;&quot;fechaInicio&quot; (ngModelChange)&#x3D;&quot;cargarKPIs()&quot;
+                   [class.text-red-500]&#x3D;&quot;!esFechaValida(fechaInicio)&quot;
+                   class&#x3D;&quot;text-xs font-bold text-slate-700 border-none p-0 focus:ring-0 cursor-pointer&quot;&gt;
+            &lt;span class&#x3D;&quot;text-slate-300&quot;&gt;/&lt;/span&gt;
+            &lt;input type&#x3D;&quot;date&quot; [(ngModel)]&#x3D;&quot;fechaFin&quot; (ngModelChange)&#x3D;&quot;cargarKPIs()&quot;
+                   [class.text-red-500]&#x3D;&quot;!esFechaValida(fechaFin)&quot;
+                   class&#x3D;&quot;text-xs font-bold text-slate-700 border-none p-0 focus:ring-0 cursor-pointer&quot;&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;button (click)&#x3D;&quot;cargarKPIs()&quot; [disabled]&#x3D;&quot;cargando() || !esFechaValida(fechaInicio) || !esFechaValida(fechaFin)&quot; class&#x3D;&quot;p-3 bg-slate-900 text-white rounded-xl hover:bg-slate-800 transition-all active:scale-95 shadow-lg shadow-slate-200 disabled:opacity-50&quot;&gt;
+          &lt;svg [class.animate-spin]&#x3D;&quot;cargando()&quot; class&#x3D;&quot;w-5 h-5&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+            &lt;path *ngIf&#x3D;&quot;!cargando()&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15&quot;/&gt;
+            &lt;path *ngIf&#x3D;&quot;cargando()&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z&quot;/&gt;
+          &lt;/svg&gt;
+        &lt;/button&gt;
+
+        &lt;a *ngIf&#x3D;&quot;canSee(&#x27;reportes:gestionar&#x27;)&quot; routerLink&#x3D;&quot;gestion&quot; class&#x3D;&quot;flex items-center gap-2 bg-indigo-50 text-indigo-600 hover:bg-indigo-100 px-4 py-2.5 rounded-xl font-bold transition-all ml-2&quot;&gt;
+          &lt;svg class&#x3D;&quot;w-5 h-5&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37a1.724 1.724 0 002.572-1.065z&quot;/&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M15 12a3 3 0 11-6 0 3 3 0 016 0z&quot;/&gt;&lt;/svg&gt;
+          Administrar
+        &lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Dashboard Stats (KPIs) --&gt;
+    &lt;div class&#x3D;&quot;grid grid-cols-1 md:grid-cols-4 gap-6 mb-10&quot;&gt;
+      &lt;div class&#x3D;&quot;bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:border-blue-200 transition-all group relative overflow-hidden&quot;&gt;
+        &lt;div class&#x3D;&quot;absolute -right-4 -bottom-4 w-24 h-24 bg-blue-50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity&quot;&gt;&lt;/div&gt;
+        &lt;p class&#x3D;&quot;text-xs font-bold text-slate-400 uppercase tracking-wider mb-1 relative z-10&quot;&gt;Consultas&lt;/p&gt;
+        &lt;h3 class&#x3D;&quot;text-3xl font-black text-slate-800 relative z-10&quot;&gt;{{ kpis()?.consultasHoy ?? &#x27;0&#x27; }}&lt;/h3&gt;
+      &lt;/div&gt;
+      &lt;div class&#x3D;&quot;bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:border-purple-200 transition-all group relative overflow-hidden&quot;&gt;
+        &lt;div class&#x3D;&quot;absolute -right-4 -bottom-4 w-24 h-24 bg-purple-50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity&quot;&gt;&lt;/div&gt;
+        &lt;p class&#x3D;&quot;text-xs font-bold text-slate-400 uppercase tracking-wider mb-1 relative z-10&quot;&gt;Pacientes Nuevos&lt;/p&gt;
+        &lt;h3 class&#x3D;&quot;text-3xl font-black text-slate-800 relative z-10&quot;&gt;{{ kpis()?.pacientesNuevos ?? &#x27;0&#x27; }}&lt;/h3&gt;
+      &lt;/div&gt;
+      &lt;div class&#x3D;&quot;bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:border-rose-200 transition-all group relative overflow-hidden&quot;&gt;
+        &lt;div class&#x3D;&quot;absolute -right-4 -bottom-4 w-24 h-24 bg-rose-50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity&quot;&gt;&lt;/div&gt;
+        &lt;p class&#x3D;&quot;text-xs font-bold text-slate-400 uppercase tracking-wider mb-1 relative z-10&quot;&gt;Stock Crítico&lt;/p&gt;
+        &lt;h3 class&#x3D;&quot;text-3xl font-black text-slate-800 relative z-10&quot;&gt;{{ kpis()?.stockCritico ?? &#x27;0&#x27; }}&lt;/h3&gt;
+      &lt;/div&gt;
+      &lt;div class&#x3D;&quot;bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:border-blue-200 transition-all group relative overflow-hidden&quot;&gt;
+        &lt;div class&#x3D;&quot;absolute -right-4 -bottom-4 w-24 h-24 bg-blue-50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity&quot;&gt;&lt;/div&gt;
+        &lt;p class&#x3D;&quot;text-xs font-bold text-slate-400 uppercase tracking-wider mb-1 relative z-10&quot;&gt;Citas&lt;/p&gt;
+        &lt;h3 class&#x3D;&quot;text-3xl font-black text-blue-600 relative z-10&quot;&gt;{{ kpis()?.citasPendientes ?? &#x27;0&#x27; }}&lt;/h3&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Categorías de Reportes Dinámicas --&gt;
+    &lt;div class&#x3D;&quot;grid grid-cols-1 lg:grid-cols-3 gap-8&quot;&gt;
+
+      &lt;div *ngFor&#x3D;&quot;let cat of categoriasKeys()&quot; class&#x3D;&quot;space-y-4&quot;&gt;
+        &lt;h2 class&#x3D;&quot;text-lg font-bold text-slate-800 flex items-center gap-2&quot;&gt;
+           &lt;span class&#x3D;&quot;w-8 h-8 rounded-lg flex items-center justify-center&quot; [ngClass]&#x3D;&quot;getCatColor(cat)&quot;&gt;
+             &lt;!-- Médica --&gt;
+             &lt;svg *ngIf&#x3D;&quot;cat &#x3D;&#x3D;&#x3D; &#x27;MEDICA&#x27;&quot; class&#x3D;&quot;w-4 h-4&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+               &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z&quot;/&gt;
+             &lt;/svg&gt;
+             &lt;!-- Administrativa --&gt;
+             &lt;svg *ngIf&#x3D;&quot;cat &#x3D;&#x3D;&#x3D; &#x27;ADMINISTRATIVA&#x27;&quot; class&#x3D;&quot;w-4 h-4&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+               &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0a2 2 0 002-2v-3a2 2 0 00-2-2h-2a2 2 0 00-2 2v3a2 2 0 002 2z&quot;/&gt;
+             &lt;/svg&gt;
+             &lt;!-- Farmacia --&gt;
+             &lt;svg *ngIf&#x3D;&quot;cat &#x3D;&#x3D;&#x3D; &#x27;FARMACIA&#x27;&quot; class&#x3D;&quot;w-4 h-4&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+               &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z&quot;/&gt;
+             &lt;/svg&gt;
+             &lt;!-- Vacunación --&gt;
+             &lt;svg *ngIf&#x3D;&quot;cat &#x3D;&#x3D;&#x3D; &#x27;VACUNACION&#x27;&quot; class&#x3D;&quot;w-4 h-4&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+               &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z&quot;/&gt;
+             &lt;/svg&gt;
+           &lt;/span&gt;
+           {{ getCatTitle(cat) }}
+        &lt;/h2&gt;
+        &lt;div class&#x3D;&quot;bg-white rounded-3xl border border-slate-100 overflow-hidden shadow-sm&quot;&gt;
+           &lt;div class&#x3D;&quot;p-2&quot;&gt;
+             &lt;ng-container *ngFor&#x3D;&quot;let rep of reportesPorCategoria()[cat]&quot;&gt;
+               &lt;button *ngIf&#x3D;&quot;canSee(rep.permiso)&quot;
+                       (click)&#x3D;&quot;ejecutarReporte(rep)&quot;
+                       class&#x3D;&quot;w-full text-left p-4 hover:bg-slate-50 rounded-2xl transition-all flex items-center justify-between group border-b border-slate-50 last:border-0&quot;&gt;
+                  &lt;div&gt;
+                    &lt;span class&#x3D;&quot;text-sm font-bold text-slate-700&quot;&gt;{{ rep.nombre }}&lt;/span&gt;
+                    &lt;p class&#x3D;&quot;text-[10px] text-slate-400&quot;&gt;{{ rep.descripcion }}&lt;/p&gt;
+                  &lt;/div&gt;
+                  &lt;svg class&#x3D;&quot;w-4 h-4 text-slate-300 group-hover:text-indigo-500&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+                    &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M9 5l7 7-7 7&quot;/&gt;
+                  &lt;/svg&gt;
+               &lt;/button&gt;
+             &lt;/ng-container&gt;
+           &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+    &lt;/div&gt;
+
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></td>
+            </tr>
+
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#authSvc" >authSvc</a>
+                            </li>
+                            <li>
+                                <a href="#cargando" >cargando</a>
+                            </li>
+                            <li>
+                                <a href="#categoriasKeys" >categoriasKeys</a>
+                            </li>
+                            <li>
+                                <a href="#fechaFin" >fechaFin</a>
+                            </li>
+                            <li>
+                                <a href="#fechaInicio" >fechaInicio</a>
+                            </li>
+                            <li>
+                                <a href="#kpis" >kpis</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#notifSvc" >notifSvc</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#pdfSvc" >pdfSvc</a>
+                            </li>
+                            <li>
+                                <a href="#reportesPorCategoria" >reportesPorCategoria</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#reportesSvc" >reportesSvc</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#canSee" >canSee</a>
+                            </li>
+                            <li>
+                                <a href="#cargarKPIs" >cargarKPIs</a>
+                            </li>
+                            <li>
+                                <a href="#cargarReportesDisponibles" >cargarReportesDisponibles</a>
+                            </li>
+                            <li>
+                                <a href="#ejecutarReporte" >ejecutarReporte</a>
+                            </li>
+                            <li>
+                                <a href="#esFechaValida" >esFechaValida</a>
+                            </li>
+                            <li>
+                                <a href="#exportarExcel" >exportarExcel</a>
+                            </li>
+                            <li>
+                                <a href="#exportarPDF" >exportarPDF</a>
+                            </li>
+                            <li>
+                                <a href="#getCatColor" >getCatColor</a>
+                            </li>
+                            <li>
+                                <a href="#getCatTitle" >getCatTitle</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#getFechaLocal" >getFechaLocal</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="canSee"></a>
+                    <span class="name">
+                        <span ><b>canSee</b></span>
+                        <a href="#canSee"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>canSee(slug: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="199"
+                                    class="link-to-prism">src/app/modules/reportes/reportes-dashboard.component.ts:199</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>slug</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargarKPIs"></a>
+                    <span class="name">
+                        <span ><b>cargarKPIs</b></span>
+                        <a href="#cargarKPIs"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cargarKPIs()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="203"
+                                    class="link-to-prism">src/app/modules/reportes/reportes-dashboard.component.ts:203</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargarReportesDisponibles"></a>
+                    <span class="name">
+                        <span ><b>cargarReportesDisponibles</b></span>
+                        <a href="#cargarReportesDisponibles"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cargarReportesDisponibles()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="159"
+                                    class="link-to-prism">src/app/modules/reportes/reportes-dashboard.component.ts:159</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ejecutarReporte"></a>
+                    <span class="name">
+                        <span ><b>ejecutarReporte</b></span>
+                        <a href="#ejecutarReporte"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ejecutarReporte(rep: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="191"
+                                    class="link-to-prism">src/app/modules/reportes/reportes-dashboard.component.ts:191</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>rep</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="esFechaValida"></a>
+                    <span class="name">
+                        <span ><b>esFechaValida</b></span>
+                        <a href="#esFechaValida"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>esFechaValida(fecha: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="150"
+                                    class="link-to-prism">src/app/modules/reportes/reportes-dashboard.component.ts:150</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>fecha</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="exportarExcel"></a>
+                    <span class="name">
+                        <span ><b>exportarExcel</b></span>
+                        <a href="#exportarExcel"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>exportarExcel(tipo: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="219"
+                                    class="link-to-prism">src/app/modules/reportes/reportes-dashboard.component.ts:219</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>tipo</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="exportarPDF"></a>
+                    <span class="name">
+                        <span ><b>exportarPDF</b></span>
+                        <a href="#exportarPDF"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>exportarPDF(tipo: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="248"
+                                    class="link-to-prism">src/app/modules/reportes/reportes-dashboard.component.ts:248</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>tipo</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getCatColor"></a>
+                    <span class="name">
+                        <span ><b>getCatColor</b></span>
+                        <a href="#getCatColor"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getCatColor(cat: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="181"
+                                    class="link-to-prism">src/app/modules/reportes/reportes-dashboard.component.ts:181</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>cat</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getCatTitle"></a>
+                    <span class="name">
+                        <span ><b>getCatTitle</b></span>
+                        <a href="#getCatTitle"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getCatTitle(cat: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="171"
+                                    class="link-to-prism">src/app/modules/reportes/reportes-dashboard.component.ts:171</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>cat</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getFechaLocal"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>getFechaLocal</b></span>
+                        <a href="#getFechaLocal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getFechaLocal()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="144"
+                                    class="link-to-prism">src/app/modules/reportes/reportes-dashboard.component.ts:144</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="154"
+                                    class="link-to-prism">src/app/modules/reportes/reportes-dashboard.component.ts:154</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="authSvc"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>authSvc</b></span>
+                        <a href="#authSvc"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(AuthService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="131" class="link-to-prism">src/app/modules/reportes/reportes-dashboard.component.ts:131</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargando"></a>
+                    <span class="name">
+                        <span ><b>cargando</b></span>
+                        <a href="#cargando"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;boolean&gt;(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="136" class="link-to-prism">src/app/modules/reportes/reportes-dashboard.component.ts:136</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="categoriasKeys"></a>
+                    <span class="name">
+                        <span ><b>categoriasKeys</b></span>
+                        <a href="#categoriasKeys"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;string[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="142" class="link-to-prism">src/app/modules/reportes/reportes-dashboard.component.ts:142</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="fechaFin"></a>
+                    <span class="name">
+                        <span ><b>fechaFin</b></span>
+                        <a href="#fechaFin"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Date().toISOString().split(&#x27;T&#x27;)[0]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="139" class="link-to-prism">src/app/modules/reportes/reportes-dashboard.component.ts:139</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="fechaInicio"></a>
+                    <span class="name">
+                        <span ><b>fechaInicio</b></span>
+                        <a href="#fechaInicio"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this.getFechaLocal()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="138" class="link-to-prism">src/app/modules/reportes/reportes-dashboard.component.ts:138</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="kpis"></a>
+                    <span class="name">
+                        <span ><b>kpis</b></span>
+                        <a href="#kpis"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;DashboardKPIs | null&gt;(null)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="135" class="link-to-prism">src/app/modules/reportes/reportes-dashboard.component.ts:135</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="notifSvc"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>notifSvc</b></span>
+                        <a href="#notifSvc"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(NotificationService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="133" class="link-to-prism">src/app/modules/reportes/reportes-dashboard.component.ts:133</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="pdfSvc"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>pdfSvc</b></span>
+                        <a href="#pdfSvc"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(ReportePdfService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="132" class="link-to-prism">src/app/modules/reportes/reportes-dashboard.component.ts:132</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="reportesPorCategoria"></a>
+                    <span class="name">
+                        <span ><b>reportesPorCategoria</b></span>
+                        <a href="#reportesPorCategoria"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;Record&lt;string, any[]&gt;&gt;({})</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="141" class="link-to-prism">src/app/modules/reportes/reportes-dashboard.component.ts:141</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="reportesSvc"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>reportesSvc</b></span>
+                        <a href="#reportesSvc"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(ReportesService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="130" class="link-to-prism">src/app/modules/reportes/reportes-dashboard.component.ts:130</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, signal, inject, OnInit } from &#x27;@angular/core&#x27;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
+import { RouterModule } from &#x27;@angular/router&#x27;;
+import { FormsModule } from &#x27;@angular/forms&#x27;;
+import { ReportesService, DashboardKPIs } from &#x27;../../core/services/reportes.service&#x27;;
+import { AuthService } from &#x27;../../core/services/auth.service&#x27;;
+import { ReportePdfService } from &#x27;../../core/services/reporte-pdf.service&#x27;;
+import { NotificationService } from &#x27;../../core/services/notification.service&#x27;;
+import { DateUtils } from &#x27;../../core/utils/date-utils&#x27;;
+import { finalize } from &#x27;rxjs/operators&#x27;;
+
+@Component({
+  selector: &#x27;app-reportes&#x27;,
+  standalone: true,
+  imports: [CommonModule, RouterModule, FormsModule],
+  template: &#x60;
+    &lt;div class&#x3D;&quot;min-h-screen bg-slate-50 p-4 md:p-8&quot;&gt;
+      &lt;div class&#x3D;&quot;max-w-7xl mx-auto&quot;&gt;
+        
+        &lt;!-- Header &amp; Filters --&gt;
+        &lt;div class&#x3D;&quot;mb-10 flex flex-col lg:flex-row lg:items-end justify-between gap-6&quot;&gt;
+          &lt;div class&#x3D;&quot;flex-1&quot;&gt;
+            &lt;h1 class&#x3D;&quot;text-3xl font-extrabold text-slate-900 tracking-tight&quot;&gt;Centro de Reportes&lt;/h1&gt;
+            &lt;p class&#x3D;&quot;text-slate-500 mt-2&quot;&gt;Analice el rendimiento médico, administrativo e inventarios en tiempo real.&lt;/p&gt;
+          &lt;/div&gt;
+          
+          &lt;div class&#x3D;&quot;bg-white p-2 rounded-2xl shadow-sm border border-slate-100 flex flex-wrap items-center gap-2&quot;&gt;
+            &lt;div class&#x3D;&quot;flex flex-col px-3 border-r border-slate-100&quot;&gt;
+              &lt;label class&#x3D;&quot;text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1&quot;&gt;Rango de Fecha&lt;/label&gt;
+              &lt;div class&#x3D;&quot;flex items-center gap-2&quot;&gt;
+                &lt;input type&#x3D;&quot;date&quot; [(ngModel)]&#x3D;&quot;fechaInicio&quot; (ngModelChange)&#x3D;&quot;cargarKPIs()&quot; 
+                       [class.text-red-500]&#x3D;&quot;!esFechaValida(fechaInicio)&quot;
+                       class&#x3D;&quot;text-xs font-bold text-slate-700 border-none p-0 focus:ring-0 cursor-pointer&quot;&gt;
+                &lt;span class&#x3D;&quot;text-slate-300&quot;&gt;/&lt;/span&gt;
+                &lt;input type&#x3D;&quot;date&quot; [(ngModel)]&#x3D;&quot;fechaFin&quot; (ngModelChange)&#x3D;&quot;cargarKPIs()&quot; 
+                       [class.text-red-500]&#x3D;&quot;!esFechaValida(fechaFin)&quot;
+                       class&#x3D;&quot;text-xs font-bold text-slate-700 border-none p-0 focus:ring-0 cursor-pointer&quot;&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+            
+            &lt;button (click)&#x3D;&quot;cargarKPIs()&quot; [disabled]&#x3D;&quot;cargando() || !esFechaValida(fechaInicio) || !esFechaValida(fechaFin)&quot; class&#x3D;&quot;p-3 bg-slate-900 text-white rounded-xl hover:bg-slate-800 transition-all active:scale-95 shadow-lg shadow-slate-200 disabled:opacity-50&quot;&gt;
+              &lt;svg [class.animate-spin]&#x3D;&quot;cargando()&quot; class&#x3D;&quot;w-5 h-5&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+                &lt;path *ngIf&#x3D;&quot;!cargando()&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15&quot;/&gt;
+                &lt;path *ngIf&#x3D;&quot;cargando()&quot; stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z&quot;/&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+            
+            &lt;a *ngIf&#x3D;&quot;canSee(&#x27;reportes:gestionar&#x27;)&quot; routerLink&#x3D;&quot;gestion&quot; class&#x3D;&quot;flex items-center gap-2 bg-indigo-50 text-indigo-600 hover:bg-indigo-100 px-4 py-2.5 rounded-xl font-bold transition-all ml-2&quot;&gt;
+              &lt;svg class&#x3D;&quot;w-5 h-5&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37a1.724 1.724 0 002.572-1.065z&quot;/&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M15 12a3 3 0 11-6 0 3 3 0 016 0z&quot;/&gt;&lt;/svg&gt;
+              Administrar
+            &lt;/a&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Dashboard Stats (KPIs) --&gt;
+        &lt;div class&#x3D;&quot;grid grid-cols-1 md:grid-cols-4 gap-6 mb-10&quot;&gt;
+          &lt;div class&#x3D;&quot;bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:border-blue-200 transition-all group relative overflow-hidden&quot;&gt;
+            &lt;div class&#x3D;&quot;absolute -right-4 -bottom-4 w-24 h-24 bg-blue-50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity&quot;&gt;&lt;/div&gt;
+            &lt;p class&#x3D;&quot;text-xs font-bold text-slate-400 uppercase tracking-wider mb-1 relative z-10&quot;&gt;Consultas&lt;/p&gt;
+            &lt;h3 class&#x3D;&quot;text-3xl font-black text-slate-800 relative z-10&quot;&gt;{{ kpis()?.consultasHoy ?? &#x27;0&#x27; }}&lt;/h3&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:border-purple-200 transition-all group relative overflow-hidden&quot;&gt;
+            &lt;div class&#x3D;&quot;absolute -right-4 -bottom-4 w-24 h-24 bg-purple-50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity&quot;&gt;&lt;/div&gt;
+            &lt;p class&#x3D;&quot;text-xs font-bold text-slate-400 uppercase tracking-wider mb-1 relative z-10&quot;&gt;Pacientes Nuevos&lt;/p&gt;
+            &lt;h3 class&#x3D;&quot;text-3xl font-black text-slate-800 relative z-10&quot;&gt;{{ kpis()?.pacientesNuevos ?? &#x27;0&#x27; }}&lt;/h3&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:border-rose-200 transition-all group relative overflow-hidden&quot;&gt;
+            &lt;div class&#x3D;&quot;absolute -right-4 -bottom-4 w-24 h-24 bg-rose-50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity&quot;&gt;&lt;/div&gt;
+            &lt;p class&#x3D;&quot;text-xs font-bold text-slate-400 uppercase tracking-wider mb-1 relative z-10&quot;&gt;Stock Crítico&lt;/p&gt;
+            &lt;h3 class&#x3D;&quot;text-3xl font-black text-slate-800 relative z-10&quot;&gt;{{ kpis()?.stockCritico ?? &#x27;0&#x27; }}&lt;/h3&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:border-blue-200 transition-all group relative overflow-hidden&quot;&gt;
+            &lt;div class&#x3D;&quot;absolute -right-4 -bottom-4 w-24 h-24 bg-blue-50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity&quot;&gt;&lt;/div&gt;
+            &lt;p class&#x3D;&quot;text-xs font-bold text-slate-400 uppercase tracking-wider mb-1 relative z-10&quot;&gt;Citas&lt;/p&gt;
+            &lt;h3 class&#x3D;&quot;text-3xl font-black text-blue-600 relative z-10&quot;&gt;{{ kpis()?.citasPendientes ?? &#x27;0&#x27; }}&lt;/h3&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Categorías de Reportes Dinámicas --&gt;
+        &lt;div class&#x3D;&quot;grid grid-cols-1 lg:grid-cols-3 gap-8&quot;&gt;
+          
+          &lt;div *ngFor&#x3D;&quot;let cat of categoriasKeys()&quot; class&#x3D;&quot;space-y-4&quot;&gt;
+            &lt;h2 class&#x3D;&quot;text-lg font-bold text-slate-800 flex items-center gap-2&quot;&gt;
+               &lt;span class&#x3D;&quot;w-8 h-8 rounded-lg flex items-center justify-center&quot; [ngClass]&#x3D;&quot;getCatColor(cat)&quot;&gt;
+                 &lt;!-- Médica --&gt;
+                 &lt;svg *ngIf&#x3D;&quot;cat &#x3D;&#x3D;&#x3D; &#x27;MEDICA&#x27;&quot; class&#x3D;&quot;w-4 h-4&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+                   &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z&quot;/&gt;
+                 &lt;/svg&gt;
+                 &lt;!-- Administrativa --&gt;
+                 &lt;svg *ngIf&#x3D;&quot;cat &#x3D;&#x3D;&#x3D; &#x27;ADMINISTRATIVA&#x27;&quot; class&#x3D;&quot;w-4 h-4&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+                   &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0a2 2 0 002-2v-3a2 2 0 00-2-2h-2a2 2 0 00-2 2v3a2 2 0 002 2z&quot;/&gt;
+                 &lt;/svg&gt;
+                 &lt;!-- Farmacia --&gt;
+                 &lt;svg *ngIf&#x3D;&quot;cat &#x3D;&#x3D;&#x3D; &#x27;FARMACIA&#x27;&quot; class&#x3D;&quot;w-4 h-4&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+                   &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z&quot;/&gt;
+                 &lt;/svg&gt;
+                 &lt;!-- Vacunación --&gt;
+                 &lt;svg *ngIf&#x3D;&quot;cat &#x3D;&#x3D;&#x3D; &#x27;VACUNACION&#x27;&quot; class&#x3D;&quot;w-4 h-4&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+                   &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z&quot;/&gt;
+                 &lt;/svg&gt;
+               &lt;/span&gt;
+               {{ getCatTitle(cat) }}
+            &lt;/h2&gt;
+            &lt;div class&#x3D;&quot;bg-white rounded-3xl border border-slate-100 overflow-hidden shadow-sm&quot;&gt;
+               &lt;div class&#x3D;&quot;p-2&quot;&gt;
+                 &lt;ng-container *ngFor&#x3D;&quot;let rep of reportesPorCategoria()[cat]&quot;&gt;
+                   &lt;button *ngIf&#x3D;&quot;canSee(rep.permiso)&quot; 
+                           (click)&#x3D;&quot;ejecutarReporte(rep)&quot; 
+                           class&#x3D;&quot;w-full text-left p-4 hover:bg-slate-50 rounded-2xl transition-all flex items-center justify-between group border-b border-slate-50 last:border-0&quot;&gt;
+                      &lt;div&gt;
+                        &lt;span class&#x3D;&quot;text-sm font-bold text-slate-700&quot;&gt;{{ rep.nombre }}&lt;/span&gt;
+                        &lt;p class&#x3D;&quot;text-[10px] text-slate-400&quot;&gt;{{ rep.descripcion }}&lt;/p&gt;
+                      &lt;/div&gt;
+                      &lt;svg class&#x3D;&quot;w-4 h-4 text-slate-300 group-hover:text-indigo-500&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+                        &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M9 5l7 7-7 7&quot;/&gt;
+                      &lt;/svg&gt;
+                   &lt;/button&gt;
+                 &lt;/ng-container&gt;
+               &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+
+        &lt;/div&gt;
+
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &#x60;,
+})
+export class ReportesComponent implements OnInit {
+  private reportesSvc &#x3D; inject(ReportesService);
+  private authSvc &#x3D; inject(AuthService);
+  private pdfSvc &#x3D; inject(ReportePdfService);
+  private notifSvc &#x3D; inject(NotificationService);
+
+  kpis &#x3D; signal&lt;DashboardKPIs | null&gt;(null);
+  cargando &#x3D; signal&lt;boolean&gt;(false);
+
+  fechaInicio &#x3D; this.getFechaLocal();
+  fechaFin &#x3D; new Date().toISOString().split(&#x27;T&#x27;)[0];
+
+  reportesPorCategoria &#x3D; signal&lt;Record&lt;string, any[]&gt;&gt;({});
+  categoriasKeys &#x3D; signal&lt;string[]&gt;([]);
+
+  private getFechaLocal(): string {
+    const now &#x3D; new Date();
+    const offset &#x3D; now.getTimezoneOffset() * 60000;
+    return new Date(now.getTime() - offset).toISOString().split(&#x27;T&#x27;)[0];
+  }
+
+  esFechaValida(fecha: string): boolean {
+    return DateUtils.esFechaValida(fecha);
+  }
+
+  ngOnInit() {
+    this.cargarKPIs();
+    this.cargarReportesDisponibles();
+  }
+
+  cargarReportesDisponibles() {
+    this.reportesSvc.obtenerReportesDisponibles().subscribe(reportes &#x3D;&gt; {
+      const grupos: Record&lt;string, any[]&gt; &#x3D; {};
+      reportes.forEach(r &#x3D;&gt; {
+        if (!grupos[r.categoria]) grupos[r.categoria] &#x3D; [];
+        grupos[r.categoria].push(r);
+      });
+      this.reportesPorCategoria.set(grupos);
+      this.categoriasKeys.set(Object.keys(grupos));
+    });
+  }
+
+  getCatTitle(cat: string): string {
+    const titles: Record&lt;string, string&gt; &#x3D; {
+      &#x27;MEDICA&#x27;: &#x27;Área Médica&#x27;,
+      &#x27;ADMINISTRATIVA&#x27;: &#x27;Administración&#x27;,
+      &#x27;FARMACIA&#x27;: &#x27;Farmacia&#x27;,
+      &#x27;VACUNACION&#x27;: &#x27;Inmunizaciones (PAI)&#x27;
+    };
+    return titles[cat] || cat;
+  }
+
+  getCatColor(cat: string): string {
+    const colors: Record&lt;string, string&gt; &#x3D; {
+      &#x27;MEDICA&#x27;: &#x27;bg-blue-100 text-blue-600&#x27;,
+      &#x27;ADMINISTRATIVA&#x27;: &#x27;bg-purple-100 text-purple-600&#x27;,
+      &#x27;FARMACIA&#x27;: &#x27;bg-emerald-100 text-emerald-600&#x27;,
+      &#x27;VACUNACION&#x27;: &#x27;bg-cyan-100 text-cyan-600&#x27;
+    };
+    return colors[cat] || &#x27;bg-slate-100 text-slate-600&#x27;;
+  }
+
+  ejecutarReporte(rep: any) {
+    if (rep.tipo &#x3D;&#x3D;&#x3D; &#x27;EXCEL&#x27;) {
+      this.exportarExcel(rep.slug);
+    } else if (rep.tipo &#x3D;&#x3D;&#x3D; &#x27;PDF&#x27;) {
+      this.exportarPDF(rep.slug);
+    }
+  }
+
+  canSee(slug: string): boolean {
+    return this.authSvc.tienePermiso(slug);
+  }
+
+  cargarKPIs() {
+    if (!this.esFechaValida(this.fechaInicio) || !this.esFechaValida(this.fechaFin)) {
+      return;
+    }
+    this.cargando.set(true);
+    const usuario &#x3D; this.authSvc.obtenerUsuario();
+    const estId &#x3D; usuario?.rol &#x3D;&#x3D;&#x3D; &#x27;ADMIN_ESTABLECIMIENTO&#x27; ? usuario.establecimientoId : undefined;
+    
+    this.reportesSvc.getDashboardKPIs(estId, this.fechaInicio, this.fechaFin)
+      .pipe(finalize(() &#x3D;&gt; this.cargando.set(false)))
+      .subscribe({
+        next: (data) &#x3D;&gt; this.kpis.set(data),
+        error: (err) &#x3D;&gt; console.error(&#x27;Error al cargar KPIs:&#x27;, err)
+      });
+  }
+
+  exportarExcel(tipo: string) {
+    if (!this.esFechaValida(this.fechaInicio) || !this.esFechaValida(this.fechaFin)) {
+      this.notifSvc.warn(&#x27;Rango de fechas inválido&#x27;);
+      return;
+    }
+    this.cargando.set(true);
+    const usuario &#x3D; this.authSvc.obtenerUsuario();
+    const estId &#x3D; usuario?.rol &#x3D;&#x3D;&#x3D; &#x27;ADMIN_ESTABLECIMIENTO&#x27; ? usuario.establecimientoId : undefined;
+    
+    this.reportesSvc.descargarExcel(tipo, this.fechaInicio, this.fechaFin, estId)
+      .pipe(finalize(() &#x3D;&gt; this.cargando.set(false)))
+      .subscribe({
+        next: (blob) &#x3D;&gt; {
+          const url &#x3D; window.URL.createObjectURL(blob);
+          const a &#x3D; document.createElement(&#x27;a&#x27;);
+          a.href &#x3D; url;
+          a.download &#x3D; &#x60;reporte-${tipo}-${new Date().toISOString().split(&#x27;T&#x27;)[0]}.xlsx&#x60;;
+          document.body.appendChild(a);
+          a.click();
+          window.URL.revokeObjectURL(url);
+          a.remove();
+        },
+        error: (err) &#x3D;&gt; {
+          console.error(&#x27;Error al exportar excel:&#x27;, err);
+          this.notifSvc.error(&#x27;Error al generar el reporte. Token inválido o sesión expirada.&#x27;);
+        }
+      });
+  }
+
+  exportarPDF(tipo: string) {
+    if (!this.esFechaValida(this.fechaInicio) || !this.esFechaValida(this.fechaFin)) {
+      this.notifSvc.warn(&#x27;Rango de fechas inválido&#x27;);
+      return;
+    }
+    if (tipo &#x3D;&#x3D;&#x3D; &#x27;morbilidad&#x27;) {
+      this.cargando.set(true);
+      const usuario &#x3D; this.authSvc.obtenerUsuario();
+      const estId &#x3D; usuario?.rol &#x3D;&#x3D;&#x3D; &#x27;ADMIN_ESTABLECIMIENTO&#x27; ? usuario.establecimientoId : undefined;
+
+      this.reportesSvc.getMorbilidad(this.fechaInicio, this.fechaFin, estId)
+        .pipe(finalize(() &#x3D;&gt; this.cargando.set(false)))
+        .subscribe({
+          next: async (data) &#x3D;&gt; {
+            const url &#x3D; await this.pdfSvc.generarMorbilidadPdf(data, this.fechaInicio, this.fechaFin);
+            window.open(url, &#x27;_blank&#x27;);
+          },
+          error: (err) &#x3D;&gt; {
+            console.error(&#x27;Error al generar PDF de morbilidad:&#x27;, err);
+            this.notifSvc.error(&#x27;Error al generar el reporte de morbilidad.&#x27;);
+          }
+        });
+    } else if (tipo &#x3D;&#x3D;&#x3D; &#x27;cobertura-vacunacion&#x27;) {
+      this.cargando.set(true);
+      const usuario &#x3D; this.authSvc.obtenerUsuario();
+      const estId &#x3D; usuario?.rol &#x3D;&#x3D;&#x3D; &#x27;ADMIN_ESTABLECIMIENTO&#x27; ? usuario.establecimientoId : undefined;
+
+      this.reportesSvc.getCobertura(this.fechaInicio, this.fechaFin, estId)
+        .pipe(finalize(() &#x3D;&gt; this.cargando.set(false)))
+        .subscribe({
+          next: async (data) &#x3D;&gt; {
+            const estInfo &#x3D; usuario ? { 
+              id: usuario.establecimientoId, 
+              nombre: usuario.establecimientoNombre 
+            } : null;
+            const url &#x3D; await this.pdfSvc.generarCoberturaPdf(data, this.fechaInicio, this.fechaFin, estInfo);
+            window.open(url, &#x27;_blank&#x27;);
+          },
+          error: (err) &#x3D;&gt; {
+            console.error(&#x27;Error al generar PDF de cobertura:&#x27;, err);
+            this.notifSvc.error(&#x27;Error al generar el reporte de cobertura.&#x27;);
+          }
+        });
+    }
+  }
+}
+</code></pre>
+    </div>
+
+
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="min-h-screen bg-slate-50 p-4 md:p-8">  <div class="max-w-7xl mx-auto">    <!-- Header & Filters -->    <div class="mb-10 flex flex-col lg:flex-row lg:items-end justify-between gap-6">      <div class="flex-1">        <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Centro de Reportes</h1>        <p class="text-slate-500 mt-2">Analice el rendimiento médico, administrativo e inventarios en tiempo real.</p>      </div>      <div class="bg-white p-2 rounded-2xl shadow-sm border border-slate-100 flex flex-wrap items-center gap-2">        <div class="flex flex-col px-3 border-r border-slate-100">          <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Rango de Fecha</label>          <div class="flex items-center gap-2">            <input type="date" [(ngModel)]="fechaInicio" (ngModelChange)="cargarKPIs()"                   [class.text-red-500]="!esFechaValida(fechaInicio)"                   class="text-xs font-bold text-slate-700 border-none p-0 focus:ring-0 cursor-pointer">            <span class="text-slate-300">/</span>            <input type="date" [(ngModel)]="fechaFin" (ngModelChange)="cargarKPIs()"                   [class.text-red-500]="!esFechaValida(fechaFin)"                   class="text-xs font-bold text-slate-700 border-none p-0 focus:ring-0 cursor-pointer">          </div>        </div>        <button (click)="cargarKPIs()" [disabled]="cargando() || !esFechaValida(fechaInicio) || !esFechaValida(fechaFin)" class="p-3 bg-slate-900 text-white rounded-xl hover:bg-slate-800 transition-all active:scale-95 shadow-lg shadow-slate-200 disabled:opacity-50">          <svg [class.animate-spin]="cargando()" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">            <path *ngIf="!cargando()" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>            <path *ngIf="cargando()" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>          </svg>        </button>        <a *ngIf="canSee(\'reportes:gestionar\')" routerLink="gestion" class="flex items-center gap-2 bg-indigo-50 text-indigo-600 hover:bg-indigo-100 px-4 py-2.5 rounded-xl font-bold transition-all ml-2">          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37a1.724 1.724 0 002.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>          Administrar        </a>      </div>    </div>    <!-- Dashboard Stats (KPIs) -->    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">      <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:border-blue-200 transition-all group relative overflow-hidden">        <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-blue-50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></div>        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1 relative z-10">Consultas</p>        <h3 class="text-3xl font-black text-slate-800 relative z-10">{{ kpis()?.consultasHoy ?? \'0\' }}</h3>      </div>      <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:border-purple-200 transition-all group relative overflow-hidden">        <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-purple-50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></div>        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1 relative z-10">Pacientes Nuevos</p>        <h3 class="text-3xl font-black text-slate-800 relative z-10">{{ kpis()?.pacientesNuevos ?? \'0\' }}</h3>      </div>      <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:border-rose-200 transition-all group relative overflow-hidden">        <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-rose-50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></div>        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1 relative z-10">Stock Crítico</p>        <h3 class="text-3xl font-black text-slate-800 relative z-10">{{ kpis()?.stockCritico ?? \'0\' }}</h3>      </div>      <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:border-blue-200 transition-all group relative overflow-hidden">        <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-blue-50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></div>        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1 relative z-10">Citas</p>        <h3 class="text-3xl font-black text-blue-600 relative z-10">{{ kpis()?.citasPendientes ?? \'0\' }}</h3>      </div>    </div>    <!-- Categorías de Reportes Dinámicas -->    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">      <div *ngFor="let cat of categoriasKeys()" class="space-y-4">        <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">           <span class="w-8 h-8 rounded-lg flex items-center justify-center" [ngClass]="getCatColor(cat)">             <!-- Médica -->             <svg *ngIf="cat === \'MEDICA\'" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>             </svg>             <!-- Administrativa -->             <svg *ngIf="cat === \'ADMINISTRATIVA\'" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0a2 2 0 002-2v-3a2 2 0 00-2-2h-2a2 2 0 00-2 2v3a2 2 0 002 2z"/>             </svg>             <!-- Farmacia -->             <svg *ngIf="cat === \'FARMACIA\'" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>             </svg>             <!-- Vacunación -->             <svg *ngIf="cat === \'VACUNACION\'" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>             </svg>           </span>           {{ getCatTitle(cat) }}        </h2>        <div class="bg-white rounded-3xl border border-slate-100 overflow-hidden shadow-sm">           <div class="p-2">             <ng-container *ngFor="let rep of reportesPorCategoria()[cat]">               <button *ngIf="canSee(rep.permiso)"                       (click)="ejecutarReporte(rep)"                       class="w-full text-left p-4 hover:bg-slate-50 rounded-2xl transition-all flex items-center justify-between group border-b border-slate-50 last:border-0">                  <div>                    <span class="text-sm font-bold text-slate-700">{{ rep.nombre }}</span>                    <p class="text-[10px] text-slate-400">{{ rep.descripcion }}</p>                  </div>                  <svg class="w-4 h-4 text-slate-300 group-hover:text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>                  </svg>               </button>             </ng-container>           </div>        </div>      </div>    </div>  </div></div></div>'
+    var COMPONENTS = [{'name': 'AgendasComponent', 'selector': 'app-agendas'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'BuscadorPacienteComponent', 'selector': 'app-buscador-paciente'},{'name': 'CitasComponent', 'selector': 'app-citas'},{'name': 'ConstructorFormularioComponent', 'selector': 'app-constructor-formulario'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'EpidemiologiaDashboardComponent', 'selector': 'app-epidemiologia-dashboard'},{'name': 'EstadisticasHospitalariasComponent', 'selector': 'app-estadisticas-hospitalarias'},{'name': 'FarmaciaComponent', 'selector': 'app-farmacia'},{'name': 'GestionHospitalizacionComponent', 'selector': 'app-gestion-hospitalizacion'},{'name': 'GestionLotesModalComponent', 'selector': 'app-gestion-lotes-modal'},{'name': 'GestionReportesComponent', 'selector': 'app-gestion-reportes'},{'name': 'HistoriaClinicaComponent', 'selector': 'app-historia-clinica'},{'name': 'InfraestructuraModalComponent', 'selector': 'app-infraestructura-modal'},{'name': 'InventarioVacunasComponent', 'selector': 'app-inventario-vacunas'},{'name': 'LaboratorioComponent', 'selector': 'app-laboratorio'},{'name': 'ListaPlantillasComponent', 'selector': 'app-lista-plantillas'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MainLayoutComponent', 'selector': 'app-main-layout'},{'name': 'MantenimientoDiagnosticosComponent', 'selector': 'app-mantenimiento-diagnosticos'},{'name': 'MantenimientoEstablecimientosComponent', 'selector': 'app-mantenimiento-establecimientos'},{'name': 'MantenimientoInventarioComponent', 'selector': 'app-mantenimiento-inventario'},{'name': 'MantenimientoLaboratorioComponent', 'selector': 'app-mantenimiento-laboratorio'},{'name': 'MantenimientoLoginComponent', 'selector': 'app-mantenimiento-login'},{'name': 'MantenimientoMedicamentosComponent', 'selector': 'app-mantenimiento-medicamentos'},{'name': 'MantenimientoRadiologiaComponent', 'selector': 'app-mantenimiento-radiologia'},{'name': 'MantenimientoRolesComponent', 'selector': 'app-mantenimiento-roles'},{'name': 'MovimientosInventarioComponent', 'selector': 'app-movimientos-inventario'},{'name': 'NotificationComponent', 'selector': 'app-notification'},{'name': 'NuevaConsultaComponent', 'selector': 'app-nueva-consulta'},{'name': 'PacientesComponent', 'selector': 'app-pacientes'},{'name': 'PermisosUsuariosComponent', 'selector': 'app-permisos-usuarios'},{'name': 'RecetasPacienteComponent', 'selector': 'app-recetas-paciente'},{'name': 'RegistroVacunaModalComponent', 'selector': 'app-registro-vacuna-modal'},{'name': 'ReportesComponent', 'selector': 'app-reportes'},{'name': 'TriajeComponent', 'selector': 'app-triaje'},{'name': 'UsuariosComponent', 'selector': 'app-usuarios'},{'name': 'VacunacionComponent', 'selector': 'app-vacunacion'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'ReportesComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'ReportesComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

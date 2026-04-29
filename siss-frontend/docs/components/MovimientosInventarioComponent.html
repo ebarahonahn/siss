@@ -1,0 +1,1811 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>siss-frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">siss-frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  MovimientosInventarioComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/modules/movimientos-inventario/movimientos-inventario.component.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                <code>OnInit</code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-movimientos-inventario</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                            <code>CommonModule</code>
+                            <code>FormsModule</code>
+                </td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">template</td>
+                <td class="col-md-9"><pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;min-h-screen bg-gray-50 p-6&quot;&gt;
+
+  &lt;!-- Encabezado --&gt;
+  &lt;div class&#x3D;&quot;mb-6 flex items-center justify-between&quot;&gt;
+    &lt;div&gt;
+      &lt;h1 class&#x3D;&quot;text-2xl font-bold text-gray-800&quot;&gt;Movimientos de Inventario&lt;/h1&gt;
+      &lt;p class&#x3D;&quot;text-sm text-gray-500 mt-1&quot;&gt;Historial de entradas, salidas y ajustes por producto&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;!-- Botón Exportar --&gt;
+    &lt;button *ngIf&#x3D;&quot;movimientosFiltrados.length &gt; 0&quot;
+            (click)&#x3D;&quot;exportarExcel()&quot;
+            class&#x3D;&quot;flex items-center gap-2 px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-sm transition-all shadow-sm hover:shadow-md hover:shadow-emerald-500/20 active:scale-95&quot;&gt;
+      &lt;svg class&#x3D;&quot;w-4 h-4&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+        &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z&quot;/&gt;
+      &lt;/svg&gt;
+      Exportar Excel
+    &lt;/button&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Panel de Filtros --&gt;
+  &lt;div class&#x3D;&quot;bg-white rounded-2xl shadow-sm border border-gray-100 p-5 mb-6&quot;&gt;
+    &lt;div class&#x3D;&quot;grid grid-cols-1 md:grid-cols-3 gap-4&quot;&gt;
+
+      &lt;!-- Buscador de producto --&gt;
+      &lt;div&gt;
+        &lt;label class&#x3D;&quot;block text-xs font-bold text-gray-600 mb-1 uppercase tracking-wide&quot;&gt;Buscar Producto&lt;/label&gt;
+        &lt;div class&#x3D;&quot;relative&quot;&gt;
+          &lt;input
+            [(ngModel)]&#x3D;&quot;busqueda&quot;
+            (ngModelChange)&#x3D;&quot;filtrarProductos()&quot;
+            type&#x3D;&quot;text&quot;
+            placeholder&#x3D;&quot;Nombre genérico, código...&quot;
+            class&#x3D;&quot;w-full pl-9 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-blue-400 focus:bg-white transition-all&quot;
+          /&gt;
+          &lt;svg class&#x3D;&quot;absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+            &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z&quot;/&gt;
+          &lt;/svg&gt;
+        &lt;/div&gt;
+        &lt;!-- Dropdown sugerencias --&gt;
+        &lt;div *ngIf&#x3D;&quot;productosFiltrados.length &gt; 0 &amp;&amp; !productoSeleccionado&quot; class&#x3D;&quot;mt-1 bg-white border border-gray-200 rounded-xl shadow-lg z-10 max-h-48 overflow-y-auto&quot;&gt;
+          &lt;button *ngFor&#x3D;&quot;let p of productosFiltrados&quot;
+                  (click)&#x3D;&quot;seleccionarProducto(p)&quot;
+                  class&#x3D;&quot;w-full text-left px-4 py-2.5 text-sm hover:bg-blue-50 hover:text-blue-700 transition-colors border-b border-gray-50 last:border-0&quot;&gt;
+            &lt;span class&#x3D;&quot;font-medium&quot;&gt;{{ p.medicamento.nombreGenerico }}&lt;/span&gt;
+            &lt;span class&#x3D;&quot;text-gray-400 ml-2 text-xs&quot;&gt;{{ p.medicamento.codigo }}&lt;/span&gt;
+            &lt;span *ngIf&#x3D;&quot;p.lote&quot; class&#x3D;&quot;text-gray-400 ml-2 text-xs&quot;&gt;Lote: {{ p.lote }}&lt;/span&gt;
+          &lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Filtro por tipo --&gt;
+      &lt;div&gt;
+        &lt;label class&#x3D;&quot;block text-xs font-bold text-gray-600 mb-1 uppercase tracking-wide&quot;&gt;Tipo de Movimiento&lt;/label&gt;
+        &lt;select [(ngModel)]&#x3D;&quot;filtroTipo&quot; (ngModelChange)&#x3D;&quot;aplicarFiltros()&quot;
+                class&#x3D;&quot;w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-blue-400 focus:bg-white transition-all&quot;&gt;
+          &lt;option value&#x3D;&quot;&quot;&gt;Todos&lt;/option&gt;
+          &lt;option value&#x3D;&quot;ENTRADA&quot;&gt;Entrada&lt;/option&gt;
+          &lt;option value&#x3D;&quot;SALIDA&quot;&gt;Salida&lt;/option&gt;
+          &lt;option value&#x3D;&quot;AJUSTE&quot;&gt;Ajuste&lt;/option&gt;
+          &lt;option value&#x3D;&quot;CONSUMO&quot;&gt;Consumo&lt;/option&gt;
+          &lt;option value&#x3D;&quot;DISPENSACION&quot;&gt;Dispensación&lt;/option&gt;
+          &lt;option value&#x3D;&quot;CADUCADO&quot;&gt;Caducado&lt;/option&gt;
+          &lt;option value&#x3D;&quot;PERDIDA&quot;&gt;Pérdida&lt;/option&gt;
+        &lt;/select&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Limpiar selección --&gt;
+      &lt;div class&#x3D;&quot;flex items-end&quot;&gt;
+        &lt;button *ngIf&#x3D;&quot;productoSeleccionado&quot;
+                (click)&#x3D;&quot;limpiarSeleccion()&quot;
+                class&#x3D;&quot;w-full py-2.5 px-4 bg-gray-100 hover:bg-gray-200 text-gray-600 font-semibold rounded-xl text-sm transition-all flex items-center justify-center gap-2&quot;&gt;
+          &lt;svg class&#x3D;&quot;w-4 h-4&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M6 18L18 6M6 6l12 12&quot;/&gt;&lt;/svg&gt;
+          Limpiar selección
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Producto seleccionado badge --&gt;
+    &lt;div *ngIf&#x3D;&quot;productoSeleccionado&quot; class&#x3D;&quot;mt-4 flex items-center gap-3 p-3 bg-blue-50 border border-blue-100 rounded-xl&quot;&gt;
+      &lt;div class&#x3D;&quot;w-9 h-9 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0&quot;&gt;
+        &lt;svg class&#x3D;&quot;w-5 h-5 text-white&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+          &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4&quot;/&gt;
+        &lt;/svg&gt;
+      &lt;/div&gt;
+      &lt;div class&#x3D;&quot;flex-1 min-w-0&quot;&gt;
+        &lt;p class&#x3D;&quot;text-sm font-bold text-blue-800 truncate&quot;&gt;{{ productoSeleccionado.medicamento.nombreGenerico }}&lt;/p&gt;
+        &lt;p class&#x3D;&quot;text-xs text-blue-500&quot;&gt;
+          {{ productoSeleccionado.medicamento.codigo }} ·
+          {{ productoSeleccionado.medicamento.presentacion }} ·
+          {{ productoSeleccionado.medicamento.concentracion }}
+          &lt;span *ngIf&#x3D;&quot;productoSeleccionado.lote&quot;&gt; · Lote: {{ productoSeleccionado.lote }}&lt;/span&gt;
+        &lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div class&#x3D;&quot;text-right flex-shrink-0&quot;&gt;
+        &lt;p class&#x3D;&quot;text-xs font-bold text-blue-700&quot;&gt;Stock actual&lt;/p&gt;
+        &lt;p class&#x3D;&quot;text-xl font-black text-blue-800&quot;&gt;{{ productoSeleccionado.cantidadActual }}&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Estado: sin selección --&gt;
+  &lt;div *ngIf&#x3D;&quot;!productoSeleccionado&quot; class&#x3D;&quot;bg-white rounded-2xl border border-dashed border-gray-200 p-16 flex flex-col items-center justify-center text-center&quot;&gt;
+    &lt;div class&#x3D;&quot;w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mb-4&quot;&gt;
+      &lt;svg class&#x3D;&quot;w-8 h-8 text-gray-400&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+        &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;1.5&quot; d&#x3D;&quot;M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4&quot;/&gt;
+      &lt;/svg&gt;
+    &lt;/div&gt;
+    &lt;p class&#x3D;&quot;text-gray-500 font-semibold text-base mb-1&quot;&gt;Seleccione un producto&lt;/p&gt;
+    &lt;p class&#x3D;&quot;text-gray-400 text-sm&quot;&gt;Use el buscador para encontrar el medicamento y ver su historial de movimientos&lt;/p&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Cargando --&gt;
+  &lt;div *ngIf&#x3D;&quot;cargando&quot; class&#x3D;&quot;bg-white rounded-2xl border border-gray-100 shadow-sm p-12 flex flex-col items-center justify-center gap-3&quot;&gt;
+    &lt;svg class&#x3D;&quot;animate-spin h-8 w-8 text-blue-500&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot;&gt;
+      &lt;circle class&#x3D;&quot;opacity-25&quot; cx&#x3D;&quot;12&quot; cy&#x3D;&quot;12&quot; r&#x3D;&quot;10&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;4&quot;&gt;&lt;/circle&gt;
+      &lt;path class&#x3D;&quot;opacity-75&quot; fill&#x3D;&quot;currentColor&quot; d&#x3D;&quot;M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z&quot;&gt;&lt;/path&gt;
+    &lt;/svg&gt;
+    &lt;p class&#x3D;&quot;text-sm text-gray-500 font-medium&quot;&gt;Cargando movimientos...&lt;/p&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Tabla de movimientos --&gt;
+  &lt;div *ngIf&#x3D;&quot;productoSeleccionado &amp;&amp; !cargando&quot;&gt;
+
+    &lt;!-- Tarjetas de resumen --&gt;
+    &lt;div class&#x3D;&quot;grid grid-cols-2 md:grid-cols-4 gap-4 mb-6&quot;&gt;
+      &lt;div class&#x3D;&quot;bg-white rounded-2xl border border-gray-100 shadow-sm p-4&quot;&gt;
+        &lt;p class&#x3D;&quot;text-xs font-bold text-gray-400 uppercase tracking-wide mb-1&quot;&gt;Total Movimientos&lt;/p&gt;
+        &lt;p class&#x3D;&quot;text-3xl font-black text-gray-800&quot;&gt;{{ movimientosFiltrados.length }}&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div class&#x3D;&quot;bg-green-50 rounded-2xl border border-green-100 shadow-sm p-4&quot;&gt;
+        &lt;p class&#x3D;&quot;text-xs font-bold text-green-500 uppercase tracking-wide mb-1&quot;&gt;Entradas&lt;/p&gt;
+        &lt;p class&#x3D;&quot;text-3xl font-black text-green-700&quot;&gt;{{ contarTipo(&#x27;ENTRADA&#x27;) }}&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div class&#x3D;&quot;bg-red-50 rounded-2xl border border-red-100 shadow-sm p-4&quot;&gt;
+        &lt;p class&#x3D;&quot;text-xs font-bold text-red-400 uppercase tracking-wide mb-1&quot;&gt;Salidas / Dispensaciones&lt;/p&gt;
+        &lt;p class&#x3D;&quot;text-3xl font-black text-red-700&quot;&gt;{{ contarTipo(&#x27;SALIDA&#x27;) + contarTipo(&#x27;CONSUMO&#x27;) + contarTipo(&#x27;DISPENSACION&#x27;) + contarTipo(&#x27;CADUCADO&#x27;) + contarTipo(&#x27;PERDIDA&#x27;) }}&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div class&#x3D;&quot;bg-amber-50 rounded-2xl border border-amber-100 shadow-sm p-4&quot;&gt;
+        &lt;p class&#x3D;&quot;text-xs font-bold text-amber-500 uppercase tracking-wide mb-1&quot;&gt;Ajustes&lt;/p&gt;
+        &lt;p class&#x3D;&quot;text-3xl font-black text-amber-700&quot;&gt;{{ contarTipo(&#x27;AJUSTE&#x27;) }}&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Sin movimientos --&gt;
+    &lt;div *ngIf&#x3D;&quot;movimientosFiltrados.length &#x3D;&#x3D;&#x3D; 0&quot; class&#x3D;&quot;bg-white rounded-2xl border border-gray-100 shadow-sm p-12 text-center&quot;&gt;
+      &lt;p class&#x3D;&quot;text-gray-400 font-medium&quot;&gt;No se encontraron movimientos con los filtros aplicados&lt;/p&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Tabla --&gt;
+    &lt;div *ngIf&#x3D;&quot;movimientosFiltrados.length &gt; 0&quot; class&#x3D;&quot;bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden&quot;&gt;
+      &lt;div class&#x3D;&quot;overflow-x-auto&quot;&gt;
+        &lt;table class&#x3D;&quot;w-full text-sm&quot;&gt;
+          &lt;thead&gt;
+            &lt;tr class&#x3D;&quot;bg-gray-50 border-b border-gray-100&quot;&gt;
+              &lt;th class&#x3D;&quot;text-left px-5 py-3.5 text-xs font-bold text-gray-500 uppercase tracking-wide&quot;&gt;#&lt;/th&gt;
+              &lt;th class&#x3D;&quot;text-left px-5 py-3.5 text-xs font-bold text-gray-500 uppercase tracking-wide&quot;&gt;Tipo&lt;/th&gt;
+              &lt;th class&#x3D;&quot;text-left px-5 py-3.5 text-xs font-bold text-gray-500 uppercase tracking-wide&quot;&gt;Cantidad&lt;/th&gt;
+              &lt;th class&#x3D;&quot;text-left px-5 py-3.5 text-xs font-bold text-gray-500 uppercase tracking-wide&quot;&gt;Motivo&lt;/th&gt;
+              &lt;th class&#x3D;&quot;text-left px-5 py-3.5 text-xs font-bold text-gray-500 uppercase tracking-wide&quot;&gt;Realizado por&lt;/th&gt;
+              &lt;th class&#x3D;&quot;text-left px-5 py-3.5 text-xs font-bold text-gray-500 uppercase tracking-wide&quot;&gt;Fecha&lt;/th&gt;
+            &lt;/tr&gt;
+          &lt;/thead&gt;
+          &lt;tbody class&#x3D;&quot;divide-y divide-gray-50&quot;&gt;
+            &lt;tr *ngFor&#x3D;&quot;let mov of movimientosFiltrados; let i &#x3D; index&quot;
+                class&#x3D;&quot;hover:bg-gray-50 transition-colors&quot;&gt;
+              &lt;td class&#x3D;&quot;px-5 py-3.5 text-gray-400 font-mono text-xs&quot;&gt;{{ i + 1 }}&lt;/td&gt;
+
+              &lt;!-- Badge de tipo --&gt;
+              &lt;td class&#x3D;&quot;px-5 py-3.5&quot;&gt;
+                &lt;span class&#x3D;&quot;inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold&quot;
+                      [ngClass]&#x3D;&quot;{
+                        &#x27;bg-green-100 text-green-700&#x27;: mov.tipo &#x3D;&#x3D;&#x3D; &#x27;ENTRADA&#x27;,
+                        &#x27;bg-red-100 text-red-700&#x27;: mov.tipo &#x3D;&#x3D;&#x3D; &#x27;SALIDA&#x27;,
+                        &#x27;bg-blue-100 text-blue-700&#x27;: mov.tipo &#x3D;&#x3D;&#x3D; &#x27;CONSUMO&#x27;,
+                        &#x27;bg-amber-100 text-amber-700&#x27;: mov.tipo &#x3D;&#x3D;&#x3D; &#x27;AJUSTE&#x27;
+                      }&quot;&gt;
+                  &lt;span class&#x3D;&quot;w-1.5 h-1.5 rounded-full&quot;
+                        [ngClass]&#x3D;&quot;{
+                          &#x27;bg-green-500&#x27;: mov.tipo &#x3D;&#x3D;&#x3D; &#x27;ENTRADA&#x27;,
+                          &#x27;bg-red-500&#x27;: mov.tipo &#x3D;&#x3D;&#x3D; &#x27;SALIDA&#x27;,
+                          &#x27;bg-blue-500&#x27;: mov.tipo &#x3D;&#x3D;&#x3D; &#x27;CONSUMO&#x27;,
+                          &#x27;bg-amber-500&#x27;: mov.tipo &#x3D;&#x3D;&#x3D; &#x27;AJUSTE&#x27;
+                        }&quot;&gt;&lt;/span&gt;
+                  {{ etiquetaTipo(mov.tipo) }}
+                &lt;/span&gt;
+              &lt;/td&gt;
+
+              &lt;!-- Cantidad con signo --&gt;
+              &lt;td class&#x3D;&quot;px-5 py-3.5&quot;&gt;
+                &lt;span class&#x3D;&quot;font-bold text-base&quot;
+                      [ngClass]&#x3D;&quot;{
+                        &#x27;text-green-600&#x27;: mov.tipo &#x3D;&#x3D;&#x3D; &#x27;ENTRADA&#x27;,
+                        &#x27;text-red-600&#x27;: mov.tipo &#x3D;&#x3D;&#x3D; &#x27;SALIDA&#x27; || mov.tipo &#x3D;&#x3D;&#x3D; &#x27;CONSUMO&#x27;,
+                        &#x27;text-amber-600&#x27;: mov.tipo &#x3D;&#x3D;&#x3D; &#x27;AJUSTE&#x27;
+                      }&quot;&gt;
+                  {{ mov.tipo &#x3D;&#x3D;&#x3D; &#x27;ENTRADA&#x27; ? &#x27;+&#x27; : (mov.tipo &#x3D;&#x3D;&#x3D; &#x27;AJUSTE&#x27; &amp;&amp; mov.cantidad &gt; 0 ? &#x27;+&#x27; : &#x27;&#x27;) }}{{ mov.cantidad }}
+                &lt;/span&gt;
+                &lt;span class&#x3D;&quot;text-gray-400 text-xs ml-1&quot;&gt;un.&lt;/span&gt;
+              &lt;/td&gt;
+
+              &lt;td class&#x3D;&quot;px-5 py-3.5 text-gray-600 max-w-[240px]&quot;&gt;
+                &lt;span class&#x3D;&quot;truncate block&quot; [title]&#x3D;&quot;mov.motivo || &#x27;&#x27;&quot;&gt;{{ mov.motivo || &#x27;—&#x27; }}&lt;/span&gt;
+              &lt;/td&gt;
+
+              &lt;td class&#x3D;&quot;px-5 py-3.5&quot;&gt;
+                &lt;div class&#x3D;&quot;flex items-center gap-2&quot;&gt;
+                  &lt;div class&#x3D;&quot;w-7 h-7 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0&quot;&gt;
+                    &lt;span class&#x3D;&quot;text-blue-700 text-[10px] font-bold&quot;&gt;
+                      {{ mov.usuario?.nombres?.charAt(0) }}{{ mov.usuario?.apellidos?.charAt(0) }}
+                    &lt;/span&gt;
+                  &lt;/div&gt;
+                  &lt;span class&#x3D;&quot;text-gray-700 text-xs font-medium&quot;&gt;{{ mov.usuario?.nombres }} {{ mov.usuario?.apellidos }}&lt;/span&gt;
+                &lt;/div&gt;
+              &lt;/td&gt;
+
+              &lt;td class&#x3D;&quot;px-5 py-3.5 text-gray-500 text-xs whitespace-nowrap&quot;&gt;
+                {{ formatFecha(mov.fecha) }}
+              &lt;/td&gt;
+            &lt;/tr&gt;
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+      &lt;/div&gt;
+
+      &lt;div class&#x3D;&quot;px-5 py-3 border-t border-gray-50 bg-gray-50/50 flex items-center justify-between&quot;&gt;
+        &lt;span class&#x3D;&quot;text-xs text-gray-400 font-medium&quot;&gt;Mostrando {{ movimientosFiltrados.length }} de {{ movimientos.length }} registros&lt;/span&gt;
+        &lt;button (click)&#x3D;&quot;exportarExcel()&quot;
+                class&#x3D;&quot;flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-semibold rounded-lg text-xs transition-all&quot;&gt;
+          &lt;svg class&#x3D;&quot;w-3.5 h-3.5&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+            &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z&quot;/&gt;
+          &lt;/svg&gt;
+          Exportar Excel
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></td>
+            </tr>
+
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#busqueda" >busqueda</a>
+                            </li>
+                            <li>
+                                <a href="#cargando" >cargando</a>
+                            </li>
+                            <li>
+                                <a href="#filtroTipo" >filtroTipo</a>
+                            </li>
+                            <li>
+                                <a href="#movimientos" >movimientos</a>
+                            </li>
+                            <li>
+                                <a href="#movimientosFiltrados" >movimientosFiltrados</a>
+                            </li>
+                            <li>
+                                <a href="#productoSeleccionado" >productoSeleccionado</a>
+                            </li>
+                            <li>
+                                <a href="#productosFiltrados" >productosFiltrados</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#svc" >svc</a>
+                            </li>
+                            <li>
+                                <a href="#todos" >todos</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#aplicarFiltros" >aplicarFiltros</a>
+                            </li>
+                            <li>
+                                <a href="#cargarMovimientos" >cargarMovimientos</a>
+                            </li>
+                            <li>
+                                <a href="#contarTipo" >contarTipo</a>
+                            </li>
+                            <li>
+                                <a href="#etiquetaTipo" >etiquetaTipo</a>
+                            </li>
+                            <li>
+                                <a href="#exportarExcel" >exportarExcel</a>
+                            </li>
+                            <li>
+                                <a href="#filtrarProductos" >filtrarProductos</a>
+                            </li>
+                            <li>
+                                <a href="#formatFecha" >formatFecha</a>
+                            </li>
+                            <li>
+                                <a href="#limpiarSeleccion" >limpiarSeleccion</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#seleccionarProducto" >seleccionarProducto</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="aplicarFiltros"></a>
+                    <span class="name">
+                        <span ><b>aplicarFiltros</b></span>
+                        <a href="#aplicarFiltros"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>aplicarFiltros()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="306"
+                                    class="link-to-prism">src/app/modules/movimientos-inventario/movimientos-inventario.component.ts:306</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargarMovimientos"></a>
+                    <span class="name">
+                        <span ><b>cargarMovimientos</b></span>
+                        <a href="#cargarMovimientos"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cargarMovimientos()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="293"
+                                    class="link-to-prism">src/app/modules/movimientos-inventario/movimientos-inventario.component.ts:293</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="contarTipo"></a>
+                    <span class="name">
+                        <span ><b>contarTipo</b></span>
+                        <a href="#contarTipo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>contarTipo(tipo: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="321"
+                                    class="link-to-prism">src/app/modules/movimientos-inventario/movimientos-inventario.component.ts:321</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>tipo</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="etiquetaTipo"></a>
+                    <span class="name">
+                        <span ><b>etiquetaTipo</b></span>
+                        <a href="#etiquetaTipo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>etiquetaTipo(tipo: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="325"
+                                    class="link-to-prism">src/app/modules/movimientos-inventario/movimientos-inventario.component.ts:325</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>tipo</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="exportarExcel"></a>
+                    <span class="name">
+                        <span ><b>exportarExcel</b></span>
+                        <a href="#exportarExcel"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>exportarExcel()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="346"
+                                    class="link-to-prism">src/app/modules/movimientos-inventario/movimientos-inventario.component.ts:346</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="filtrarProductos"></a>
+                    <span class="name">
+                        <span ><b>filtrarProductos</b></span>
+                        <a href="#filtrarProductos"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>filtrarProductos()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="273"
+                                    class="link-to-prism">src/app/modules/movimientos-inventario/movimientos-inventario.component.ts:273</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="formatFecha"></a>
+                    <span class="name">
+                        <span ><b>formatFecha</b></span>
+                        <a href="#formatFecha"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>formatFecha(fechaISO: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="333"
+                                    class="link-to-prism">src/app/modules/movimientos-inventario/movimientos-inventario.component.ts:333</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>fechaISO</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="limpiarSeleccion"></a>
+                    <span class="name">
+                        <span ><b>limpiarSeleccion</b></span>
+                        <a href="#limpiarSeleccion"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>limpiarSeleccion()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="312"
+                                    class="link-to-prism">src/app/modules/movimientos-inventario/movimientos-inventario.component.ts:312</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="269"
+                                    class="link-to-prism">src/app/modules/movimientos-inventario/movimientos-inventario.component.ts:269</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="seleccionarProducto"></a>
+                    <span class="name">
+                        <span ><b>seleccionarProducto</b></span>
+                        <a href="#seleccionarProducto"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>seleccionarProducto(p: <a href="../interfaces/InventarioItem.html" target="_self">InventarioItem</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="286"
+                                    class="link-to-prism">src/app/modules/movimientos-inventario/movimientos-inventario.component.ts:286</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>p</td>
+                                            <td>
+                                                            <code><a href="../interfaces/InventarioItem.html" target="_self" >InventarioItem</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="busqueda"></a>
+                    <span class="name">
+                        <span ><b>busqueda</b></span>
+                        <a href="#busqueda"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="258" class="link-to-prism">src/app/modules/movimientos-inventario/movimientos-inventario.component.ts:258</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargando"></a>
+                    <span class="name">
+                        <span ><b>cargando</b></span>
+                        <a href="#cargando"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="260" class="link-to-prism">src/app/modules/movimientos-inventario/movimientos-inventario.component.ts:260</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="filtroTipo"></a>
+                    <span class="name">
+                        <span ><b>filtroTipo</b></span>
+                        <a href="#filtroTipo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="259" class="link-to-prism">src/app/modules/movimientos-inventario/movimientos-inventario.component.ts:259</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="movimientos"></a>
+                    <span class="name">
+                        <span ><b>movimientos</b></span>
+                        <a href="#movimientos"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/MovimientoInventario.html" target="_self" >MovimientoInventario[]</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="266" class="link-to-prism">src/app/modules/movimientos-inventario/movimientos-inventario.component.ts:266</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="movimientosFiltrados"></a>
+                    <span class="name">
+                        <span ><b>movimientosFiltrados</b></span>
+                        <a href="#movimientosFiltrados"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/MovimientoInventario.html" target="_self" >MovimientoInventario[]</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="267" class="link-to-prism">src/app/modules/movimientos-inventario/movimientos-inventario.component.ts:267</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="productoSeleccionado"></a>
+                    <span class="name">
+                        <span ><b>productoSeleccionado</b></span>
+                        <a href="#productoSeleccionado"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/InventarioItem.html" target="_self" >InventarioItem | null</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="264" class="link-to-prism">src/app/modules/movimientos-inventario/movimientos-inventario.component.ts:264</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="productosFiltrados"></a>
+                    <span class="name">
+                        <span ><b>productosFiltrados</b></span>
+                        <a href="#productosFiltrados"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/InventarioItem.html" target="_self" >InventarioItem[]</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="263" class="link-to-prism">src/app/modules/movimientos-inventario/movimientos-inventario.component.ts:263</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="svc"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>svc</b></span>
+                        <a href="#svc"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(InventarioService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="256" class="link-to-prism">src/app/modules/movimientos-inventario/movimientos-inventario.component.ts:256</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="todos"></a>
+                    <span class="name">
+                        <span ><b>todos</b></span>
+                        <a href="#todos"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/InventarioItem.html" target="_self" >InventarioItem[]</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="262" class="link-to-prism">src/app/modules/movimientos-inventario/movimientos-inventario.component.ts:262</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, inject, OnInit } from &#x27;@angular/core&#x27;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
+import { FormsModule } from &#x27;@angular/forms&#x27;;
+import { InventarioService, MovimientoInventario, InventarioItem } from &#x27;../../core/services/inventario.service&#x27;;
+import * as XLSX from &#x27;xlsx&#x27;;
+
+interface MovimientoConProducto extends MovimientoInventario {
+  productoNombre?: string;
+  lote?: string | null;
+}
+
+@Component({
+  selector: &#x27;app-movimientos-inventario&#x27;,
+  standalone: true,
+  imports: [CommonModule, FormsModule],
+  template: &#x60;
+    &lt;div class&#x3D;&quot;min-h-screen bg-gray-50 p-6&quot;&gt;
+
+      &lt;!-- Encabezado --&gt;
+      &lt;div class&#x3D;&quot;mb-6 flex items-center justify-between&quot;&gt;
+        &lt;div&gt;
+          &lt;h1 class&#x3D;&quot;text-2xl font-bold text-gray-800&quot;&gt;Movimientos de Inventario&lt;/h1&gt;
+          &lt;p class&#x3D;&quot;text-sm text-gray-500 mt-1&quot;&gt;Historial de entradas, salidas y ajustes por producto&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;!-- Botón Exportar --&gt;
+        &lt;button *ngIf&#x3D;&quot;movimientosFiltrados.length &gt; 0&quot;
+                (click)&#x3D;&quot;exportarExcel()&quot;
+                class&#x3D;&quot;flex items-center gap-2 px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-sm transition-all shadow-sm hover:shadow-md hover:shadow-emerald-500/20 active:scale-95&quot;&gt;
+          &lt;svg class&#x3D;&quot;w-4 h-4&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+            &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z&quot;/&gt;
+          &lt;/svg&gt;
+          Exportar Excel
+        &lt;/button&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Panel de Filtros --&gt;
+      &lt;div class&#x3D;&quot;bg-white rounded-2xl shadow-sm border border-gray-100 p-5 mb-6&quot;&gt;
+        &lt;div class&#x3D;&quot;grid grid-cols-1 md:grid-cols-3 gap-4&quot;&gt;
+
+          &lt;!-- Buscador de producto --&gt;
+          &lt;div&gt;
+            &lt;label class&#x3D;&quot;block text-xs font-bold text-gray-600 mb-1 uppercase tracking-wide&quot;&gt;Buscar Producto&lt;/label&gt;
+            &lt;div class&#x3D;&quot;relative&quot;&gt;
+              &lt;input
+                [(ngModel)]&#x3D;&quot;busqueda&quot;
+                (ngModelChange)&#x3D;&quot;filtrarProductos()&quot;
+                type&#x3D;&quot;text&quot;
+                placeholder&#x3D;&quot;Nombre genérico, código...&quot;
+                class&#x3D;&quot;w-full pl-9 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-blue-400 focus:bg-white transition-all&quot;
+              /&gt;
+              &lt;svg class&#x3D;&quot;absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+                &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z&quot;/&gt;
+              &lt;/svg&gt;
+            &lt;/div&gt;
+            &lt;!-- Dropdown sugerencias --&gt;
+            &lt;div *ngIf&#x3D;&quot;productosFiltrados.length &gt; 0 &amp;&amp; !productoSeleccionado&quot; class&#x3D;&quot;mt-1 bg-white border border-gray-200 rounded-xl shadow-lg z-10 max-h-48 overflow-y-auto&quot;&gt;
+              &lt;button *ngFor&#x3D;&quot;let p of productosFiltrados&quot;
+                      (click)&#x3D;&quot;seleccionarProducto(p)&quot;
+                      class&#x3D;&quot;w-full text-left px-4 py-2.5 text-sm hover:bg-blue-50 hover:text-blue-700 transition-colors border-b border-gray-50 last:border-0&quot;&gt;
+                &lt;span class&#x3D;&quot;font-medium&quot;&gt;{{ p.medicamento.nombreGenerico }}&lt;/span&gt;
+                &lt;span class&#x3D;&quot;text-gray-400 ml-2 text-xs&quot;&gt;{{ p.medicamento.codigo }}&lt;/span&gt;
+                &lt;span *ngIf&#x3D;&quot;p.lote&quot; class&#x3D;&quot;text-gray-400 ml-2 text-xs&quot;&gt;Lote: {{ p.lote }}&lt;/span&gt;
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;!-- Filtro por tipo --&gt;
+          &lt;div&gt;
+            &lt;label class&#x3D;&quot;block text-xs font-bold text-gray-600 mb-1 uppercase tracking-wide&quot;&gt;Tipo de Movimiento&lt;/label&gt;
+            &lt;select [(ngModel)]&#x3D;&quot;filtroTipo&quot; (ngModelChange)&#x3D;&quot;aplicarFiltros()&quot;
+                    class&#x3D;&quot;w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-blue-400 focus:bg-white transition-all&quot;&gt;
+              &lt;option value&#x3D;&quot;&quot;&gt;Todos&lt;/option&gt;
+              &lt;option value&#x3D;&quot;ENTRADA&quot;&gt;Entrada&lt;/option&gt;
+              &lt;option value&#x3D;&quot;SALIDA&quot;&gt;Salida&lt;/option&gt;
+              &lt;option value&#x3D;&quot;AJUSTE&quot;&gt;Ajuste&lt;/option&gt;
+              &lt;option value&#x3D;&quot;CONSUMO&quot;&gt;Consumo&lt;/option&gt;
+              &lt;option value&#x3D;&quot;DISPENSACION&quot;&gt;Dispensación&lt;/option&gt;
+              &lt;option value&#x3D;&quot;CADUCADO&quot;&gt;Caducado&lt;/option&gt;
+              &lt;option value&#x3D;&quot;PERDIDA&quot;&gt;Pérdida&lt;/option&gt;
+            &lt;/select&gt;
+          &lt;/div&gt;
+
+          &lt;!-- Limpiar selección --&gt;
+          &lt;div class&#x3D;&quot;flex items-end&quot;&gt;
+            &lt;button *ngIf&#x3D;&quot;productoSeleccionado&quot;
+                    (click)&#x3D;&quot;limpiarSeleccion()&quot;
+                    class&#x3D;&quot;w-full py-2.5 px-4 bg-gray-100 hover:bg-gray-200 text-gray-600 font-semibold rounded-xl text-sm transition-all flex items-center justify-center gap-2&quot;&gt;
+              &lt;svg class&#x3D;&quot;w-4 h-4&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M6 18L18 6M6 6l12 12&quot;/&gt;&lt;/svg&gt;
+              Limpiar selección
+            &lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Producto seleccionado badge --&gt;
+        &lt;div *ngIf&#x3D;&quot;productoSeleccionado&quot; class&#x3D;&quot;mt-4 flex items-center gap-3 p-3 bg-blue-50 border border-blue-100 rounded-xl&quot;&gt;
+          &lt;div class&#x3D;&quot;w-9 h-9 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0&quot;&gt;
+            &lt;svg class&#x3D;&quot;w-5 h-5 text-white&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+              &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4&quot;/&gt;
+            &lt;/svg&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;flex-1 min-w-0&quot;&gt;
+            &lt;p class&#x3D;&quot;text-sm font-bold text-blue-800 truncate&quot;&gt;{{ productoSeleccionado.medicamento.nombreGenerico }}&lt;/p&gt;
+            &lt;p class&#x3D;&quot;text-xs text-blue-500&quot;&gt;
+              {{ productoSeleccionado.medicamento.codigo }} ·
+              {{ productoSeleccionado.medicamento.presentacion }} ·
+              {{ productoSeleccionado.medicamento.concentracion }}
+              &lt;span *ngIf&#x3D;&quot;productoSeleccionado.lote&quot;&gt; · Lote: {{ productoSeleccionado.lote }}&lt;/span&gt;
+            &lt;/p&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;text-right flex-shrink-0&quot;&gt;
+            &lt;p class&#x3D;&quot;text-xs font-bold text-blue-700&quot;&gt;Stock actual&lt;/p&gt;
+            &lt;p class&#x3D;&quot;text-xl font-black text-blue-800&quot;&gt;{{ productoSeleccionado.cantidadActual }}&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Estado: sin selección --&gt;
+      &lt;div *ngIf&#x3D;&quot;!productoSeleccionado&quot; class&#x3D;&quot;bg-white rounded-2xl border border-dashed border-gray-200 p-16 flex flex-col items-center justify-center text-center&quot;&gt;
+        &lt;div class&#x3D;&quot;w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mb-4&quot;&gt;
+          &lt;svg class&#x3D;&quot;w-8 h-8 text-gray-400&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+            &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;1.5&quot; d&#x3D;&quot;M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4&quot;/&gt;
+          &lt;/svg&gt;
+        &lt;/div&gt;
+        &lt;p class&#x3D;&quot;text-gray-500 font-semibold text-base mb-1&quot;&gt;Seleccione un producto&lt;/p&gt;
+        &lt;p class&#x3D;&quot;text-gray-400 text-sm&quot;&gt;Use el buscador para encontrar el medicamento y ver su historial de movimientos&lt;/p&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Cargando --&gt;
+      &lt;div *ngIf&#x3D;&quot;cargando&quot; class&#x3D;&quot;bg-white rounded-2xl border border-gray-100 shadow-sm p-12 flex flex-col items-center justify-center gap-3&quot;&gt;
+        &lt;svg class&#x3D;&quot;animate-spin h-8 w-8 text-blue-500&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot;&gt;
+          &lt;circle class&#x3D;&quot;opacity-25&quot; cx&#x3D;&quot;12&quot; cy&#x3D;&quot;12&quot; r&#x3D;&quot;10&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;4&quot;&gt;&lt;/circle&gt;
+          &lt;path class&#x3D;&quot;opacity-75&quot; fill&#x3D;&quot;currentColor&quot; d&#x3D;&quot;M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z&quot;&gt;&lt;/path&gt;
+        &lt;/svg&gt;
+        &lt;p class&#x3D;&quot;text-sm text-gray-500 font-medium&quot;&gt;Cargando movimientos...&lt;/p&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Tabla de movimientos --&gt;
+      &lt;div *ngIf&#x3D;&quot;productoSeleccionado &amp;&amp; !cargando&quot;&gt;
+
+        &lt;!-- Tarjetas de resumen --&gt;
+        &lt;div class&#x3D;&quot;grid grid-cols-2 md:grid-cols-4 gap-4 mb-6&quot;&gt;
+          &lt;div class&#x3D;&quot;bg-white rounded-2xl border border-gray-100 shadow-sm p-4&quot;&gt;
+            &lt;p class&#x3D;&quot;text-xs font-bold text-gray-400 uppercase tracking-wide mb-1&quot;&gt;Total Movimientos&lt;/p&gt;
+            &lt;p class&#x3D;&quot;text-3xl font-black text-gray-800&quot;&gt;{{ movimientosFiltrados.length }}&lt;/p&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;bg-green-50 rounded-2xl border border-green-100 shadow-sm p-4&quot;&gt;
+            &lt;p class&#x3D;&quot;text-xs font-bold text-green-500 uppercase tracking-wide mb-1&quot;&gt;Entradas&lt;/p&gt;
+            &lt;p class&#x3D;&quot;text-3xl font-black text-green-700&quot;&gt;{{ contarTipo(&#x27;ENTRADA&#x27;) }}&lt;/p&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;bg-red-50 rounded-2xl border border-red-100 shadow-sm p-4&quot;&gt;
+            &lt;p class&#x3D;&quot;text-xs font-bold text-red-400 uppercase tracking-wide mb-1&quot;&gt;Salidas / Dispensaciones&lt;/p&gt;
+            &lt;p class&#x3D;&quot;text-3xl font-black text-red-700&quot;&gt;{{ contarTipo(&#x27;SALIDA&#x27;) + contarTipo(&#x27;CONSUMO&#x27;) + contarTipo(&#x27;DISPENSACION&#x27;) + contarTipo(&#x27;CADUCADO&#x27;) + contarTipo(&#x27;PERDIDA&#x27;) }}&lt;/p&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;bg-amber-50 rounded-2xl border border-amber-100 shadow-sm p-4&quot;&gt;
+            &lt;p class&#x3D;&quot;text-xs font-bold text-amber-500 uppercase tracking-wide mb-1&quot;&gt;Ajustes&lt;/p&gt;
+            &lt;p class&#x3D;&quot;text-3xl font-black text-amber-700&quot;&gt;{{ contarTipo(&#x27;AJUSTE&#x27;) }}&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Sin movimientos --&gt;
+        &lt;div *ngIf&#x3D;&quot;movimientosFiltrados.length &#x3D;&#x3D;&#x3D; 0&quot; class&#x3D;&quot;bg-white rounded-2xl border border-gray-100 shadow-sm p-12 text-center&quot;&gt;
+          &lt;p class&#x3D;&quot;text-gray-400 font-medium&quot;&gt;No se encontraron movimientos con los filtros aplicados&lt;/p&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Tabla --&gt;
+        &lt;div *ngIf&#x3D;&quot;movimientosFiltrados.length &gt; 0&quot; class&#x3D;&quot;bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden&quot;&gt;
+          &lt;div class&#x3D;&quot;overflow-x-auto&quot;&gt;
+            &lt;table class&#x3D;&quot;w-full text-sm&quot;&gt;
+              &lt;thead&gt;
+                &lt;tr class&#x3D;&quot;bg-gray-50 border-b border-gray-100&quot;&gt;
+                  &lt;th class&#x3D;&quot;text-left px-5 py-3.5 text-xs font-bold text-gray-500 uppercase tracking-wide&quot;&gt;#&lt;/th&gt;
+                  &lt;th class&#x3D;&quot;text-left px-5 py-3.5 text-xs font-bold text-gray-500 uppercase tracking-wide&quot;&gt;Tipo&lt;/th&gt;
+                  &lt;th class&#x3D;&quot;text-left px-5 py-3.5 text-xs font-bold text-gray-500 uppercase tracking-wide&quot;&gt;Cantidad&lt;/th&gt;
+                  &lt;th class&#x3D;&quot;text-left px-5 py-3.5 text-xs font-bold text-gray-500 uppercase tracking-wide&quot;&gt;Motivo&lt;/th&gt;
+                  &lt;th class&#x3D;&quot;text-left px-5 py-3.5 text-xs font-bold text-gray-500 uppercase tracking-wide&quot;&gt;Realizado por&lt;/th&gt;
+                  &lt;th class&#x3D;&quot;text-left px-5 py-3.5 text-xs font-bold text-gray-500 uppercase tracking-wide&quot;&gt;Fecha&lt;/th&gt;
+                &lt;/tr&gt;
+              &lt;/thead&gt;
+              &lt;tbody class&#x3D;&quot;divide-y divide-gray-50&quot;&gt;
+                &lt;tr *ngFor&#x3D;&quot;let mov of movimientosFiltrados; let i &#x3D; index&quot;
+                    class&#x3D;&quot;hover:bg-gray-50 transition-colors&quot;&gt;
+                  &lt;td class&#x3D;&quot;px-5 py-3.5 text-gray-400 font-mono text-xs&quot;&gt;{{ i + 1 }}&lt;/td&gt;
+
+                  &lt;!-- Badge de tipo --&gt;
+                  &lt;td class&#x3D;&quot;px-5 py-3.5&quot;&gt;
+                    &lt;span class&#x3D;&quot;inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold&quot;
+                          [ngClass]&#x3D;&quot;{
+                            &#x27;bg-green-100 text-green-700&#x27;: mov.tipo &#x3D;&#x3D;&#x3D; &#x27;ENTRADA&#x27;,
+                            &#x27;bg-red-100 text-red-700&#x27;: mov.tipo &#x3D;&#x3D;&#x3D; &#x27;SALIDA&#x27;,
+                            &#x27;bg-blue-100 text-blue-700&#x27;: mov.tipo &#x3D;&#x3D;&#x3D; &#x27;CONSUMO&#x27;,
+                            &#x27;bg-amber-100 text-amber-700&#x27;: mov.tipo &#x3D;&#x3D;&#x3D; &#x27;AJUSTE&#x27;
+                          }&quot;&gt;
+                      &lt;span class&#x3D;&quot;w-1.5 h-1.5 rounded-full&quot;
+                            [ngClass]&#x3D;&quot;{
+                              &#x27;bg-green-500&#x27;: mov.tipo &#x3D;&#x3D;&#x3D; &#x27;ENTRADA&#x27;,
+                              &#x27;bg-red-500&#x27;: mov.tipo &#x3D;&#x3D;&#x3D; &#x27;SALIDA&#x27;,
+                              &#x27;bg-blue-500&#x27;: mov.tipo &#x3D;&#x3D;&#x3D; &#x27;CONSUMO&#x27;,
+                              &#x27;bg-amber-500&#x27;: mov.tipo &#x3D;&#x3D;&#x3D; &#x27;AJUSTE&#x27;
+                            }&quot;&gt;&lt;/span&gt;
+                      {{ etiquetaTipo(mov.tipo) }}
+                    &lt;/span&gt;
+                  &lt;/td&gt;
+
+                  &lt;!-- Cantidad con signo --&gt;
+                  &lt;td class&#x3D;&quot;px-5 py-3.5&quot;&gt;
+                    &lt;span class&#x3D;&quot;font-bold text-base&quot;
+                          [ngClass]&#x3D;&quot;{
+                            &#x27;text-green-600&#x27;: mov.tipo &#x3D;&#x3D;&#x3D; &#x27;ENTRADA&#x27;,
+                            &#x27;text-red-600&#x27;: mov.tipo &#x3D;&#x3D;&#x3D; &#x27;SALIDA&#x27; || mov.tipo &#x3D;&#x3D;&#x3D; &#x27;CONSUMO&#x27;,
+                            &#x27;text-amber-600&#x27;: mov.tipo &#x3D;&#x3D;&#x3D; &#x27;AJUSTE&#x27;
+                          }&quot;&gt;
+                      {{ mov.tipo &#x3D;&#x3D;&#x3D; &#x27;ENTRADA&#x27; ? &#x27;+&#x27; : (mov.tipo &#x3D;&#x3D;&#x3D; &#x27;AJUSTE&#x27; &amp;&amp; mov.cantidad &gt; 0 ? &#x27;+&#x27; : &#x27;&#x27;) }}{{ mov.cantidad }}
+                    &lt;/span&gt;
+                    &lt;span class&#x3D;&quot;text-gray-400 text-xs ml-1&quot;&gt;un.&lt;/span&gt;
+                  &lt;/td&gt;
+
+                  &lt;td class&#x3D;&quot;px-5 py-3.5 text-gray-600 max-w-[240px]&quot;&gt;
+                    &lt;span class&#x3D;&quot;truncate block&quot; [title]&#x3D;&quot;mov.motivo || &#x27;&#x27;&quot;&gt;{{ mov.motivo || &#x27;—&#x27; }}&lt;/span&gt;
+                  &lt;/td&gt;
+
+                  &lt;td class&#x3D;&quot;px-5 py-3.5&quot;&gt;
+                    &lt;div class&#x3D;&quot;flex items-center gap-2&quot;&gt;
+                      &lt;div class&#x3D;&quot;w-7 h-7 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0&quot;&gt;
+                        &lt;span class&#x3D;&quot;text-blue-700 text-[10px] font-bold&quot;&gt;
+                          {{ mov.usuario?.nombres?.charAt(0) }}{{ mov.usuario?.apellidos?.charAt(0) }}
+                        &lt;/span&gt;
+                      &lt;/div&gt;
+                      &lt;span class&#x3D;&quot;text-gray-700 text-xs font-medium&quot;&gt;{{ mov.usuario?.nombres }} {{ mov.usuario?.apellidos }}&lt;/span&gt;
+                    &lt;/div&gt;
+                  &lt;/td&gt;
+
+                  &lt;td class&#x3D;&quot;px-5 py-3.5 text-gray-500 text-xs whitespace-nowrap&quot;&gt;
+                    {{ formatFecha(mov.fecha) }}
+                  &lt;/td&gt;
+                &lt;/tr&gt;
+              &lt;/tbody&gt;
+            &lt;/table&gt;
+          &lt;/div&gt;
+
+          &lt;div class&#x3D;&quot;px-5 py-3 border-t border-gray-50 bg-gray-50/50 flex items-center justify-between&quot;&gt;
+            &lt;span class&#x3D;&quot;text-xs text-gray-400 font-medium&quot;&gt;Mostrando {{ movimientosFiltrados.length }} de {{ movimientos.length }} registros&lt;/span&gt;
+            &lt;button (click)&#x3D;&quot;exportarExcel()&quot;
+                    class&#x3D;&quot;flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-semibold rounded-lg text-xs transition-all&quot;&gt;
+              &lt;svg class&#x3D;&quot;w-3.5 h-3.5&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+                &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z&quot;/&gt;
+              &lt;/svg&gt;
+              Exportar Excel
+            &lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &#x60;,
+})
+export class MovimientosInventarioComponent implements OnInit {
+  private svc &#x3D; inject(InventarioService);
+
+  busqueda &#x3D; &#x27;&#x27;;
+  filtroTipo &#x3D; &#x27;&#x27;;
+  cargando &#x3D; false;
+
+  todos: InventarioItem[] &#x3D; [];
+  productosFiltrados: InventarioItem[] &#x3D; [];
+  productoSeleccionado: InventarioItem | null &#x3D; null;
+
+  movimientos: MovimientoInventario[] &#x3D; [];
+  movimientosFiltrados: MovimientoInventario[] &#x3D; [];
+
+  ngOnInit() {
+    this.svc.listarAdmin().subscribe({ next: (items) &#x3D;&gt; (this.todos &#x3D; items), error: () &#x3D;&gt; {} });
+  }
+
+  filtrarProductos() {
+    this.productoSeleccionado &#x3D; null;
+    this.movimientos &#x3D; [];
+    this.movimientosFiltrados &#x3D; [];
+    const q &#x3D; this.busqueda.toLowerCase().trim();
+    if (!q) { this.productosFiltrados &#x3D; []; return; }
+    this.productosFiltrados &#x3D; this.todos.filter(
+      p &#x3D;&gt; p.medicamento.nombreGenerico.toLowerCase().includes(q) ||
+           p.medicamento.codigo.toLowerCase().includes(q) ||
+           (p.medicamento.nombreComercial?.toLowerCase().includes(q))
+    ).slice(0, 10);
+  }
+
+  seleccionarProducto(p: InventarioItem) {
+    this.productoSeleccionado &#x3D; p;
+    this.busqueda &#x3D; p.medicamento.nombreGenerico;
+    this.productosFiltrados &#x3D; [];
+    this.cargarMovimientos();
+  }
+
+  cargarMovimientos() {
+    if (!this.productoSeleccionado) return;
+    this.cargando &#x3D; true;
+    this.svc.obtenerMovimientos(this.productoSeleccionado.id).subscribe({
+      next: (movs) &#x3D;&gt; {
+        this.movimientos &#x3D; movs;
+        this.aplicarFiltros();
+        this.cargando &#x3D; false;
+      },
+      error: () &#x3D;&gt; { this.cargando &#x3D; false; }
+    });
+  }
+
+  aplicarFiltros() {
+    this.movimientosFiltrados &#x3D; this.filtroTipo
+      ? this.movimientos.filter(m &#x3D;&gt; m.tipo &#x3D;&#x3D;&#x3D; this.filtroTipo)
+      : [...this.movimientos];
+  }
+
+  limpiarSeleccion() {
+    this.productoSeleccionado &#x3D; null;
+    this.busqueda &#x3D; &#x27;&#x27;;
+    this.filtroTipo &#x3D; &#x27;&#x27;;
+    this.movimientos &#x3D; [];
+    this.movimientosFiltrados &#x3D; [];
+    this.productosFiltrados &#x3D; [];
+  }
+
+  contarTipo(tipo: string): number {
+    return this.movimientosFiltrados.filter(m &#x3D;&gt; m.tipo &#x3D;&#x3D;&#x3D; tipo).length;
+  }
+
+  etiquetaTipo(tipo: string): string {
+    const map: Record&lt;string, string&gt; &#x3D; {
+      ENTRADA: &#x27;Entrada&#x27;, SALIDA: &#x27;Salida&#x27;, AJUSTE: &#x27;Ajuste&#x27;, CONSUMO: &#x27;Consumo&#x27;,
+      CADUCADO: &#x27;Caducado&#x27;, PERDIDA: &#x27;Pérdida&#x27;, DISPENSACION: &#x27;Dispensación&#x27;
+    };
+    return map[tipo] ?? tipo;
+  }
+
+  formatFecha(fechaISO: string): string {
+    if (!fechaISO) return &#x27;—&#x27;;
+    // Los movimientos se almacenan en UTC real; convertir a Honduras (UTC-6)
+    const utc &#x3D; new Date(fechaISO);
+    const local &#x3D; new Date(utc.getTime() - 6 * 60 * 60 * 1000);
+    const dd  &#x3D; String(local.getUTCDate()).padStart(2, &#x27;0&#x27;);
+    const mm  &#x3D; String(local.getUTCMonth() + 1).padStart(2, &#x27;0&#x27;);
+    const yyyy &#x3D; local.getUTCFullYear();
+    const hh  &#x3D; String(local.getUTCHours()).padStart(2, &#x27;0&#x27;);
+    const min &#x3D; String(local.getUTCMinutes()).padStart(2, &#x27;0&#x27;);
+    return &#x60;${dd}/${mm}/${yyyy} ${hh}:${min}&#x60;;
+  }
+
+  exportarExcel() {
+    if (!this.productoSeleccionado || this.movimientosFiltrados.length &#x3D;&#x3D;&#x3D; 0) return;
+
+    const med &#x3D; this.productoSeleccionado.medicamento;
+    const titulo &#x3D; &#x60;Movimientos de Inventario - ${med.nombreGenerico}&#x60;;
+    const subtitulo &#x3D; &#x60;Código: ${med.codigo} | Presentación: ${med.presentacion} | Concentración: ${med.concentracion}${this.productoSeleccionado.lote ? &#x27; | Lote: &#x27; + this.productoSeleccionado.lote : &#x27;&#x27;}&#x60;;
+    const filtroStr &#x3D; this.filtroTipo ? &#x60;Tipo filtrado: ${this.etiquetaTipo(this.filtroTipo)}&#x60; : &#x27;Todos los tipos&#x27;;
+
+    // Usar hora LOCAL del navegador para la fecha del reporte
+    const ahora &#x3D; new Date();
+    const fechaReporte &#x3D;
+      &#x60;${String(ahora.getDate()).padStart(2,&#x27;0&#x27;)}/${String(ahora.getMonth()+1).padStart(2,&#x27;0&#x27;)}/${ahora.getFullYear()} &#x60; +
+      &#x60;${String(ahora.getHours()).padStart(2,&#x27;0&#x27;)}:${String(ahora.getMinutes()).padStart(2,&#x27;0&#x27;)}&#x60;;
+
+    // Filas de datos
+    const filas &#x3D; this.movimientosFiltrados.map((mov, i) &#x3D;&gt; ({
+      &#x27;#&#x27;: i + 1,
+      &#x27;Tipo&#x27;: this.etiquetaTipo(mov.tipo),
+      &#x27;Cantidad&#x27;: mov.cantidad,
+      &#x27;Motivo&#x27;: mov.motivo ?? &#x27;—&#x27;,
+      &#x27;Realizado por&#x27;: mov.usuario ? &#x60;${mov.usuario.nombres} ${mov.usuario.apellidos}&#x60; : &#x27;—&#x27;,
+      &#x27;Fecha&#x27;: this.formatFecha(mov.fecha),
+    }));
+
+    const wb &#x3D; XLSX.utils.book_new();
+    const ws: XLSX.WorkSheet &#x3D; {};
+
+    XLSX.utils.sheet_add_aoa(ws, [
+      [titulo],
+      [subtitulo],
+      [&#x60;Filtro: ${filtroStr}  |  Generado: ${fechaReporte}  |  Total registros: ${this.movimientosFiltrados.length}&#x60;],
+      [],
+    ], { origin: &#x27;A1&#x27; });
+
+    XLSX.utils.sheet_add_json(ws, filas, { origin: &#x27;A5&#x27; });
+
+    ws[&#x27;!cols&#x27;] &#x3D; [
+      { wch: 5  },
+      { wch: 16 },
+      { wch: 12 },
+      { wch: 40 },
+      { wch: 28 },
+      { wch: 18 },
+    ];
+
+    const nombreArchivo &#x3D; &#x60;movimientos_${med.codigo}_${ahora.getFullYear()}-${String(ahora.getMonth()+1).padStart(2,&#x27;0&#x27;)}-${String(ahora.getDate()).padStart(2,&#x27;0&#x27;)}.xlsx&#x60;;
+
+    XLSX.utils.book_append_sheet(wb, ws, &#x27;Movimientos&#x27;);
+    XLSX.writeFile(wb, nombreArchivo);
+  }
+}
+</code></pre>
+    </div>
+
+
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="min-h-screen bg-gray-50 p-6">  <!-- Encabezado -->  <div class="mb-6 flex items-center justify-between">    <div>      <h1 class="text-2xl font-bold text-gray-800">Movimientos de Inventario</h1>      <p class="text-sm text-gray-500 mt-1">Historial de entradas, salidas y ajustes por producto</p>    </div>    <!-- Botón Exportar -->    <button *ngIf="movimientosFiltrados.length > 0"            (click)="exportarExcel()"            class="flex items-center gap-2 px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-sm transition-all shadow-sm hover:shadow-md hover:shadow-emerald-500/20 active:scale-95">      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>      </svg>      Exportar Excel    </button>  </div>  <!-- Panel de Filtros -->  <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 mb-6">    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">      <!-- Buscador de producto -->      <div>        <label class="block text-xs font-bold text-gray-600 mb-1 uppercase tracking-wide">Buscar Producto</label>        <div class="relative">          <input            [(ngModel)]="busqueda"            (ngModelChange)="filtrarProductos()"            type="text"            placeholder="Nombre genérico, código..."            class="w-full pl-9 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-blue-400 focus:bg-white transition-all"          />          <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>          </svg>        </div>        <!-- Dropdown sugerencias -->        <div *ngIf="productosFiltrados.length > 0 && !productoSeleccionado" class="mt-1 bg-white border border-gray-200 rounded-xl shadow-lg z-10 max-h-48 overflow-y-auto">          <button *ngFor="let p of productosFiltrados"                  (click)="seleccionarProducto(p)"                  class="w-full text-left px-4 py-2.5 text-sm hover:bg-blue-50 hover:text-blue-700 transition-colors border-b border-gray-50 last:border-0">            <span class="font-medium">{{ p.medicamento.nombreGenerico }}</span>            <span class="text-gray-400 ml-2 text-xs">{{ p.medicamento.codigo }}</span>            <span *ngIf="p.lote" class="text-gray-400 ml-2 text-xs">Lote: {{ p.lote }}</span>          </button>        </div>      </div>      <!-- Filtro por tipo -->      <div>        <label class="block text-xs font-bold text-gray-600 mb-1 uppercase tracking-wide">Tipo de Movimiento</label>        <select [(ngModel)]="filtroTipo" (ngModelChange)="aplicarFiltros()"                class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-blue-400 focus:bg-white transition-all">          <option value="">Todos</option>          <option value="ENTRADA">Entrada</option>          <option value="SALIDA">Salida</option>          <option value="AJUSTE">Ajuste</option>          <option value="CONSUMO">Consumo</option>          <option value="DISPENSACION">Dispensación</option>          <option value="CADUCADO">Caducado</option>          <option value="PERDIDA">Pérdida</option>        </select>      </div>      <!-- Limpiar selección -->      <div class="flex items-end">        <button *ngIf="productoSeleccionado"                (click)="limpiarSeleccion()"                class="w-full py-2.5 px-4 bg-gray-100 hover:bg-gray-200 text-gray-600 font-semibold rounded-xl text-sm transition-all flex items-center justify-center gap-2">          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>          Limpiar selección        </button>      </div>    </div>    <!-- Producto seleccionado badge -->    <div *ngIf="productoSeleccionado" class="mt-4 flex items-center gap-3 p-3 bg-blue-50 border border-blue-100 rounded-xl">      <div class="w-9 h-9 bg-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">        <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>        </svg>      </div>      <div class="flex-1 min-w-0">        <p class="text-sm font-bold text-blue-800 truncate">{{ productoSeleccionado.medicamento.nombreGenerico }}</p>        <p class="text-xs text-blue-500">          {{ productoSeleccionado.medicamento.codigo }} ·          {{ productoSeleccionado.medicamento.presentacion }} ·          {{ productoSeleccionado.medicamento.concentracion }}          <span *ngIf="productoSeleccionado.lote"> · Lote: {{ productoSeleccionado.lote }}</span>        </p>      </div>      <div class="text-right flex-shrink-0">        <p class="text-xs font-bold text-blue-700">Stock actual</p>        <p class="text-xl font-black text-blue-800">{{ productoSeleccionado.cantidadActual }}</p>      </div>    </div>  </div>  <!-- Estado: sin selección -->  <div *ngIf="!productoSeleccionado" class="bg-white rounded-2xl border border-dashed border-gray-200 p-16 flex flex-col items-center justify-center text-center">    <div class="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mb-4">      <svg class="w-8 h-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>      </svg>    </div>    <p class="text-gray-500 font-semibold text-base mb-1">Seleccione un producto</p>    <p class="text-gray-400 text-sm">Use el buscador para encontrar el medicamento y ver su historial de movimientos</p>  </div>  <!-- Cargando -->  <div *ngIf="cargando" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-12 flex flex-col items-center justify-center gap-3">    <svg class="animate-spin h-8 w-8 text-blue-500" fill="none" viewBox="0 0 24 24">      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>    </svg>    <p class="text-sm text-gray-500 font-medium">Cargando movimientos...</p>  </div>  <!-- Tabla de movimientos -->  <div *ngIf="productoSeleccionado && !cargando">    <!-- Tarjetas de resumen -->    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">        <p class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-1">Total Movimientos</p>        <p class="text-3xl font-black text-gray-800">{{ movimientosFiltrados.length }}</p>      </div>      <div class="bg-green-50 rounded-2xl border border-green-100 shadow-sm p-4">        <p class="text-xs font-bold text-green-500 uppercase tracking-wide mb-1">Entradas</p>        <p class="text-3xl font-black text-green-700">{{ contarTipo(\'ENTRADA\') }}</p>      </div>      <div class="bg-red-50 rounded-2xl border border-red-100 shadow-sm p-4">        <p class="text-xs font-bold text-red-400 uppercase tracking-wide mb-1">Salidas / Dispensaciones</p>        <p class="text-3xl font-black text-red-700">{{ contarTipo(\'SALIDA\') + contarTipo(\'CONSUMO\') + contarTipo(\'DISPENSACION\') + contarTipo(\'CADUCADO\') + contarTipo(\'PERDIDA\') }}</p>      </div>      <div class="bg-amber-50 rounded-2xl border border-amber-100 shadow-sm p-4">        <p class="text-xs font-bold text-amber-500 uppercase tracking-wide mb-1">Ajustes</p>        <p class="text-3xl font-black text-amber-700">{{ contarTipo(\'AJUSTE\') }}</p>      </div>    </div>    <!-- Sin movimientos -->    <div *ngIf="movimientosFiltrados.length === 0" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-12 text-center">      <p class="text-gray-400 font-medium">No se encontraron movimientos con los filtros aplicados</p>    </div>    <!-- Tabla -->    <div *ngIf="movimientosFiltrados.length > 0" class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">      <div class="overflow-x-auto">        <table class="w-full text-sm">          <thead>            <tr class="bg-gray-50 border-b border-gray-100">              <th class="text-left px-5 py-3.5 text-xs font-bold text-gray-500 uppercase tracking-wide">#</th>              <th class="text-left px-5 py-3.5 text-xs font-bold text-gray-500 uppercase tracking-wide">Tipo</th>              <th class="text-left px-5 py-3.5 text-xs font-bold text-gray-500 uppercase tracking-wide">Cantidad</th>              <th class="text-left px-5 py-3.5 text-xs font-bold text-gray-500 uppercase tracking-wide">Motivo</th>              <th class="text-left px-5 py-3.5 text-xs font-bold text-gray-500 uppercase tracking-wide">Realizado por</th>              <th class="text-left px-5 py-3.5 text-xs font-bold text-gray-500 uppercase tracking-wide">Fecha</th>            </tr>          </thead>          <tbody class="divide-y divide-gray-50">            <tr *ngFor="let mov of movimientosFiltrados; let i = index"                class="hover:bg-gray-50 transition-colors">              <td class="px-5 py-3.5 text-gray-400 font-mono text-xs">{{ i + 1 }}</td>              <!-- Badge de tipo -->              <td class="px-5 py-3.5">                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold"                      [ngClass]="{                        \'bg-green-100 text-green-700\': mov.tipo === \'ENTRADA\',                        \'bg-red-100 text-red-700\': mov.tipo === \'SALIDA\',                        \'bg-blue-100 text-blue-700\': mov.tipo === \'CONSUMO\',                        \'bg-amber-100 text-amber-700\': mov.tipo === \'AJUSTE\'                      }">                  <span class="w-1.5 h-1.5 rounded-full"                        [ngClass]="{                          \'bg-green-500\': mov.tipo === \'ENTRADA\',                          \'bg-red-500\': mov.tipo === \'SALIDA\',                          \'bg-blue-500\': mov.tipo === \'CONSUMO\',                          \'bg-amber-500\': mov.tipo === \'AJUSTE\'                        }"></span>                  {{ etiquetaTipo(mov.tipo) }}                </span>              </td>              <!-- Cantidad con signo -->              <td class="px-5 py-3.5">                <span class="font-bold text-base"                      [ngClass]="{                        \'text-green-600\': mov.tipo === \'ENTRADA\',                        \'text-red-600\': mov.tipo === \'SALIDA\' || mov.tipo === \'CONSUMO\',                        \'text-amber-600\': mov.tipo === \'AJUSTE\'                      }">                  {{ mov.tipo === \'ENTRADA\' ? \'+\' : (mov.tipo === \'AJUSTE\' && mov.cantidad > 0 ? \'+\' : \'\') }}{{ mov.cantidad }}                </span>                <span class="text-gray-400 text-xs ml-1">un.</span>              </td>              <td class="px-5 py-3.5 text-gray-600 max-w-[240px]">                <span class="truncate block" [title]="mov.motivo || \'\'">{{ mov.motivo || \'—\' }}</span>              </td>              <td class="px-5 py-3.5">                <div class="flex items-center gap-2">                  <div class="w-7 h-7 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">                    <span class="text-blue-700 text-[10px] font-bold">                      {{ mov.usuario?.nombres?.charAt(0) }}{{ mov.usuario?.apellidos?.charAt(0) }}                    </span>                  </div>                  <span class="text-gray-700 text-xs font-medium">{{ mov.usuario?.nombres }} {{ mov.usuario?.apellidos }}</span>                </div>              </td>              <td class="px-5 py-3.5 text-gray-500 text-xs whitespace-nowrap">                {{ formatFecha(mov.fecha) }}              </td>            </tr>          </tbody>        </table>      </div>      <div class="px-5 py-3 border-t border-gray-50 bg-gray-50/50 flex items-center justify-between">        <span class="text-xs text-gray-400 font-medium">Mostrando {{ movimientosFiltrados.length }} de {{ movimientos.length }} registros</span>        <button (click)="exportarExcel()"                class="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-semibold rounded-lg text-xs transition-all">          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>          </svg>          Exportar Excel        </button>      </div>    </div>  </div></div></div>'
+    var COMPONENTS = [{'name': 'AgendasComponent', 'selector': 'app-agendas'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'BuscadorPacienteComponent', 'selector': 'app-buscador-paciente'},{'name': 'CitasComponent', 'selector': 'app-citas'},{'name': 'ConstructorFormularioComponent', 'selector': 'app-constructor-formulario'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'EpidemiologiaDashboardComponent', 'selector': 'app-epidemiologia-dashboard'},{'name': 'EstadisticasHospitalariasComponent', 'selector': 'app-estadisticas-hospitalarias'},{'name': 'FarmaciaComponent', 'selector': 'app-farmacia'},{'name': 'GestionHospitalizacionComponent', 'selector': 'app-gestion-hospitalizacion'},{'name': 'GestionLotesModalComponent', 'selector': 'app-gestion-lotes-modal'},{'name': 'GestionReportesComponent', 'selector': 'app-gestion-reportes'},{'name': 'HistoriaClinicaComponent', 'selector': 'app-historia-clinica'},{'name': 'InfraestructuraModalComponent', 'selector': 'app-infraestructura-modal'},{'name': 'InventarioVacunasComponent', 'selector': 'app-inventario-vacunas'},{'name': 'LaboratorioComponent', 'selector': 'app-laboratorio'},{'name': 'ListaPlantillasComponent', 'selector': 'app-lista-plantillas'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MainLayoutComponent', 'selector': 'app-main-layout'},{'name': 'MantenimientoDiagnosticosComponent', 'selector': 'app-mantenimiento-diagnosticos'},{'name': 'MantenimientoEstablecimientosComponent', 'selector': 'app-mantenimiento-establecimientos'},{'name': 'MantenimientoInventarioComponent', 'selector': 'app-mantenimiento-inventario'},{'name': 'MantenimientoLaboratorioComponent', 'selector': 'app-mantenimiento-laboratorio'},{'name': 'MantenimientoLoginComponent', 'selector': 'app-mantenimiento-login'},{'name': 'MantenimientoMedicamentosComponent', 'selector': 'app-mantenimiento-medicamentos'},{'name': 'MantenimientoRadiologiaComponent', 'selector': 'app-mantenimiento-radiologia'},{'name': 'MantenimientoRolesComponent', 'selector': 'app-mantenimiento-roles'},{'name': 'MovimientosInventarioComponent', 'selector': 'app-movimientos-inventario'},{'name': 'NotificationComponent', 'selector': 'app-notification'},{'name': 'NuevaConsultaComponent', 'selector': 'app-nueva-consulta'},{'name': 'PacientesComponent', 'selector': 'app-pacientes'},{'name': 'PermisosUsuariosComponent', 'selector': 'app-permisos-usuarios'},{'name': 'RecetasPacienteComponent', 'selector': 'app-recetas-paciente'},{'name': 'RegistroVacunaModalComponent', 'selector': 'app-registro-vacuna-modal'},{'name': 'ReportesComponent', 'selector': 'app-reportes'},{'name': 'TriajeComponent', 'selector': 'app-triaje'},{'name': 'UsuariosComponent', 'selector': 'app-usuarios'},{'name': 'VacunacionComponent', 'selector': 'app-vacunacion'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'MovimientosInventarioComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'MovimientosInventarioComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

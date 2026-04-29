@@ -1,0 +1,2844 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>siss-frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">siss-frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content injectable">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Injectables</li>
+  <li class="breadcrumb-item" >ReportePdfService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/app/core/services/reporte-pdf.service.ts</code>
+        </p>
+
+
+
+
+
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#calcularIMC" >calcularIMC</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#formatDate" >formatDate</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#generarCarnetPdfUrl" >generarCarnetPdfUrl</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#generarCarnetPosUrl" >generarCarnetPosUrl</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#generarCoberturaPdf" >generarCoberturaPdf</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#generarConsultaPdfUrl" >generarConsultaPdfUrl</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#generarIncapacidadPdfUrl" >generarIncapacidadPdfUrl</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#generarLaboratorioPdfUrl" >generarLaboratorioPdfUrl</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#generarMorbilidadPdf" >generarMorbilidadPdf</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#generarMovimientosLotePdfUrl" >generarMovimientosLotePdfUrl</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#generarRadiologiaPdfUrl" >generarRadiologiaPdfUrl</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#generarRecetaPdfUrl" >generarRecetaPdfUrl</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#generarRemisionPdfUrl" >generarRemisionPdfUrl</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#generarVacunacionPdfUrl" >generarVacunacionPdfUrl</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#generarVacunacionPosUrl" >generarVacunacionPosUrl</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#renderHeader" >renderHeader</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#renderPosFooter" >renderPosFooter</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#renderPosHeader" >renderPosHeader</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#renderSectionTitle" >renderSectionTitle</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#renderSignature" >renderSignature</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+
+            <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="calcularIMC"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>calcularIMC</b></span>
+                        <a href="#calcularIMC"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>calcularIMC(peso?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, talla?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="731"
+                                    class="link-to-prism">src/app/core/services/reporte-pdf.service.ts:731</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>peso</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>talla</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="formatDate"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>formatDate</b></span>
+                        <a href="#formatDate"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>formatDate(date: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="725"
+                                    class="link-to-prism">src/app/core/services/reporte-pdf.service.ts:725</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>date</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generarCarnetPdfUrl"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>generarCarnetPdfUrl</b></span>
+                        <a href="#generarCarnetPdfUrl"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>generarCarnetPdfUrl(historial: any[], pac: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="561"
+                                    class="link-to-prism">src/app/core/services/reporte-pdf.service.ts:561</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>historial</td>
+                                            <td>
+                                                        <code>any[]</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>pac</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;string&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generarCarnetPosUrl"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>generarCarnetPosUrl</b></span>
+                        <a href="#generarCarnetPosUrl"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>generarCarnetPosUrl(historial: any[], pac: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="606"
+                                    class="link-to-prism">src/app/core/services/reporte-pdf.service.ts:606</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>historial</td>
+                                            <td>
+                                                        <code>any[]</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>pac</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;string&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generarCoberturaPdf"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>generarCoberturaPdf</b></span>
+                        <a href="#generarCoberturaPdf"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>generarCoberturaPdf(data: any[], inicio: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, fin: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, est: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="700"
+                                    class="link-to-prism">src/app/core/services/reporte-pdf.service.ts:700</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Default value</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>data</td>
+                                            <td>
+                                                        <code>any[]</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                            </td>
+
+                                        </tr>
+                                        <tr>
+                                                <td>inicio</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                            </td>
+
+                                        </tr>
+                                        <tr>
+                                                <td>fin</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                            </td>
+
+                                        </tr>
+                                        <tr>
+                                                <td>est</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                                    <code>null</code>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;string&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generarConsultaPdfUrl"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>generarConsultaPdfUrl</b></span>
+                        <a href="#generarConsultaPdfUrl"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>generarConsultaPdfUrl(h: <a href="../interfaces/HistoriaClinica.html" target="_self">HistoriaClinica</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="10"
+                                    class="link-to-prism">src/app/core/services/reporte-pdf.service.ts:10</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>h</td>
+                                            <td>
+                                                            <code><a href="../interfaces/HistoriaClinica.html" target="_self" >HistoriaClinica</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;string&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generarIncapacidadPdfUrl"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>generarIncapacidadPdfUrl</b></span>
+                        <a href="#generarIncapacidadPdfUrl"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>generarIncapacidadPdfUrl(h: <a href="../interfaces/HistoriaClinica.html" target="_self">HistoriaClinica</a>, formato: "NORMAL" | "POS")</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="388"
+                                    class="link-to-prism">src/app/core/services/reporte-pdf.service.ts:388</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Default value</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>h</td>
+                                            <td>
+                                                            <code><a href="../interfaces/HistoriaClinica.html" target="_self" >HistoriaClinica</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                            </td>
+
+                                        </tr>
+                                        <tr>
+                                                <td>formato</td>
+                                            <td>
+                                                        <code>&quot;NORMAL&quot; | &quot;POS&quot;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                                    <code>&#x27;NORMAL&#x27;</code>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;string&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generarLaboratorioPdfUrl"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>generarLaboratorioPdfUrl</b></span>
+                        <a href="#generarLaboratorioPdfUrl"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>generarLaboratorioPdfUrl(h: <a href="../interfaces/HistoriaClinica.html" target="_self">HistoriaClinica</a>, formato: "NORMAL" | "POS")</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="318"
+                                    class="link-to-prism">src/app/core/services/reporte-pdf.service.ts:318</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Default value</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>h</td>
+                                            <td>
+                                                            <code><a href="../interfaces/HistoriaClinica.html" target="_self" >HistoriaClinica</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                            </td>
+
+                                        </tr>
+                                        <tr>
+                                                <td>formato</td>
+                                            <td>
+                                                        <code>&quot;NORMAL&quot; | &quot;POS&quot;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                                    <code>&#x27;NORMAL&#x27;</code>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;string&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generarMorbilidadPdf"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>generarMorbilidadPdf</b></span>
+                        <a href="#generarMorbilidadPdf"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>generarMorbilidadPdf(data: any[], inicio: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, fin: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="691"
+                                    class="link-to-prism">src/app/core/services/reporte-pdf.service.ts:691</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>data</td>
+                                            <td>
+                                                        <code>any[]</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>inicio</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>fin</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;string&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generarMovimientosLotePdfUrl"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>generarMovimientosLotePdfUrl</b></span>
+                        <a href="#generarMovimientosLotePdfUrl"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>generarMovimientosLotePdfUrl(movimientos: any[], lote: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="647"
+                                    class="link-to-prism">src/app/core/services/reporte-pdf.service.ts:647</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>movimientos</td>
+                                            <td>
+                                                        <code>any[]</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>lote</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;string&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generarRadiologiaPdfUrl"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>generarRadiologiaPdfUrl</b></span>
+                        <a href="#generarRadiologiaPdfUrl"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>generarRadiologiaPdfUrl(h: <a href="../interfaces/HistoriaClinica.html" target="_self">HistoriaClinica</a>, formato: "NORMAL" | "POS")</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="353"
+                                    class="link-to-prism">src/app/core/services/reporte-pdf.service.ts:353</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Default value</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>h</td>
+                                            <td>
+                                                            <code><a href="../interfaces/HistoriaClinica.html" target="_self" >HistoriaClinica</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                            </td>
+
+                                        </tr>
+                                        <tr>
+                                                <td>formato</td>
+                                            <td>
+                                                        <code>&quot;NORMAL&quot; | &quot;POS&quot;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                                    <code>&#x27;NORMAL&#x27;</code>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;string&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generarRecetaPdfUrl"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>generarRecetaPdfUrl</b></span>
+                        <a href="#generarRecetaPdfUrl"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>generarRecetaPdfUrl(h: <a href="../interfaces/HistoriaClinica.html" target="_self">HistoriaClinica</a>, formato: "NORMAL" | "POS")</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="276"
+                                    class="link-to-prism">src/app/core/services/reporte-pdf.service.ts:276</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Default value</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>h</td>
+                                            <td>
+                                                            <code><a href="../interfaces/HistoriaClinica.html" target="_self" >HistoriaClinica</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                            </td>
+
+                                        </tr>
+                                        <tr>
+                                                <td>formato</td>
+                                            <td>
+                                                        <code>&quot;NORMAL&quot; | &quot;POS&quot;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                                    <code>&#x27;NORMAL&#x27;</code>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;string&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generarRemisionPdfUrl"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>generarRemisionPdfUrl</b></span>
+                        <a href="#generarRemisionPdfUrl"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>generarRemisionPdfUrl(h: <a href="../interfaces/HistoriaClinica.html" target="_self">HistoriaClinica</a>, formato: "NORMAL" | "POS")</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="417"
+                                    class="link-to-prism">src/app/core/services/reporte-pdf.service.ts:417</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Default value</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>h</td>
+                                            <td>
+                                                            <code><a href="../interfaces/HistoriaClinica.html" target="_self" >HistoriaClinica</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                            </td>
+
+                                        </tr>
+                                        <tr>
+                                                <td>formato</td>
+                                            <td>
+                                                        <code>&quot;NORMAL&quot; | &quot;POS&quot;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                                    <code>&#x27;NORMAL&#x27;</code>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;string&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generarVacunacionPdfUrl"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>generarVacunacionPdfUrl</b></span>
+                        <a href="#generarVacunacionPdfUrl"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>generarVacunacionPdfUrl(reg: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, pac: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="492"
+                                    class="link-to-prism">src/app/core/services/reporte-pdf.service.ts:492</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>reg</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>pac</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;string&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generarVacunacionPosUrl"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>generarVacunacionPosUrl</b></span>
+                        <a href="#generarVacunacionPosUrl"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>generarVacunacionPosUrl(reg: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, pac: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="533"
+                                    class="link-to-prism">src/app/core/services/reporte-pdf.service.ts:533</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>reg</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>pac</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;string&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="renderHeader"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>renderHeader</b></span>
+                        <a href="#renderHeader"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>renderHeader(doc: jsPDF, h: <a href="../interfaces/HistoriaClinica.html" target="_self">HistoriaClinica</a>, margin: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, pageWidth: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="468"
+                                    class="link-to-prism">src/app/core/services/reporte-pdf.service.ts:468</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>doc</td>
+                                            <td>
+                                                        <code>jsPDF</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>h</td>
+                                            <td>
+                                                            <code><a href="../interfaces/HistoriaClinica.html" target="_self" >HistoriaClinica</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>margin</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>pageWidth</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="renderPosFooter"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>renderPosFooter</b></span>
+                        <a href="#renderPosFooter"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>renderPosFooter(doc: jsPDF, h: <a href="../interfaces/HistoriaClinica.html" target="_self">HistoriaClinica</a>, y: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="458"
+                                    class="link-to-prism">src/app/core/services/reporte-pdf.service.ts:458</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>doc</td>
+                                            <td>
+                                                        <code>jsPDF</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>h</td>
+                                            <td>
+                                                            <code><a href="../interfaces/HistoriaClinica.html" target="_self" >HistoriaClinica</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>y</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="renderPosHeader"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>renderPosHeader</b></span>
+                        <a href="#renderPosHeader"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>renderPosHeader(doc: jsPDF, h: <a href="../interfaces/HistoriaClinica.html" target="_self">HistoriaClinica</a>, titulo: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="449"
+                                    class="link-to-prism">src/app/core/services/reporte-pdf.service.ts:449</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>doc</td>
+                                            <td>
+                                                        <code>jsPDF</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>h</td>
+                                            <td>
+                                                            <code><a href="../interfaces/HistoriaClinica.html" target="_self" >HistoriaClinica</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>titulo</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="renderSectionTitle"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>renderSectionTitle</b></span>
+                        <a href="#renderSectionTitle"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>renderSectionTitle(doc: jsPDF, title: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, x: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, y: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="478"
+                                    class="link-to-prism">src/app/core/services/reporte-pdf.service.ts:478</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>doc</td>
+                                            <td>
+                                                        <code>jsPDF</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>title</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>x</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>y</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="renderSignature"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>renderSignature</b></span>
+                        <a href="#renderSignature"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>renderSignature(doc: jsPDF, h: <a href="../interfaces/HistoriaClinica.html" target="_self">HistoriaClinica</a>, margin: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, pageWidth: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, y: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="484"
+                                    class="link-to-prism">src/app/core/services/reporte-pdf.service.ts:484</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>doc</td>
+                                            <td>
+                                                        <code>jsPDF</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>h</td>
+                                            <td>
+                                                            <code><a href="../interfaces/HistoriaClinica.html" target="_self" >HistoriaClinica</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>margin</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>pageWidth</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>y</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@angular/core&#x27;;
+import { jsPDF } from &#x27;jspdf&#x27;;
+import { HistoriaClinica } from &#x27;./historia-clinica.service&#x27;;
+
+@Injectable({
+  providedIn: &#x27;root&#x27;
+})
+export class ReportePdfService {
+
+  async generarConsultaPdfUrl(h: HistoriaClinica): Promise&lt;string&gt; {
+    const doc &#x3D; new jsPDF({ orientation: &#x27;p&#x27;, unit: &#x27;mm&#x27;, format: &#x27;a4&#x27; });
+    const margin &#x3D; 20;
+    const pageWidth &#x3D; doc.internal.pageSize.getWidth();
+    const contentWidth &#x3D; pageWidth - (margin * 2);
+    let currentY &#x3D; margin;
+
+    const safeText &#x3D; (text: any, x: number, y: number, options?: any) &#x3D;&gt; {
+      doc.text(String(text || &#x27;—&#x27;), x, y, options);
+    };
+
+    const checkPageBreak &#x3D; (needed: number) &#x3D;&gt; {
+      if (currentY + needed &gt; 275) {
+        doc.addPage();
+        currentY &#x3D; margin;
+        this.renderHeader(doc, h, margin, pageWidth);
+        currentY +&#x3D; 25;
+      }
+    };
+
+    this.renderHeader(doc, h, margin, pageWidth);
+    currentY +&#x3D; 25;
+
+    doc.setFillColor(248, 250, 252);
+    doc.rect(margin, currentY, contentWidth, 22, &#x27;F&#x27;);
+    const pac &#x3D; (h.paciente as any) || {};
+    doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;); doc.setFontSize(14); doc.setTextColor(15, 23, 42);
+    safeText(&#x60;${pac.nombres || &#x27;&#x27;} ${pac.apellidos || &#x27;&#x27;}&#x60;.trim().toUpperCase(), margin + 5, currentY + 10);
+    doc.setFontSize(9); doc.setFont(&#x27;helvetica&#x27;, &#x27;normal&#x27;); doc.setTextColor(100, 116, 139);
+    const fNac &#x3D; pac.fechaNacimiento ? String(pac.fechaNacimiento).split(&#x27;T&#x27;)[0] : &#x27;—&#x27;;
+    const fCon &#x3D; h.fecha ? String(h.fecha).split(&#x27;T&#x27;)[0] : &#x27;—&#x27;;
+    safeText(&#x60;F. NACIMIENTO: ${fNac}   |   SEXO: ${pac.sexo || &#x27;—&#x27;}   |   F. ATENCIÓN: ${fCon}&#x60;, margin + 5, currentY + 17);
+    currentY +&#x3D; 32;
+
+    this.renderSectionTitle(doc, &#x27;I. EVALUACIÓN FÍSICA Y BIOMETRÍA&#x27;, margin, currentY);
+    currentY +&#x3D; 12;
+    const vitals &#x3D; [
+      { l: &#x27;P. ARTERIAL&#x27;, v: &#x60;${h.presionSistolica || &#x27;—&#x27;}/${h.presionDiastolica || &#x27;—&#x27;}&#x60; },
+      { l: &#x27;FREC. CARD.&#x27;, v: &#x60;${h.frecuenciaCardiaca || &#x27;—&#x27;} lpm&#x60; },
+      { l: &#x27;TEMPERATURA&#x27;, v: &#x60;${h.temperatura || &#x27;—&#x27;} °C&#x60; },
+      { l: &#x27;SAT. OXIG.&#x27;, v: &#x60;${h.saturacionO2 || &#x27;—&#x27;} %&#x60; },
+      { l: &#x27;PESO ACTUAL&#x27;, v: &#x60;${h.peso || &#x27;—&#x27;} kg&#x60; },
+      { l: &#x27;ESTATURA&#x27;, v: &#x60;${h.talla || &#x27;—&#x27;} cm&#x60; },
+      { l: &#x27;I.M.C.&#x27;, v: this.calcularIMC(h.peso, h.talla) }
+    ];
+    let vX &#x3D; margin;
+    vitals.forEach((vit, i) &#x3D;&gt; {
+      doc.setFontSize(8); doc.setTextColor(100, 116, 139); doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;);
+      safeText(vit.l, vX, currentY);
+      doc.setFontSize(9); doc.setTextColor(15, 23, 42); doc.setFont(&#x27;helvetica&#x27;, &#x27;normal&#x27;);
+      safeText(vit.v, vX, currentY + 5);
+      vX +&#x3D; 45;
+      if ((i + 1) % 4 &#x3D;&#x3D;&#x3D; 0) { vX &#x3D; margin; currentY +&#x3D; 12; }
+    });
+    currentY +&#x3D; 15;
+
+    const soap &#x3D; [
+      { l: &#x27;II. SUBJETIVO (S)&#x27;, t: h.subjetivo },
+      { l: &#x27;III. OBJETIVO (O)&#x27;, t: h.objetivo },
+      { l: &#x27;IV. ANÁLISIS (A)&#x27;, t: h.analisis },
+      { l: &#x27;V. PLAN (P)&#x27;, t: h.plan }
+    ];
+    for (const s of soap) {
+      if (!s.t) continue;
+      checkPageBreak(20);
+      this.renderSectionTitle(doc, s.l, margin, currentY);
+      currentY +&#x3D; 10;
+      doc.setFontSize(9); doc.setTextColor(30, 41, 59);
+      const lines &#x3D; doc.splitTextToSize(String(s.t), contentWidth);
+      lines.forEach((line: string) &#x3D;&gt; {
+        checkPageBreak(6);
+        safeText(line, margin, currentY);
+        currentY +&#x3D; 6;
+      });
+      currentY +&#x3D; 5;
+    }
+
+    // 5. Diagnósticos
+    if (h.diagnosticos &amp;&amp; h.diagnosticos.length &gt; 0) {
+      checkPageBreak(25);
+      this.renderSectionTitle(doc, &#x27;VI. DIAGNÓSTICOS (CIE-10)&#x27;, margin, currentY);
+      currentY +&#x3D; 10;
+      doc.setFontSize(9); doc.setTextColor(15, 23, 42);
+      h.diagnosticos.forEach(d &#x3D;&gt; {
+        checkPageBreak(8);
+        doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;);
+        safeText(d.codigoCIE10, margin, currentY);
+        doc.setFont(&#x27;helvetica&#x27;, &#x27;normal&#x27;);
+        safeText(&#x60; - ${d.descripcion}&#x60;, margin + 15, currentY);
+        currentY +&#x3D; 7;
+      });
+      currentY +&#x3D; 5;
+    }
+
+    // 5. Formulario de Especialidad (Dynamic Form)
+    if (h.respuestaFormulario) {
+      checkPageBreak(20);
+      this.renderSectionTitle(doc, &#x60;VI. ESPECIALIDAD: ${h.respuestaFormulario.plantilla.nombre.toUpperCase()}&#x60;, margin, currentY);
+      currentY +&#x3D; 10;
+      doc.setFontSize(8); doc.setTextColor(15, 23, 42);
+      for (const sec of h.respuestaFormulario.plantilla.secciones) {
+        checkPageBreak(12);
+        doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;); doc.setTextColor(37, 99, 235);
+        safeText(sec.nombre.toUpperCase(), margin, currentY);
+        currentY +&#x3D; 6;
+        doc.setFont(&#x27;helvetica&#x27;, &#x27;normal&#x27;); doc.setTextColor(30, 41, 59);
+        for (const campo of sec.campos) {
+          const val &#x3D; h.respuestaFormulario.respuestas[campo.clave];
+          if (campo.tipo !&#x3D;&#x3D; &#x27;TITULO&#x27; &amp;&amp; campo.tipo !&#x3D;&#x3D; &#x27;SEPARADOR&#x27;) {
+            // Mostrar siempre los booleanos (aunque sean false) para que salga el &quot;NO&quot;
+            // Para otros tipos, solo mostrar si tienen valor
+            if (campo.tipo &#x3D;&#x3D;&#x3D; &#x27;BOOLEANO&#x27; || (val !&#x3D;&#x3D; undefined &amp;&amp; val !&#x3D;&#x3D; null &amp;&amp; val !&#x3D;&#x3D; &#x27;&#x27;)) {
+              checkPageBreak(8);
+              doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;); doc.setFontSize(7); doc.setTextColor(100, 116, 139);
+              safeText(campo.etiqueta.toUpperCase(), margin, currentY);
+              doc.setFont(&#x27;helvetica&#x27;, &#x27;normal&#x27;); doc.setFontSize(8); doc.setTextColor(15, 23, 42);
+              
+              let textoValor &#x3D; String(val || &#x27;—&#x27;);
+              if (campo.tipo &#x3D;&#x3D;&#x3D; &#x27;BOOLEANO&#x27;) {
+                textoValor &#x3D; val &#x3D;&#x3D;&#x3D; true ? &#x27;SÍ&#x27; : &#x27;NO&#x27;;
+              }
+              
+              safeText(textoValor, margin + 55, currentY);
+              currentY +&#x3D; 6;
+            }
+          }
+        }
+        currentY +&#x3D; 4;
+      }
+    }
+
+    // 6. Diagnósticos
+    if (h.diagnosticos &amp;&amp; h.diagnosticos.length &gt; 0) {
+      checkPageBreak(20);
+      this.renderSectionTitle(doc, &#x27;VII. DIAGNÓSTICOS (CIE-10)&#x27;, margin, currentY);
+      currentY +&#x3D; 10;
+      doc.setFontSize(9); doc.setTextColor(15, 23, 42);
+      h.diagnosticos.forEach(d &#x3D;&gt; {
+        checkPageBreak(8);
+        doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;);
+        safeText(d.codigoCIE10, margin, currentY);
+        doc.setFont(&#x27;helvetica&#x27;, &#x27;normal&#x27;);
+        safeText(&#x60; - ${d.descripcion}&#x60;, margin + 15, currentY);
+        currentY +&#x3D; 7;
+      });
+      currentY +&#x3D; 5;
+    }
+
+    // 7. Recetas (Tratamiento)
+    if (h.recetas &amp;&amp; h.recetas.length &gt; 0) {
+      checkPageBreak(20);
+      this.renderSectionTitle(doc, &#x27;VIII. TRATAMIENTO Y RECETAS&#x27;, margin, currentY);
+      currentY +&#x3D; 10;
+      h.recetas.forEach(r &#x3D;&gt; {
+        (r.detalles || []).forEach((det: any) &#x3D;&gt; {
+          checkPageBreak(12);
+          doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;); doc.setFontSize(9); doc.setTextColor(15, 23, 42);
+          safeText(det.medicamento?.nombreGenerico?.toUpperCase() || &#x27;MEDICAMENTO&#x27;, margin, currentY);
+          doc.setFont(&#x27;helvetica&#x27;, &#x27;normal&#x27;); doc.setFontSize(8); doc.setTextColor(100, 116, 139);
+          safeText(&#x60;Cant: ${det.cantidad}  |  Dosis: ${det.dosis}  |  Frec: ${det.frecuencia}  |  Dura: ${det.duracion} días&#x60;, margin, currentY + 4);
+          currentY +&#x3D; 10;
+        });
+      });
+      currentY +&#x3D; 5;
+    }
+
+    // 8. Solicitudes (Lab/Rad)
+    if ((h.solicitudesLab &amp;&amp; h.solicitudesLab.length &gt; 0) || (h.solicitudesRad &amp;&amp; h.solicitudesRad.length &gt; 0)) {
+      checkPageBreak(20);
+      this.renderSectionTitle(doc, &#x27;IX. SOLICITUDES DE APOYO DIAGNÓSTICO&#x27;, margin, currentY);
+      currentY +&#x3D; 10;
+      
+      // Lab
+      (h.solicitudesLab || []).forEach(s &#x3D;&gt; {
+        (s.detalles || []).forEach((det: any) &#x3D;&gt; {
+          checkPageBreak(10);
+          doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;); doc.setFontSize(8); doc.setTextColor(30, 41, 59);
+          safeText(&#x60;[LAB] ${det.examen?.nombre}&#x60;, margin, currentY);
+          if (det.indicaciones) {
+            doc.setFont(&#x27;helvetica&#x27;, &#x27;italic&#x27;); doc.setFontSize(7); doc.setTextColor(100, 116, 139);
+            safeText(&#x60;Obs: ${det.indicaciones}&#x60;, margin + 5, currentY + 4);
+            currentY +&#x3D; 8;
+          } else { currentY +&#x3D; 6; }
+        });
+      });
+
+      // Rad
+      (h.solicitudesRad || []).forEach(s &#x3D;&gt; {
+        (s.detalles || []).forEach((det: any) &#x3D;&gt; {
+          checkPageBreak(10);
+          doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;); doc.setFontSize(8); doc.setTextColor(30, 41, 59);
+          safeText(&#x60;[RAD] ${det.estudio?.nombre}&#x60;, margin, currentY);
+          if (det.indicaciones) {
+            doc.setFont(&#x27;helvetica&#x27;, &#x27;italic&#x27;); doc.setFontSize(7); doc.setTextColor(100, 116, 139);
+            safeText(&#x60;Obs: ${det.indicaciones}&#x60;, margin + 5, currentY + 4);
+            currentY +&#x3D; 8;
+          } else { currentY +&#x3D; 6; }
+        });
+      });
+      currentY +&#x3D; 5;
+    }
+
+    // 9. Incapacidades
+    if (h.incapacidades &amp;&amp; h.incapacidades.length &gt; 0) {
+      checkPageBreak(20);
+      this.renderSectionTitle(doc, &#x27;X. INCAPACIDADES MÉDICAS&#x27;, margin, currentY);
+      currentY +&#x3D; 10;
+      h.incapacidades.forEach(inc &#x3D;&gt; {
+        checkPageBreak(12);
+        doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;); doc.setFontSize(9); doc.setTextColor(220, 38, 38);
+        safeText(&#x60;${inc.tipo} - ${inc.dias} DÍAS&#x60;, margin, currentY);
+        doc.setFont(&#x27;helvetica&#x27;, &#x27;normal&#x27;); doc.setFontSize(8); doc.setTextColor(15, 23, 42);
+        safeText(&#x60;Del ${this.formatDate(inc.fechaInicio)} al ${this.formatDate(inc.fechaFin)} - Motivo: ${inc.motivo}&#x60;, margin, currentY + 4);
+        currentY +&#x3D; 10;
+      });
+      currentY +&#x3D; 5;
+    }
+
+    // 10. Referencia y Próxima Cita
+    if ((h.referidos &amp;&amp; h.referidos.length &gt; 0) || h.proximaCita) {
+      checkPageBreak(25);
+      this.renderSectionTitle(doc, &#x27;XI. SEGUIMIENTO Y REFERENCIA&#x27;, margin, currentY);
+      currentY +&#x3D; 10;
+      
+      if (h.referidos &amp;&amp; h.referidos.length &gt; 0) {
+        h.referidos.forEach(ref &#x3D;&gt; {
+          checkPageBreak(12);
+          doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;); doc.setFontSize(8); doc.setTextColor(100, 116, 139);
+          safeText(&#x27;REFERENCIA:&#x27;, margin, currentY);
+          doc.setFontSize(9); doc.setTextColor(15, 23, 42); doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;);
+          const dest &#x3D; ref.destino?.nombre || ref.establecimientoDestino || &#x27;—&#x27;;
+          safeText(&#x60;A: ${dest.toUpperCase()}&#x60;, margin + 25, currentY);
+          doc.setFont(&#x27;helvetica&#x27;, &#x27;normal&#x27;); doc.setFontSize(8); doc.setTextColor(37, 99, 235);
+          safeText(&#x60;ESP: ${ref.especialidadDestino || &#x27;GENERAL&#x27;}&#x60;, margin + 25, currentY + 4);
+          doc.setFont(&#x27;helvetica&#x27;, &#x27;italic&#x27;); doc.setTextColor(100, 116, 139);
+          safeText(&#x60;Motivo: ${ref.motivo || &#x27;—&#x27;}&#x60;, margin + 25, currentY + 8);
+          currentY +&#x3D; 12;
+        });
+      }
+      
+      if (h.proximaCita) {
+        checkPageBreak(15);
+        doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;); doc.setFontSize(8); doc.setTextColor(100, 116, 139);
+        safeText(&#x27;PRÓXIMA CITA:&#x27;, margin, currentY);
+        doc.setFontSize(9); doc.setTextColor(15, 23, 42); doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;);
+        
+        const fecha &#x3D; new Date(h.proximaCita.fechaHora);
+        const fText &#x3D; fecha.toLocaleDateString(&#x27;es-HN&#x27;, { weekday: &#x27;long&#x27;, day: &#x27;numeric&#x27;, month: &#x27;long&#x27;, year: &#x27;numeric&#x27; });
+        const hText &#x3D; fecha.toLocaleTimeString(&#x27;es-HN&#x27;, { hour: &#x27;2-digit&#x27;, minute: &#x27;2-digit&#x27;, hour12: true });
+        
+        safeText(&#x60;${fText.toUpperCase()} - ${hText}&#x60;, margin + 25, currentY);
+        if (h.proximaCita.motivo) {
+          doc.setFont(&#x27;helvetica&#x27;, &#x27;italic&#x27;); doc.setFontSize(8); doc.setTextColor(100, 116, 139);
+          safeText(&#x60;Motivo: ${h.proximaCita.motivo}&#x60;, margin + 25, currentY + 4);
+          currentY +&#x3D; 8;
+        } else { currentY +&#x3D; 6; }
+      }
+    }
+
+    checkPageBreak(40);
+    this.renderSignature(doc, h, margin, pageWidth, currentY + 20);
+
+    const blob &#x3D; doc.output(&#x27;blob&#x27;);
+    return URL.createObjectURL(blob);
+  }
+
+  async generarRecetaPdfUrl(h: HistoriaClinica, formato: &#x27;NORMAL&#x27; | &#x27;POS&#x27; &#x3D; &#x27;NORMAL&#x27;): Promise&lt;string&gt; {
+    const isPos &#x3D; formato &#x3D;&#x3D;&#x3D; &#x27;POS&#x27;;
+    const doc &#x3D; new jsPDF({ orientation: &#x27;p&#x27;, unit: &#x27;mm&#x27;, format: isPos ? [80, 150] : &#x27;a4&#x27; });
+    
+    if (isPos) {
+      this.renderPosHeader(doc, h, &#x27;RECETA MÉDICA&#x27;);
+      let y &#x3D; 35;
+      (h.recetas || []).forEach(r &#x3D;&gt; {
+        const items &#x3D; (r.detalles &amp;&amp; Array.isArray(r.detalles)) ? r.detalles : [r];
+        items.forEach((det: any) &#x3D;&gt; {
+          const medNombre &#x3D; det.medicamento?.nombreGenerico || det.nombreMedicamento || &#x27;MEDICAMENTO&#x27;;
+          doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;); doc.setFontSize(9);
+          doc.text(String(medNombre).toUpperCase(), 5, y);
+          doc.setFontSize(7); doc.setFont(&#x27;helvetica&#x27;, &#x27;normal&#x27;);
+          doc.text(&#x60;${det.dosis || &#x27;&#x27;} - ${det.frecuencia || &#x27;&#x27;}&#x60;, 5, y + 4);
+          y +&#x3D; 10;
+        });
+      });
+      this.renderPosFooter(doc, h, y + 5);
+    } else {
+      const margin &#x3D; 20; const pageWidth &#x3D; doc.internal.pageSize.getWidth();
+      this.renderHeader(doc, h, margin, pageWidth);
+      this.renderSectionTitle(doc, &#x27;RECETA MÉDICA / TRATAMIENTO&#x27;, margin, 45);
+      let y &#x3D; 55;
+      (h.recetas || []).forEach(r &#x3D;&gt; {
+        (r.detalles || []).forEach((det: any) &#x3D;&gt; {
+          doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;); doc.setFontSize(10);
+          doc.text(String(det.medicamento?.nombreGenerico || &#x27;MEDICAMENTO&#x27;).toUpperCase(), margin, y);
+          doc.setFont(&#x27;helvetica&#x27;, &#x27;normal&#x27;); doc.setFontSize(9);
+          doc.text(&#x60;CANTIDAD: ${det.cantidad}  |  DOSIS: ${det.dosis}  |  FRECUENCIA: ${det.frecuencia}&#x60;, margin, y + 5);
+          if (det.indicaciones) {
+            doc.setFont(&#x27;helvetica&#x27;, &#x27;italic&#x27;); doc.setFontSize(8);
+            doc.text(&#x60;INDICACIONES: ${det.indicaciones}&#x60;, margin, y + 10);
+            y +&#x3D; 18;
+          } else { y +&#x3D; 12; }
+        });
+      });
+      this.renderSignature(doc, h, margin, pageWidth, 250);
+    }
+    return URL.createObjectURL(doc.output(&#x27;blob&#x27;));
+  }
+
+  async generarLaboratorioPdfUrl(h: HistoriaClinica, formato: &#x27;NORMAL&#x27; | &#x27;POS&#x27; &#x3D; &#x27;NORMAL&#x27;): Promise&lt;string&gt; {
+    const isPos &#x3D; formato &#x3D;&#x3D;&#x3D; &#x27;POS&#x27;;
+    const doc &#x3D; new jsPDF({ orientation: &#x27;p&#x27;, unit: &#x27;mm&#x27;, format: isPos ? [80, 120] : &#x27;a4&#x27; });
+    if (isPos) {
+      this.renderPosHeader(doc, h, &#x27;ORDEN LABORATORIO&#x27;);
+      let y &#x3D; 35;
+      (h.solicitudesLab || []).forEach(s &#x3D;&gt; {
+        const items &#x3D; (s.detalles &amp;&amp; Array.isArray(s.detalles)) ? s.detalles : [s];
+        items.forEach((det: any) &#x3D;&gt; {
+          doc.setFontSize(8); doc.text(&#x60;[ ] ${det.examen?.nombre || &#x27;EXAMEN&#x27;}&#x60;, 5, y);
+          y +&#x3D; 6;
+        });
+      });
+      this.renderPosFooter(doc, h, y + 5);
+    } else {
+      const margin &#x3D; 20; const pageWidth &#x3D; doc.internal.pageSize.getWidth();
+      this.renderHeader(doc, h, margin, pageWidth);
+      this.renderSectionTitle(doc, &#x27;SOLICITUD DE LABORATORIO CLÍNICO&#x27;, margin, 45);
+      let y &#x3D; 55;
+      (h.solicitudesLab || []).forEach(s &#x3D;&gt; {
+        (s.detalles || []).forEach((det: any) &#x3D;&gt; {
+          doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;); doc.setFontSize(10);
+          doc.text(&#x60;[ ] ${det.examen?.nombre || &#x27;EXAMEN&#x27;}&#x60;, margin, y);
+          if (det.indicaciones) {
+            doc.setFont(&#x27;helvetica&#x27;, &#x27;italic&#x27;); doc.setFontSize(8);
+            doc.text(&#x60;Obs: ${det.indicaciones}&#x60;, margin + 5, y + 5);
+            y +&#x3D; 12;
+          } else { y +&#x3D; 8; }
+        });
+      });
+      this.renderSignature(doc, h, margin, pageWidth, 250);
+    }
+    return URL.createObjectURL(doc.output(&#x27;blob&#x27;));
+  }
+
+  async generarRadiologiaPdfUrl(h: HistoriaClinica, formato: &#x27;NORMAL&#x27; | &#x27;POS&#x27; &#x3D; &#x27;NORMAL&#x27;): Promise&lt;string&gt; {
+    const isPos &#x3D; formato &#x3D;&#x3D;&#x3D; &#x27;POS&#x27;;
+    const doc &#x3D; new jsPDF({ orientation: &#x27;p&#x27;, unit: &#x27;mm&#x27;, format: isPos ? [80, 120] : &#x27;a4&#x27; });
+    if (isPos) {
+      this.renderPosHeader(doc, h, &#x27;ORDEN RADIOLOGÍA&#x27;);
+      let y &#x3D; 35;
+      (h.solicitudesRad || []).forEach(s &#x3D;&gt; {
+        const items &#x3D; (s.detalles &amp;&amp; Array.isArray(s.detalles)) ? s.detalles : [s];
+        items.forEach((det: any) &#x3D;&gt; {
+          doc.setFontSize(8); doc.text(&#x60;[ ] ${det.estudio?.nombre || &#x27;ESTUDIO&#x27;}&#x60;, 5, y);
+          y +&#x3D; 6;
+        });
+      });
+      this.renderPosFooter(doc, h, y + 5);
+    } else {
+      const margin &#x3D; 20; const pageWidth &#x3D; doc.internal.pageSize.getWidth();
+      this.renderHeader(doc, h, margin, pageWidth);
+      this.renderSectionTitle(doc, &#x27;SOLICITUD DE ESTUDIOS RADIOLÓGICOS&#x27;, margin, 45);
+      let y &#x3D; 55;
+      (h.solicitudesRad || []).forEach(s &#x3D;&gt; {
+        (s.detalles || []).forEach((det: any) &#x3D;&gt; {
+          doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;); doc.setFontSize(10);
+          doc.text(&#x60;[ ] ${det.estudio?.nombre || &#x27;ESTUDIO&#x27;}&#x60;, margin, y);
+          if (det.indicaciones) {
+            doc.setFont(&#x27;helvetica&#x27;, &#x27;italic&#x27;); doc.setFontSize(8);
+            doc.text(&#x60;Obs: ${det.indicaciones}&#x60;, margin + 5, y + 5);
+            y +&#x3D; 12;
+          } else { y +&#x3D; 8; }
+        });
+      });
+      this.renderSignature(doc, h, margin, pageWidth, 250);
+    }
+    return URL.createObjectURL(doc.output(&#x27;blob&#x27;));
+  }
+
+  async generarIncapacidadPdfUrl(h: HistoriaClinica, formato: &#x27;NORMAL&#x27; | &#x27;POS&#x27; &#x3D; &#x27;NORMAL&#x27;): Promise&lt;string&gt; {
+    const isPos &#x3D; formato &#x3D;&#x3D;&#x3D; &#x27;POS&#x27;;
+    const doc &#x3D; new jsPDF({ orientation: &#x27;p&#x27;, unit: &#x27;mm&#x27;, format: isPos ? [80, 120] : &#x27;a4&#x27; });
+    if (isPos) {
+      this.renderPosHeader(doc, h, &#x27;INCAPACIDAD MÉDICA&#x27;);
+      let y &#x3D; 35;
+      (h.incapacidades || []).forEach(inc &#x3D;&gt; {
+        doc.setFontSize(9); doc.text(&#x60;${inc.tipo} - ${inc.dias} DÍAS&#x60;, 5, y);
+        y +&#x3D; 12;
+      });
+      this.renderPosFooter(doc, h, y + 5);
+    } else {
+      const margin &#x3D; 20; const pageWidth &#x3D; doc.internal.pageSize.getWidth();
+      this.renderHeader(doc, h, margin, pageWidth);
+      this.renderSectionTitle(doc, &#x27;CONSTANCIA DE INCAPACIDAD MÉDICA&#x27;, margin, 45);
+      let y &#x3D; 60;
+      (h.incapacidades || []).forEach(inc &#x3D;&gt; {
+        doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;); doc.setFontSize(12);
+        doc.text(&#x60;${inc.tipo.toUpperCase()}&#x60;, margin, y);
+        doc.setFont(&#x27;helvetica&#x27;, &#x27;normal&#x27;); doc.setFontSize(10);
+        doc.text(&#x60;TIEMPO: ${inc.dias} DÍAS (DEL ${this.formatDate(inc.fechaInicio)} AL ${this.formatDate(inc.fechaFin)})&#x60;, margin, y + 7);
+        doc.text(&#x60;MOTIVO: ${inc.motivo}&#x60;, margin, y + 14);
+        y +&#x3D; 30;
+      });
+      this.renderSignature(doc, h, margin, pageWidth, 250);
+    }
+    return URL.createObjectURL(doc.output(&#x27;blob&#x27;));
+  }
+
+  async generarRemisionPdfUrl(h: HistoriaClinica, formato: &#x27;NORMAL&#x27; | &#x27;POS&#x27; &#x3D; &#x27;NORMAL&#x27;): Promise&lt;string&gt; {
+    const isPos &#x3D; formato &#x3D;&#x3D;&#x3D; &#x27;POS&#x27;;
+    const doc &#x3D; new jsPDF({ orientation: &#x27;p&#x27;, unit: &#x27;mm&#x27;, format: isPos ? [80, 120] : &#x27;a4&#x27; });
+    if (isPos) {
+      this.renderPosHeader(doc, h, &#x27;REMISION / REFERENCIA&#x27;);
+      let y &#x3D; 35;
+      (h.referidos || []).forEach(ref &#x3D;&gt; {
+        doc.setFontSize(8); doc.text(&#x60;A: ${ref.destino?.nombre || ref.establecimientoDestino}&#x60;, 5, y);
+        doc.text(&#x60;Motivo: ${ref.motivo}&#x60;, 5, y + 6);
+        y +&#x3D; 15;
+      });
+      this.renderPosFooter(doc, h, y + 5);
+    } else {
+      const margin &#x3D; 20; const pageWidth &#x3D; doc.internal.pageSize.getWidth();
+      this.renderHeader(doc, h, margin, pageWidth);
+      this.renderSectionTitle(doc, &#x27;HOJA DE REFERENCIA / REMISIÓN&#x27;, margin, 45);
+      let y &#x3D; 60;
+      (h.referidos || []).forEach(ref &#x3D;&gt; {
+        doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;); doc.setFontSize(11);
+        doc.text(&#x60;ESTABLECIMIENTO DESTINO: ${String(ref.destino?.nombre || ref.establecimientoDestino || &#x27;GENERAL&#x27;).toUpperCase()}&#x60;, margin, y);
+        doc.setFontSize(10);
+        doc.text(&#x60;ESPECIALIDAD: ${ref.especialidadDestino || &#x27;MEDICINA GENERAL&#x27;}&#x60;, margin, y + 7);
+        doc.setFont(&#x27;helvetica&#x27;, &#x27;normal&#x27;);
+        const lines &#x3D; doc.splitTextToSize(&#x60;MOTIVO DE REFERENCIA: ${ref.motivo}&#x60;, 170);
+        doc.text(lines, margin, y + 14);
+        y +&#x3D; (lines.length * 5) + 20;
+      });
+      this.renderSignature(doc, h, margin, pageWidth, 250);
+    }
+    return URL.createObjectURL(doc.output(&#x27;blob&#x27;));
+  }
+
+  private renderPosHeader(doc: jsPDF, h: HistoriaClinica, titulo: string) {
+    const med &#x3D; (h.medico as any) || {};
+    doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;); doc.setFontSize(10);
+    doc.text(String(med.establecimiento?.nombre || &#x27;SISS SALUD&#x27;).toUpperCase(), 40, 8, { align: &#x27;center&#x27; });
+    doc.setFontSize(8); doc.text(titulo, 40, 13, { align: &#x27;center&#x27; });
+    doc.setFontSize(6); doc.text(this.formatDate(h.fecha), 40, 17, { align: &#x27;center&#x27; });
+    doc.setDrawColor(0); doc.line(5, 20, 75, 20);
+  }
+
+  private renderPosFooter(doc: jsPDF, h: HistoriaClinica, y: number) {
+    const med &#x3D; (h.medico as any) || {};
+    doc.setFontSize(6); doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;);
+    doc.text(&#x27;------------------------------------------&#x27;, 40, y, { align: &#x27;center&#x27; });
+    doc.text(&#x60;DR. ${med.nombres} ${med.apellidos}&#x60;.toUpperCase(), 40, y + 4, { align: &#x27;center&#x27; });
+    doc.text(&#x60;COL: ${med.numeroColegiado || &#x27;—&#x27;}&#x60;, 40, y + 7, { align: &#x27;center&#x27; });
+    doc.setFont(&#x27;helvetica&#x27;, &#x27;italic&#x27;);
+    doc.text(&#x27;GENERADO POR SISS CLÍNICO&#x27;, 40, y + 12, { align: &#x27;center&#x27; });
+  }
+
+  private renderHeader(doc: jsPDF, h: HistoriaClinica, margin: number, pageWidth: number) {
+    const med &#x3D; (h.medico as any) || {};
+    doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;); doc.setFontSize(20); doc.setTextColor(30, 58, 138);
+    doc.text(&#x27;SISS CLÍNICO&#x27;, margin, margin + 8);
+    doc.setFontSize(10); doc.setTextColor(30, 41, 59);
+    const est &#x3D; String(med.establecimiento?.nombre || &#x27;ESTABLECIMIENTO MÉDICO&#x27;).toUpperCase();
+    doc.text(est, pageWidth - margin, margin + 8, { align: &#x27;right&#x27; });
+    doc.setDrawColor(203, 213, 225); doc.line(margin, margin + 16, pageWidth - margin, margin + 16);
+  }
+
+  private renderSectionTitle(doc: jsPDF, title: string, x: number, y: number) {
+    doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;); doc.setFontSize(9); doc.setTextColor(37, 99, 235);
+    doc.text(title, x, y);
+    doc.line(x, y + 2, x + 170, y + 2);
+  }
+
+  private renderSignature(doc: jsPDF, h: HistoriaClinica, margin: number, pageWidth: number, y: number) {
+    const med &#x3D; (h.medico as any) || {};
+    const sX &#x3D; pageWidth / 2;
+    doc.line(sX - 40, y, sX + 40, y);
+    doc.setFontSize(10); doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;);
+    doc.text(&#x60;DR. ${med.nombres || &#x27;&#x27;} ${med.apellidos || &#x27;&#x27;}&#x60;.toUpperCase(), sX, y + 7, { align: &#x27;center&#x27; });
+  }
+
+  async generarVacunacionPdfUrl(reg: any, pac: any): Promise&lt;string&gt; {
+    const doc &#x3D; new jsPDF({ orientation: &#x27;p&#x27;, unit: &#x27;mm&#x27;, format: &#x27;a4&#x27; });
+    const margin &#x3D; 20; const pageWidth &#x3D; doc.internal.pageSize.getWidth();
+    const contentWidth &#x3D; pageWidth - (margin * 2);
+
+    doc.setFillColor(248, 250, 252); doc.setDrawColor(37, 99, 235); doc.setLineWidth(0.5);
+    doc.roundedRect(margin + 10, 20, contentWidth - 20, 45, 4, 4, &#x27;FD&#x27;);
+    doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;); doc.setFontSize(22); doc.setTextColor(30, 58, 138);
+    doc.text(&#x27;CERTIFICADO DE VACUNACIÓN&#x27;, pageWidth / 2, 35, { align: &#x27;center&#x27; });
+    doc.setFontSize(10); doc.setTextColor(37, 99, 235);
+    doc.text(&#x27;PROGRAMA AMPLIADO DE INMUNIZACIONES (PAI)&#x27;, pageWidth / 2, 42, { align: &#x27;center&#x27; });
+
+    let currentY &#x3D; 75;
+    doc.setFontSize(14); doc.setTextColor(15, 23, 42);
+    doc.text(&#x60;${pac.nombres} ${pac.apellidos}&#x60;.toUpperCase(), margin, currentY);
+    doc.setFontSize(9); doc.setTextColor(100, 116, 139); doc.setFont(&#x27;helvetica&#x27;, &#x27;normal&#x27;);
+    doc.text(&#x60;DNI: ${pac.dni || &#x27;—&#x27;}   |   EXPEDIENTE: ${pac.numeroExpediente || &#x27;—&#x27;}&#x60;, margin, currentY + 6);
+
+    currentY +&#x3D; 20;
+    doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;); doc.setFontSize(11); doc.setTextColor(37, 99, 235);
+    doc.text(&#x27;DETALLES DE LA APLICACIÓN&#x27;, margin, currentY);
+    doc.setDrawColor(219, 234, 254); doc.line(margin, currentY + 2, margin + contentWidth, currentY + 2);
+
+    currentY +&#x3D; 12;
+    const details &#x3D; [
+      { l: &#x27;VACUNA APLICADA&#x27;, v: reg.vacuna?.nombre },
+      { l: &#x27;CÓDIGO DE LOTE&#x27;, v: reg.lote?.codigoLote },
+      { l: &#x27;FECHA DE APLICACIÓN&#x27;, v: this.formatDate(reg.fechaAplicacion) },
+      { l: &#x27;DOSIS RECIBIDA&#x27;, v: reg.esquema?.numeroDosis ? &#x60;DOSIS ${reg.esquema.numeroDosis}&#x60; : &#x27;ÚNICA&#x27; },
+      { l: &#x27;CENTRO DE SALUD&#x27;, v: reg.establecimiento?.nombre || &#x27;SISS SALUD&#x27; }
+    ];
+    details.forEach(d &#x3D;&gt; {
+      doc.setFontSize(8); doc.setTextColor(100, 116, 139); doc.text(d.l, margin, currentY);
+      doc.setFontSize(10); doc.setTextColor(15, 23, 42); doc.text(String(d.v || &#x27;—&#x27;).toUpperCase(), margin + 50, currentY);
+      currentY +&#x3D; 8;
+    });
+
+    const blob &#x3D; doc.output(&#x27;blob&#x27;);
+    return URL.createObjectURL(blob);
+  }
+
+  async generarVacunacionPosUrl(reg: any, pac: any): Promise&lt;string&gt; {
+    const doc &#x3D; new jsPDF({ orientation: &#x27;p&#x27;, unit: &#x27;mm&#x27;, format: [80, 100] });
+    doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;); doc.setFontSize(10);
+    doc.text(&#x27;SISS SALUD HONDURAS&#x27;, 40, 10, { align: &#x27;center&#x27; });
+    doc.setFontSize(8); doc.text(&#x27;COMPROBANTE DE VACUNACIÓN&#x27;, 40, 15, { align: &#x27;center&#x27; });
+    doc.text(&#x27;------------------------------------------&#x27;, 40, 19, { align: &#x27;center&#x27; });
+
+    doc.setFontSize(8); doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;);
+    doc.text(&#x27;PACIENTE:&#x27;, 5, 25);
+    doc.setFont(&#x27;helvetica&#x27;, &#x27;normal&#x27;);
+    doc.text(&#x60;${pac.nombres} ${pac.apellidos}&#x60;.toUpperCase(), 5, 29);
+    
+    doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;); doc.text(&#x27;VACUNA:&#x27;, 5, 36);
+    doc.setFont(&#x27;helvetica&#x27;, &#x27;normal&#x27;); doc.text(reg.vacuna?.nombre || &#x27;—&#x27;, 5, 40);
+    
+    doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;); doc.text(&#x27;LOTE:&#x27;, 5, 46);
+    doc.setFont(&#x27;helvetica&#x27;, &#x27;normal&#x27;); doc.text(reg.lote?.codigoLote || &#x27;—&#x27;, 5, 50);
+
+    doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;); doc.text(&#x27;FECHA:&#x27;, 5, 56);
+    doc.setFont(&#x27;helvetica&#x27;, &#x27;normal&#x27;); doc.text(this.formatDate(reg.fechaAplicacion), 5, 60);
+
+    doc.text(&#x27;------------------------------------------&#x27;, 40, 70, { align: &#x27;center&#x27; });
+    doc.setFontSize(7); doc.text(&#x27;CONSERVE ESTE COMPROBANTE&#x27;, 40, 75, { align: &#x27;center&#x27; });
+    
+    const blob &#x3D; doc.output(&#x27;blob&#x27;);
+    return URL.createObjectURL(blob);
+  }
+
+  async generarCarnetPdfUrl(historial: any[], pac: any): Promise&lt;string&gt; {
+    const doc &#x3D; new jsPDF({ orientation: &#x27;p&#x27;, unit: &#x27;mm&#x27;, format: &#x27;a4&#x27; });
+    const margin &#x3D; 20; const pageWidth &#x3D; doc.internal.pageSize.getWidth();
+    const contentWidth &#x3D; pageWidth - (margin * 2);
+
+    // Encabezado PAI
+    this.renderHeader(doc, { medico: { establecimiento: historial[0]?.establecimiento } } as any, margin, pageWidth);
+    
+    let currentY &#x3D; margin + 28;
+    doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;); doc.setFontSize(18); doc.setTextColor(30, 58, 138);
+    doc.text(&#x27;CARNET DE INMUNIZACIONES (PAI)&#x27;, margin, currentY);
+    
+    doc.setFontSize(10); doc.setTextColor(15, 23, 42);
+    doc.text(&#x60;${pac.nombres} ${pac.apellidos}&#x60;.toUpperCase(), margin, currentY + 7);
+    doc.setFontSize(8); doc.setTextColor(100, 116, 139); doc.setFont(&#x27;helvetica&#x27;, &#x27;normal&#x27;);
+    doc.text(&#x60;NÚMERO DE EXPEDIENTE: ${pac.numeroExpediente || &#x27;—&#x27;}  |  DNI: ${pac.dni || &#x27;—&#x27;}&#x60;, margin, currentY + 12);
+    
+    currentY +&#x3D; 22;
+    historial.forEach((h, i) &#x3D;&gt; {
+      if (currentY &gt; 260) { doc.addPage(); currentY &#x3D; 25; }
+      
+      // Tarjeta de aplicación
+      doc.setFillColor(248, 250, 252); doc.setDrawColor(226, 232, 240);
+      doc.roundedRect(margin, currentY, contentWidth, 22, 2, 2, &#x27;FD&#x27;);
+      
+      doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;); doc.setFontSize(11); doc.setTextColor(37, 99, 235);
+      doc.text(&#x60;${h.vacuna?.nombre || &#x27;Vacuna&#x27;}&#x60;, margin + 5, currentY + 8);
+      
+      doc.setFontSize(8); doc.setTextColor(71, 85, 105); doc.setFont(&#x27;helvetica&#x27;, &#x27;normal&#x27;);
+      const f &#x3D; this.formatDate(h.fechaAplicacion);
+      const lote &#x3D; h.lote?.codigoLote || &#x27;—&#x27;;
+      const dosis &#x3D; h.esquema?.numeroDosis ? &#x60;DOSIS ${h.esquema.numeroDosis}&#x60; : &#x27;ÚNICA&#x27;;
+      doc.text(&#x60;FECHA: ${f}  |  LOTE: ${lote}  |  ESQUEMA: ${dosis}&#x60;, margin + 5, currentY + 15);
+      
+      // Indicador de establecimiento
+      doc.setFontSize(7); doc.setTextColor(148, 163, 184);
+      doc.text(String(h.establecimiento?.nombre || &#x27;SISS SALUD&#x27;).toUpperCase(), margin + contentWidth - 5, currentY + 15, { align: &#x27;right&#x27; });
+      
+      currentY +&#x3D; 26;
+    });
+
+    const blob &#x3D; doc.output(&#x27;blob&#x27;);
+    return URL.createObjectURL(blob);
+  }
+
+  async generarCarnetPosUrl(historial: any[], pac: any): Promise&lt;string&gt; {
+    const doc &#x3D; new jsPDF({ orientation: &#x27;p&#x27;, unit: &#x27;mm&#x27;, format: [80, 200] });
+    doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;); doc.setFontSize(10);
+    doc.text(&#x27;SISS SALUD HONDURAS&#x27;, 40, 10, { align: &#x27;center&#x27; });
+    doc.setFontSize(8); doc.text(&#x27;HISTORIAL PAI (RESUMEN)&#x27;, 40, 15, { align: &#x27;center&#x27; });
+    doc.text(&#x27;------------------------------------------&#x27;, 40, 19, { align: &#x27;center&#x27; });
+
+    doc.setFontSize(8); doc.text(&#x27;PACIENTE:&#x27;, 5, 25);
+    doc.setFont(&#x27;helvetica&#x27;, &#x27;normal&#x27;);
+    doc.text(&#x60;${pac.nombres} ${pac.apellidos}&#x60;.toUpperCase(), 5, 29);
+    
+    doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;);
+    doc.text(&#x27;APLICACIONES REGISTRADAS:&#x27;, 5, 38);
+    doc.text(&#x27;------------------------------------------&#x27;, 40, 41, { align: &#x27;center&#x27; });
+    
+    let y &#x3D; 47;
+    doc.setFont(&#x27;helvetica&#x27;, &#x27;normal&#x27;);
+    historial.forEach((h, index) &#x3D;&gt; {
+      if (y &gt; 180) { doc.addPage(); y &#x3D; 20; }
+      
+      const fecha &#x3D; this.formatDate(h.fechaAplicacion);
+      const dosis &#x3D; h.esquema?.numeroDosis ? &#x60; (Dosis ${h.esquema.numeroDosis})&#x60; : &#x27;&#x27;;
+      
+      doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;); doc.setFontSize(8);
+      doc.text(&#x60;${index + 1}. ${h.vacuna?.nombre || &#x27;Vacuna&#x27;}${dosis}&#x60;, 5, y);
+      
+      doc.setFont(&#x27;helvetica&#x27;, &#x27;normal&#x27;); doc.setFontSize(7);
+      doc.text(&#x60;Fecha: ${fecha}  |  Lote: ${h.lote?.codigoLote || &#x27;—&#x27;}&#x60;, 5, y + 4);
+      
+      doc.setDrawColor(220, 220, 220); doc.line(5, y + 6, 75, y + 6);
+      y +&#x3D; 10;
+    });
+
+    doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;); doc.setFontSize(7);
+    doc.text(&#x27;------------------------------------------&#x27;, 40, y + 5, { align: &#x27;center&#x27; });
+    doc.text(&#x27;SISS - SISTEMA DE INFORMACIÓN SALUD&#x27;, 40, y + 10, { align: &#x27;center&#x27; });
+
+    const blob &#x3D; doc.output(&#x27;blob&#x27;);
+    return URL.createObjectURL(blob);
+  }
+
+  async generarMovimientosLotePdfUrl(movimientos: any[], lote: any): Promise&lt;string&gt; {
+    const doc &#x3D; new jsPDF({ orientation: &#x27;p&#x27;, unit: &#x27;mm&#x27;, format: &#x27;a4&#x27; });
+    const margin &#x3D; 20; const pageWidth &#x3D; doc.internal.pageSize.getWidth();
+    
+    // Encabezado Principal
+    doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;); doc.setFontSize(18); doc.setTextColor(30, 58, 138);
+    doc.text(&#x27;SISS CLÍNICO&#x27;, margin, 15);
+    doc.setFontSize(8); doc.setTextColor(148, 163, 184);
+    doc.text(&#x27;CONTROL DE INVENTARIO Y SUMINISTROS&#x27;, margin, 20);
+    
+    doc.setFontSize(12); doc.setTextColor(15, 23, 42);
+    doc.text(&#x27;KARDEX DE MOVIMIENTOS POR LOTE&#x27;, margin, 32);
+    
+    doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;); doc.setFontSize(10);
+    doc.text(&#x60;PRODUCTO: ${lote?.vacuna?.nombre || &#x27;Lote&#x27;}&#x60;, margin, 40);
+    doc.text(&#x60;CÓDIGO LOTE: ${lote?.codigoLote || &#x27;—&#x27;}&#x60;, margin, 46);
+    const fab &#x3D; lote?.fabricante || &#x27;—&#x27;;
+    const ven &#x3D; lote?.fechaVencimiento ? this.formatDate(lote.fechaVencimiento) : &#x27;—&#x27;;
+    doc.setFont(&#x27;helvetica&#x27;, &#x27;normal&#x27;); doc.setFontSize(9);
+    doc.text(&#x60;FABRICANTE: ${fab}    |    VENCIMIENTO: ${ven}&#x60;, margin, 52);
+    
+    // Encabezados de Tabla
+    doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;); doc.setFontSize(8); doc.setTextColor(100, 116, 139);
+    doc.text(&#x27;FECHA&#x27;, margin, 62);
+    doc.text(&#x27;TIPO DE MOVIMIENTO&#x27;, margin + 30, 62);
+    doc.text(&#x27;CANTIDAD&#x27;, margin + 80, 62);
+    doc.text(&#x27;SALDO FINAL&#x27;, margin + 110, 62);
+    doc.line(margin, 64, margin + 135, 64);
+    
+    doc.setFont(&#x27;helvetica&#x27;, &#x27;normal&#x27;); doc.setTextColor(15, 23, 42);
+    let y &#x3D; 70;
+    movimientos.forEach(m &#x3D;&gt; {
+      if (y &gt; 270) { doc.addPage(); y &#x3D; 20; }
+      doc.text(&#x60;${this.formatDate(m.fecha)}&#x60;, margin, y);
+      doc.text(&#x60;${m.tipo}&#x60;, margin + 30, y);
+      doc.text(&#x60;${m.cantidad &gt; 0 ? &#x27;+&#x27; : &#x27;&#x27;}${m.cantidad}&#x60;, margin + 80, y);
+      doc.text(&#x60;Saldo: ${m.saldoFinal}&#x60;, margin + 110, y);
+      y +&#x3D; 7;
+    });
+
+    const blob &#x3D; doc.output(&#x27;blob&#x27;);
+    return URL.createObjectURL(blob);
+  }
+
+  async generarMorbilidadPdf(data: any[], inicio: string, fin: string): Promise&lt;string&gt; {
+    const doc &#x3D; new jsPDF({ orientation: &#x27;p&#x27;, unit: &#x27;mm&#x27;, format: &#x27;a4&#x27; });
+    doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;); doc.setFontSize(16);
+    doc.text(&#x27;REPORTE DE MORBILIDAD&#x27;, 20, 20);
+    doc.setFontSize(10); doc.text(&#x60;Periodo: ${inicio} a ${fin}&#x60;, 20, 28);
+    const blob &#x3D; doc.output(&#x27;blob&#x27;);
+    return URL.createObjectURL(blob);
+  }
+
+  async generarCoberturaPdf(data: any[], inicio: string, fin: string, est: any &#x3D; null): Promise&lt;string&gt; {
+    const doc &#x3D; new jsPDF({ orientation: &#x27;p&#x27;, unit: &#x27;mm&#x27;, format: &#x27;a4&#x27; });
+    const margin &#x3D; 20; const pageWidth &#x3D; doc.internal.pageSize.getWidth();
+    const contentWidth &#x3D; pageWidth - (margin * 2);
+    this.renderHeader(doc, { medico: { establecimiento: est } } as any, margin, pageWidth);
+    let currentY &#x3D; 50;
+    doc.setFont(&#x27;helvetica&#x27;, &#x27;bold&#x27;); doc.setFontSize(14); doc.setTextColor(30, 58, 138);
+    doc.text(&#x27;ANÁLISIS DE COBERTURA PAI&#x27;, margin, currentY);
+    currentY +&#x3D; 15;
+    data.forEach(item &#x3D;&gt; {
+      if (currentY &gt; 270) { doc.addPage(); currentY &#x3D; 25; }
+      doc.setFontSize(10); doc.setTextColor(15, 23, 42); doc.text(item.vacuna, margin, currentY);
+      const pct &#x3D; item.porcentaje;
+      doc.setFillColor(241, 245, 249); doc.roundedRect(margin, currentY + 2, contentWidth, 4, 1, 1, &#x27;F&#x27;);
+      if (pct &lt; 50) doc.setFillColor(239, 68, 68);
+      else if (pct &lt; 85) doc.setFillColor(245, 158, 11);
+      else doc.setFillColor(34, 197, 94);
+      doc.roundedRect(margin, currentY + 2, (pct / 100) * contentWidth, 4, 1, 1, &#x27;F&#x27;);
+      doc.setFontSize(9); doc.text(&#x60;${pct.toFixed(1)}%&#x60;, margin + contentWidth - 10, currentY, { align: &#x27;right&#x27; });
+      currentY +&#x3D; 18;
+    });
+    const blob &#x3D; doc.output(&#x27;blob&#x27;);
+    return URL.createObjectURL(blob);
+  }
+
+  private formatDate(date: any): string {
+    if (!date) return &#x27;—&#x27;;
+    const d &#x3D; new Date(date);
+    return d.toLocaleDateString(&#x27;es-HN&#x27;);
+  }
+
+  private calcularIMC(peso?: number, talla?: number): string {
+    if (!peso || !talla) return &#x27;—&#x27;;
+    return (peso / Math.pow(talla / 100, 2)).toFixed(1);
+  }
+}
+</code></pre>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
+            var COMPODOC_CURRENT_PAGE_URL = 'ReportePdfService.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

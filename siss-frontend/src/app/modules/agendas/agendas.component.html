@@ -143,11 +143,15 @@
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Desde</label>
               <input type="date" [(ngModel)]="nuevaExcepcion.fechaInicio"
+                [class.ring-2]="!esFechaValida(nuevaExcepcion.fechaInicio)"
+                [class.ring-red-500]="!esFechaValida(nuevaExcepcion.fechaInicio)"
                 class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Hasta</label>
               <input type="date" [(ngModel)]="nuevaExcepcion.fechaFin"
+                [class.ring-2]="!esFechaValida(nuevaExcepcion.fechaFin)"
+                [class.ring-red-500]="!esFechaValida(nuevaExcepcion.fechaFin)"
                 class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
             </div>
           </div>

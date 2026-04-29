@@ -6,6 +6,7 @@ import { ReportesService, DashboardKPIs } from '../../core/services/reportes.ser
 import { AuthService } from '../../core/services/auth.service';
 import { ReportePdfService } from '../../core/services/reporte-pdf.service';
 import { NotificationService } from '../../core/services/notification.service';
+import { DateUtils } from '../../core/utils/date-utils';
 import { finalize } from 'rxjs/operators';
 
 @Component({
@@ -27,13 +28,17 @@ import { finalize } from 'rxjs/operators';
             <div class="flex flex-col px-3 border-r border-slate-100">
               <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Rango de Fecha</label>
               <div class="flex items-center gap-2">
-                <input type="date" [(ngModel)]="fechaInicio" (ngModelChange)="cargarKPIs()" class="text-xs font-bold text-slate-700 border-none p-0 focus:ring-0 cursor-pointer">
+                <input type="date" [(ngModel)]="fechaInicio" (ngModelChange)="cargarKPIs()" 
+                       [class.text-red-500]="!esFechaValida(fechaInicio)"
+                       class="text-xs font-bold text-slate-700 border-none p-0 focus:ring-0 cursor-pointer">
                 <span class="text-slate-300">/</span>
-                <input type="date" [(ngModel)]="fechaFin" (ngModelChange)="cargarKPIs()" class="text-xs font-bold text-slate-700 border-none p-0 focus:ring-0 cursor-pointer">
+                <input type="date" [(ngModel)]="fechaFin" (ngModelChange)="cargarKPIs()" 
+                       [class.text-red-500]="!esFechaValida(fechaFin)"
+                       class="text-xs font-bold text-slate-700 border-none p-0 focus:ring-0 cursor-pointer">
               </div>
             </div>
             
-            <button (click)="cargarKPIs()" [disabled]="cargando()" class="p-3 bg-slate-900 text-white rounded-xl hover:bg-slate-800 transition-all active:scale-95 shadow-lg shadow-slate-200 disabled:opacity-50">
+            <button (click)="cargarKPIs()" [disabled]="cargando() || !esFechaValida(fechaInicio) || !esFechaValida(fechaFin)" class="p-3 bg-slate-900 text-white rounded-xl hover:bg-slate-800 transition-all active:scale-95 shadow-lg shadow-slate-200 disabled:opacity-50">
               <svg [class.animate-spin]="cargando()" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path *ngIf="!cargando()" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
                 <path *ngIf="cargando()" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -142,6 +147,10 @@ export class ReportesComponent implements OnInit {
     return new Date(now.getTime() - offset).toISOString().split('T')[0];
   }
 
+  esFechaValida(fecha: string): boolean {
+    return DateUtils.esFechaValida(fecha);
+  }
+
   ngOnInit() {
     this.cargarKPIs();
     this.cargarReportesDisponibles();
@@ -192,6 +201,9 @@ export class ReportesComponent implements OnInit {
   }
 
   cargarKPIs() {
+    if (!this.esFechaValida(this.fechaInicio) || !this.esFechaValida(this.fechaFin)) {
+      return;
+    }
     this.cargando.set(true);
     const usuario = this.authSvc.obtenerUsuario();
     const estId = usuario?.rol === 'ADMIN_ESTABLECIMIENTO' ? usuario.establecimientoId : undefined;
@@ -205,6 +217,10 @@ export class ReportesComponent implements OnInit {
   }
 
   exportarExcel(tipo: string) {
+    if (!this.esFechaValida(this.fechaInicio) || !this.esFechaValida(this.fechaFin)) {
+      this.notifSvc.warn('Rango de fechas inválido');
+      return;
+    }
     this.cargando.set(true);
     const usuario = this.authSvc.obtenerUsuario();
     const estId = usuario?.rol === 'ADMIN_ESTABLECIMIENTO' ? usuario.establecimientoId : undefined;
@@ -230,6 +246,10 @@ export class ReportesComponent implements OnInit {
   }
 
   exportarPDF(tipo: string) {
+    if (!this.esFechaValida(this.fechaInicio) || !this.esFechaValida(this.fechaFin)) {
+      this.notifSvc.warn('Rango de fechas inválido');
+      return;
+    }
     if (tipo === 'morbilidad') {
       this.cargando.set(true);
       const usuario = this.authSvc.obtenerUsuario();

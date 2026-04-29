@@ -39,4 +39,14 @@ export class CatalogosController {
   async getOcupaciones() {
     return this.catalogosService.listarOcupaciones();
   }
+
+  @Get('tipos-cita')
+  async getTiposCita() {
+    return this.catalogosService.listarTiposCita();
+  }
+
+  @Get('estados-cita')
+  async getEstadosCita() {
+    return this.catalogosService.listarEstadosCita();
+  }
 }

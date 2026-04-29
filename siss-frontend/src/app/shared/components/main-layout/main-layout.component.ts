@@ -33,6 +33,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
   usuario    = this.auth.obtenerUsuario();
   sidebarAbierto = signal(true);
   rutaActual = signal('');
+  expandedMenus = signal<string[]>([]);
 
   readonly navSections: NavSection[] = [
     {
@@ -88,6 +89,12 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
             { label: 'Inventario PAI', ruta: '/vacunacion/inventario', roles: ['ENFERMERA', 'ADMIN', 'ADMIN_ESTABLECIMIENTO'] }
           ]
         },
+        {
+          label: 'Hospitalización',
+          ruta: '/hospitalizacion',
+          roles: ['ADMIN','MEDICO','ENFERMERA','RECEPCIONISTA','ADMIN_ESTABLECIMIENTO'],
+          modulo: 'hospitalizacion',
+        },
       ]
     },
     {
@@ -98,6 +105,29 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
           ruta: '/farmacia',
           roles: ['ADMIN','FARMACEUTICO'],
           modulo: 'recetas',
+        },
+        {
+          label: 'Recetas por Paciente',
+          ruta: '/servicios/recetas-paciente',
+          roles: ['ADMIN','FARMACEUTICO','MEDICO','ADMIN_ESTABLECIMIENTO'],
+          modulo: 'recetas',
+        },
+      ]
+    },
+    {
+      title: 'INVENTARIOS',
+      items: [
+        {
+          label: 'Inventario Central',
+          ruta: '/mantenimiento/inventario',
+          roles: ['ADMIN', 'FARMACEUTICO', 'ADMIN_ESTABLECIMIENTO'],
+          modulo: 'inventario',
+        },
+        {
+          label: 'Movimientos',
+          ruta: '/inventario/movimientos',
+          roles: ['ADMIN', 'FARMACEUTICO', 'ADMIN_ESTABLECIMIENTO'],
+          modulo: 'inventario',
         },
       ]
     },
@@ -128,11 +158,11 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
             { label: 'Formularios Clínicos', ruta: '/mantenimiento/formularios',  modulo: 'formularios'  },
             { label: 'Catálogo CIE-10',      ruta: '/mantenimiento/diagnosticos',  modulo: 'diagnosticos' },
             { label: 'Medicamentos',         ruta: '/mantenimiento/medicamentos',  modulo: 'medicamentos' },
-            { label: 'Inventario',           ruta: '/mantenimiento/inventario',    modulo: 'inventario'   },
             { label: 'Exámenes Lab',         ruta: '/mantenimiento/laboratorio',   roles: ['ADMIN']       },
             { label: 'Estudios Imagen',      ruta: '/mantenimiento/radiologia',    roles: ['ADMIN']       },
             { label: 'Establecimientos',     ruta: '/mantenimiento/establecimientos',      roles: ['ADMIN']       },
             { label: 'Roles y Permisos',     ruta: '/mantenimiento/roles',         roles: ['ADMIN']       },
+            { label: 'Personalización Login', ruta: '/mantenimiento/login',         roles: ['ADMIN']       },
           ],
         },
       ]
@@ -155,9 +185,11 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
     }
   ];
 
-  get seccionesFiltradas(): NavSection[] {
+  seccionesFiltradas: NavSection[] = [];
+
+  private calcularSecciones() {
     const rol = this.usuario?.rol ?? '';
-    return this.navSections
+    this.seccionesFiltradas = this.navSections
       .map(section => ({
         ...section,
         items: section.items
@@ -180,14 +212,50 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.calcularSecciones();
     this.socket.conectar();
     this.rutaActual.set(this.router.url);
 
-    this.auth.usuario$.subscribe(u => this.usuario = u);
+    this.auth.usuario$.subscribe(u => {
+      this.usuario = u;
+      this.calcularSecciones();
+    });
 
     this.router.events
       .pipe(filter(e => e instanceof NavigationEnd))
-      .subscribe((e: any) => this.rutaActual.set(e.urlAfterRedirects));
+      .subscribe((e: any) => {
+        this.rutaActual.set(e.urlAfterRedirects);
+        this.expandActiveMenu();
+      });
+    
+    this.expandActiveMenu();
+  }
+
+  private expandActiveMenu() {
+    const url = this.router.url;
+    this.navSections.forEach(section => {
+      section.items.forEach(item => {
+        if (item.subItems?.some(sub => url.startsWith(sub.ruta))) {
+          if (!this.isExpanded(item.label)) {
+            this.toggleMenu(item.label);
+          }
+        }
+      });
+    });
+  }
+
+  toggleMenu(label: string) {
+    this.expandedMenus.update(current => {
+      if (current.includes(label)) {
+        return current.filter(l => l !== label);
+      } else {
+        return [...current, label];
+      }
+    });
+  }
+
+  isExpanded(label: string): boolean {
+    return this.expandedMenus().includes(label);
   }
 
   ngOnDestroy() {
@@ -212,5 +280,17 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
 
   toggleSidebar() {
     this.sidebarAbierto.update(v => !v);
+  }
+
+  trackBySection(index: number, section: NavSection) {
+    return section.title;
+  }
+
+  trackByItem(index: number, item: NavItem) {
+    return item.label;
+  }
+
+  trackBySubItem(index: number, sub: { label: string; ruta: string }) {
+    return sub.ruta;
   }
 }

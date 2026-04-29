@@ -21,6 +21,7 @@ export interface UsuarioActual {
 
 export interface LoginResponse {
   requiereSeleccion?: boolean;
+  requiereCambioContrasena?: boolean;
   usuario?: UsuarioActual;
   accessToken?: string;
   refreshToken?: string;
@@ -84,6 +85,18 @@ export class AuthService {
     localStorage.removeItem('usuario');
     this.usuarioSubject.next(null);
     this.router.navigate(['/login']);
+  }
+
+  solicitarRecuperacion(identificador: string): Observable<any> {
+    return this.http
+      .post<any>(`${environment.apiUrl}/auth/recuperar-contrasena`, { identificador })
+      .pipe(map(res => res.data));
+  }
+ 
+  cambiarContrasena(nuevaContrasena: string): Observable<any> {
+    return this.http
+      .post<any>(`${environment.apiUrl}/auth/cambiar-contrasena`, { nuevaContrasena })
+      .pipe(map(res => res.data));
   }
 
   obtenerToken(): string | null {

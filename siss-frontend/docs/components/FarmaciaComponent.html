@@ -1,0 +1,1296 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>siss-frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">siss-frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  FarmaciaComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/modules/farmacia/farmacia.component.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                <code>OnInit</code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-farmacia</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                            <code>CommonModule</code>
+                            <code>FormsModule</code>
+                            <code>ReactiveFormsModule</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./farmacia.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#auth" >auth</a>
+                            </li>
+                            <li>
+                                <a href="#cargando" >cargando</a>
+                            </li>
+                            <li>
+                                <a href="#error" >error</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#fb" >fb</a>
+                            </li>
+                            <li>
+                                <a href="#form" >form</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#labels" >labels</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#notification" >notification</a>
+                            </li>
+                            <li>
+                                <a href="#procesando" >procesando</a>
+                            </li>
+                            <li>
+                                <a href="#recetas" >recetas</a>
+                            </li>
+                            <li>
+                                <a href="#recetaSeleccionada" >recetaSeleccionada</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#service" >service</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#buscar" >buscar</a>
+                            </li>
+                            <li>
+                                <a href="#cerrarDetalle" >cerrarDetalle</a>
+                            </li>
+                            <li>
+                                <a href="#confirmarDispensacion" >confirmarDispensacion</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#seleccionarReceta" >seleccionarReceta</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Accessors</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                    <a href="#detallesForm" >detallesForm</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor()</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/app/modules/farmacia/farmacia.component.ts:26</a></div>
+                            </td>
+                        </tr>
+
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="buscar"></a>
+                    <span class="name">
+                        <span ><b>buscar</b></span>
+                        <a href="#buscar"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>buscar(event: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="36"
+                                    class="link-to-prism">src/app/modules/farmacia/farmacia.component.ts:36</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cerrarDetalle"></a>
+                    <span class="name">
+                        <span ><b>cerrarDetalle</b></span>
+                        <a href="#cerrarDetalle"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cerrarDetalle()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="129"
+                                    class="link-to-prism">src/app/modules/farmacia/farmacia.component.ts:129</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="confirmarDispensacion"></a>
+                    <span class="name">
+                        <span ><b>confirmarDispensacion</b></span>
+                        <a href="#confirmarDispensacion"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>confirmarDispensacion()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="91"
+                                    class="link-to-prism">src/app/modules/farmacia/farmacia.component.ts:91</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="34"
+                                    class="link-to-prism">src/app/modules/farmacia/farmacia.component.ts:34</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="seleccionarReceta"></a>
+                    <span class="name">
+                        <span ><b>seleccionarReceta</b></span>
+                        <a href="#seleccionarReceta"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>seleccionarReceta(r: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="58"
+                                    class="link-to-prism">src/app/modules/farmacia/farmacia.component.ts:58</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>r</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="auth"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>auth</b></span>
+                        <a href="#auth"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(AuthService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="17" class="link-to-prism">src/app/modules/farmacia/farmacia.component.ts:17</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargando"></a>
+                    <span class="name">
+                        <span ><b>cargando</b></span>
+                        <a href="#cargando"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="21" class="link-to-prism">src/app/modules/farmacia/farmacia.component.ts:21</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="error"></a>
+                    <span class="name">
+                        <span ><b>error</b></span>
+                        <a href="#error"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(&#x27;&#x27;)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/app/modules/farmacia/farmacia.component.ts:22</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="fb"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>fb</b></span>
+                        <a href="#fb"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(FormBuilder)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">src/app/modules/farmacia/farmacia.component.ts:15</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="form"></a>
+                    <span class="name">
+                        <span ><b>form</b></span>
+                        <a href="#form"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>FormGroup</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">src/app/modules/farmacia/farmacia.component.ts:25</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="labels"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>labels</b></span>
+                        <a href="#labels"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>Record&lt;string | string&gt;</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+    cantidadADispensar: &#x27;Cantidad a dispensar&#x27;
+  }</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="87" class="link-to-prism">src/app/modules/farmacia/farmacia.component.ts:87</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="notification"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>notification</b></span>
+                        <a href="#notification"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(NotificationService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/app/modules/farmacia/farmacia.component.ts:18</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="procesando"></a>
+                    <span class="name">
+                        <span ><b>procesando</b></span>
+                        <a href="#procesando"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/app/modules/farmacia/farmacia.component.ts:26</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="recetas"></a>
+                    <span class="name">
+                        <span ><b>recetas</b></span>
+                        <a href="#recetas"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;any[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="20" class="link-to-prism">src/app/modules/farmacia/farmacia.component.ts:20</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="recetaSeleccionada"></a>
+                    <span class="name">
+                        <span ><b>recetaSeleccionada</b></span>
+                        <a href="#recetaSeleccionada"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;any | null&gt;(null)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/app/modules/farmacia/farmacia.component.ts:24</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="service"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>service</b></span>
+                        <a href="#service"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(DispensacionService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="16" class="link-to-prism">src/app/modules/farmacia/farmacia.component.ts:16</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-accessors">
+    <h3 id="accessors">
+        Accessors
+    </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="detallesForm"></a>
+                        <span class="name"><b>detallesForm</b><a href="#detallesForm"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>detallesForm()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="83" class="link-to-prism">src/app/modules/farmacia/farmacia.component.ts:83</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+</section>
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit, signal, inject } from &#x27;@angular/core&#x27;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormArray } from &#x27;@angular/forms&#x27;;
+import { DispensacionService } from &#x27;../../core/services/dispensacion.service&#x27;;
+import { AuthService } from &#x27;../../core/services/auth.service&#x27;;
+import { NotificationService } from &#x27;../../core/services/notification.service&#x27;;
+
+@Component({
+  selector: &#x27;app-farmacia&#x27;,
+  standalone: true,
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  templateUrl: &#x27;./farmacia.component.html&#x27;,
+})
+export class FarmaciaComponent implements OnInit {
+  private fb &#x3D; inject(FormBuilder);
+  private service &#x3D; inject(DispensacionService);
+  private auth &#x3D; inject(AuthService);
+  private notification &#x3D; inject(NotificationService);
+
+  recetas &#x3D; signal&lt;any[]&gt;([]);
+  cargando &#x3D; signal(false);
+  error &#x3D; signal(&#x27;&#x27;);
+  
+  recetaSeleccionada &#x3D; signal&lt;any | null&gt;(null);
+  form: FormGroup;
+  procesando &#x3D; signal(false);
+
+  constructor() {
+    this.form &#x3D; this.fb.group({
+      detalles: this.fb.array([])
+    });
+  }
+
+  ngOnInit() {}
+
+  buscar(event: any) {
+    const term &#x3D; event.target.value;
+    if (term.length &lt; 3) {
+      this.recetas.set([]);
+      return;
+    }
+
+    this.cargando.set(true);
+    this.service.buscarRecetasPendientes(term).subscribe({
+      next: (res: any) &#x3D;&gt; {
+        // El backend envuelve la respuesta en { ok: true, data: [...] }
+        const lista &#x3D; res.data || (Array.isArray(res) ? res : []);
+        this.recetas.set(lista);
+        this.cargando.set(false);
+      },
+      error: () &#x3D;&gt; {
+        this.notification.error(&#x27;Error al buscar recetas&#x27;);
+        this.cargando.set(false);
+      }
+    });
+  }
+
+  seleccionarReceta(r: any) {
+    this.recetaSeleccionada.set(r);
+    this.error.set(&#x27;&#x27;);
+    
+    // Limpiar form array
+    const detallesArr &#x3D; this.form.get(&#x27;detalles&#x27;) as FormArray;
+    detallesArr.clear();
+
+    // Llenar con los items de la receta
+    r.detalles.forEach((d: any) &#x3D;&gt; {
+      const pendiente &#x3D; d.cantidad - d.cantidadEntregada;
+      if (pendiente &gt; 0) {
+        detallesArr.push(this.fb.group({
+          detalleRecetaId: [d.id],
+          medicamento: [d.medicamento.nombreGenerico],
+          dosis: [&#x60;${d.dosis} - ${d.frecuencia} (${d.duracion})&#x60;],
+          cantidadPrescrita: [d.cantidad],
+          cantidadEntregada: [d.cantidadEntregada],
+          cantidadPendiente: [pendiente],
+          cantidadADispensar: [pendiente, [Validators.required, Validators.min(0), Validators.max(pendiente)]]
+        }));
+      }
+    });
+  }
+
+  get detallesForm() {
+    return (this.form.get(&#x27;detalles&#x27;) as FormArray).controls;
+  }
+
+  private readonly labels: Record&lt;string, string&gt; &#x3D; {
+    cantidadADispensar: &#x27;Cantidad a dispensar&#x27;
+  };
+
+  confirmarDispensacion() {
+    if (this.form.invalid) {
+      this.notification.error(&#x27;Verifique las cantidades ingresadas. No pueden ser negativas ni mayores a lo pendiente.&#x27;);
+      return;
+    }
+
+    const values &#x3D; this.form.value.detalles;
+    const detallesADispensar &#x3D; values
+      .filter((v: any) &#x3D;&gt; v.cantidadADispensar &gt; 0)
+      .map((v: any) &#x3D;&gt; ({
+        detalleRecetaId: v.detalleRecetaId,
+        cantidad: v.cantidadADispensar
+      }));
+
+    if (detallesADispensar.length &#x3D;&#x3D;&#x3D; 0) {
+      this.error.set(&#x27;Debe dispensar al menos un medicamento&#x27;);
+      return;
+    }
+
+    this.procesando.set(true);
+    this.service.dispensar({
+      recetaId: this.recetaSeleccionada()!.id,
+      detalles: detallesADispensar
+    }).subscribe({
+      next: () &#x3D;&gt; {
+        this.notification.success(&#x27;Dispensación procesada con éxito&#x27;);
+        this.recetaSeleccionada.set(null);
+        this.recetas.set([]);
+        this.procesando.set(false);
+      },
+      error: (err) &#x3D;&gt; {
+        const msg &#x3D; err.error?.message || &#x27;Error al procesar la dispensación&#x27;;
+        this.notification.error(msg);
+        this.procesando.set(false);
+      }
+    });
+  }
+
+  cerrarDetalle() {
+    this.recetaSeleccionada.set(null);
+    this.error.set(&#x27;&#x27;);
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;space-y-6&quot;&gt;
+  &lt;!-- Cabecera --&gt;
+  &lt;div class&#x3D;&quot;flex items-center justify-between&quot;&gt;
+    &lt;div&gt;
+      &lt;h2 class&#x3D;&quot;text-2xl font-bold text-gray-900&quot;&gt;Farmacia&lt;/h2&gt;
+      &lt;p class&#x3D;&quot;text-sm text-gray-500&quot;&gt;Dispensación de medicamentos y control de inventario&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Buscador de Recetas --&gt;
+  &lt;div class&#x3D;&quot;bg-white rounded-2xl p-6 border border-gray-100 shadow-sm&quot;&gt;
+    &lt;label class&#x3D;&quot;block text-sm font-medium text-gray-700 mb-2&quot;&gt;Buscar paciente por DNI o N° Expediente&lt;/label&gt;
+    &lt;div class&#x3D;&quot;relative&quot;&gt;
+      &lt;svg class&#x3D;&quot;absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+        &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0&quot;/&gt;
+      &lt;/svg&gt;
+      &lt;input type&#x3D;&quot;text&quot; 
+             placeholder&#x3D;&quot;Ingrese identificación para buscar recetas pendientes...&quot;
+             (input)&#x3D;&quot;buscar($event)&quot;
+             class&#x3D;&quot;w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all&quot;/&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Resultados de Búsqueda --&gt;
+    &lt;div *ngIf&#x3D;&quot;cargando()&quot; class&#x3D;&quot;mt-4 text-center py-8&quot;&gt;
+      &lt;div class&#x3D;&quot;inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600&quot;&gt;&lt;/div&gt;
+      &lt;p class&#x3D;&quot;mt-2 text-sm text-gray-500&quot;&gt;Buscando recetas pendientes...&lt;/p&gt;
+    &lt;/div&gt;
+
+    &lt;div *ngIf&#x3D;&quot;!cargando() &amp;&amp; recetas().length &gt; 0&quot; class&#x3D;&quot;mt-6 grid grid-cols-1 md:grid-cols-2 gap-4&quot;&gt;
+      &lt;div *ngFor&#x3D;&quot;let r of recetas()&quot; 
+           (click)&#x3D;&quot;seleccionarReceta(r)&quot;
+           class&#x3D;&quot;p-4 border border-gray-100 rounded-xl hover:border-blue-300 hover:bg-blue-50 cursor-pointer transition-all group&quot;&gt;
+        &lt;div class&#x3D;&quot;flex justify-between items-start&quot;&gt;
+          &lt;div&gt;
+            &lt;h4 class&#x3D;&quot;font-bold text-gray-900 group-hover:text-blue-700 transition-colors&quot;&gt;
+              {{ r.paciente.nombres }} {{ r.paciente.apellidos }}
+            &lt;/h4&gt;
+            &lt;p class&#x3D;&quot;text-xs text-gray-500&quot;&gt;Expediente: {{ r.paciente.numeroExpediente }}&lt;/p&gt;
+          &lt;/div&gt;
+          &lt;span [ngClass]&#x3D;&quot;r.estado &#x3D;&#x3D;&#x3D; &#x27;PENDIENTE&#x27; ? &#x27;bg-orange-100 text-orange-700&#x27; : &#x27;bg-blue-100 text-blue-700&#x27;&quot;
+                class&#x3D;&quot;px-2 py-0.5 rounded-full text-[10px] font-bold uppercase&quot;&gt;
+            {{ r.estado }}
+          &lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;mt-3 flex items-center justify-between text-xs text-gray-400&quot;&gt;
+          &lt;span&gt;Creada: {{ r.creadaEn | date:&#x27;dd/MM/yyyy HH:mm&#x27; }}&lt;/span&gt;
+          &lt;span&gt;{{ r.detalles.length }} medicamento(s)&lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div *ngIf&#x3D;&quot;!cargando() &amp;&amp; recetas().length &#x3D;&#x3D;&#x3D; 0 &amp;&amp; error() &#x3D;&#x3D;&#x3D; &#x27;&#x27;&quot; class&#x3D;&quot;mt-4 text-center py-8 border-2 border-dashed border-gray-50 rounded-2xl&quot;&gt;
+      &lt;p class&#x3D;&quot;text-sm text-gray-400&quot;&gt;No hay resultados que mostrar&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Modal/Vista de Dispensación --&gt;
+  &lt;div *ngIf&#x3D;&quot;recetaSeleccionada()&quot; class&#x3D;&quot;fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4&quot;&gt;
+    &lt;div class&#x3D;&quot;bg-white rounded-3xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col&quot;&gt;
+      &lt;!-- Header --&gt;
+      &lt;div class&#x3D;&quot;px-8 py-6 bg-gray-50 border-b flex justify-between items-center&quot;&gt;
+        &lt;div&gt;
+          &lt;span class&#x3D;&quot;text-[10px] font-bold text-blue-600 uppercase tracking-widest&quot;&gt;Dispensación de Receta&lt;/span&gt;
+          &lt;h3 class&#x3D;&quot;text-xl font-bold text-gray-900&quot;&gt;
+            {{ recetaSeleccionada().paciente.nombres }} {{ recetaSeleccionada().paciente.apellidos }}
+          &lt;/h3&gt;
+        &lt;/div&gt;
+        &lt;button (click)&#x3D;&quot;cerrarDetalle()&quot; class&#x3D;&quot;p-2 hover:bg-gray-200 rounded-full transition-colors&quot;&gt;
+          &lt;svg class&#x3D;&quot;w-6 h-6 text-gray-500&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+            &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M6 18L18 6M6 6l12 12&quot;/&gt;
+          &lt;/svg&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Contenido --&gt;
+      &lt;div class&#x3D;&quot;p-8 overflow-y-auto flex-1&quot;&gt;
+        &lt;div *ngIf&#x3D;&quot;error()&quot; class&#x3D;&quot;mb-6 p-4 bg-red-50 border border-red-100 text-red-700 rounded-xl text-sm flex items-center gap-3&quot;&gt;
+          &lt;svg class&#x3D;&quot;w-5 h-5 flex-shrink-0&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+            &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z&quot;/&gt;
+          &lt;/svg&gt;
+          {{ error() }}
+        &lt;/div&gt;
+
+        &lt;form [formGroup]&#x3D;&quot;form&quot;&gt;
+          &lt;div class&#x3D;&quot;bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm&quot;&gt;
+            &lt;table class&#x3D;&quot;w-full text-sm&quot;&gt;
+              &lt;thead class&#x3D;&quot;bg-gray-50 border-b border-gray-100&quot;&gt;
+                &lt;tr&gt;
+                  &lt;th class&#x3D;&quot;px-4 py-4 text-left font-bold text-gray-600&quot;&gt;Medicamento / Posología&lt;/th&gt;
+                  &lt;th class&#x3D;&quot;px-4 py-4 text-center font-bold text-gray-600&quot;&gt;Prescrita&lt;/th&gt;
+                  &lt;th class&#x3D;&quot;px-4 py-4 text-center font-bold text-gray-600&quot;&gt;Entregada&lt;/th&gt;
+                  &lt;th class&#x3D;&quot;px-4 py-4 text-center font-bold text-gray-600&quot;&gt;Pendiente&lt;/th&gt;
+                  &lt;th class&#x3D;&quot;px-4 py-4 text-right font-bold text-blue-600&quot;&gt;A Entregar Ahora&lt;/th&gt;
+                &lt;/tr&gt;
+              &lt;/thead&gt;
+              &lt;tbody class&#x3D;&quot;divide-y divide-gray-50&quot; formArrayName&#x3D;&quot;detalles&quot;&gt;
+                &lt;tr *ngFor&#x3D;&quot;let ctrl of detallesForm; let i &#x3D; index&quot; [formGroupName]&#x3D;&quot;i&quot; class&#x3D;&quot;hover:bg-blue-50/30 transition-colors&quot;&gt;
+                  &lt;td class&#x3D;&quot;px-4 py-4&quot;&gt;
+                    &lt;div class&#x3D;&quot;font-bold text-gray-900&quot;&gt;{{ ctrl.get(&#x27;medicamento&#x27;)?.value }}&lt;/div&gt;
+                    &lt;div class&#x3D;&quot;text-[11px] text-gray-500 mt-0.5&quot;&gt;{{ ctrl.get(&#x27;dosis&#x27;)?.value }}&lt;/div&gt;
+                  &lt;/td&gt;
+                  &lt;td class&#x3D;&quot;px-4 py-4 text-center font-medium&quot;&gt;{{ ctrl.get(&#x27;cantidadPrescrita&#x27;)?.value }}&lt;/td&gt;
+                  &lt;td class&#x3D;&quot;px-4 py-4 text-center text-gray-500&quot;&gt;{{ ctrl.get(&#x27;cantidadEntregada&#x27;)?.value }}&lt;/td&gt;
+                  &lt;td class&#x3D;&quot;px-4 py-4 text-center&quot;&gt;
+                    &lt;span class&#x3D;&quot;px-2 py-1 bg-orange-50 text-orange-700 rounded-lg font-bold text-xs&quot;&gt;
+                      {{ ctrl.get(&#x27;cantidadPendiente&#x27;)?.value }}
+                    &lt;/span&gt;
+                  &lt;/td&gt;
+                  &lt;td class&#x3D;&quot;px-4 py-4 text-right&quot;&gt;
+                    &lt;input type&#x3D;&quot;number&quot; 
+                           formControlName&#x3D;&quot;cantidadADispensar&quot;
+                           class&#x3D;&quot;w-20 px-2 py-1.5 border border-blue-200 rounded-lg text-right focus:ring-2 focus:ring-blue-500 outline-none font-bold text-blue-700 bg-blue-50/50&quot;/&gt;
+                  &lt;/td&gt;
+                &lt;/tr&gt;
+              &lt;/tbody&gt;
+            &lt;/table&gt;
+          &lt;/div&gt;
+        &lt;/form&gt;
+
+        &lt;!-- Notas adicionales --&gt;
+        &lt;div class&#x3D;&quot;mt-6 p-4 bg-gray-50 rounded-2xl border border-gray-100 text-[11px] text-gray-500&quot;&gt;
+          &lt;p&gt;&lt;strong&gt;Nota:&lt;/strong&gt; El sistema seleccionará automáticamente los lotes más próximos a vencer (FEFO) del inventario local. Si un lote se agota, se continuará con el siguiente lote disponible.&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Footer --&gt;
+      &lt;div class&#x3D;&quot;px-8 py-6 bg-white border-t flex justify-end gap-4&quot;&gt;
+        &lt;button (click)&#x3D;&quot;cerrarDetalle()&quot; 
+                class&#x3D;&quot;px-6 py-2.5 text-sm font-bold text-gray-600 hover:bg-gray-100 rounded-xl transition-all&quot;&gt;
+          Cancelar
+        &lt;/button&gt;
+        &lt;button (click)&#x3D;&quot;confirmarDispensacion()&quot; 
+                [disabled]&#x3D;&quot;procesando() || form.invalid&quot;
+                class&#x3D;&quot;px-8 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-xl shadow-lg shadow-blue-200 disabled:opacity-50 transition-all flex items-center gap-2&quot;&gt;
+          &lt;svg *ngIf&#x3D;&quot;procesando()&quot; class&#x3D;&quot;animate-spin h-4 w-4 text-white&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot;&gt;
+            &lt;circle class&#x3D;&quot;opacity-25&quot; cx&#x3D;&quot;12&quot; cy&#x3D;&quot;12&quot; r&#x3D;&quot;10&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;4&quot;&gt;&lt;/circle&gt;
+            &lt;path class&#x3D;&quot;opacity-75&quot; fill&#x3D;&quot;currentColor&quot; d&#x3D;&quot;M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z&quot;&gt;&lt;/path&gt;
+          &lt;/svg&gt;
+          {{ procesando() ? &#x27;Procesando...&#x27; : &#x27;Finalizar Dispensación&#x27; }}
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="space-y-6">  <!-- Cabecera -->  <div class="flex items-center justify-between">    <div>      <h2 class="text-2xl font-bold text-gray-900">Farmacia</h2>      <p class="text-sm text-gray-500">Dispensación de medicamentos y control de inventario</p>    </div>  </div>  <!-- Buscador de Recetas -->  <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">    <label class="block text-sm font-medium text-gray-700 mb-2">Buscar paciente por DNI o N° Expediente</label>    <div class="relative">      <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0"/>      </svg>      <input type="text"              placeholder="Ingrese identificación para buscar recetas pendientes..."             (input)="buscar($event)"             class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"/>    </div>    <!-- Resultados de Búsqueda -->    <div *ngIf="cargando()" class="mt-4 text-center py-8">      <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>      <p class="mt-2 text-sm text-gray-500">Buscando recetas pendientes...</p>    </div>    <div *ngIf="!cargando() && recetas().length > 0" class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">      <div *ngFor="let r of recetas()"            (click)="seleccionarReceta(r)"           class="p-4 border border-gray-100 rounded-xl hover:border-blue-300 hover:bg-blue-50 cursor-pointer transition-all group">        <div class="flex justify-between items-start">          <div>            <h4 class="font-bold text-gray-900 group-hover:text-blue-700 transition-colors">              {{ r.paciente.nombres }} {{ r.paciente.apellidos }}            </h4>            <p class="text-xs text-gray-500">Expediente: {{ r.paciente.numeroExpediente }}</p>          </div>          <span [ngClass]="r.estado === \'PENDIENTE\' ? \'bg-orange-100 text-orange-700\' : \'bg-blue-100 text-blue-700\'"                class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase">            {{ r.estado }}          </span>        </div>        <div class="mt-3 flex items-center justify-between text-xs text-gray-400">          <span>Creada: {{ r.creadaEn | date:\'dd/MM/yyyy HH:mm\' }}</span>          <span>{{ r.detalles.length }} medicamento(s)</span>        </div>      </div>    </div>    <div *ngIf="!cargando() && recetas().length === 0 && error() === \'\'" class="mt-4 text-center py-8 border-2 border-dashed border-gray-50 rounded-2xl">      <p class="text-sm text-gray-400">No hay resultados que mostrar</p>    </div>  </div>  <!-- Modal/Vista de Dispensación -->  <div *ngIf="recetaSeleccionada()" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">      <!-- Header -->      <div class="px-8 py-6 bg-gray-50 border-b flex justify-between items-center">        <div>          <span class="text-[10px] font-bold text-blue-600 uppercase tracking-widest">Dispensación de Receta</span>          <h3 class="text-xl font-bold text-gray-900">            {{ recetaSeleccionada().paciente.nombres }} {{ recetaSeleccionada().paciente.apellidos }}          </h3>        </div>        <button (click)="cerrarDetalle()" class="p-2 hover:bg-gray-200 rounded-full transition-colors">          <svg class="w-6 h-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>          </svg>        </button>      </div>      <!-- Contenido -->      <div class="p-8 overflow-y-auto flex-1">        <div *ngIf="error()" class="mb-6 p-4 bg-red-50 border border-red-100 text-red-700 rounded-xl text-sm flex items-center gap-3">          <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>          </svg>          {{ error() }}        </div>        <form [formGroup]="form">          <div class="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm">            <table class="w-full text-sm">              <thead class="bg-gray-50 border-b border-gray-100">                <tr>                  <th class="px-4 py-4 text-left font-bold text-gray-600">Medicamento / Posología</th>                  <th class="px-4 py-4 text-center font-bold text-gray-600">Prescrita</th>                  <th class="px-4 py-4 text-center font-bold text-gray-600">Entregada</th>                  <th class="px-4 py-4 text-center font-bold text-gray-600">Pendiente</th>                  <th class="px-4 py-4 text-right font-bold text-blue-600">A Entregar Ahora</th>                </tr>              </thead>              <tbody class="divide-y divide-gray-50" formArrayName="detalles">                <tr *ngFor="let ctrl of detallesForm; let i = index" [formGroupName]="i" class="hover:bg-blue-50/30 transition-colors">                  <td class="px-4 py-4">                    <div class="font-bold text-gray-900">{{ ctrl.get(\'medicamento\')?.value }}</div>                    <div class="text-[11px] text-gray-500 mt-0.5">{{ ctrl.get(\'dosis\')?.value }}</div>                  </td>                  <td class="px-4 py-4 text-center font-medium">{{ ctrl.get(\'cantidadPrescrita\')?.value }}</td>                  <td class="px-4 py-4 text-center text-gray-500">{{ ctrl.get(\'cantidadEntregada\')?.value }}</td>                  <td class="px-4 py-4 text-center">                    <span class="px-2 py-1 bg-orange-50 text-orange-700 rounded-lg font-bold text-xs">                      {{ ctrl.get(\'cantidadPendiente\')?.value }}                    </span>                  </td>                  <td class="px-4 py-4 text-right">                    <input type="number"                            formControlName="cantidadADispensar"                           class="w-20 px-2 py-1.5 border border-blue-200 rounded-lg text-right focus:ring-2 focus:ring-blue-500 outline-none font-bold text-blue-700 bg-blue-50/50"/>                  </td>                </tr>              </tbody>            </table>          </div>        </form>        <!-- Notas adicionales -->        <div class="mt-6 p-4 bg-gray-50 rounded-2xl border border-gray-100 text-[11px] text-gray-500">          <p><strong>Nota:</strong> El sistema seleccionará automáticamente los lotes más próximos a vencer (FEFO) del inventario local. Si un lote se agota, se continuará con el siguiente lote disponible.</p>        </div>      </div>      <!-- Footer -->      <div class="px-8 py-6 bg-white border-t flex justify-end gap-4">        <button (click)="cerrarDetalle()"                 class="px-6 py-2.5 text-sm font-bold text-gray-600 hover:bg-gray-100 rounded-xl transition-all">          Cancelar        </button>        <button (click)="confirmarDispensacion()"                 [disabled]="procesando() || form.invalid"                class="px-8 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-xl shadow-lg shadow-blue-200 disabled:opacity-50 transition-all flex items-center gap-2">          <svg *ngIf="procesando()" class="animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>          </svg>          {{ procesando() ? \'Procesando...\' : \'Finalizar Dispensación\' }}        </button>      </div>    </div>  </div></div></div>'
+    var COMPONENTS = [{'name': 'AgendasComponent', 'selector': 'app-agendas'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'BuscadorPacienteComponent', 'selector': 'app-buscador-paciente'},{'name': 'CitasComponent', 'selector': 'app-citas'},{'name': 'ConstructorFormularioComponent', 'selector': 'app-constructor-formulario'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'EpidemiologiaDashboardComponent', 'selector': 'app-epidemiologia-dashboard'},{'name': 'EstadisticasHospitalariasComponent', 'selector': 'app-estadisticas-hospitalarias'},{'name': 'FarmaciaComponent', 'selector': 'app-farmacia'},{'name': 'GestionHospitalizacionComponent', 'selector': 'app-gestion-hospitalizacion'},{'name': 'GestionLotesModalComponent', 'selector': 'app-gestion-lotes-modal'},{'name': 'GestionReportesComponent', 'selector': 'app-gestion-reportes'},{'name': 'HistoriaClinicaComponent', 'selector': 'app-historia-clinica'},{'name': 'InfraestructuraModalComponent', 'selector': 'app-infraestructura-modal'},{'name': 'InventarioVacunasComponent', 'selector': 'app-inventario-vacunas'},{'name': 'LaboratorioComponent', 'selector': 'app-laboratorio'},{'name': 'ListaPlantillasComponent', 'selector': 'app-lista-plantillas'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MainLayoutComponent', 'selector': 'app-main-layout'},{'name': 'MantenimientoDiagnosticosComponent', 'selector': 'app-mantenimiento-diagnosticos'},{'name': 'MantenimientoEstablecimientosComponent', 'selector': 'app-mantenimiento-establecimientos'},{'name': 'MantenimientoInventarioComponent', 'selector': 'app-mantenimiento-inventario'},{'name': 'MantenimientoLaboratorioComponent', 'selector': 'app-mantenimiento-laboratorio'},{'name': 'MantenimientoLoginComponent', 'selector': 'app-mantenimiento-login'},{'name': 'MantenimientoMedicamentosComponent', 'selector': 'app-mantenimiento-medicamentos'},{'name': 'MantenimientoRadiologiaComponent', 'selector': 'app-mantenimiento-radiologia'},{'name': 'MantenimientoRolesComponent', 'selector': 'app-mantenimiento-roles'},{'name': 'MovimientosInventarioComponent', 'selector': 'app-movimientos-inventario'},{'name': 'NotificationComponent', 'selector': 'app-notification'},{'name': 'NuevaConsultaComponent', 'selector': 'app-nueva-consulta'},{'name': 'PacientesComponent', 'selector': 'app-pacientes'},{'name': 'PermisosUsuariosComponent', 'selector': 'app-permisos-usuarios'},{'name': 'RecetasPacienteComponent', 'selector': 'app-recetas-paciente'},{'name': 'RegistroVacunaModalComponent', 'selector': 'app-registro-vacuna-modal'},{'name': 'ReportesComponent', 'selector': 'app-reportes'},{'name': 'TriajeComponent', 'selector': 'app-triaje'},{'name': 'UsuariosComponent', 'selector': 'app-usuarios'},{'name': 'VacunacionComponent', 'selector': 'app-vacunacion'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'FarmaciaComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'FarmaciaComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

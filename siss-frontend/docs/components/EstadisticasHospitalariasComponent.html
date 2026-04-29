@@ -1,0 +1,1212 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>siss-frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">siss-frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  EstadisticasHospitalariasComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#styleData" class="nav-link"
+                role="tab" id="styleData-tab" data-bs-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/modules/hospitalizacion/pages/estadisticas/estadisticas-hospitalarias.component.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                <code>OnInit</code>
+                <code>AfterViewInit</code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-estadisticas-hospitalarias</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                            <code>CommonModule</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-3">styles</td>
+                <td class="col-md-9"><code>
+    .custom-scroll::-webkit-scrollbar { width: 4px; }
+    .custom-scroll::-webkit-scrollbar-track { background: #f8fafc; }
+    .custom-scroll::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+    .animate-in { animation: fadeIn 0.5s ease-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  </code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">template</td>
+                <td class="col-md-9"><pre class="line-numbers"><code class="language-html">&lt;div *ngIf&#x3D;&quot;stats()&quot; class&#x3D;&quot;p-8 bg-slate-50 min-h-screen animate-in&quot;&gt;
+  &lt;!-- Header --&gt;
+  &lt;div class&#x3D;&quot;flex items-center justify-between mb-8&quot;&gt;
+    &lt;div&gt;
+      &lt;h1 class&#x3D;&quot;text-3xl font-black text-slate-900 tracking-tight&quot;&gt;Indicadores Hospitalarios&lt;/h1&gt;
+      &lt;p class&#x3D;&quot;text-slate-500 font-medium&quot;&gt;Análisis de eficiencia y ocupación del centro médico&lt;/p&gt;
+    &lt;/div&gt;
+
+    &lt;div class&#x3D;&quot;flex items-center gap-4 bg-white p-2 rounded-2xl shadow-sm border border-slate-100&quot;&gt;
+       &lt;button (click)&#x3D;&quot;cargarEstadisticas()&quot; class&#x3D;&quot;p-3 hover:bg-slate-50 rounded-xl transition-all&quot;&gt;
+         &lt;svg class&#x3D;&quot;w-5 h-5 text-slate-400&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15&quot;/&gt;&lt;/svg&gt;
+       &lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- KPIs --&gt;
+  &lt;div class&#x3D;&quot;grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8&quot;&gt;
+    &lt;!-- Ocupación --&gt;
+    &lt;div class&#x3D;&quot;bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100 relative overflow-hidden group&quot;&gt;
+      &lt;div class&#x3D;&quot;absolute top-0 right-0 w-32 h-32 bg-violet-50 rounded-full -mr-16 -mt-16 transition-transform group-hover:scale-110&quot;&gt;&lt;/div&gt;
+      &lt;div class&#x3D;&quot;relative&quot;&gt;
+        &lt;p class&#x3D;&quot;text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1&quot;&gt;Ocupación Actual&lt;/p&gt;
+        &lt;h2 class&#x3D;&quot;text-4xl font-black text-slate-900&quot;&gt;{{ stats()?.indicadores?.ocupacionPorcentual }}%&lt;/h2&gt;
+        &lt;div class&#x3D;&quot;mt-4 flex items-center gap-2&quot;&gt;
+          &lt;div class&#x3D;&quot;flex-1 h-2 bg-slate-100 rounded-full overflow-hidden&quot;&gt;
+            &lt;div class&#x3D;&quot;h-full bg-violet-500 rounded-full&quot; [style.width.%]&#x3D;&quot;stats()?.indicadores?.ocupacionPorcentual&quot;&gt;&lt;/div&gt;
+          &lt;/div&gt;
+          &lt;span class&#x3D;&quot;text-[10px] font-bold text-slate-500&quot;&gt;{{ stats()?.indicadores?.ingresosActivos }}/{{ stats()?.indicadores?.totalCamas }}&lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Promedio Estadía --&gt;
+    &lt;div class&#x3D;&quot;bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100 relative overflow-hidden group&quot;&gt;
+      &lt;div class&#x3D;&quot;absolute top-0 right-0 w-32 h-32 bg-emerald-50 rounded-full -mr-16 -mt-16 transition-transform group-hover:scale-110&quot;&gt;&lt;/div&gt;
+      &lt;div class&#x3D;&quot;relative&quot;&gt;
+        &lt;p class&#x3D;&quot;text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1&quot;&gt;Promedio Estadía&lt;/p&gt;
+        &lt;h2 class&#x3D;&quot;text-4xl font-black text-slate-900&quot;&gt;{{ stats()?.indicadores?.promedioEstadia }} &lt;span class&#x3D;&quot;text-sm text-slate-400 font-bold&quot;&gt;Días&lt;/span&gt;&lt;/h2&gt;
+        &lt;p class&#x3D;&quot;mt-4 text-[10px] text-slate-500 font-bold&quot;&gt;BASADO EN EGRESOS DEL MES&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Giro de Cama --&gt;
+    &lt;div class&#x3D;&quot;bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100 relative overflow-hidden group&quot;&gt;
+      &lt;div class&#x3D;&quot;absolute top-0 right-0 w-32 h-32 bg-amber-50 rounded-full -mr-16 -mt-16 transition-transform group-hover:scale-110&quot;&gt;&lt;/div&gt;
+      &lt;div class&#x3D;&quot;relative&quot;&gt;
+        &lt;p class&#x3D;&quot;text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1&quot;&gt;Giro de Cama&lt;/p&gt;
+        &lt;h2 class&#x3D;&quot;text-4xl font-black text-slate-900&quot;&gt;{{ stats()?.indicadores?.giroCama }} &lt;span class&#x3D;&quot;text-sm text-slate-400 font-bold&quot;&gt;ROT.&lt;/span&gt;&lt;/h2&gt;
+        &lt;p class&#x3D;&quot;mt-4 text-[10px] text-slate-500 font-bold&quot;&gt;EFICIENCIA DE USO MENSUAL&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Egresos Totales --&gt;
+    &lt;div class&#x3D;&quot;bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100 relative overflow-hidden group&quot;&gt;
+      &lt;div class&#x3D;&quot;absolute top-0 right-0 w-32 h-32 bg-rose-50 rounded-full -mr-16 -mt-16 transition-transform group-hover:scale-110&quot;&gt;&lt;/div&gt;
+      &lt;div class&#x3D;&quot;relative&quot;&gt;
+        &lt;p class&#x3D;&quot;text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1&quot;&gt;Egresos del Mes&lt;/p&gt;
+        &lt;h2 class&#x3D;&quot;text-4xl font-black text-slate-900&quot;&gt;{{ stats()?.indicadores?.totalEgresosMes }}&lt;/h2&gt;
+        &lt;p class&#x3D;&quot;mt-4 text-[10px] text-slate-500 font-bold tracking-tight&quot;&gt;ALTAS MÉDICAS REGISTRADAS&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Charts Section --&gt;
+  &lt;div class&#x3D;&quot;grid grid-cols-1 lg:grid-cols-3 gap-8&quot;&gt;
+    &lt;!-- Ocupación Chart --&gt;
+    &lt;div class&#x3D;&quot;lg:col-span-1 bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100&quot;&gt;
+      &lt;h3 class&#x3D;&quot;text-lg font-black text-slate-800 mb-8 flex items-center gap-2&quot;&gt;
+        &lt;span class&#x3D;&quot;w-2 h-6 bg-violet-500 rounded-full&quot;&gt;&lt;/span&gt;
+        Disponibilidad de Camas
+      &lt;/h3&gt;
+      &lt;div class&#x3D;&quot;aspect-square relative flex items-center justify-center&quot;&gt;
+        &lt;canvas #ocupacionCanvas&gt;&lt;/canvas&gt;
+        &lt;div class&#x3D;&quot;absolute inset-0 flex flex-col items-center justify-center pointer-events-none&quot;&gt;
+          &lt;span class&#x3D;&quot;text-3xl font-black text-slate-900&quot;&gt;{{ stats()?.indicadores?.ocupacionPorcentual }}%&lt;/span&gt;
+          &lt;span class&#x3D;&quot;text-[10px] font-black text-slate-400 uppercase&quot;&gt;Ocupado&lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Tabla de Servicios --&gt;
+    &lt;div class&#x3D;&quot;lg:col-span-2 bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100&quot;&gt;
+      &lt;h3 class&#x3D;&quot;text-lg font-black text-slate-800 mb-8 flex items-center gap-2&quot;&gt;
+        &lt;span class&#x3D;&quot;w-2 h-6 bg-emerald-500 rounded-full&quot;&gt;&lt;/span&gt;
+        Análisis por Servicio
+      &lt;/h3&gt;
+      &lt;div class&#x3D;&quot;overflow-x-auto&quot;&gt;
+        &lt;table class&#x3D;&quot;w-full text-left&quot;&gt;
+          &lt;thead&gt;
+            &lt;tr class&#x3D;&quot;text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-50&quot;&gt;
+              &lt;th class&#x3D;&quot;pb-4&quot;&gt;Servicio&lt;/th&gt;
+              &lt;th class&#x3D;&quot;pb-4&quot;&gt;Camas&lt;/th&gt;
+              &lt;th class&#x3D;&quot;pb-4&quot;&gt;Ocupadas&lt;/th&gt;
+              &lt;th class&#x3D;&quot;pb-4 text-center&quot;&gt;Ocupación %&lt;/th&gt;
+              &lt;th class&#x3D;&quot;pb-4 text-right&quot;&gt;Egresos&lt;/th&gt;
+            &lt;/tr&gt;
+          &lt;/thead&gt;
+          &lt;tbody class&#x3D;&quot;divide-y divide-slate-50&quot;&gt;
+            &lt;tr *ngFor&#x3D;&quot;let s of stats()?.analisisServicios&quot; class&#x3D;&quot;group hover:bg-slate-50/50 transition-all&quot;&gt;
+              &lt;td class&#x3D;&quot;py-4 font-bold text-slate-700 text-sm&quot;&gt;{{ s.servicio }}&lt;/td&gt;
+              &lt;td class&#x3D;&quot;py-4 text-sm font-medium text-slate-500&quot;&gt;{{ s.camas }}&lt;/td&gt;
+              &lt;td class&#x3D;&quot;py-4 text-sm font-medium text-slate-500&quot;&gt;{{ s.ocupacion }}%&lt;/td&gt;
+              &lt;td class&#x3D;&quot;py-4&quot;&gt;
+                &lt;div class&#x3D;&quot;flex items-center justify-center&quot;&gt;
+                  &lt;span [class]&#x3D;&quot;s.ocupacion &gt; 80 ? &#x27;bg-rose-50 text-rose-600&#x27; : s.ocupacion &gt; 50 ? &#x27;bg-amber-50 text-amber-600&#x27; : &#x27;bg-emerald-50 text-emerald-600&#x27;&quot;
+                        class&#x3D;&quot;px-2 py-1 rounded-lg text-[10px] font-black&quot;&gt;
+                    {{ s.ocupacion }}%
+                  &lt;/span&gt;
+                &lt;/div&gt;
+              &lt;/td&gt;
+              &lt;td class&#x3D;&quot;py-4 text-right text-sm font-bold text-slate-700&quot;&gt;{{ s.egresos }} Egr.&lt;/td&gt;
+            &lt;/tr&gt;
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></td>
+            </tr>
+
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#_ocupacionCanvas" >_ocupacionCanvas</a>
+                            </li>
+                            <li>
+                                <a href="#chart" >chart</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#destroyRef" >destroyRef</a>
+                            </li>
+                            <li>
+                                <a href="#stats" >stats</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#svc" >svc</a>
+                            </li>
+                            <li>
+                                <a href="#viewInitialized" >viewInitialized</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#zone" >zone</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#cargarEstadisticas" >cargarEstadisticas</a>
+                            </li>
+                            <li>
+                                <a href="#initChart" >initChart</a>
+                            </li>
+                            <li>
+                                <a href="#ngAfterViewInit" >ngAfterViewInit</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Accessors</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                    <a href="#ocupacionCanvas" >ocupacionCanvas</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+        </tbody>
+    </table>
+</section>
+
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargarEstadisticas"></a>
+                    <span class="name">
+                        <span ><b>cargarEstadisticas</b></span>
+                        <a href="#cargarEstadisticas"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cargarEstadisticas()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="170"
+                                    class="link-to-prism">src/app/modules/hospitalizacion/pages/estadisticas/estadisticas-hospitalarias.component.ts:170</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="initChart"></a>
+                    <span class="name">
+                        <span ><b>initChart</b></span>
+                        <a href="#initChart"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>initChart(data: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="187"
+                                    class="link-to-prism">src/app/modules/hospitalizacion/pages/estadisticas/estadisticas-hospitalarias.component.ts:187</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>data</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngAfterViewInit"></a>
+                    <span class="name">
+                        <span ><b>ngAfterViewInit</b></span>
+                        <a href="#ngAfterViewInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngAfterViewInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="166"
+                                    class="link-to-prism">src/app/modules/hospitalizacion/pages/estadisticas/estadisticas-hospitalarias.component.ts:166</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="162"
+                                    class="link-to-prism">src/app/modules/hospitalizacion/pages/estadisticas/estadisticas-hospitalarias.component.ts:162</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_ocupacionCanvas"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>_ocupacionCanvas</b></span>
+                        <a href="#_ocupacionCanvas"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>ElementRef</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="148" class="link-to-prism">src/app/modules/hospitalizacion/pages/estadisticas/estadisticas-hospitalarias.component.ts:148</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="chart"></a>
+                    <span class="name">
+                        <span ><b>chart</b></span>
+                        <a href="#chart"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="160" class="link-to-prism">src/app/modules/hospitalizacion/pages/estadisticas/estadisticas-hospitalarias.component.ts:160</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="destroyRef"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>destroyRef</b></span>
+                        <a href="#destroyRef"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(DestroyRef)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="144" class="link-to-prism">src/app/modules/hospitalizacion/pages/estadisticas/estadisticas-hospitalarias.component.ts:144</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="stats"></a>
+                    <span class="name">
+                        <span ><b>stats</b></span>
+                        <a href="#stats"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;any&gt;(null)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="146" class="link-to-prism">src/app/modules/hospitalizacion/pages/estadisticas/estadisticas-hospitalarias.component.ts:146</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="svc"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>svc</b></span>
+                        <a href="#svc"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(HospitalizacionService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="142" class="link-to-prism">src/app/modules/hospitalizacion/pages/estadisticas/estadisticas-hospitalarias.component.ts:142</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="viewInitialized"></a>
+                    <span class="name">
+                        <span ><b>viewInitialized</b></span>
+                        <a href="#viewInitialized"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="159" class="link-to-prism">src/app/modules/hospitalizacion/pages/estadisticas/estadisticas-hospitalarias.component.ts:159</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="zone"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>zone</b></span>
+                        <a href="#zone"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(NgZone)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="143" class="link-to-prism">src/app/modules/hospitalizacion/pages/estadisticas/estadisticas-hospitalarias.component.ts:143</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-accessors">
+    <h3 id="accessors">
+        Accessors
+    </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="ocupacionCanvas"></a>
+                        <span class="name"><b>ocupacionCanvas</b><a href="#ocupacionCanvas"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>ocupacionCanvas(content: ElementRef)</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="149" class="link-to-prism">src/app/modules/hospitalizacion/pages/estadisticas/estadisticas-hospitalarias.component.ts:149</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                        <td>Type</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>content</td>
+                                                    
+                                                            <td>
+                                                                        <code>ElementRef</code>
+                                                            </td>
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+</section>
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit, signal, inject, ViewChild, ElementRef, AfterViewInit, NgZone, DestroyRef } from &#x27;@angular/core&#x27;;
+import { takeUntilDestroyed } from &#x27;@angular/core/rxjs-interop&#x27;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
+import { HospitalizacionService } from &#x27;../../../../core/services/hospitalizacion.service&#x27;;
+import { Chart, registerables } from &#x27;chart.js&#x27;;
+
+Chart.register(...registerables);
+
+@Component({
+  selector: &#x27;app-estadisticas-hospitalarias&#x27;,
+  standalone: true,
+  imports: [CommonModule],
+  template: &#x60;
+    &lt;div *ngIf&#x3D;&quot;stats()&quot; class&#x3D;&quot;p-8 bg-slate-50 min-h-screen animate-in&quot;&gt;
+      &lt;!-- Header --&gt;
+      &lt;div class&#x3D;&quot;flex items-center justify-between mb-8&quot;&gt;
+        &lt;div&gt;
+          &lt;h1 class&#x3D;&quot;text-3xl font-black text-slate-900 tracking-tight&quot;&gt;Indicadores Hospitalarios&lt;/h1&gt;
+          &lt;p class&#x3D;&quot;text-slate-500 font-medium&quot;&gt;Análisis de eficiencia y ocupación del centro médico&lt;/p&gt;
+        &lt;/div&gt;
+        
+        &lt;div class&#x3D;&quot;flex items-center gap-4 bg-white p-2 rounded-2xl shadow-sm border border-slate-100&quot;&gt;
+           &lt;button (click)&#x3D;&quot;cargarEstadisticas()&quot; class&#x3D;&quot;p-3 hover:bg-slate-50 rounded-xl transition-all&quot;&gt;
+             &lt;svg class&#x3D;&quot;w-5 h-5 text-slate-400&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15&quot;/&gt;&lt;/svg&gt;
+           &lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- KPIs --&gt;
+      &lt;div class&#x3D;&quot;grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8&quot;&gt;
+        &lt;!-- Ocupación --&gt;
+        &lt;div class&#x3D;&quot;bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100 relative overflow-hidden group&quot;&gt;
+          &lt;div class&#x3D;&quot;absolute top-0 right-0 w-32 h-32 bg-violet-50 rounded-full -mr-16 -mt-16 transition-transform group-hover:scale-110&quot;&gt;&lt;/div&gt;
+          &lt;div class&#x3D;&quot;relative&quot;&gt;
+            &lt;p class&#x3D;&quot;text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1&quot;&gt;Ocupación Actual&lt;/p&gt;
+            &lt;h2 class&#x3D;&quot;text-4xl font-black text-slate-900&quot;&gt;{{ stats()?.indicadores?.ocupacionPorcentual }}%&lt;/h2&gt;
+            &lt;div class&#x3D;&quot;mt-4 flex items-center gap-2&quot;&gt;
+              &lt;div class&#x3D;&quot;flex-1 h-2 bg-slate-100 rounded-full overflow-hidden&quot;&gt;
+                &lt;div class&#x3D;&quot;h-full bg-violet-500 rounded-full&quot; [style.width.%]&#x3D;&quot;stats()?.indicadores?.ocupacionPorcentual&quot;&gt;&lt;/div&gt;
+              &lt;/div&gt;
+              &lt;span class&#x3D;&quot;text-[10px] font-bold text-slate-500&quot;&gt;{{ stats()?.indicadores?.ingresosActivos }}/{{ stats()?.indicadores?.totalCamas }}&lt;/span&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Promedio Estadía --&gt;
+        &lt;div class&#x3D;&quot;bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100 relative overflow-hidden group&quot;&gt;
+          &lt;div class&#x3D;&quot;absolute top-0 right-0 w-32 h-32 bg-emerald-50 rounded-full -mr-16 -mt-16 transition-transform group-hover:scale-110&quot;&gt;&lt;/div&gt;
+          &lt;div class&#x3D;&quot;relative&quot;&gt;
+            &lt;p class&#x3D;&quot;text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1&quot;&gt;Promedio Estadía&lt;/p&gt;
+            &lt;h2 class&#x3D;&quot;text-4xl font-black text-slate-900&quot;&gt;{{ stats()?.indicadores?.promedioEstadia }} &lt;span class&#x3D;&quot;text-sm text-slate-400 font-bold&quot;&gt;Días&lt;/span&gt;&lt;/h2&gt;
+            &lt;p class&#x3D;&quot;mt-4 text-[10px] text-slate-500 font-bold&quot;&gt;BASADO EN EGRESOS DEL MES&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Giro de Cama --&gt;
+        &lt;div class&#x3D;&quot;bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100 relative overflow-hidden group&quot;&gt;
+          &lt;div class&#x3D;&quot;absolute top-0 right-0 w-32 h-32 bg-amber-50 rounded-full -mr-16 -mt-16 transition-transform group-hover:scale-110&quot;&gt;&lt;/div&gt;
+          &lt;div class&#x3D;&quot;relative&quot;&gt;
+            &lt;p class&#x3D;&quot;text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1&quot;&gt;Giro de Cama&lt;/p&gt;
+            &lt;h2 class&#x3D;&quot;text-4xl font-black text-slate-900&quot;&gt;{{ stats()?.indicadores?.giroCama }} &lt;span class&#x3D;&quot;text-sm text-slate-400 font-bold&quot;&gt;ROT.&lt;/span&gt;&lt;/h2&gt;
+            &lt;p class&#x3D;&quot;mt-4 text-[10px] text-slate-500 font-bold&quot;&gt;EFICIENCIA DE USO MENSUAL&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Egresos Totales --&gt;
+        &lt;div class&#x3D;&quot;bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100 relative overflow-hidden group&quot;&gt;
+          &lt;div class&#x3D;&quot;absolute top-0 right-0 w-32 h-32 bg-rose-50 rounded-full -mr-16 -mt-16 transition-transform group-hover:scale-110&quot;&gt;&lt;/div&gt;
+          &lt;div class&#x3D;&quot;relative&quot;&gt;
+            &lt;p class&#x3D;&quot;text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1&quot;&gt;Egresos del Mes&lt;/p&gt;
+            &lt;h2 class&#x3D;&quot;text-4xl font-black text-slate-900&quot;&gt;{{ stats()?.indicadores?.totalEgresosMes }}&lt;/h2&gt;
+            &lt;p class&#x3D;&quot;mt-4 text-[10px] text-slate-500 font-bold tracking-tight&quot;&gt;ALTAS MÉDICAS REGISTRADAS&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Charts Section --&gt;
+      &lt;div class&#x3D;&quot;grid grid-cols-1 lg:grid-cols-3 gap-8&quot;&gt;
+        &lt;!-- Ocupación Chart --&gt;
+        &lt;div class&#x3D;&quot;lg:col-span-1 bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100&quot;&gt;
+          &lt;h3 class&#x3D;&quot;text-lg font-black text-slate-800 mb-8 flex items-center gap-2&quot;&gt;
+            &lt;span class&#x3D;&quot;w-2 h-6 bg-violet-500 rounded-full&quot;&gt;&lt;/span&gt;
+            Disponibilidad de Camas
+          &lt;/h3&gt;
+          &lt;div class&#x3D;&quot;aspect-square relative flex items-center justify-center&quot;&gt;
+            &lt;canvas #ocupacionCanvas&gt;&lt;/canvas&gt;
+            &lt;div class&#x3D;&quot;absolute inset-0 flex flex-col items-center justify-center pointer-events-none&quot;&gt;
+              &lt;span class&#x3D;&quot;text-3xl font-black text-slate-900&quot;&gt;{{ stats()?.indicadores?.ocupacionPorcentual }}%&lt;/span&gt;
+              &lt;span class&#x3D;&quot;text-[10px] font-black text-slate-400 uppercase&quot;&gt;Ocupado&lt;/span&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Tabla de Servicios --&gt;
+        &lt;div class&#x3D;&quot;lg:col-span-2 bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100&quot;&gt;
+          &lt;h3 class&#x3D;&quot;text-lg font-black text-slate-800 mb-8 flex items-center gap-2&quot;&gt;
+            &lt;span class&#x3D;&quot;w-2 h-6 bg-emerald-500 rounded-full&quot;&gt;&lt;/span&gt;
+            Análisis por Servicio
+          &lt;/h3&gt;
+          &lt;div class&#x3D;&quot;overflow-x-auto&quot;&gt;
+            &lt;table class&#x3D;&quot;w-full text-left&quot;&gt;
+              &lt;thead&gt;
+                &lt;tr class&#x3D;&quot;text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-50&quot;&gt;
+                  &lt;th class&#x3D;&quot;pb-4&quot;&gt;Servicio&lt;/th&gt;
+                  &lt;th class&#x3D;&quot;pb-4&quot;&gt;Camas&lt;/th&gt;
+                  &lt;th class&#x3D;&quot;pb-4&quot;&gt;Ocupadas&lt;/th&gt;
+                  &lt;th class&#x3D;&quot;pb-4 text-center&quot;&gt;Ocupación %&lt;/th&gt;
+                  &lt;th class&#x3D;&quot;pb-4 text-right&quot;&gt;Egresos&lt;/th&gt;
+                &lt;/tr&gt;
+              &lt;/thead&gt;
+              &lt;tbody class&#x3D;&quot;divide-y divide-slate-50&quot;&gt;
+                &lt;tr *ngFor&#x3D;&quot;let s of stats()?.analisisServicios&quot; class&#x3D;&quot;group hover:bg-slate-50/50 transition-all&quot;&gt;
+                  &lt;td class&#x3D;&quot;py-4 font-bold text-slate-700 text-sm&quot;&gt;{{ s.servicio }}&lt;/td&gt;
+                  &lt;td class&#x3D;&quot;py-4 text-sm font-medium text-slate-500&quot;&gt;{{ s.camas }}&lt;/td&gt;
+                  &lt;td class&#x3D;&quot;py-4 text-sm font-medium text-slate-500&quot;&gt;{{ s.ocupacion }}%&lt;/td&gt;
+                  &lt;td class&#x3D;&quot;py-4&quot;&gt;
+                    &lt;div class&#x3D;&quot;flex items-center justify-center&quot;&gt;
+                      &lt;span [class]&#x3D;&quot;s.ocupacion &gt; 80 ? &#x27;bg-rose-50 text-rose-600&#x27; : s.ocupacion &gt; 50 ? &#x27;bg-amber-50 text-amber-600&#x27; : &#x27;bg-emerald-50 text-emerald-600&#x27;&quot; 
+                            class&#x3D;&quot;px-2 py-1 rounded-lg text-[10px] font-black&quot;&gt;
+                        {{ s.ocupacion }}%
+                      &lt;/span&gt;
+                    &lt;/div&gt;
+                  &lt;/td&gt;
+                  &lt;td class&#x3D;&quot;py-4 text-right text-sm font-bold text-slate-700&quot;&gt;{{ s.egresos }} Egr.&lt;/td&gt;
+                &lt;/tr&gt;
+              &lt;/tbody&gt;
+            &lt;/table&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &#x60;,
+  styles: [&#x60;
+    .custom-scroll::-webkit-scrollbar { width: 4px; }
+    .custom-scroll::-webkit-scrollbar-track { background: #f8fafc; }
+    .custom-scroll::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+    .animate-in { animation: fadeIn 0.5s ease-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  &#x60;]
+})
+export class EstadisticasHospitalariasComponent implements OnInit, AfterViewInit {
+  private svc &#x3D; inject(HospitalizacionService);
+  private zone &#x3D; inject(NgZone);
+  private destroyRef &#x3D; inject(DestroyRef);
+  
+  stats &#x3D; signal&lt;any&gt;(null);
+  
+  private _ocupacionCanvas!: ElementRef;
+  @ViewChild(&#x27;ocupacionCanvas&#x27;) set ocupacionCanvas(content: ElementRef) {
+    if (content) {
+      this._ocupacionCanvas &#x3D; content;
+      const currentStats &#x3D; this.stats();
+      if (currentStats) {
+        this.initChart(currentStats);
+      }
+    }
+  }
+  
+  viewInitialized &#x3D; false;
+  chart: any;
+
+  ngOnInit() {
+    this.cargarEstadisticas();
+  }
+
+  ngAfterViewInit() {
+    this.viewInitialized &#x3D; true;
+  }
+
+  cargarEstadisticas() {
+    this.svc.obtenerEstadisticas()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (data) &#x3D;&gt; {
+          this.stats.set(data);
+          // La inicialización se disparará a través del setter de ocupacionCanvas o aquí
+          if (this._ocupacionCanvas) {
+            this.initChart(data);
+          }
+        },
+        error: (err) &#x3D;&gt; {
+          console.error(&#x27;Error al cargar estadísticas:&#x27;, err);
+        }
+      });
+  }
+
+  initChart(data: any) {
+    if (!data || !this._ocupacionCanvas?.nativeElement) return;
+    
+    this.zone.runOutsideAngular(() &#x3D;&gt; {
+      // Un pequeño retraso asegura que el elemento esté pintado en el DOM
+      setTimeout(() &#x3D;&gt; {
+        try {
+          if (this.chart) {
+            this.chart.destroy();
+            this.chart &#x3D; null;
+          }
+          
+          const canvas &#x3D; this._ocupacionCanvas.nativeElement;
+          const ctx &#x3D; canvas.getContext(&#x27;2d&#x27;);
+          if (!ctx) return;
+
+          const ocupadas &#x3D; data.indicadores?.ingresosActivos || 0;
+          const total &#x3D; data.indicadores?.totalCamas || 0;
+          const disponibles &#x3D; Math.max(0, total - ocupadas);
+
+          this.chart &#x3D; new Chart(ctx, {
+            type: &#x27;doughnut&#x27;,
+            data: {
+              labels: [&#x27;Ocupadas&#x27;, &#x27;Disponibles&#x27;],
+              datasets: [{
+                data: [ocupadas, disponibles],
+                backgroundColor: [&#x27;#8b5cf6&#x27;, &#x27;#f1f5f9&#x27;],
+                borderWidth: 0
+              }]
+            },
+            options: {
+              cutout: &#x27;85%&#x27;,
+              responsive: true,
+              maintainAspectRatio: true,
+              plugins: {
+                legend: { display: false },
+                tooltip: { enabled: true }
+              }
+            }
+          });
+        } catch (error) {
+          console.error(&#x27;Error initializing chart:&#x27;, error);
+        }
+      }, 0);
+    });
+  }
+}
+</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="styleData">
+            <pre class="line-numbers"><code class="language-scss">
+    .custom-scroll::-webkit-scrollbar { width: 4px; }
+    .custom-scroll::-webkit-scrollbar-track { background: #f8fafc; }
+    .custom-scroll::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+    .animate-in { animation: fadeIn 0.5s ease-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div *ngIf="stats()" class="p-8 bg-slate-50 min-h-screen animate-in">  <!-- Header -->  <div class="flex items-center justify-between mb-8">    <div>      <h1 class="text-3xl font-black text-slate-900 tracking-tight">Indicadores Hospitalarios</h1>      <p class="text-slate-500 font-medium">Análisis de eficiencia y ocupación del centro médico</p>    </div>    <div class="flex items-center gap-4 bg-white p-2 rounded-2xl shadow-sm border border-slate-100">       <button (click)="cargarEstadisticas()" class="p-3 hover:bg-slate-50 rounded-xl transition-all">         <svg class="w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>       </button>    </div>  </div>  <!-- KPIs -->  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">    <!-- Ocupación -->    <div class="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100 relative overflow-hidden group">      <div class="absolute top-0 right-0 w-32 h-32 bg-violet-50 rounded-full -mr-16 -mt-16 transition-transform group-hover:scale-110"></div>      <div class="relative">        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Ocupación Actual</p>        <h2 class="text-4xl font-black text-slate-900">{{ stats()?.indicadores?.ocupacionPorcentual }}%</h2>        <div class="mt-4 flex items-center gap-2">          <div class="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden">            <div class="h-full bg-violet-500 rounded-full" [style.width.%]="stats()?.indicadores?.ocupacionPorcentual"></div>          </div>          <span class="text-[10px] font-bold text-slate-500">{{ stats()?.indicadores?.ingresosActivos }}/{{ stats()?.indicadores?.totalCamas }}</span>        </div>      </div>    </div>    <!-- Promedio Estadía -->    <div class="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100 relative overflow-hidden group">      <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-50 rounded-full -mr-16 -mt-16 transition-transform group-hover:scale-110"></div>      <div class="relative">        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Promedio Estadía</p>        <h2 class="text-4xl font-black text-slate-900">{{ stats()?.indicadores?.promedioEstadia }} <span class="text-sm text-slate-400 font-bold">Días</span></h2>        <p class="mt-4 text-[10px] text-slate-500 font-bold">BASADO EN EGRESOS DEL MES</p>      </div>    </div>    <!-- Giro de Cama -->    <div class="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100 relative overflow-hidden group">      <div class="absolute top-0 right-0 w-32 h-32 bg-amber-50 rounded-full -mr-16 -mt-16 transition-transform group-hover:scale-110"></div>      <div class="relative">        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Giro de Cama</p>        <h2 class="text-4xl font-black text-slate-900">{{ stats()?.indicadores?.giroCama }} <span class="text-sm text-slate-400 font-bold">ROT.</span></h2>        <p class="mt-4 text-[10px] text-slate-500 font-bold">EFICIENCIA DE USO MENSUAL</p>      </div>    </div>    <!-- Egresos Totales -->    <div class="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100 relative overflow-hidden group">      <div class="absolute top-0 right-0 w-32 h-32 bg-rose-50 rounded-full -mr-16 -mt-16 transition-transform group-hover:scale-110"></div>      <div class="relative">        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Egresos del Mes</p>        <h2 class="text-4xl font-black text-slate-900">{{ stats()?.indicadores?.totalEgresosMes }}</h2>        <p class="mt-4 text-[10px] text-slate-500 font-bold tracking-tight">ALTAS MÉDICAS REGISTRADAS</p>      </div>    </div>  </div>  <!-- Charts Section -->  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">    <!-- Ocupación Chart -->    <div class="lg:col-span-1 bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100">      <h3 class="text-lg font-black text-slate-800 mb-8 flex items-center gap-2">        <span class="w-2 h-6 bg-violet-500 rounded-full"></span>        Disponibilidad de Camas      </h3>      <div class="aspect-square relative flex items-center justify-center">        <canvas #ocupacionCanvas></canvas>        <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">          <span class="text-3xl font-black text-slate-900">{{ stats()?.indicadores?.ocupacionPorcentual }}%</span>          <span class="text-[10px] font-black text-slate-400 uppercase">Ocupado</span>        </div>      </div>    </div>    <!-- Tabla de Servicios -->    <div class="lg:col-span-2 bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100">      <h3 class="text-lg font-black text-slate-800 mb-8 flex items-center gap-2">        <span class="w-2 h-6 bg-emerald-500 rounded-full"></span>        Análisis por Servicio      </h3>      <div class="overflow-x-auto">        <table class="w-full text-left">          <thead>            <tr class="text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-50">              <th class="pb-4">Servicio</th>              <th class="pb-4">Camas</th>              <th class="pb-4">Ocupadas</th>              <th class="pb-4 text-center">Ocupación %</th>              <th class="pb-4 text-right">Egresos</th>            </tr>          </thead>          <tbody class="divide-y divide-slate-50">            <tr *ngFor="let s of stats()?.analisisServicios" class="group hover:bg-slate-50/50 transition-all">              <td class="py-4 font-bold text-slate-700 text-sm">{{ s.servicio }}</td>              <td class="py-4 text-sm font-medium text-slate-500">{{ s.camas }}</td>              <td class="py-4 text-sm font-medium text-slate-500">{{ s.ocupacion }}%</td>              <td class="py-4">                <div class="flex items-center justify-center">                  <span [class]="s.ocupacion > 80 ? \'bg-rose-50 text-rose-600\' : s.ocupacion > 50 ? \'bg-amber-50 text-amber-600\' : \'bg-emerald-50 text-emerald-600\'"                        class="px-2 py-1 rounded-lg text-[10px] font-black">                    {{ s.ocupacion }}%                  </span>                </div>              </td>              <td class="py-4 text-right text-sm font-bold text-slate-700">{{ s.egresos }} Egr.</td>            </tr>          </tbody>        </table>      </div>    </div>  </div></div></div>'
+    var COMPONENTS = [{'name': 'AgendasComponent', 'selector': 'app-agendas'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'BuscadorPacienteComponent', 'selector': 'app-buscador-paciente'},{'name': 'CitasComponent', 'selector': 'app-citas'},{'name': 'ConstructorFormularioComponent', 'selector': 'app-constructor-formulario'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'EpidemiologiaDashboardComponent', 'selector': 'app-epidemiologia-dashboard'},{'name': 'EstadisticasHospitalariasComponent', 'selector': 'app-estadisticas-hospitalarias'},{'name': 'FarmaciaComponent', 'selector': 'app-farmacia'},{'name': 'GestionHospitalizacionComponent', 'selector': 'app-gestion-hospitalizacion'},{'name': 'GestionLotesModalComponent', 'selector': 'app-gestion-lotes-modal'},{'name': 'GestionReportesComponent', 'selector': 'app-gestion-reportes'},{'name': 'HistoriaClinicaComponent', 'selector': 'app-historia-clinica'},{'name': 'InfraestructuraModalComponent', 'selector': 'app-infraestructura-modal'},{'name': 'InventarioVacunasComponent', 'selector': 'app-inventario-vacunas'},{'name': 'LaboratorioComponent', 'selector': 'app-laboratorio'},{'name': 'ListaPlantillasComponent', 'selector': 'app-lista-plantillas'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MainLayoutComponent', 'selector': 'app-main-layout'},{'name': 'MantenimientoDiagnosticosComponent', 'selector': 'app-mantenimiento-diagnosticos'},{'name': 'MantenimientoEstablecimientosComponent', 'selector': 'app-mantenimiento-establecimientos'},{'name': 'MantenimientoInventarioComponent', 'selector': 'app-mantenimiento-inventario'},{'name': 'MantenimientoLaboratorioComponent', 'selector': 'app-mantenimiento-laboratorio'},{'name': 'MantenimientoLoginComponent', 'selector': 'app-mantenimiento-login'},{'name': 'MantenimientoMedicamentosComponent', 'selector': 'app-mantenimiento-medicamentos'},{'name': 'MantenimientoRadiologiaComponent', 'selector': 'app-mantenimiento-radiologia'},{'name': 'MantenimientoRolesComponent', 'selector': 'app-mantenimiento-roles'},{'name': 'MovimientosInventarioComponent', 'selector': 'app-movimientos-inventario'},{'name': 'NotificationComponent', 'selector': 'app-notification'},{'name': 'NuevaConsultaComponent', 'selector': 'app-nueva-consulta'},{'name': 'PacientesComponent', 'selector': 'app-pacientes'},{'name': 'PermisosUsuariosComponent', 'selector': 'app-permisos-usuarios'},{'name': 'RecetasPacienteComponent', 'selector': 'app-recetas-paciente'},{'name': 'RegistroVacunaModalComponent', 'selector': 'app-registro-vacuna-modal'},{'name': 'ReportesComponent', 'selector': 'app-reportes'},{'name': 'TriajeComponent', 'selector': 'app-triaje'},{'name': 'UsuariosComponent', 'selector': 'app-usuarios'},{'name': 'VacunacionComponent', 'selector': 'app-vacunacion'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'EstadisticasHospitalariasComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'EstadisticasHospitalariasComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

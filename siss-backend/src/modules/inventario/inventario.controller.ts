@@ -72,6 +72,12 @@ export class InventarioController {
     return this.svc.actualizar(id, dto, user.id);
   }
 
+  @Get(':id/movimientos')
+  @Permissions('inventario:leer')
+  listarMovimientos(@Param('id', ParseIntPipe) id: number) {
+    return this.svc.listarMovimientos(id);
+  }
+
   @Delete(':id')
   @Permissions('inventario:gestionar')
   eliminar(@Param('id', ParseIntPipe) id: number, @CurrentUser() user: any) {

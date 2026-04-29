@@ -1,0 +1,743 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>siss-frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">siss-frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content interface">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Interfaces</li>
+  <li class="breadcrumb-item"
+  >
+  NavItem</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/app/shared/components/main-layout/main-layout.component.ts</code>
+        </p>
+
+
+
+
+        <section data-compodoc="block-index">
+            <h3 id="index">Index</h3>
+            <table class="table table-sm table-bordered index-table">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Properties</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                        <a href="#label" 
+>
+                                            label
+                                        </a>
+                                </li>
+                                <li>
+                                            <span class="modifier">Optional</span>
+                                        <a href="#modulo" 
+>
+                                            modulo
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#roles" 
+>
+                                            roles
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#ruta" 
+>
+                                            ruta
+                                        </a>
+                                </li>
+                                <li>
+                                            <span class="modifier">Optional</span>
+                                        <a href="#subItems" 
+>
+                                            subItems
+                                        </a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+
+
+            <section data-compodoc="block-properties">
+                <h3 id="inputs">Properties</h3>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="label"></a>
+                                        <span class="name "><b>label</b>
+                                            <a href="#label">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>label:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="modulo"></a>
+                                        <span class="name "><b>modulo</b>
+                                            <a href="#modulo">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>modulo:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="roles"></a>
+                                        <span class="name "><b>roles</b>
+                                            <a href="#roles">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>roles:     <code>string[]</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>string[]</code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="ruta"></a>
+                                        <span class="name "><b>ruta</b>
+                                            <a href="#ruta">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>ruta:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="subItems"></a>
+                                        <span class="name "><b>subItems</b>
+                                            <a href="#subItems">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>subItems:     <code>literal type[]</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>literal type[]</code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
+
+
+
+
+                        </tbody>
+                    </table>
+            </section>
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, inject, OnInit, OnDestroy, signal, HostListener } from &#x27;@angular/core&#x27;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
+import { Router, RouterModule, NavigationEnd } from &#x27;@angular/router&#x27;;
+import { filter } from &#x27;rxjs&#x27;;
+import { AuthService } from &#x27;../../../core/services/auth.service&#x27;;
+import { SocketService } from &#x27;../../../core/services/socket.service&#x27;;
+import { NombreRutaActivaPipe } from &#x27;../../pipes/nombre-ruta.pipe&#x27;;
+
+interface NavItem {
+  label: string;
+  ruta: string;
+  roles: string[];
+  modulo?: string;
+  subItems?: { label: string; ruta: string; modulo?: string; roles?: string[] }[];
+}
+
+interface NavSection {
+  title: string;
+  items: NavItem[];
+}
+
+@Component({
+  selector: &#x27;app-main-layout&#x27;,
+  standalone: true,
+  imports: [CommonModule, RouterModule, NombreRutaActivaPipe],
+  templateUrl: &#x27;./main-layout.component.html&#x27;,
+})
+export class MainLayoutComponent implements OnInit, OnDestroy {
+  private auth   &#x3D; inject(AuthService);
+  private socket &#x3D; inject(SocketService);
+  private router &#x3D; inject(Router);
+
+  usuario    &#x3D; this.auth.obtenerUsuario();
+  sidebarAbierto &#x3D; signal(true);
+  rutaActual &#x3D; signal(&#x27;&#x27;);
+  expandedMenus &#x3D; signal&lt;string[]&gt;([]);
+
+  readonly navSections: NavSection[] &#x3D; [
+    {
+      title: &#x27;GENERAL&#x27;,
+      items: [
+        {
+          label: &#x27;Dashboard&#x27;,
+          ruta: &#x27;/dashboard&#x27;,
+          roles: [&#x27;ADMIN&#x27;,&#x27;MEDICO&#x27;,&#x27;ENFERMERA&#x27;,&#x27;FARMACEUTICO&#x27;,&#x27;RECEPCIONISTA&#x27;,&#x27;EPIDEMIOLOGO&#x27;,&#x27;ADMIN_ESTABLECIMIENTO&#x27;],
+        },
+      ]
+    },
+    {
+      title: &#x27;ATENCIÓN MÉDICA&#x27;,
+      items: [
+        {
+          label: &#x27;Pacientes&#x27;,
+          ruta: &#x27;/pacientes&#x27;,
+          roles: [&#x27;ADMIN&#x27;,&#x27;MEDICO&#x27;,&#x27;ENFERMERA&#x27;,&#x27;RECEPCIONISTA&#x27;,&#x27;ADMIN_ESTABLECIMIENTO&#x27;],
+          modulo: &#x27;pacientes&#x27;,
+        },
+        {
+          label: &#x27;Citas&#x27;,
+          ruta: &#x27;/citas&#x27;,
+          roles: [&#x27;ADMIN&#x27;,&#x27;MEDICO&#x27;,&#x27;ENFERMERA&#x27;,&#x27;RECEPCIONISTA&#x27;,&#x27;ADMIN_ESTABLECIMIENTO&#x27;],
+          modulo: &#x27;citas&#x27;,
+        },
+        {
+          label: &#x27;Agendas&#x27;,
+          ruta: &#x27;/agendas&#x27;,
+          roles: [&#x27;ADMIN&#x27;,&#x27;MEDICO&#x27;,&#x27;ENFERMERA&#x27;,&#x27;RECEPCIONISTA&#x27;,&#x27;ADMIN_ESTABLECIMIENTO&#x27;],
+          modulo: &#x27;agendas&#x27;, 
+        },
+        {
+          label: &#x27;Historia Clínica&#x27;,
+          ruta: &#x27;/historia-clinica&#x27;,
+          roles: [&#x27;ADMIN&#x27;,&#x27;MEDICO&#x27;,&#x27;ENFERMERA&#x27;],
+          modulo: &#x27;historia_clinica&#x27;,
+        },
+        {
+          label: &#x27;Triaje&#x27;,
+          ruta: &#x27;/triaje&#x27;,
+          roles: [&#x27;ADMIN&#x27;,&#x27;ENFERMERA&#x27;],
+          modulo: &#x27;triaje&#x27;,
+        },
+        {
+          label: &#x27;Vacunación (PAI)&#x27;,
+          ruta: &#x27;/vacunacion&#x27;,
+          roles: [&#x27;ADMIN&#x27;,&#x27;MEDICO&#x27;,&#x27;ENFERMERA&#x27;,&#x27;ADMIN_ESTABLECIMIENTO&#x27;],
+          modulo: &#x27;vacunacion&#x27;,
+          subItems: [
+            { label: &#x27;Vacunación&#x27;, ruta: &#x27;/vacunacion&#x27;, roles: [&#x27;ENFERMERA&#x27;, &#x27;MEDICO&#x27;, &#x27;ADMIN&#x27;, &#x27;ADMIN_ESTABLECIMIENTO&#x27;] },
+            { label: &#x27;Inventario PAI&#x27;, ruta: &#x27;/vacunacion/inventario&#x27;, roles: [&#x27;ENFERMERA&#x27;, &#x27;ADMIN&#x27;, &#x27;ADMIN_ESTABLECIMIENTO&#x27;] }
+          ]
+        },
+        {
+          label: &#x27;Hospitalización&#x27;,
+          ruta: &#x27;/hospitalizacion&#x27;,
+          roles: [&#x27;ADMIN&#x27;,&#x27;MEDICO&#x27;,&#x27;ENFERMERA&#x27;,&#x27;RECEPCIONISTA&#x27;,&#x27;ADMIN_ESTABLECIMIENTO&#x27;],
+          modulo: &#x27;hospitalizacion&#x27;,
+        },
+      ]
+    },
+    {
+      title: &#x27;SERVICIOS&#x27;,
+      items: [
+        {
+          label: &#x27;Farmacia&#x27;,
+          ruta: &#x27;/farmacia&#x27;,
+          roles: [&#x27;ADMIN&#x27;,&#x27;FARMACEUTICO&#x27;],
+          modulo: &#x27;recetas&#x27;,
+        },
+        {
+          label: &#x27;Recetas por Paciente&#x27;,
+          ruta: &#x27;/servicios/recetas-paciente&#x27;,
+          roles: [&#x27;ADMIN&#x27;,&#x27;FARMACEUTICO&#x27;,&#x27;MEDICO&#x27;,&#x27;ADMIN_ESTABLECIMIENTO&#x27;],
+          modulo: &#x27;recetas&#x27;,
+        },
+      ]
+    },
+    {
+      title: &#x27;INVENTARIOS&#x27;,
+      items: [
+        {
+          label: &#x27;Inventario Central&#x27;,
+          ruta: &#x27;/mantenimiento/inventario&#x27;,
+          roles: [&#x27;ADMIN&#x27;, &#x27;FARMACEUTICO&#x27;, &#x27;ADMIN_ESTABLECIMIENTO&#x27;],
+          modulo: &#x27;inventario&#x27;,
+        },
+        {
+          label: &#x27;Movimientos&#x27;,
+          ruta: &#x27;/inventario/movimientos&#x27;,
+          roles: [&#x27;ADMIN&#x27;, &#x27;FARMACEUTICO&#x27;, &#x27;ADMIN_ESTABLECIMIENTO&#x27;],
+          modulo: &#x27;inventario&#x27;,
+        },
+      ]
+    },
+    {
+      title: &#x27;ADMINISTRACIÓN&#x27;,
+      items: [
+        {
+          label: &#x27;Usuarios&#x27;,
+          ruta: &#x27;/usuarios&#x27;,
+          roles: [&#x27;ADMIN&#x27;,&#x27;ADMIN_ESTABLECIMIENTO&#x27;],
+          modulo: &#x27;usuarios&#x27;,
+        },
+        {
+          label: &#x27;Permisos Individuales&#x27;,
+          ruta: &#x27;/permisos-usuarios&#x27;,
+          roles: [&#x27;ADMIN&#x27;,&#x27;ADMIN_ESTABLECIMIENTO&#x27;],
+        },
+      ]
+    },
+    {
+      title: &#x27;SISTEMA&#x27;,
+      items: [
+        {
+          label: &#x27;Mantenimiento&#x27;,
+          ruta: &#x27;/mantenimiento/formularios&#x27;,
+          roles: [&#x27;ADMIN&#x27;, &#x27;FARMACEUTICO&#x27;, &#x27;ADMIN_ESTABLECIMIENTO&#x27;],
+          subItems: [
+            { label: &#x27;Formularios Clínicos&#x27;, ruta: &#x27;/mantenimiento/formularios&#x27;,  modulo: &#x27;formularios&#x27;  },
+            { label: &#x27;Catálogo CIE-10&#x27;,      ruta: &#x27;/mantenimiento/diagnosticos&#x27;,  modulo: &#x27;diagnosticos&#x27; },
+            { label: &#x27;Medicamentos&#x27;,         ruta: &#x27;/mantenimiento/medicamentos&#x27;,  modulo: &#x27;medicamentos&#x27; },
+            { label: &#x27;Exámenes Lab&#x27;,         ruta: &#x27;/mantenimiento/laboratorio&#x27;,   roles: [&#x27;ADMIN&#x27;]       },
+            { label: &#x27;Estudios Imagen&#x27;,      ruta: &#x27;/mantenimiento/radiologia&#x27;,    roles: [&#x27;ADMIN&#x27;]       },
+            { label: &#x27;Establecimientos&#x27;,     ruta: &#x27;/mantenimiento/establecimientos&#x27;,      roles: [&#x27;ADMIN&#x27;]       },
+            { label: &#x27;Roles y Permisos&#x27;,     ruta: &#x27;/mantenimiento/roles&#x27;,         roles: [&#x27;ADMIN&#x27;]       },
+            { label: &#x27;Personalización Login&#x27;, ruta: &#x27;/mantenimiento/login&#x27;,         roles: [&#x27;ADMIN&#x27;]       },
+          ],
+        },
+      ]
+    },
+    {
+      title: &#x27;ANÁLISIS&#x27;,
+      items: [
+        {
+          label: &#x27;Control Epidemiológico&#x27;,
+          ruta: &#x27;/epidemiologia/dashboard&#x27;,
+          roles: [&#x27;ADMIN&#x27;,&#x27;ADMIN_ESTABLECIMIENTO&#x27;,&#x27;EPIDEMIOLOGO&#x27;],
+        },
+        {
+          label: &#x27;Reportes&#x27;,
+          ruta: &#x27;/reportes&#x27;,
+          roles: [&#x27;ADMIN&#x27;,&#x27;MEDICO&#x27;,&#x27;ADMIN_ESTABLECIMIENTO&#x27;,&#x27;FARMACEUTICO&#x27;,&#x27;EPIDEMIOLOGO&#x27;],
+          modulo: &#x27;reportes&#x27;,
+        },
+      ]
+    }
+  ];
+
+  seccionesFiltradas: NavSection[] &#x3D; [];
+
+  private calcularSecciones() {
+    const rol &#x3D; this.usuario?.rol ?? &#x27;&#x27;;
+    this.seccionesFiltradas &#x3D; this.navSections
+      .map(section &#x3D;&gt; ({
+        ...section,
+        items: section.items
+          .filter(item &#x3D;&gt; item.roles.includes(rol))
+          .filter(item &#x3D;&gt; !item.modulo || this.auth.tieneAccesoModulo(item.modulo))
+          .map(item &#x3D;&gt; ({
+            ...item,
+            subItems: item.subItems?.filter(
+              sub &#x3D;&gt; (!sub.modulo || this.auth.tieneAccesoModulo(sub.modulo)) &amp;&amp;
+                     (!sub.roles || sub.roles.includes(rol))
+            ),
+          })),
+      }))
+      .filter(section &#x3D;&gt; section.items.length &gt; 0);
+  }
+
+  // Mantenemos itemsFiltrados para el topbar por ahora o compatibilidad
+  get itemsFiltrados(): NavItem[] {
+    return this.seccionesFiltradas.flatMap(s &#x3D;&gt; s.items);
+  }
+
+  ngOnInit() {
+    this.calcularSecciones();
+    this.socket.conectar();
+    this.rutaActual.set(this.router.url);
+
+    this.auth.usuario$.subscribe(u &#x3D;&gt; {
+      this.usuario &#x3D; u;
+      this.calcularSecciones();
+    });
+
+    this.router.events
+      .pipe(filter(e &#x3D;&gt; e instanceof NavigationEnd))
+      .subscribe((e: any) &#x3D;&gt; {
+        this.rutaActual.set(e.urlAfterRedirects);
+        this.expandActiveMenu();
+      });
+    
+    this.expandActiveMenu();
+  }
+
+  private expandActiveMenu() {
+    const url &#x3D; this.router.url;
+    this.navSections.forEach(section &#x3D;&gt; {
+      section.items.forEach(item &#x3D;&gt; {
+        if (item.subItems?.some(sub &#x3D;&gt; url.startsWith(sub.ruta))) {
+          if (!this.isExpanded(item.label)) {
+            this.toggleMenu(item.label);
+          }
+        }
+      });
+    });
+  }
+
+  toggleMenu(label: string) {
+    this.expandedMenus.update(current &#x3D;&gt; {
+      if (current.includes(label)) {
+        return current.filter(l &#x3D;&gt; l !&#x3D;&#x3D; label);
+      } else {
+        return [...current, label];
+      }
+    });
+  }
+
+  isExpanded(label: string): boolean {
+    return this.expandedMenus().includes(label);
+  }
+
+  ngOnDestroy() {
+    this.socket.desconectar();
+  }
+
+  @HostListener(&#x27;window:keydown.alt.s&#x27;, [&#x27;$event&#x27;])
+  handleGlobalSearch(event: KeyboardEvent) {
+    event.preventDefault();
+    this.router.navigate([&#x27;/pacientes&#x27;]);
+  }
+
+  esRutaActiva(ruta: string): boolean {
+    return this.rutaActual().startsWith(ruta) &amp;&amp; ruta !&#x3D;&#x3D; &#x27;/dashboard&#x27;
+      ? true
+      : this.rutaActual() &#x3D;&#x3D;&#x3D; ruta;
+  }
+
+  cerrarSesion() {
+    this.auth.cerrarSesion();
+  }
+
+  toggleSidebar() {
+    this.sidebarAbierto.update(v &#x3D;&gt; !v);
+  }
+
+  trackBySection(index: number, section: NavSection) {
+    return section.title;
+  }
+
+  trackByItem(index: number, item: NavItem) {
+    return item.label;
+  }
+
+  trackBySubItem(index: number, sub: { label: string; ruta: string }) {
+    return sub.ruta;
+  }
+}
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
+            var COMPODOC_CURRENT_PAGE_URL = 'NavItem.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

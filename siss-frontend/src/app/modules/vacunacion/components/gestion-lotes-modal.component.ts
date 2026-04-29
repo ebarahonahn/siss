@@ -6,6 +6,7 @@ import { VacunacionService } from '../vacunacion.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { EstablecimientosService } from '../../../core/services/establecimientos.service';
 import { NotificationService } from '../../../core/services/notification.service';
+import { DateValidators } from '../../../core/validators/date.validator';
 
 @Component({
   selector: 'app-gestion-lotes-modal',
@@ -69,9 +70,12 @@ import { NotificationService } from '../../../core/services/notification.service
                          formControlName="fabricante" placeholder="Ej: Pfizer, GSK">
                 </div>
                 <div class="space-y-1">
-                  <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Fecha Vencimiento *</label>
                   <input type="date" class="w-full px-4 py-3 bg-gray-50 border-transparent focus:bg-white focus:ring-2 focus:ring-blue-500 rounded-xl text-sm transition-all outline-none font-semibold" 
+                         [class.ring-2]="form.get('fechaVencimiento')?.invalid && form.get('fechaVencimiento')?.touched"
+                         [class.ring-red-500]="form.get('fechaVencimiento')?.invalid && form.get('fechaVencimiento')?.touched"
                          formControlName="fechaVencimiento">
+                  <p *ngIf="form.get('fechaVencimiento')?.errors?.['dateInvalid'] && form.get('fechaVencimiento')?.touched" 
+                     class="text-[10px] text-red-500 font-bold uppercase mt-1">La fecha no existe</p>
                 </div>
                 <div class="space-y-1">
                   <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Cantidad Inicial *</label>
@@ -172,7 +176,7 @@ export class GestionLotesModalComponent implements OnInit {
       vacunaId: [null, Validators.required],
       codigoLote: ['', Validators.required],
       fabricante: ['', Validators.required],
-      fechaVencimiento: ['', Validators.required],
+      fechaVencimiento: ['', [Validators.required, DateValidators.dateReal()]],
       cantidadInicial: [null, [Validators.required, Validators.min(1)]],
       establecimientoId: [this.establecimientoId, Validators.required]
     });

@@ -73,4 +73,21 @@ export class DateUtils {
 
     return base + 'Z';
   }
+
+  /**
+   * Valida si un string YYYY-MM-DD o YYYY-MM-DDTHH:mm es una fecha real
+   */
+  static esFechaValida(val: string | null | undefined): boolean {
+    if (!val) return false;
+    const [datePart] = val.split('T');
+    const parts = datePart.split('-');
+    if (parts.length !== 3) return false;
+
+    const y = parseInt(parts[0], 10);
+    const m = parseInt(parts[1], 10) - 1;
+    const d = parseInt(parts[2], 10);
+    const date = new Date(y, m, d);
+
+    return date.getFullYear() === y && date.getMonth() === m && date.getDate() === d;
+  }
 }

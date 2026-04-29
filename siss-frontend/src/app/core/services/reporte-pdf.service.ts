@@ -115,13 +115,23 @@ export class ReportePdfService {
         doc.setFont('helvetica', 'normal'); doc.setTextColor(30, 41, 59);
         for (const campo of sec.campos) {
           const val = h.respuestaFormulario.respuestas[campo.clave];
-          if (campo.tipo !== 'TITULO' && campo.tipo !== 'SEPARADOR' && val) {
-            checkPageBreak(8);
-            doc.setFont('helvetica', 'bold'); doc.setFontSize(7); doc.setTextColor(100, 116, 139);
-            safeText(campo.etiqueta.toUpperCase(), margin, currentY);
-            doc.setFont('helvetica', 'normal'); doc.setFontSize(8); doc.setTextColor(15, 23, 42);
-            safeText(String(val), margin + 45, currentY);
-            currentY += 6;
+          if (campo.tipo !== 'TITULO' && campo.tipo !== 'SEPARADOR') {
+            // Mostrar siempre los booleanos (aunque sean false) para que salga el "NO"
+            // Para otros tipos, solo mostrar si tienen valor
+            if (campo.tipo === 'BOOLEANO' || (val !== undefined && val !== null && val !== '')) {
+              checkPageBreak(8);
+              doc.setFont('helvetica', 'bold'); doc.setFontSize(7); doc.setTextColor(100, 116, 139);
+              safeText(campo.etiqueta.toUpperCase(), margin, currentY);
+              doc.setFont('helvetica', 'normal'); doc.setFontSize(8); doc.setTextColor(15, 23, 42);
+              
+              let textoValor = String(val || '—');
+              if (campo.tipo === 'BOOLEANO') {
+                textoValor = val === true ? 'SÍ' : 'NO';
+              }
+              
+              safeText(textoValor, margin + 55, currentY);
+              currentY += 6;
+            }
           }
         }
         currentY += 4;

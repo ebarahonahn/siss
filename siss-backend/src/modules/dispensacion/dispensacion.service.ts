@@ -314,4 +314,70 @@ export class DispensacionService {
     });
     return param ? parseInt(param.valor) : 2;
   }
+
+  async historialPorPaciente(identificador: string) {
+    const term = identificador?.trim();
+    if (!term) return [];
+
+    return this.prisma.receta.findMany({
+      where: {
+        paciente: {
+          OR: [
+            { dni: { contains: term } },
+            { numeroExpediente: { contains: term } },
+            { nombres: { contains: term } },
+            { apellidos: { contains: term } },
+          ],
+        },
+      },
+      include: {
+        establecimiento: {
+          select: { nombre: true },
+        },
+        historia: {
+          include: {
+            medico: { select: { nombres: true, apellidos: true } },
+          },
+        },
+        paciente: {
+          select: {
+            id: true,
+            nombres: true,
+            apellidos: true,
+            numeroExpediente: true,
+            dni: true,
+            fechaNacimiento: true,
+          },
+        },
+        detalles: {
+          include: {
+            medicamento: {
+              select: {
+                id: true,
+                codigo: true,
+                nombreGenerico: true,
+                nombreComercial: true,
+                presentacion: true,
+                concentracion: true,
+              },
+            },
+          },
+        },
+        dispensaciones: {
+          include: {
+            usuario: { select: { id: true, nombres: true, apellidos: true } },
+            detalles: {
+              include: {
+                detalleReceta: {
+                  select: { medicamentoId: true },
+                },
+              },
+            },
+          },
+          orderBy: { fecha: 'desc' },
+        },
+      },
+      orderBy: { creadaEn: 'desc' },
+    });
+  }
 }

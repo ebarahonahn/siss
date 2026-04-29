@@ -22,6 +22,11 @@ import { UpdateEstablecimientoDto } from './dto/update-establecimiento.dto';
 export class EstablecimientosController {
   constructor(private service: EstablecimientosService) {}
 
+  @Get('mis-servicios')
+  listarServiciosPropios(@CurrentUser() user: any) {
+    return this.service.listarServicios(user.establecimientoId);
+  }
+
   @Get()
   @Permissions('establecimientos:leer')
   listar() {

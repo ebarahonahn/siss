@@ -9,6 +9,8 @@ export interface CatalogosData {
   escolaridades: any[];
   estadosCiviles: any[];
   ocupaciones: any[];
+  tiposCita: string[];
+  estadosCita: string[];
 }
 
 @Injectable({
@@ -31,5 +33,6 @@ export class CatalogosService {
   // Métodos individuales si se necesitan por separado
   listarSexos() { return this.http.get<any>(`${this.apiUrl}/sexos`).pipe(map(res => res.data)); }
   listarTiposSangre() { return this.http.get<any>(`${this.apiUrl}/tipos-sangre`).pipe(map(res => res.data)); }
-  // ... etc
+  listarTiposCita() { return this.http.get<any>(`${this.apiUrl}/tipos-cita`).pipe(map(res => res.data)); }
+  listarEstadosCita() { return this.http.get<any>(`${this.apiUrl}/estados-cita`).pipe(map(res => res.data)); }
 }

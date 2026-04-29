@@ -53,4 +53,8 @@ export class EpidemiologiaService {
   gestionar(id: number, estado: string) {
     return this.http.post<any>(`${this.base}/${id}/gestionar`, { estado }).pipe(map(r => r.data ?? r));
   }
+
+  obtenerResumenDiagnosticos() {
+    return this.http.get<any>(`${this.base}/dashboard/resumen-diagnosticos`).pipe(map(r => r.data ?? r));
+  }
 }

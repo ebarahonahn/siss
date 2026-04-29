@@ -29,6 +29,10 @@ import { AgendasModule } from './modules/agendas/agendas.module';
 import { VacunacionModule } from './modules/vacunacion/vacunacion.module';
 import { EpidemiologiaModule } from './modules/epidemiologia/epidemiologia.module';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
+import { HospitalizacionModule } from './modules/hospitalizacion/hospitalizacion.module';
+import { LoginImagesModule } from './modules/login-images/login-images.module';
+import { ConfiguracionModule } from './modules/configuracion/configuracion.module';
+
 
 @Module({
   imports: [
@@ -62,6 +66,9 @@ import { DashboardModule } from './modules/dashboard/dashboard.module';
     VacunacionModule,
     EpidemiologiaModule,
     DashboardModule,
+    HospitalizacionModule,
+    LoginImagesModule,
+    ConfiguracionModule,
   ],
 })
 export class AppModule {}

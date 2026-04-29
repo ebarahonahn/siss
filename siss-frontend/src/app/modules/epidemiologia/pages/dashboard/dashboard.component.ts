@@ -176,34 +176,66 @@ Chart.register(...registerables);
         </div>
       </div>
 
-      <!-- Canal Endémico -->
-      <div class="bg-white rounded-[3rem] shadow-xl border border-white p-10">
-        <div class="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-6">
-          <div>
-            <h3 class="text-2xl font-black uppercase tracking-tight text-slate-900">Canal Endémico Anual</h3>
-            <p class="text-slate-400 text-sm font-medium">Comparativa de casos actuales vs. umbrales históricos</p>
+      <!-- Canal Endémico y Resumen -->
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <!-- Canal Endémico -->
+        <div class="lg:col-span-3 bg-white rounded-[3rem] shadow-xl border border-white p-10">
+          <div class="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-6">
+            <div>
+              <h3 class="text-2xl font-black uppercase tracking-tight text-slate-900">Canal Endémico Anual</h3>
+              <p class="text-slate-400 text-sm font-medium">Comparativa de casos actuales vs. umbrales históricos</p>
+            </div>
+            <div class="flex items-center gap-6">
+              <div class="flex items-center gap-2">
+                <div class="w-4 h-4 rounded-md bg-indigo-600"></div>
+                <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Año Actual</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <div class="w-4 h-4 rounded-md bg-green-500/20 border border-green-200"></div>
+                <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Éxito</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <div class="w-4 h-4 rounded-md bg-amber-500/20 border border-amber-200"></div>
+                <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Alerta</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <div class="w-4 h-4 rounded-md bg-red-500/20 border border-red-200"></div>
+                <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Alarma</span>
+              </div>
+            </div>
           </div>
-          <div class="flex items-center gap-6">
-            <div class="flex items-center gap-2">
-              <div class="w-4 h-4 rounded-md bg-indigo-600"></div>
-              <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Año Actual</span>
-            </div>
-            <div class="flex items-center gap-2">
-              <div class="w-4 h-4 rounded-md bg-green-500/20 border border-green-200"></div>
-              <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Éxito</span>
-            </div>
-            <div class="flex items-center gap-2">
-              <div class="w-4 h-4 rounded-md bg-amber-500/20 border border-amber-200"></div>
-              <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Alerta</span>
-            </div>
-            <div class="flex items-center gap-2">
-              <div class="w-4 h-4 rounded-md bg-red-500/20 border border-red-200"></div>
-              <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Alarma</span>
-            </div>
+          <div class="h-[400px] w-full">
+            <canvas #canalChart></canvas>
           </div>
         </div>
-        <div class="h-[400px] w-full">
-          <canvas #canalChart></canvas>
+
+        <!-- Top Diagnósticos -->
+        <div class="lg:col-span-1 bg-white rounded-[3rem] shadow-xl border border-white p-8">
+          <h3 class="text-xl font-black uppercase tracking-tight text-slate-900 mb-8 pt-2">Top Diagnósticos</h3>
+          <div class="space-y-6">
+            <div *ngFor="let d of resumenDiagnosticos(); let i = index" class="flex items-center gap-4 group">
+              <div class="w-10 h-10 rounded-2xl bg-slate-50 flex items-center justify-center font-black text-xs text-slate-400 group-hover:bg-indigo-50 group-hover:text-indigo-600 transition-colors">
+                #{{ i + 1 }}
+              </div>
+              <div class="flex-1">
+                <div class="flex justify-between items-end mb-1">
+                  <div>
+                    <p class="text-xs font-black text-slate-900 uppercase leading-tight">{{ d.nombre }}</p>
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{{ d.codigo }}</p>
+                  </div>
+                  <p class="text-xs font-black text-indigo-600 whitespace-nowrap">{{ d.total }} <span class="text-[9px] text-slate-400 uppercase tracking-tighter ml-0.5">casos</span></p>
+                </div>
+                <div class="h-1.5 w-full bg-slate-50 rounded-full overflow-hidden">
+                  <div class="h-full bg-indigo-500 rounded-full transition-all duration-1000" [style.width.%]="calcularPorcentajeDiagnostico(d.total)"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="resumenDiagnosticos().length === 0" class="flex flex-col items-center justify-center py-20 text-slate-300">
+            <svg class="w-12 h-12 opacity-10 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+            <p class="text-[10px] font-black uppercase tracking-widest text-center">Analizando prevalencias...</p>
+          </div>
         </div>
       </div>
     </div>
@@ -213,6 +245,19 @@ Chart.register(...registerables);
     .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
     .custom-scrollbar::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
     .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #cbd5e1; }
+    
+    :host ::ng-deep .custom-leaflet-popup .leaflet-popup-content-wrapper {
+      border-radius: 1.5rem;
+      padding: 0;
+      overflow: hidden;
+      box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    }
+    :host ::ng-deep .custom-leaflet-popup .leaflet-popup-content {
+      margin: 0;
+    }
+    :host ::ng-deep .custom-leaflet-popup .leaflet-popup-tip {
+      background: white;
+    }
   `]
 })
 export class EpidemiologiaDashboardComponent implements OnInit, AfterViewInit {
@@ -226,6 +271,7 @@ export class EpidemiologiaDashboardComponent implements OnInit, AfterViewInit {
   stats = signal({ total: 0, alertas: 0, brotes: 0, cobertura: 85 });
   alertas = signal<any[]>([]);
   alertaSeleccionada = signal<any>(null);
+  resumenDiagnosticos = signal<any[]>([]);
   
   private map?: L.Map;
   private heatLayer?: any;
@@ -314,6 +360,17 @@ export class EpidemiologiaDashboardComponent implements OnInit, AfterViewInit {
         this.cargando.set(false);
       }
     });
+
+    this.epiSvc.obtenerResumenDiagnosticos().subscribe({
+      next: (data: any[]) => this.resumenDiagnosticos.set(data),
+      error: (err) => this.notify.error('Error al cargar resumen de diagnósticos')
+    });
+  }
+
+  calcularPorcentajeDiagnostico(total: number) {
+    if (this.resumenDiagnosticos().length === 0) return 0;
+    const max = Math.max(...this.resumenDiagnosticos().map(d => d.total), 1);
+    return (total / max) * 100;
   }
 
   private initMap() {
@@ -325,11 +382,14 @@ export class EpidemiologiaDashboardComponent implements OnInit, AfterViewInit {
 
   private updateHeatMap(data: any[]) {
     if (!this.map) return;
+    
+    // Limpiar capas previas
     if (this.heatLayer) this.map.removeLayer(this.heatLayer);
+    if ((this as any).markerLayer) this.map.removeLayer((this as any).markerLayer);
 
     const heatPoints = data.map(p => [p.lat, p.lng, 0.5]);
     
-    // Verificación de seguridad para el plugin de calor
+    // 1. Capa de Calor
     if ((L as any).heatLayer) {
       this.heatLayer = (L as any).heatLayer(heatPoints, {
         radius: 25,
@@ -337,19 +397,53 @@ export class EpidemiologiaDashboardComponent implements OnInit, AfterViewInit {
         maxZoom: 10,
         gradient: { 0.4: 'blue', 0.65: 'lime', 1: 'red' }
       }).addTo(this.map);
-    } else {
-      // Fallback a marcadores circulares si el plugin no cargó
-      console.warn('Leaflet.heat no detectado, usando marcadores de reserva');
-      const markers = data.map(p => L.circleMarker([p.lat, p.lng], {
-        radius: 8,
-        fillColor: "#ff0000",
-        color: "#fff",
-        weight: 1,
-        opacity: 1,
-        fillOpacity: 0.5
-      }));
-      this.heatLayer = L.layerGroup(markers).addTo(this.map);
     }
+
+    // 2. Capa de Marcadores Interactivos
+    const markers = data.map(p => {
+      const fecha = new Date(p.fecha).toLocaleDateString('es-HN', { day: '2-digit', month: 'short', year: 'numeric' });
+      const colorEstado = p.estado === 'NOTIFICADO' ? '#4f46e5' : '#ef4444';
+      
+      const popupHtml = `
+        <div class="p-4 min-w-[240px] font-sans">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="w-2 h-2 rounded-full" style="background-color: ${colorEstado}"></span>
+            <span class="text-[10px] font-black uppercase tracking-widest text-slate-400">${p.estado}</span>
+          </div>
+          <h4 class="text-sm font-black text-slate-900 uppercase mb-1">${p.paciente}</h4>
+          <p class="text-[10px] font-bold text-slate-500 mb-3 italic">EXP: ${p.expediente}</p>
+          
+          <div class="space-y-2 pt-3 border-t border-slate-100">
+            <div>
+              <p class="text-[9px] font-black text-slate-400 uppercase tracking-tighter">Diagnóstico CIE-10</p>
+              <p class="text-xs font-bold text-indigo-600">${p.dx}</p>
+            </div>
+            <div>
+              <p class="text-[9px] font-black text-slate-400 uppercase tracking-tighter">Establecimiento</p>
+              <p class="text-xs font-bold text-slate-700">${p.establecimiento}</p>
+            </div>
+            <div>
+              <p class="text-[9px] font-black text-slate-400 uppercase tracking-tighter">Fecha de Registro</p>
+              <p class="text-xs font-bold text-slate-700">${fecha}</p>
+            </div>
+          </div>
+        </div>
+      `;
+
+      return L.circleMarker([p.lat, p.lng], {
+        radius: 6,
+        fillColor: colorEstado,
+        color: '#fff',
+        weight: 2,
+        opacity: 0.8,
+        fillOpacity: 0.4
+      }).bindPopup(popupHtml, {
+        className: 'custom-leaflet-popup',
+        maxWidth: 300
+      });
+    });
+
+    (this as any).markerLayer = L.layerGroup(markers).addTo(this.map);
   }
 
   private initChart() {

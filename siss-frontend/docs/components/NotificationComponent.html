@@ -1,0 +1,1079 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>siss-frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">siss-frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  NotificationComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#styleData" class="nav-link"
+                role="tab" id="styleData-tab" data-bs-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/core/components/notification/notification.component.ts</code>
+</p>
+
+
+
+
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-notification</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                            <code>CommonModule</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-3">styles</td>
+                <td class="col-md-9"><code>
+    .notification-container {
+      position: fixed;
+      top: 32px;
+      right: 32px;
+      z-index: 10000;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      pointer-events: none;
+      perspective: 1000px;
+    }
+
+    .notification-card {
+      pointer-events: auto;
+      width: 380px;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      border-radius: 24px;
+      padding: 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+      box-shadow: 
+        0 4px 6px -1px rgba(0, 0, 0, 0.05),
+        0 20px 40px -15px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      animation: slideInPremium 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .notification-card:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 
+        0 10px 15px -3px rgba(0, 0, 0, 0.05),
+        0 30px 60px -20px rgba(0, 0, 0, 0.15);
+      background: rgba(255, 255, 255, 0.95);
+    }
+
+    .glow-effect {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 0% 0%, rgba(255,255,255,0.4) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .icon-container {
+      position: relative;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .icon-bg {
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      opacity: 0.15;
+      transition: all 0.3s ease;
+    }
+
+    .icon {
+      width: 24px;
+      height: 24px;
+      z-index: 1;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+    }
+
+    .content {
+      flex: 1;
+      padding-top: 2px;
+    }
+
+    .title {
+      font-size: 14px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    .message {
+      font-size: 14px;
+      font-weight: 600;
+      color: #4b5563;
+      line-height: 1.5;
+    }
+
+    .close-btn {
+      opacity: 0.3;
+      transition: all 0.2s ease;
+      background: rgba(0,0,0,0.05);
+      border: none;
+      padding: 6px;
+      border-radius: 10px;
+      color: #1f2937;
+      margin-top: -4px;
+      margin-right: -4px;
+    }
+
+    .notification-card:hover .close-btn {
+      opacity: 0.8;
+      background: rgba(0,0,0,0.1);
+    }
+
+    /* Type Specifics */
+    .success .icon-bg { background: #10b981; }
+    .success .icon { color: #10b981; }
+    .success .title { color: #059669; }
+    .success { border-left: 6px solid #10b981; }
+
+    .error .icon-bg { background: #ef4444; }
+    .error .icon { color: #ef4444; }
+    .error .title { color: #dc2626; }
+    .error { border-left: 6px solid #ef4444; }
+
+    .warning .icon-bg { background: #f59e0b; }
+    .warning .icon { color: #f59e0b; }
+    .warning .title { color: #d97706; }
+    .warning { border-left: 6px solid #f59e0b; }
+
+    .info .icon-bg { background: #3b82f6; }
+    .info .icon { color: #3b82f6; }
+    .info .title { color: #2563eb; }
+    .info { border-left: 6px solid #3b82f6; }
+
+    /* Progress Bar */
+    .progress-track {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 4px;
+      width: 100%;
+      background: rgba(0,0,0,0.02);
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 100%;
+      transform-origin: left;
+      animation: progressLinear 5s linear forwards;
+    }
+
+    .success .progress-fill { background: linear-gradient(90deg, #10b981, #34d399); }
+    .error .progress-fill { background: linear-gradient(90deg, #ef4444, #f87171); }
+    .warning .progress-fill { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+    .info .progress-fill { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+
+    @keyframes slideInPremium {
+      from { 
+        opacity: 0; 
+        transform: translateX(40px) scale(0.9) rotateY(-10deg); 
+      }
+      to { 
+        opacity: 1; 
+        transform: translateX(0) scale(1) rotateY(0); 
+      }
+    }
+
+    @keyframes progressLinear {
+      from { transform: scaleX(1); }
+      to { transform: scaleX(0); }
+    }
+  </code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">template</td>
+                <td class="col-md-9"><pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;notification-container&quot;&gt;
+  &lt;div *ngFor&#x3D;&quot;let n of service.notifications()&quot;
+       class&#x3D;&quot;notification-card&quot;
+       [ngClass]&#x3D;&quot;n.type&quot;
+       (click)&#x3D;&quot;service.remove(n.id)&quot;&gt;
+
+    &lt;div class&#x3D;&quot;glow-effect&quot;&gt;&lt;/div&gt;
+
+    &lt;div class&#x3D;&quot;icon-container&quot;&gt;
+      &lt;div class&#x3D;&quot;icon-bg&quot;&gt;&lt;/div&gt;
+      &lt;svg *ngIf&#x3D;&quot;n.type &#x3D;&#x3D;&#x3D; &#x27;success&#x27;&quot; class&#x3D;&quot;icon&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2.5&quot; d&#x3D;&quot;M5 13l4 4L19 7&quot;/&gt;&lt;/svg&gt;
+      &lt;svg *ngIf&#x3D;&quot;n.type &#x3D;&#x3D;&#x3D; &#x27;error&#x27;&quot; class&#x3D;&quot;icon&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2.5&quot; d&#x3D;&quot;M6 18L18 6M6 6l12 12&quot;/&gt;&lt;/svg&gt;
+      &lt;svg *ngIf&#x3D;&quot;n.type &#x3D;&#x3D;&#x3D; &#x27;warning&#x27;&quot; class&#x3D;&quot;icon&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2.5&quot; d&#x3D;&quot;M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z&quot;/&gt;&lt;/svg&gt;
+      &lt;svg *ngIf&#x3D;&quot;n.type &#x3D;&#x3D;&#x3D; &#x27;info&#x27;&quot; class&#x3D;&quot;icon&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2.5&quot; d&#x3D;&quot;M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z&quot;/&gt;&lt;/svg&gt;
+    &lt;/div&gt;
+
+    &lt;div class&#x3D;&quot;content&quot;&gt;
+      &lt;div class&#x3D;&quot;title&quot;&gt;{{ getTitle(n) }}&lt;/div&gt;
+      &lt;div class&#x3D;&quot;message&quot;&gt;{{ n.message }}&lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;button class&#x3D;&quot;close-btn&quot;&gt;
+      &lt;svg class&#x3D;&quot;w-4 h-4&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2.5&quot; d&#x3D;&quot;M6 18L18 6M6 6l12 12&quot;/&gt;&lt;/svg&gt;
+    &lt;/button&gt;
+
+    &lt;div class&#x3D;&quot;progress-track&quot;&gt;
+      &lt;div class&#x3D;&quot;progress-fill&quot;&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></td>
+            </tr>
+
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#service" >service</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#getTitle" >getTitle</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getTitle"></a>
+                    <span class="name">
+                        <span ><b>getTitle</b></span>
+                        <a href="#getTitle"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getTitle(notification: <a href="../interfaces/Notification.html" target="_self">Notification</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="220"
+                                    class="link-to-prism">src/app/core/components/notification/notification.component.ts:220</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>notification</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Notification.html" target="_self" >Notification</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="service"></a>
+                    <span class="name">
+                        <span ><b>service</b></span>
+                        <a href="#service"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(NotificationService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="218" class="link-to-prism">src/app/core/components/notification/notification.component.ts:218</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, inject } from &#x27;@angular/core&#x27;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
+import { NotificationService, Notification } from &#x27;../../services/notification.service&#x27;;
+
+@Component({
+  selector: &#x27;app-notification&#x27;,
+  standalone: true,
+  imports: [CommonModule],
+  template: &#x60;
+    &lt;div class&#x3D;&quot;notification-container&quot;&gt;
+      &lt;div *ngFor&#x3D;&quot;let n of service.notifications()&quot; 
+           class&#x3D;&quot;notification-card&quot; 
+           [ngClass]&#x3D;&quot;n.type&quot;
+           (click)&#x3D;&quot;service.remove(n.id)&quot;&gt;
+        
+        &lt;div class&#x3D;&quot;glow-effect&quot;&gt;&lt;/div&gt;
+        
+        &lt;div class&#x3D;&quot;icon-container&quot;&gt;
+          &lt;div class&#x3D;&quot;icon-bg&quot;&gt;&lt;/div&gt;
+          &lt;svg *ngIf&#x3D;&quot;n.type &#x3D;&#x3D;&#x3D; &#x27;success&#x27;&quot; class&#x3D;&quot;icon&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2.5&quot; d&#x3D;&quot;M5 13l4 4L19 7&quot;/&gt;&lt;/svg&gt;
+          &lt;svg *ngIf&#x3D;&quot;n.type &#x3D;&#x3D;&#x3D; &#x27;error&#x27;&quot; class&#x3D;&quot;icon&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2.5&quot; d&#x3D;&quot;M6 18L18 6M6 6l12 12&quot;/&gt;&lt;/svg&gt;
+          &lt;svg *ngIf&#x3D;&quot;n.type &#x3D;&#x3D;&#x3D; &#x27;warning&#x27;&quot; class&#x3D;&quot;icon&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2.5&quot; d&#x3D;&quot;M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z&quot;/&gt;&lt;/svg&gt;
+          &lt;svg *ngIf&#x3D;&quot;n.type &#x3D;&#x3D;&#x3D; &#x27;info&#x27;&quot; class&#x3D;&quot;icon&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2.5&quot; d&#x3D;&quot;M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z&quot;/&gt;&lt;/svg&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;content&quot;&gt;
+          &lt;div class&#x3D;&quot;title&quot;&gt;{{ getTitle(n) }}&lt;/div&gt;
+          &lt;div class&#x3D;&quot;message&quot;&gt;{{ n.message }}&lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;button class&#x3D;&quot;close-btn&quot;&gt;
+          &lt;svg class&#x3D;&quot;w-4 h-4&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2.5&quot; d&#x3D;&quot;M6 18L18 6M6 6l12 12&quot;/&gt;&lt;/svg&gt;
+        &lt;/button&gt;
+
+        &lt;div class&#x3D;&quot;progress-track&quot;&gt;
+          &lt;div class&#x3D;&quot;progress-fill&quot;&gt;&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &#x60;,
+  styles: [&#x60;
+    .notification-container {
+      position: fixed;
+      top: 32px;
+      right: 32px;
+      z-index: 10000;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      pointer-events: none;
+      perspective: 1000px;
+    }
+
+    .notification-card {
+      pointer-events: auto;
+      width: 380px;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      border-radius: 24px;
+      padding: 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+      box-shadow: 
+        0 4px 6px -1px rgba(0, 0, 0, 0.05),
+        0 20px 40px -15px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      animation: slideInPremium 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .notification-card:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 
+        0 10px 15px -3px rgba(0, 0, 0, 0.05),
+        0 30px 60px -20px rgba(0, 0, 0, 0.15);
+      background: rgba(255, 255, 255, 0.95);
+    }
+
+    .glow-effect {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 0% 0%, rgba(255,255,255,0.4) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .icon-container {
+      position: relative;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .icon-bg {
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      opacity: 0.15;
+      transition: all 0.3s ease;
+    }
+
+    .icon {
+      width: 24px;
+      height: 24px;
+      z-index: 1;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+    }
+
+    .content {
+      flex: 1;
+      padding-top: 2px;
+    }
+
+    .title {
+      font-size: 14px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    .message {
+      font-size: 14px;
+      font-weight: 600;
+      color: #4b5563;
+      line-height: 1.5;
+    }
+
+    .close-btn {
+      opacity: 0.3;
+      transition: all 0.2s ease;
+      background: rgba(0,0,0,0.05);
+      border: none;
+      padding: 6px;
+      border-radius: 10px;
+      color: #1f2937;
+      margin-top: -4px;
+      margin-right: -4px;
+    }
+
+    .notification-card:hover .close-btn {
+      opacity: 0.8;
+      background: rgba(0,0,0,0.1);
+    }
+
+    /* Type Specifics */
+    .success .icon-bg { background: #10b981; }
+    .success .icon { color: #10b981; }
+    .success .title { color: #059669; }
+    .success { border-left: 6px solid #10b981; }
+
+    .error .icon-bg { background: #ef4444; }
+    .error .icon { color: #ef4444; }
+    .error .title { color: #dc2626; }
+    .error { border-left: 6px solid #ef4444; }
+
+    .warning .icon-bg { background: #f59e0b; }
+    .warning .icon { color: #f59e0b; }
+    .warning .title { color: #d97706; }
+    .warning { border-left: 6px solid #f59e0b; }
+
+    .info .icon-bg { background: #3b82f6; }
+    .info .icon { color: #3b82f6; }
+    .info .title { color: #2563eb; }
+    .info { border-left: 6px solid #3b82f6; }
+
+    /* Progress Bar */
+    .progress-track {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 4px;
+      width: 100%;
+      background: rgba(0,0,0,0.02);
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 100%;
+      transform-origin: left;
+      animation: progressLinear 5s linear forwards;
+    }
+
+    .success .progress-fill { background: linear-gradient(90deg, #10b981, #34d399); }
+    .error .progress-fill { background: linear-gradient(90deg, #ef4444, #f87171); }
+    .warning .progress-fill { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+    .info .progress-fill { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+
+    @keyframes slideInPremium {
+      from { 
+        opacity: 0; 
+        transform: translateX(40px) scale(0.9) rotateY(-10deg); 
+      }
+      to { 
+        opacity: 1; 
+        transform: translateX(0) scale(1) rotateY(0); 
+      }
+    }
+
+    @keyframes progressLinear {
+      from { transform: scaleX(1); }
+      to { transform: scaleX(0); }
+    }
+  &#x60;]
+})
+export class NotificationComponent {
+  service &#x3D; inject(NotificationService);
+
+  getTitle(notification: Notification): string {
+    if (notification.type &#x3D;&#x3D;&#x3D; &#x27;error&#x27;) {
+      if (notification.message.includes(&#x27;permiso&#x27;) || notification.message.includes(&#x27;autorizado&#x27;)) {
+        return &#x27;Acceso Denegado&#x27;;
+      }
+      return &#x27;Error del Sistema&#x27;;
+    }
+    
+    switch (notification.type) {
+      case &#x27;success&#x27;: return &#x27;Éxito&#x27;;
+      case &#x27;warning&#x27;: return &#x27;Atención&#x27;;
+      case &#x27;info&#x27;: return &#x27;Información&#x27;;
+      default: return &#x27;Notificación&#x27;;
+    }
+  }
+}
+</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="styleData">
+            <pre class="line-numbers"><code class="language-scss">
+    .notification-container {
+      position: fixed;
+      top: 32px;
+      right: 32px;
+      z-index: 10000;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      pointer-events: none;
+      perspective: 1000px;
+    }
+
+    .notification-card {
+      pointer-events: auto;
+      width: 380px;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      border-radius: 24px;
+      padding: 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+      box-shadow: 
+        0 4px 6px -1px rgba(0, 0, 0, 0.05),
+        0 20px 40px -15px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      animation: slideInPremium 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .notification-card:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 
+        0 10px 15px -3px rgba(0, 0, 0, 0.05),
+        0 30px 60px -20px rgba(0, 0, 0, 0.15);
+      background: rgba(255, 255, 255, 0.95);
+    }
+
+    .glow-effect {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 0% 0%, rgba(255,255,255,0.4) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .icon-container {
+      position: relative;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .icon-bg {
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      opacity: 0.15;
+      transition: all 0.3s ease;
+    }
+
+    .icon {
+      width: 24px;
+      height: 24px;
+      z-index: 1;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+    }
+
+    .content {
+      flex: 1;
+      padding-top: 2px;
+    }
+
+    .title {
+      font-size: 14px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    .message {
+      font-size: 14px;
+      font-weight: 600;
+      color: #4b5563;
+      line-height: 1.5;
+    }
+
+    .close-btn {
+      opacity: 0.3;
+      transition: all 0.2s ease;
+      background: rgba(0,0,0,0.05);
+      border: none;
+      padding: 6px;
+      border-radius: 10px;
+      color: #1f2937;
+      margin-top: -4px;
+      margin-right: -4px;
+    }
+
+    .notification-card:hover .close-btn {
+      opacity: 0.8;
+      background: rgba(0,0,0,0.1);
+    }
+
+    /* Type Specifics */
+    .success .icon-bg { background: #10b981; }
+    .success .icon { color: #10b981; }
+    .success .title { color: #059669; }
+    .success { border-left: 6px solid #10b981; }
+
+    .error .icon-bg { background: #ef4444; }
+    .error .icon { color: #ef4444; }
+    .error .title { color: #dc2626; }
+    .error { border-left: 6px solid #ef4444; }
+
+    .warning .icon-bg { background: #f59e0b; }
+    .warning .icon { color: #f59e0b; }
+    .warning .title { color: #d97706; }
+    .warning { border-left: 6px solid #f59e0b; }
+
+    .info .icon-bg { background: #3b82f6; }
+    .info .icon { color: #3b82f6; }
+    .info .title { color: #2563eb; }
+    .info { border-left: 6px solid #3b82f6; }
+
+    /* Progress Bar */
+    .progress-track {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 4px;
+      width: 100%;
+      background: rgba(0,0,0,0.02);
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 100%;
+      transform-origin: left;
+      animation: progressLinear 5s linear forwards;
+    }
+
+    .success .progress-fill { background: linear-gradient(90deg, #10b981, #34d399); }
+    .error .progress-fill { background: linear-gradient(90deg, #ef4444, #f87171); }
+    .warning .progress-fill { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+    .info .progress-fill { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+
+    @keyframes slideInPremium {
+      from { 
+        opacity: 0; 
+        transform: translateX(40px) scale(0.9) rotateY(-10deg); 
+      }
+      to { 
+        opacity: 1; 
+        transform: translateX(0) scale(1) rotateY(0); 
+      }
+    }
+
+    @keyframes progressLinear {
+      from { transform: scaleX(1); }
+      to { transform: scaleX(0); }
+    }
+  
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="notification-container">  <div *ngFor="let n of service.notifications()"       class="notification-card"       [ngClass]="n.type"       (click)="service.remove(n.id)">    <div class="glow-effect"></div>    <div class="icon-container">      <div class="icon-bg"></div>      <svg *ngIf="n.type === \'success\'" class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>      <svg *ngIf="n.type === \'error\'" class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>      <svg *ngIf="n.type === \'warning\'" class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>      <svg *ngIf="n.type === \'info\'" class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>    </div>    <div class="content">      <div class="title">{{ getTitle(n) }}</div>      <div class="message">{{ n.message }}</div>    </div>    <button class="close-btn">      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>    </button>    <div class="progress-track">      <div class="progress-fill"></div>    </div>  </div></div></div>'
+    var COMPONENTS = [{'name': 'AgendasComponent', 'selector': 'app-agendas'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'BuscadorPacienteComponent', 'selector': 'app-buscador-paciente'},{'name': 'CitasComponent', 'selector': 'app-citas'},{'name': 'ConstructorFormularioComponent', 'selector': 'app-constructor-formulario'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'EpidemiologiaDashboardComponent', 'selector': 'app-epidemiologia-dashboard'},{'name': 'EstadisticasHospitalariasComponent', 'selector': 'app-estadisticas-hospitalarias'},{'name': 'FarmaciaComponent', 'selector': 'app-farmacia'},{'name': 'GestionHospitalizacionComponent', 'selector': 'app-gestion-hospitalizacion'},{'name': 'GestionLotesModalComponent', 'selector': 'app-gestion-lotes-modal'},{'name': 'GestionReportesComponent', 'selector': 'app-gestion-reportes'},{'name': 'HistoriaClinicaComponent', 'selector': 'app-historia-clinica'},{'name': 'InfraestructuraModalComponent', 'selector': 'app-infraestructura-modal'},{'name': 'InventarioVacunasComponent', 'selector': 'app-inventario-vacunas'},{'name': 'LaboratorioComponent', 'selector': 'app-laboratorio'},{'name': 'ListaPlantillasComponent', 'selector': 'app-lista-plantillas'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MainLayoutComponent', 'selector': 'app-main-layout'},{'name': 'MantenimientoDiagnosticosComponent', 'selector': 'app-mantenimiento-diagnosticos'},{'name': 'MantenimientoEstablecimientosComponent', 'selector': 'app-mantenimiento-establecimientos'},{'name': 'MantenimientoInventarioComponent', 'selector': 'app-mantenimiento-inventario'},{'name': 'MantenimientoLaboratorioComponent', 'selector': 'app-mantenimiento-laboratorio'},{'name': 'MantenimientoLoginComponent', 'selector': 'app-mantenimiento-login'},{'name': 'MantenimientoMedicamentosComponent', 'selector': 'app-mantenimiento-medicamentos'},{'name': 'MantenimientoRadiologiaComponent', 'selector': 'app-mantenimiento-radiologia'},{'name': 'MantenimientoRolesComponent', 'selector': 'app-mantenimiento-roles'},{'name': 'MovimientosInventarioComponent', 'selector': 'app-movimientos-inventario'},{'name': 'NotificationComponent', 'selector': 'app-notification'},{'name': 'NuevaConsultaComponent', 'selector': 'app-nueva-consulta'},{'name': 'PacientesComponent', 'selector': 'app-pacientes'},{'name': 'PermisosUsuariosComponent', 'selector': 'app-permisos-usuarios'},{'name': 'RecetasPacienteComponent', 'selector': 'app-recetas-paciente'},{'name': 'RegistroVacunaModalComponent', 'selector': 'app-registro-vacuna-modal'},{'name': 'ReportesComponent', 'selector': 'app-reportes'},{'name': 'TriajeComponent', 'selector': 'app-triaje'},{'name': 'UsuariosComponent', 'selector': 'app-usuarios'},{'name': 'VacunacionComponent', 'selector': 'app-vacunacion'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'NotificationComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'NotificationComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

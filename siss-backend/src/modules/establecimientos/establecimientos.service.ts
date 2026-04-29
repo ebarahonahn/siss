@@ -38,6 +38,7 @@ export class EstablecimientosService {
         departamento: true,
         servicios: {
           where: { activo: true },
+          include: { catServicio: true },
         },
       },
     });
@@ -151,6 +152,13 @@ export class EstablecimientosService {
         eliminadoEn: new Date(),
         eliminadoPorId: usuarioId,
       },
+    });
+  }
+
+  async listarServicios(establecimientoId: number) {
+    return this.prisma.servicio.findMany({
+      where: { establecimientoId, activo: true },
+      include: { catServicio: true },
     });
   }
 }

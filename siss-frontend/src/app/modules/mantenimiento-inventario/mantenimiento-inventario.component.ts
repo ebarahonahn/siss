@@ -7,6 +7,7 @@ import { MedicamentosService, Medicamento } from '../../core/services/medicament
 import { EstablecimientosService } from '../../core/services/establecimientos.service';
 import { AuthService } from '../../core/services/auth.service';
 import { NotificationService } from '../../core/services/notification.service';
+import { DateValidators } from '../../core/validators/date.validator';
 
 @Component({
   selector: 'app-mantenimiento-inventario',
@@ -221,7 +222,11 @@ import { NotificationService } from '../../core/services/notification.service';
           <div class="space-y-1">
             <label class="text-xs font-semibold text-gray-700 font-bold uppercase tracking-tight">Vencimiento</label>
             <input type="date" formControlName="fechaVencimiento"
+                   [class.ring-2]="form.get('fechaVencimiento')?.invalid && form.get('fechaVencimiento')?.touched"
+                   [class.ring-red-500]="form.get('fechaVencimiento')?.invalid && form.get('fechaVencimiento')?.touched"
                    class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"/>
+            <p *ngIf="form.get('fechaVencimiento')?.errors?.['dateInvalid'] && form.get('fechaVencimiento')?.touched" 
+               class="text-[10px] text-red-500 font-bold uppercase mt-1">La fecha no existe</p>
           </div>
         </div>
 
@@ -385,7 +390,7 @@ export class MantenimientoInventarioComponent implements OnInit, OnDestroy {
     cantidadActual:    [0, [Validators.required, Validators.min(0)]],
     cantidadMinima:    [10, [Validators.required, Validators.min(0)]],
     lote:              [''],
-    fechaVencimiento:  [''],
+    fechaVencimiento:  ['', [DateValidators.dateReal()]],
     ubicacion:         [''],
     establecimientoId: ['', [Validators.required]],
   });

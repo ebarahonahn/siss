@@ -62,6 +62,9 @@ export class HistoriaClinicaComponent implements OnInit {
   }
 
   cargarAgenda() {
+    if (!DateUtils.esFechaValida(this.fechaFiltro)) {
+      return;
+    }
     this.cargandoCitas.set(true);
     this.citasSvc.listar(this.fechaFiltro).subscribe({
       next: data => {
@@ -301,7 +304,7 @@ export class HistoriaClinicaComponent implements OnInit {
   getClasificacionIMC(imcStr: string, fechaNacimiento?: string): { label: string, textColor: string, bgColor: string } | null {
     const valor = parseFloat(imcStr);
     if (isNaN(valor) || valor <= 0) return null;
-    if (fechaNacimiento && this.calcularEdad(fechaNacimiento) < 18) return null;
+    if (fechaNacimiento && this.calcularAge(fechaNacimiento) < 18) return null;
 
     if (valor < 18.5) return { label: 'Bajo peso', textColor: 'text-blue-700', bgColor: 'bg-blue-100/50' };
     if (valor < 25)   return { label: 'Normal',    textColor: 'text-green-700', bgColor: 'bg-green-100/50' };
@@ -309,5 +312,19 @@ export class HistoriaClinicaComponent implements OnInit {
     if (valor < 35)   return { label: 'Obesidad I', textColor: 'text-orange-700', bgColor: 'bg-orange-100/50' };
     if (valor < 40)   return { label: 'Obesidad II',textColor: 'text-red-700', bgColor: 'bg-red-100/50' };
     return { label: 'Obesidad III', textColor: 'text-purple-700', bgColor: 'bg-purple-100/50' };
+  }
+
+  esFechaValida(fecha: string): boolean {
+    return DateUtils.esFechaValida(fecha);
+  }
+
+  private calcularAge(fecha?: string): number {
+    if (!fecha) return 0;
+    const naci = new Date(fecha);
+    const hoy = new Date();
+    let edad = hoy.getFullYear() - naci.getFullYear();
+    const m = hoy.getMonth() - naci.getMonth();
+    if (m < 0 || (m === 0 && hoy.getDate() < naci.getDate())) edad--;
+    return edad;
   }
 }

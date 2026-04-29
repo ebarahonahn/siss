@@ -51,4 +51,12 @@ export class DispensacionController {
   obtenerVigencia() {
     return this.service.obtenerVigenciaReceta();
   }
+
+  @Get('historial-paciente')
+  @Permissions('farmacia:leer')
+  historialPaciente(
+    @Query('identificador') identificador: string,
+  ) {
+    return this.service.historialPorPaciente(identificador);
+  }
 }

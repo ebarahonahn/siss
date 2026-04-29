@@ -1,0 +1,1997 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>siss-frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">siss-frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  MantenimientoRolesComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/modules/mantenimiento-roles/mantenimiento-roles.component.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                <code>OnInit</code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-mantenimiento-roles</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                            <code>CommonModule</code>
+                            <code>ReactiveFormsModule</code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./mantenimiento-roles.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#cargando" >cargando</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#categorias" >categorias</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#fb" >fb</a>
+                            </li>
+                            <li>
+                                <a href="#form" >form</a>
+                            </li>
+                            <li>
+                                <a href="#guardando" >guardando</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#modulos" >modulos</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#notification" >notification</a>
+                            </li>
+                            <li>
+                                <a href="#permisosActivos" >permisosActivos</a>
+                            </li>
+                            <li>
+                                <a href="#roles" >roles</a>
+                            </li>
+                            <li>
+                                <a href="#rolSeleccionado" >rolSeleccionado</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#svc" >svc</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#cargar" >cargar</a>
+                            </li>
+                            <li>
+                                <a href="#esAdmin" >esAdmin</a>
+                            </li>
+                            <li>
+                                <a href="#guardar" >guardar</a>
+                            </li>
+                            <li>
+                                <a href="#modulosPorCategoria" >modulosPorCategoria</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#permisosAJson" >permisosAJson</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#permisosDesdeJson" >permisosDesdeJson</a>
+                            </li>
+                            <li>
+                                <a href="#rolColor" >rolColor</a>
+                            </li>
+                            <li>
+                                <a href="#seleccionarRol" >seleccionarRol</a>
+                            </li>
+                            <li>
+                                <a href="#tienePermiso" >tienePermiso</a>
+                            </li>
+                            <li>
+                                <a href="#todosMarcados" >todosMarcados</a>
+                            </li>
+                            <li>
+                                <a href="#toggleModulo" >toggleModulo</a>
+                            </li>
+                            <li>
+                                <a href="#togglePermiso" >togglePermiso</a>
+                            </li>
+                            <li>
+                                <a href="#totalPermisos" >totalPermisos</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargar"></a>
+                    <span class="name">
+                        <span ><b>cargar</b></span>
+                        <a href="#cargar"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cargar()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="93"
+                                    class="link-to-prism">src/app/modules/mantenimiento-roles/mantenimiento-roles.component.ts:93</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="esAdmin"></a>
+                    <span class="name">
+                        <span ><b>esAdmin</b></span>
+                        <a href="#esAdmin"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>esAdmin(rol: <a href="../interfaces/Rol.html" target="_self">Rol</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="176"
+                                    class="link-to-prism">src/app/modules/mantenimiento-roles/mantenimiento-roles.component.ts:176</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>rol</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Rol.html" target="_self" >Rol</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="guardar"></a>
+                    <span class="name">
+                        <span ><b>guardar</b></span>
+                        <a href="#guardar"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>guardar()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="154"
+                                    class="link-to-prism">src/app/modules/mantenimiento-roles/mantenimiento-roles.component.ts:154</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="modulosPorCategoria"></a>
+                    <span class="name">
+                        <span ><b>modulosPorCategoria</b></span>
+                        <a href="#modulosPorCategoria"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>modulosPorCategoria(keys: string[])</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="83"
+                                    class="link-to-prism">src/app/modules/mantenimiento-roles/mantenimiento-roles.component.ts:83</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>keys</td>
+                                            <td>
+                                                        <code>string[]</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="91"
+                                    class="link-to-prism">src/app/modules/mantenimiento-roles/mantenimiento-roles.component.ts:91</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="permisosAJson"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>permisosAJson</b></span>
+                        <a href="#permisosAJson"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>permisosAJson()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="145"
+                                    class="link-to-prism">src/app/modules/mantenimiento-roles/mantenimiento-roles.component.ts:145</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Record&lt;string, string[]&gt;</code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="permisosDesdeJson"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>permisosDesdeJson</b></span>
+                        <a href="#permisosDesdeJson"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>permisosDesdeJson(permisos: Record<string | any>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="107"
+                                    class="link-to-prism">src/app/modules/mantenimiento-roles/mantenimiento-roles.component.ts:107</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>permisos</td>
+                                            <td>
+                                                        <code>Record&lt;string | any&gt;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Record&lt;string, Set&lt;string&gt;&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="rolColor"></a>
+                    <span class="name">
+                        <span ><b>rolColor</b></span>
+                        <a href="#rolColor"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>rolColor(nombre: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="177"
+                                    class="link-to-prism">src/app/modules/mantenimiento-roles/mantenimiento-roles.component.ts:177</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>nombre</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="seleccionarRol"></a>
+                    <span class="name">
+                        <span ><b>seleccionarRol</b></span>
+                        <a href="#seleccionarRol"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>seleccionarRol(rol: <a href="../interfaces/Rol.html" target="_self">Rol</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="101"
+                                    class="link-to-prism">src/app/modules/mantenimiento-roles/mantenimiento-roles.component.ts:101</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>rol</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Rol.html" target="_self" >Rol</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="tienePermiso"></a>
+                    <span class="name">
+                        <span ><b>tienePermiso</b></span>
+                        <a href="#tienePermiso"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>tienePermiso(modulo: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, accion: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="116"
+                                    class="link-to-prism">src/app/modules/mantenimiento-roles/mantenimiento-roles.component.ts:116</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>modulo</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>accion</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="todosMarcados"></a>
+                    <span class="name">
+                        <span ><b>todosMarcados</b></span>
+                        <a href="#todosMarcados"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>todosMarcados(modulo: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="128"
+                                    class="link-to-prism">src/app/modules/mantenimiento-roles/mantenimiento-roles.component.ts:128</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>modulo</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toggleModulo"></a>
+                    <span class="name">
+                        <span ><b>toggleModulo</b></span>
+                        <a href="#toggleModulo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>toggleModulo(modulo: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="134"
+                                    class="link-to-prism">src/app/modules/mantenimiento-roles/mantenimiento-roles.component.ts:134</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>modulo</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="togglePermiso"></a>
+                    <span class="name">
+                        <span ><b>togglePermiso</b></span>
+                        <a href="#togglePermiso"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>togglePermiso(modulo: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, accion: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="120"
+                                    class="link-to-prism">src/app/modules/mantenimiento-roles/mantenimiento-roles.component.ts:120</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>modulo</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>accion</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="totalPermisos"></a>
+                    <span class="name">
+                        <span ><b>totalPermisos</b></span>
+                        <a href="#totalPermisos"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>totalPermisos(permisos: Record<string | any>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="179"
+                                    class="link-to-prism">src/app/modules/mantenimiento-roles/mantenimiento-roles.component.ts:179</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>permisos</td>
+                                            <td>
+                                                        <code>Record&lt;string | any&gt;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargando"></a>
+                    <span class="name">
+                        <span ><b>cargando</b></span>
+                        <a href="#cargando"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="72" class="link-to-prism">src/app/modules/mantenimiento-roles/mantenimiento-roles.component.ts:72</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="categorias"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>categorias</b></span>
+                        <a href="#categorias"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>CATEGORIAS</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="81" class="link-to-prism">src/app/modules/mantenimiento-roles/mantenimiento-roles.component.ts:81</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="fb"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>fb</b></span>
+                        <a href="#fb"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(FormBuilder)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="68" class="link-to-prism">src/app/modules/mantenimiento-roles/mantenimiento-roles.component.ts:68</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="form"></a>
+                    <span class="name">
+                        <span ><b>form</b></span>
+                        <a href="#form"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this.fb.group({
+    descripcion: [&#x27;&#x27;],
+  })</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="87" class="link-to-prism">src/app/modules/mantenimiento-roles/mantenimiento-roles.component.ts:87</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="guardando"></a>
+                    <span class="name">
+                        <span ><b>guardando</b></span>
+                        <a href="#guardando"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="75" class="link-to-prism">src/app/modules/mantenimiento-roles/mantenimiento-roles.component.ts:75</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="modulos"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>modulos</b></span>
+                        <a href="#modulos"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>MODULOS</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="80" class="link-to-prism">src/app/modules/mantenimiento-roles/mantenimiento-roles.component.ts:80</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="notification"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>notification</b></span>
+                        <a href="#notification"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(NotificationService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="69" class="link-to-prism">src/app/modules/mantenimiento-roles/mantenimiento-roles.component.ts:69</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="permisosActivos"></a>
+                    <span class="name">
+                        <span ><b>permisosActivos</b></span>
+                        <a href="#permisosActivos"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>Record&lt;string | Set&lt;string&gt;&gt;</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{}</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="78" class="link-to-prism">src/app/modules/mantenimiento-roles/mantenimiento-roles.component.ts:78</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="roles"></a>
+                    <span class="name">
+                        <span ><b>roles</b></span>
+                        <a href="#roles"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;Rol[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="71" class="link-to-prism">src/app/modules/mantenimiento-roles/mantenimiento-roles.component.ts:71</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="rolSeleccionado"></a>
+                    <span class="name">
+                        <span ><b>rolSeleccionado</b></span>
+                        <a href="#rolSeleccionado"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;Rol | null&gt;(null)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="74" class="link-to-prism">src/app/modules/mantenimiento-roles/mantenimiento-roles.component.ts:74</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="svc"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>svc</b></span>
+                        <a href="#svc"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(RolesService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="67" class="link-to-prism">src/app/modules/mantenimiento-roles/mantenimiento-roles.component.ts:67</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, inject, OnInit, signal } from &#x27;@angular/core&#x27;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
+import { ReactiveFormsModule, FormBuilder } from &#x27;@angular/forms&#x27;;
+import { RolesService, Rol } from &#x27;../../core/services/roles.service&#x27;;
+import { NotificationService } from &#x27;../../core/services/notification.service&#x27;;
+
+interface ModuloPermiso {
+  key: string;
+  label: string;
+  acciones: string[];
+}
+
+const MODULOS: ModuloPermiso[] &#x3D; [
+  // Atención al Paciente
+  { key: &#x27;pacientes&#x27;,        label: &#x27;Pacientes&#x27;,         acciones: [&#x27;leer&#x27;, &#x27;crear&#x27;, &#x27;editar&#x27;, &#x27;eliminar&#x27;] },
+  { key: &#x27;citas&#x27;,            label: &#x27;Citas&#x27;,             acciones: [&#x27;leer&#x27;, &#x27;crear&#x27;, &#x27;editar&#x27;, &#x27;cancelar&#x27;] },
+  { key: &#x27;triaje&#x27;,           label: &#x27;Triaje&#x27;,            acciones: [&#x27;leer&#x27;, &#x27;crear&#x27;] },
+  { key: &#x27;historia_clinica&#x27;, label: &#x27;Historia Clínica&#x27;,  acciones: [&#x27;leer&#x27;, &#x27;crear&#x27;, &#x27;editar&#x27;] },
+  { key: &#x27;vacunacion&#x27;,       label: &#x27;Vacunación (PAI)&#x27;,  acciones: [&#x27;leer&#x27;, &#x27;gestionar&#x27;, &#x27;editar&#x27;, &#x27;eliminar&#x27;] },
+  { key: &#x27;agendas&#x27;,          label: &#x27;Agendas Médicas&#x27;,   acciones: [&#x27;leer&#x27;, &#x27;gestionar&#x27;] },
+  
+  // Servicios Clínicos
+  { key: &#x27;formularios&#x27;,      label: &#x27;Formularios&#x27;,       acciones: [&#x27;leer&#x27;, &#x27;llenar&#x27;, &#x27;crear&#x27;, &#x27;editar&#x27;] },
+  { key: &#x27;recetas&#x27;,          label: &#x27;Recetas&#x27;,           acciones: [&#x27;leer&#x27;, &#x27;crear&#x27;, &#x27;dispensar&#x27;] },
+  { key: &#x27;laboratorio&#x27;,      label: &#x27;Laboratorio&#x27;,       acciones: [&#x27;leer&#x27;, &#x27;gestionar&#x27;] },
+  { key: &#x27;radiologia&#x27;,       label: &#x27;Radiología e Imagen&#x27;, acciones: [&#x27;leer&#x27;, &#x27;gestionar&#x27;, &#x27;solicitar&#x27;] },
+  { key: &#x27;diagnosticos&#x27;,     label: &#x27;Diagnósticos CIE-10&#x27;, acciones: [&#x27;leer&#x27;, &#x27;crear&#x27;] },
+  { key: &#x27;farmacia&#x27;,         label: &#x27;Farmacia (Dispensación)&#x27;, acciones: [&#x27;leer&#x27;, &#x27;crear&#x27;] },
+  
+  // Gestión Administrativa
+  { key: &#x27;usuarios&#x27;,         label: &#x27;Usuarios&#x27;,          acciones: [&#x27;leer&#x27;, &#x27;gestionar&#x27;] },
+  { key: &#x27;inventario&#x27;,       label: &#x27;Inventario&#x27;,        acciones: [&#x27;leer&#x27;, &#x27;gestionar&#x27;] },
+  { key: &#x27;medicamentos&#x27;,     label: &#x27;Medicamentos&#x27;,         acciones: [&#x27;leer&#x27;, &#x27;gestionar&#x27;] },
+  
+  // Configuración
+  { key: &#x27;especialidades&#x27;,   label: &#x27;Especialidades&#x27;,    acciones: [&#x27;leer&#x27;, &#x27;crear&#x27;, &#x27;editar&#x27;] },
+  { key: &#x27;establecimientos&#x27;, label: &#x27;Establecimientos&#x27;,  acciones: [&#x27;leer&#x27;, &#x27;crear&#x27;, &#x27;editar&#x27;] },
+  { key: &#x27;reportes&#x27;,         label: &#x27;Reportes&#x27;,          acciones: [&#x27;generar&#x27;] },
+  { key: &#x27;geo&#x27;,              label: &#x27;Geografía&#x27;,         acciones: [&#x27;leer&#x27;] },
+  { key: &#x27;catalogos&#x27;,        label: &#x27;Catálogos&#x27;,         acciones: [&#x27;leer&#x27;] },
+];
+
+const CATEGORIAS &#x3D; [
+  { nombre: &#x27;Atención al Paciente&#x27;,   keys: [&#x27;pacientes&#x27;, &#x27;citas&#x27;, &#x27;triaje&#x27;, &#x27;historia_clinica&#x27;, &#x27;vacunacion&#x27;, &#x27;agendas&#x27;] },
+  { nombre: &#x27;Servicios Clínicos&#x27;,      keys: [&#x27;formularios&#x27;, &#x27;recetas&#x27;, &#x27;laboratorio&#x27;, &#x27;radiologia&#x27;, &#x27;diagnosticos&#x27;, &#x27;farmacia&#x27;] },
+  { nombre: &#x27;Gestión Administrativa&#x27;, keys: [&#x27;usuarios&#x27;, &#x27;inventario&#x27;, &#x27;medicamentos&#x27;] },
+  { nombre: &#x27;Configuración y Otros&#x27;,  keys: [&#x27;especialidades&#x27;, &#x27;establecimientos&#x27;, &#x27;reportes&#x27;, &#x27;geo&#x27;, &#x27;catalogos&#x27;] },
+];
+
+const ROL_COLOR: Record&lt;string, string&gt; &#x3D; {
+  ADMIN:         &#x27;bg-red-100 text-red-700 border-red-200&#x27;,
+  MEDICO:        &#x27;bg-blue-100 text-blue-700 border-blue-200&#x27;,
+  ENFERMERA:     &#x27;bg-green-100 text-green-700 border-green-200&#x27;,
+  FARMACEUTICO:  &#x27;bg-purple-100 text-purple-700 border-purple-200&#x27;,
+  RECEPCIONISTA: &#x27;bg-orange-100 text-orange-700 border-orange-200&#x27;,
+  EPIDEMIOLOGO:  &#x27;bg-teal-100 text-teal-700 border-teal-200&#x27;,
+  ADMIN_ESTABLECIMIENTO: &#x27;bg-indigo-100 text-indigo-700 border-indigo-200&#x27;,
+};
+
+@Component({
+  selector: &#x27;app-mantenimiento-roles&#x27;,
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule],
+  templateUrl: &#x27;./mantenimiento-roles.component.html&#x27;,
+})
+export class MantenimientoRolesComponent implements OnInit {
+  private svc          &#x3D; inject(RolesService);
+  private fb           &#x3D; inject(FormBuilder);
+  private notification &#x3D; inject(NotificationService);
+
+  roles     &#x3D; signal&lt;Rol[]&gt;([]);
+  cargando  &#x3D; signal(false);
+
+  rolSeleccionado &#x3D; signal&lt;Rol | null&gt;(null);
+  guardando       &#x3D; signal(false);
+
+  // Mapa mutable: modulo -&gt; Set de acciones habilitadas
+  permisosActivos: Record&lt;string, Set&lt;string&gt;&gt; &#x3D; {};
+
+  readonly modulos   &#x3D; MODULOS;
+  readonly categorias &#x3D; CATEGORIAS;
+
+  modulosPorCategoria(keys: string[]) {
+    return MODULOS.filter(m &#x3D;&gt; keys.includes(m.key));
+  }
+
+  form &#x3D; this.fb.group({
+    descripcion: [&#x27;&#x27;],
+  });
+
+  ngOnInit() { this.cargar(); }
+
+  cargar() {
+    this.cargando.set(true);
+    this.svc.listar().subscribe({
+      next: data &#x3D;&gt; { this.roles.set(data); this.cargando.set(false); },
+      error: ()   &#x3D;&gt; this.cargando.set(false),
+    });
+  }
+
+  seleccionarRol(rol: Rol) {
+    this.rolSeleccionado.set(rol);
+    this.form.patchValue({ descripcion: rol.descripcion ?? &#x27;&#x27; });
+    this.permisosActivos &#x3D; this.permisosDesdeJson(rol.permisos);
+  }
+
+  private permisosDesdeJson(permisos: Record&lt;string, any&gt;): Record&lt;string, Set&lt;string&gt;&gt; {
+    const mapa: Record&lt;string, Set&lt;string&gt;&gt; &#x3D; {};
+    for (const mod of MODULOS) {
+      const acciones &#x3D; permisos[mod.key];
+      mapa[mod.key] &#x3D; new Set(Array.isArray(acciones) ? acciones : []);
+    }
+    return mapa;
+  }
+
+  tienePermiso(modulo: string, accion: string): boolean {
+    return this.permisosActivos[modulo]?.has(accion) ?? false;
+  }
+
+  togglePermiso(modulo: string, accion: string) {
+    const rol &#x3D; this.rolSeleccionado();
+    if (!rol || rol.nombre &#x3D;&#x3D;&#x3D; &#x27;ADMIN&#x27;) return;
+    const set &#x3D; this.permisosActivos[modulo] ?? new Set();
+    set.has(accion) ? set.delete(accion) : set.add(accion);
+    this.permisosActivos &#x3D; { ...this.permisosActivos, [modulo]: set };
+  }
+
+  todosMarcados(modulo: string): boolean {
+    const mod &#x3D; MODULOS.find(m &#x3D;&gt; m.key &#x3D;&#x3D;&#x3D; modulo);
+    if (!mod) return false;
+    return mod.acciones.every(a &#x3D;&gt; this.tienePermiso(modulo, a));
+  }
+
+  toggleModulo(modulo: string) {
+    const rol &#x3D; this.rolSeleccionado();
+    if (!rol || rol.nombre &#x3D;&#x3D;&#x3D; &#x27;ADMIN&#x27;) return;
+    const mod &#x3D; MODULOS.find(m &#x3D;&gt; m.key &#x3D;&#x3D;&#x3D; modulo)!;
+    const todas &#x3D; this.todosMarcados(modulo);
+    this.permisosActivos &#x3D; {
+      ...this.permisosActivos,
+      [modulo]: todas ? new Set() : new Set(mod.acciones),
+    };
+  }
+
+  private permisosAJson(): Record&lt;string, string[]&gt; {
+    const result: Record&lt;string, string[]&gt; &#x3D; {};
+    for (const mod of MODULOS) {
+      const acciones &#x3D; [...(this.permisosActivos[mod.key] ?? [])];
+      if (acciones.length &gt; 0) result[mod.key] &#x3D; acciones;
+    }
+    return result;
+  }
+
+  guardar() {
+    const rol &#x3D; this.rolSeleccionado();
+    if (!rol) return;
+    this.guardando.set(true);
+
+    const payload: any &#x3D; { descripcion: this.form.value.descripcion ?? &#x27;&#x27; };
+    if (rol.nombre !&#x3D;&#x3D; &#x27;ADMIN&#x27;) payload.permisos &#x3D; this.permisosAJson();
+
+    this.svc.actualizar(rol.id, payload).subscribe({
+      next: updated &#x3D;&gt; {
+        this.guardando.set(false);
+        this.notification.success(&#x60;Rol ${rol.nombre} actualizado&#x60;);
+        this.roles.update(list &#x3D;&gt; list.map(r &#x3D;&gt; r.id &#x3D;&#x3D;&#x3D; rol.id ? { ...r, ...updated } : r));
+        this.rolSeleccionado.set({ ...rol, ...updated });
+      },
+      error: (err: any) &#x3D;&gt; {
+        this.guardando.set(false);
+        this.notification.error(err?.error?.message ?? &#x27;Error al guardar&#x27;);
+      },
+    });
+  }
+
+  esAdmin(rol: Rol) { return rol.nombre &#x3D;&#x3D;&#x3D; &#x27;ADMIN&#x27;; }
+  rolColor(nombre: string) { return ROL_COLOR[nombre] ?? &#x27;bg-gray-100 text-gray-700 border-gray-200&#x27;; }
+
+  totalPermisos(permisos: Record&lt;string, any&gt;): number {
+    if (permisos?.[&#x27;all&#x27;]) return -1;
+    return Object.values(permisos).reduce((s: number, v) &#x3D;&gt; s + (Array.isArray(v) ? v.length : 0), 0);
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;flex gap-6 h-full overflow-hidden&quot;&gt;
+
+  &lt;!-- ══ COLUMNA IZQUIERDA: Lista de roles ══ --&gt;
+  &lt;div class&#x3D;&quot;w-80 flex-shrink-0 flex flex-col h-full bg-white/40 backdrop-blur-md rounded-2xl border border-white/60 shadow-xl overflow-hidden&quot;&gt;
+    &lt;div class&#x3D;&quot;p-6 border-b border-gray-100 bg-white/50&quot;&gt;
+      &lt;h2 class&#x3D;&quot;text-xl font-extrabold text-gray-900 tracking-tight&quot;&gt;Roles del Sistema&lt;/h2&gt;
+      &lt;p class&#x3D;&quot;text-xs text-gray-500 font-medium uppercase tracking-wider mt-1&quot;&gt;Configuración de Accesos&lt;/p&gt;
+    &lt;/div&gt;
+
+    &lt;div class&#x3D;&quot;flex-1 overflow-y-auto p-4 space-y-3 custom-scrollbar&quot;&gt;
+      &lt;div *ngIf&#x3D;&quot;cargando()&quot; class&#x3D;&quot;flex flex-col items-center justify-center py-20 animate-pulse&quot;&gt;
+        &lt;div class&#x3D;&quot;w-10 h-10 border-4 border-blue-100 border-t-blue-600 rounded-full animate-spin&quot;&gt;&lt;/div&gt;
+        &lt;span class&#x3D;&quot;text-xs font-semibold text-gray-400 mt-4 tracking-widest&quot;&gt;CARGANDO ROLES...&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;div *ngFor&#x3D;&quot;let rol of roles()&quot;
+           (click)&#x3D;&quot;seleccionarRol(rol)&quot;
+           [ngClass]&#x3D;&quot;rolSeleccionado()?.id &#x3D;&#x3D;&#x3D; rol.id
+             ? &#x27;bg-white shadow-lg border-blue-500/50 scale-[1.02]&#x27;
+             : &#x27;bg-white/60 border-transparent hover:bg-white hover:border-gray-200&#x27;&quot;
+           class&#x3D;&quot;group relative rounded-xl border-2 p-4 cursor-pointer transition-all duration-300 overflow-hidden&quot;&gt;
+        
+        &lt;!-- Indicador activo --&gt;
+        &lt;div *ngIf&#x3D;&quot;rolSeleccionado()?.id &#x3D;&#x3D;&#x3D; rol.id&quot; 
+             class&#x3D;&quot;absolute left-0 top-0 bottom-0 w-1.5 bg-blue-600 shadow-[2px_0_10px_rgba(37,99,235,0.4)]&quot;&gt;&lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;flex items-start justify-between&quot;&gt;
+          &lt;div class&#x3D;&quot;space-y-1&quot;&gt;
+            &lt;span [ngClass]&#x3D;&quot;rolColor(rol.nombre)&quot;
+                  class&#x3D;&quot;inline-block text-[10px] font-black px-2.5 py-0.5 rounded-md border uppercase tracking-tighter shadow-sm&quot;&gt;
+              {{ rol.nombre }}
+            &lt;/span&gt;
+            &lt;p class&#x3D;&quot;text-xs text-gray-500 font-medium line-clamp-1 group-hover:text-gray-700 transition-colors&quot;&gt;
+              {{ rol.descripcion || &#x27;Sin descripción&#x27; }}
+            &lt;/p&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;text-right&quot;&gt;
+            &lt;span class&#x3D;&quot;text-[10px] font-bold text-gray-400 block&quot;&gt;{{ rol.totalUsuarios }}&lt;/span&gt;
+            &lt;span class&#x3D;&quot;text-[8px] text-gray-300 uppercase tracking-widest&quot;&gt;USUARIOS&lt;/span&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;mt-4 flex items-center justify-between border-t border-gray-50 pt-3&quot;&gt;
+          &lt;div *ngIf&#x3D;&quot;totalPermisos(rol.permisos) &#x3D;&#x3D;&#x3D; -1&quot; class&#x3D;&quot;flex items-center gap-1&quot;&gt;
+            &lt;div class&#x3D;&quot;w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse&quot;&gt;&lt;/div&gt;
+            &lt;span class&#x3D;&quot;text-[10px] font-bold text-red-600 uppercase tracking-wide italic&quot;&gt;Acceso Total&lt;/span&gt;
+          &lt;/div&gt;
+          &lt;div *ngIf&#x3D;&quot;totalPermisos(rol.permisos) &gt;&#x3D; 0&quot; class&#x3D;&quot;flex items-center gap-1.5&quot;&gt;
+            &lt;div class&#x3D;&quot;w-1.5 h-1.5 rounded-full bg-blue-400&quot;&gt;&lt;/div&gt;
+            &lt;span class&#x3D;&quot;text-[10px] font-bold text-gray-400 uppercase tracking-wide&quot;&gt;
+              {{ totalPermisos(rol.permisos) }} Permisos
+            &lt;/span&gt;
+          &lt;/div&gt;
+          
+          &lt;svg class&#x3D;&quot;w-4 h-4 text-gray-300 group-hover:text-blue-500 transition-colors transform group-hover:translate-x-1&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+            &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M9 5l7 7-7 7&quot;/&gt;
+          &lt;/svg&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- ══ COLUMNA DERECHA: Editor de permisos ══ --&gt;
+  &lt;div class&#x3D;&quot;flex-1 min-w-0 flex flex-col h-full overflow-hidden&quot;&gt;
+
+    &lt;!-- Placeholder sin selección --&gt;
+    &lt;div *ngIf&#x3D;&quot;!rolSeleccionado()&quot;
+         class&#x3D;&quot;flex-1 flex flex-col items-center justify-center bg-white/30 backdrop-blur-sm rounded-2xl border-2 border-dashed border-gray-200&quot;&gt;
+      &lt;div class&#x3D;&quot;relative&quot;&gt;
+        &lt;div class&#x3D;&quot;absolute -inset-4 bg-blue-100 rounded-full blur-2xl opacity-40 animate-pulse&quot;&gt;&lt;/div&gt;
+        &lt;svg class&#x3D;&quot;relative w-20 h-20 text-blue-300 opacity-60&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+          &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;1.5&quot;
+                d&#x3D;&quot;M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z&quot;/&gt;
+        &lt;/svg&gt;
+      &lt;/div&gt;
+      &lt;h3 class&#x3D;&quot;text-xl font-bold text-gray-800 mt-6&quot;&gt;Centro de Seguridad&lt;/h3&gt;
+      &lt;p class&#x3D;&quot;text-gray-500 text-sm mt-2 max-w-xs text-center&quot;&gt;Seleccione un rol de la columna izquierda para configurar su matriz de permisos y accesos.&lt;/p&gt;
+    &lt;/div&gt;
+
+    &lt;div *ngIf&#x3D;&quot;rolSeleccionado()&quot; class&#x3D;&quot;flex-1 flex flex-col h-full overflow-hidden space-y-6&quot;&gt;
+
+      &lt;!-- Cabecera Premium --&gt;
+      &lt;div class&#x3D;&quot;bg-white rounded-2xl border border-gray-100 shadow-xl p-6 relative overflow-hidden&quot;&gt;
+        &lt;div class&#x3D;&quot;absolute top-0 right-0 w-64 h-64 bg-blue-50 rounded-full -mr-32 -mt-32 blur-3xl opacity-50&quot;&gt;&lt;/div&gt;
+        
+        &lt;div class&#x3D;&quot;relative flex items-center justify-between gap-6&quot;&gt;
+          &lt;div class&#x3D;&quot;flex items-center gap-5&quot;&gt;
+            &lt;div [ngClass]&#x3D;&quot;rolColor(rolSeleccionado()!.nombre)&quot; 
+                 class&#x3D;&quot;w-14 h-14 rounded-2xl border-2 flex items-center justify-center text-xl font-black shadow-lg shadow-black/5 uppercase&quot;&gt;
+              {{ rolSeleccionado()!.nombre.substring(0,2) }}
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;space-y-1&quot;&gt;
+              &lt;div class&#x3D;&quot;flex items-center gap-3&quot;&gt;
+                &lt;h3 class&#x3D;&quot;text-2xl font-black text-gray-900 tracking-tight&quot;&gt;{{ rolSeleccionado()!.nombre }}&lt;/h3&gt;
+                &lt;span class&#x3D;&quot;px-3 py-1 bg-gray-100 text-[10px] font-bold text-gray-500 rounded-full uppercase tracking-widest border border-gray-200&quot;&gt;
+                  ID: {{ rolSeleccionado()!.id }}
+                &lt;/span&gt;
+              &lt;/div&gt;
+              &lt;input [formControl]&#x3D;&quot;form.controls[&#x27;descripcion&#x27;]&quot;
+                     placeholder&#x3D;&quot;Añadir una descripción detallada para este rol...&quot;
+                     class&#x3D;&quot;text-sm text-gray-500 font-medium border-0 border-b border-transparent focus:border-blue-500 focus:ring-0 focus:outline-none bg-transparent w-full min-w-[400px] py-1 transition-all&quot;/&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;div class&#x3D;&quot;flex items-center gap-4&quot;&gt;
+            &lt;div *ngIf&#x3D;&quot;esAdmin(rolSeleccionado()!)&quot;
+                 class&#x3D;&quot;flex items-center gap-3 text-[10px] text-red-600 font-black bg-red-50/80 px-4 py-2.5 rounded-xl border border-red-100 uppercase tracking-widest shadow-sm&quot;&gt;
+              &lt;span class&#x3D;&quot;relative flex h-2 w-2&quot;&gt;
+                &lt;span class&#x3D;&quot;animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75&quot;&gt;&lt;/span&gt;
+                &lt;span class&#x3D;&quot;relative inline-flex rounded-full h-2 w-2 bg-red-500&quot;&gt;&lt;/span&gt;
+              &lt;/span&gt;
+              Súper Administrador
+            &lt;/div&gt;
+            
+            &lt;button (click)&#x3D;&quot;guardar()&quot; 
+                    [disabled]&#x3D;&quot;guardando() || esAdmin(rolSeleccionado()!)&quot;
+                    [ngClass]&#x3D;&quot;guardando() ? &#x27;opacity-70 cursor-not-allowed&#x27; : &#x27;hover:shadow-blue-500/30 hover:-translate-y-0.5&#x27;&quot;
+                    class&#x3D;&quot;group relative px-8 py-3 bg-blue-600 text-white rounded-xl font-bold text-sm shadow-xl transition-all duration-300 disabled:bg-gray-200 disabled:text-gray-400 disabled:shadow-none overflow-hidden&quot;&gt;
+              &lt;span class&#x3D;&quot;relative z-10 flex items-center gap-2&quot;&gt;
+                &lt;svg *ngIf&#x3D;&quot;!guardando()&quot; class&#x3D;&quot;w-4 h-4&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+                  &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4&quot;/&gt;
+                &lt;/svg&gt;
+                &lt;div *ngIf&#x3D;&quot;guardando()&quot; class&#x3D;&quot;w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin&quot;&gt;&lt;/div&gt;
+                {{ guardando() ? &#x27;Sincronizando...&#x27; : &#x27;Guardar Cambios&#x27; }}
+              &lt;/span&gt;
+              &lt;div class&#x3D;&quot;absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity&quot;&gt;&lt;/div&gt;
+            &lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Aviso Seguridad --&gt;
+      &lt;div *ngIf&#x3D;&quot;esAdmin(rolSeleccionado()!)&quot;
+           class&#x3D;&quot;bg-black/5 backdrop-blur-sm border border-black/10 rounded-2xl px-6 py-4 flex items-center justify-between&quot;&gt;
+        &lt;div class&#x3D;&quot;flex items-center gap-4&quot;&gt;
+          &lt;div class&#x3D;&quot;w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center&quot;&gt;
+            &lt;svg class&#x3D;&quot;w-6 h-6 text-amber-600&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+              &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z&quot;/&gt;
+            &lt;/svg&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;space-y-0.5&quot;&gt;
+            &lt;h4 class&#x3D;&quot;text-sm font-bold text-gray-900 uppercase tracking-tighter&quot;&gt;Política de Seguridad Máxima&lt;/h4&gt;
+            &lt;p class&#x3D;&quot;text-xs text-gray-500 font-medium&quot;&gt;El rol &lt;span class&#x3D;&quot;font-bold text-gray-700&quot;&gt;ADMIN&lt;/span&gt; posee privilegios globales heredados que no pueden ser limitados por seguridad.&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Matriz de Permisos por Categorías --&gt;
+      &lt;div class&#x3D;&quot;flex-1 overflow-y-auto pr-2 custom-scrollbar pb-10&quot;&gt;
+        &lt;div class&#x3D;&quot;grid grid-cols-1 xl:grid-cols-2 gap-6&quot;&gt;
+          
+          &lt;div *ngFor&#x3D;&quot;let cat of categorias&quot; class&#x3D;&quot;space-y-4&quot;&gt;
+            &lt;div class&#x3D;&quot;flex items-center gap-2 px-2&quot;&gt;
+              &lt;div class&#x3D;&quot;h-4 w-1 bg-blue-600 rounded-full&quot;&gt;&lt;/div&gt;
+              &lt;h4 class&#x3D;&quot;text-xs font-black text-gray-900 uppercase tracking-[0.2em]&quot;&gt;{{ cat.nombre }}&lt;/h4&gt;
+            &lt;/div&gt;
+
+            &lt;div class&#x3D;&quot;grid gap-4&quot;&gt;
+              &lt;div *ngFor&#x3D;&quot;let mod of modulosPorCategoria(cat.keys)&quot; 
+                   class&#x3D;&quot;bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 p-5 group&quot;&gt;
+                
+                &lt;div class&#x3D;&quot;flex items-center justify-between mb-4 pb-3 border-b border-gray-50&quot;&gt;
+                  &lt;div class&#x3D;&quot;flex items-center gap-3&quot;&gt;
+                    &lt;div class&#x3D;&quot;w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center group-hover:bg-blue-50 transition-colors&quot;&gt;
+                      &lt;svg class&#x3D;&quot;w-4 h-4 text-gray-400 group-hover:text-blue-500 transition-colors&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+                        &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z&quot;/&gt;
+                      &lt;/svg&gt;
+                    &lt;/div&gt;
+                    &lt;span class&#x3D;&quot;text-sm font-bold text-gray-800 tracking-tight&quot;&gt;{{ mod.label }}&lt;/span&gt;
+                  &lt;/div&gt;
+
+                  &lt;!-- Toggle Master para el módulo --&gt;
+                  &lt;div class&#x3D;&quot;flex items-center gap-2&quot;&gt;
+                    &lt;span class&#x3D;&quot;text-[9px] font-bold text-gray-400 uppercase tracking-widest&quot;&gt;Todos&lt;/span&gt;
+                    &lt;button type&#x3D;&quot;button&quot;
+                            (click)&#x3D;&quot;toggleModulo(mod.key)&quot;
+                            [disabled]&#x3D;&quot;esAdmin(rolSeleccionado()!)&quot;
+                            [ngClass]&#x3D;&quot;todosMarcados(mod.key) ? &#x27;bg-blue-600&#x27; : &#x27;bg-gray-200&#x27;&quot;
+                            class&#x3D;&quot;relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none disabled:opacity-30 disabled:cursor-not-allowed&quot;&gt;
+                      &lt;span [ngClass]&#x3D;&quot;todosMarcados(mod.key) ? &#x27;translate-x-4&#x27; : &#x27;translate-x-0&#x27;&quot;
+                            class&#x3D;&quot;pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out&quot;&gt;&lt;/span&gt;
+                    &lt;/button&gt;
+                  &lt;/div&gt;
+                &lt;/div&gt;
+
+                &lt;div class&#x3D;&quot;grid grid-cols-2 gap-y-3 gap-x-4&quot;&gt;
+                  &lt;div *ngFor&#x3D;&quot;let accion of mod.acciones&quot;
+                       class&#x3D;&quot;flex items-center justify-between p-2 rounded-xl border border-gray-50 hover:bg-gray-50/80 transition-colors group/item&quot;&gt;
+                    
+                    &lt;span class&#x3D;&quot;text-xs font-semibold text-gray-600 capitalize group-hover/item:text-gray-900 transition-colors&quot;&gt;
+                      {{ accion }}
+                    &lt;/span&gt;
+
+                    &lt;input type&#x3D;&quot;checkbox&quot;
+                           [checked]&#x3D;&quot;esAdmin(rolSeleccionado()!) || tienePermiso(mod.key, accion)&quot;
+                           [disabled]&#x3D;&quot;esAdmin(rolSeleccionado()!)&quot;
+                           (change)&#x3D;&quot;togglePermiso(mod.key, accion)&quot;
+                           class&#x3D;&quot;w-4 h-4 rounded text-blue-600 border-gray-300 focus:ring-blue-500 cursor-pointer disabled:cursor-not-allowed&quot;/&gt;
+                  &lt;/div&gt;
+                &lt;/div&gt;
+
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;style&gt;
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #e5e7eb;
+    border-radius: 10px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #d1d5db;
+  }
+&lt;/style&gt;
+</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="flex gap-6 h-full overflow-hidden">  <!-- ══ COLUMNA IZQUIERDA: Lista de roles ══ -->  <div class="w-80 flex-shrink-0 flex flex-col h-full bg-white/40 backdrop-blur-md rounded-2xl border border-white/60 shadow-xl overflow-hidden">    <div class="p-6 border-b border-gray-100 bg-white/50">      <h2 class="text-xl font-extrabold text-gray-900 tracking-tight">Roles del Sistema</h2>      <p class="text-xs text-gray-500 font-medium uppercase tracking-wider mt-1">Configuración de Accesos</p>    </div>    <div class="flex-1 overflow-y-auto p-4 space-y-3 custom-scrollbar">      <div *ngIf="cargando()" class="flex flex-col items-center justify-center py-20 animate-pulse">        <div class="w-10 h-10 border-4 border-blue-100 border-t-blue-600 rounded-full animate-spin"></div>        <span class="text-xs font-semibold text-gray-400 mt-4 tracking-widest">CARGANDO ROLES...</span>      </div>      <div *ngFor="let rol of roles()"           (click)="seleccionarRol(rol)"           [ngClass]="rolSeleccionado()?.id === rol.id             ? \'bg-white shadow-lg border-blue-500/50 scale-[1.02]\'             : \'bg-white/60 border-transparent hover:bg-white hover:border-gray-200\'"           class="group relative rounded-xl border-2 p-4 cursor-pointer transition-all duration-300 overflow-hidden">                <!-- Indicador activo -->        <div *ngIf="rolSeleccionado()?.id === rol.id"              class="absolute left-0 top-0 bottom-0 w-1.5 bg-blue-600 shadow-[2px_0_10px_rgba(37,99,235,0.4)]"></div>        <div class="flex items-start justify-between">          <div class="space-y-1">            <span [ngClass]="rolColor(rol.nombre)"                  class="inline-block text-[10px] font-black px-2.5 py-0.5 rounded-md border uppercase tracking-tighter shadow-sm">              {{ rol.nombre }}            </span>            <p class="text-xs text-gray-500 font-medium line-clamp-1 group-hover:text-gray-700 transition-colors">              {{ rol.descripcion || \'Sin descripción\' }}            </p>          </div>          <div class="text-right">            <span class="text-[10px] font-bold text-gray-400 block">{{ rol.totalUsuarios }}</span>            <span class="text-[8px] text-gray-300 uppercase tracking-widest">USUARIOS</span>          </div>        </div>        <div class="mt-4 flex items-center justify-between border-t border-gray-50 pt-3">          <div *ngIf="totalPermisos(rol.permisos) === -1" class="flex items-center gap-1">            <div class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></div>            <span class="text-[10px] font-bold text-red-600 uppercase tracking-wide italic">Acceso Total</span>          </div>          <div *ngIf="totalPermisos(rol.permisos) >= 0" class="flex items-center gap-1.5">            <div class="w-1.5 h-1.5 rounded-full bg-blue-400"></div>            <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wide">              {{ totalPermisos(rol.permisos) }} Permisos            </span>          </div>                    <svg class="w-4 h-4 text-gray-300 group-hover:text-blue-500 transition-colors transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>          </svg>        </div>      </div>    </div>  </div>  <!-- ══ COLUMNA DERECHA: Editor de permisos ══ -->  <div class="flex-1 min-w-0 flex flex-col h-full overflow-hidden">    <!-- Placeholder sin selección -->    <div *ngIf="!rolSeleccionado()"         class="flex-1 flex flex-col items-center justify-center bg-white/30 backdrop-blur-sm rounded-2xl border-2 border-dashed border-gray-200">      <div class="relative">        <div class="absolute -inset-4 bg-blue-100 rounded-full blur-2xl opacity-40 animate-pulse"></div>        <svg class="relative w-20 h-20 text-blue-300 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor">          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>        </svg>      </div>      <h3 class="text-xl font-bold text-gray-800 mt-6">Centro de Seguridad</h3>      <p class="text-gray-500 text-sm mt-2 max-w-xs text-center">Seleccione un rol de la columna izquierda para configurar su matriz de permisos y accesos.</p>    </div>    <div *ngIf="rolSeleccionado()" class="flex-1 flex flex-col h-full overflow-hidden space-y-6">      <!-- Cabecera Premium -->      <div class="bg-white rounded-2xl border border-gray-100 shadow-xl p-6 relative overflow-hidden">        <div class="absolute top-0 right-0 w-64 h-64 bg-blue-50 rounded-full -mr-32 -mt-32 blur-3xl opacity-50"></div>                <div class="relative flex items-center justify-between gap-6">          <div class="flex items-center gap-5">            <div [ngClass]="rolColor(rolSeleccionado()!.nombre)"                  class="w-14 h-14 rounded-2xl border-2 flex items-center justify-center text-xl font-black shadow-lg shadow-black/5 uppercase">              {{ rolSeleccionado()!.nombre.substring(0,2) }}            </div>            <div class="space-y-1">              <div class="flex items-center gap-3">                <h3 class="text-2xl font-black text-gray-900 tracking-tight">{{ rolSeleccionado()!.nombre }}</h3>                <span class="px-3 py-1 bg-gray-100 text-[10px] font-bold text-gray-500 rounded-full uppercase tracking-widest border border-gray-200">                  ID: {{ rolSeleccionado()!.id }}                </span>              </div>              <input [formControl]="form.controls[\'descripcion\']"                     placeholder="Añadir una descripción detallada para este rol..."                     class="text-sm text-gray-500 font-medium border-0 border-b border-transparent focus:border-blue-500 focus:ring-0 focus:outline-none bg-transparent w-full min-w-[400px] py-1 transition-all"/>            </div>          </div>          <div class="flex items-center gap-4">            <div *ngIf="esAdmin(rolSeleccionado()!)"                 class="flex items-center gap-3 text-[10px] text-red-600 font-black bg-red-50/80 px-4 py-2.5 rounded-xl border border-red-100 uppercase tracking-widest shadow-sm">              <span class="relative flex h-2 w-2">                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>                <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>              </span>              Súper Administrador            </div>                        <button (click)="guardar()"                     [disabled]="guardando() || esAdmin(rolSeleccionado()!)"                    [ngClass]="guardando() ? \'opacity-70 cursor-not-allowed\' : \'hover:shadow-blue-500/30 hover:-translate-y-0.5\'"                    class="group relative px-8 py-3 bg-blue-600 text-white rounded-xl font-bold text-sm shadow-xl transition-all duration-300 disabled:bg-gray-200 disabled:text-gray-400 disabled:shadow-none overflow-hidden">              <span class="relative z-10 flex items-center gap-2">                <svg *ngIf="!guardando()" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/>                </svg>                <div *ngIf="guardando()" class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>                {{ guardando() ? \'Sincronizando...\' : \'Guardar Cambios\' }}              </span>              <div class="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity"></div>            </button>          </div>        </div>      </div>      <!-- Aviso Seguridad -->      <div *ngIf="esAdmin(rolSeleccionado()!)"           class="bg-black/5 backdrop-blur-sm border border-black/10 rounded-2xl px-6 py-4 flex items-center justify-between">        <div class="flex items-center gap-4">          <div class="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center">            <svg class="w-6 h-6 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>            </svg>          </div>          <div class="space-y-0.5">            <h4 class="text-sm font-bold text-gray-900 uppercase tracking-tighter">Política de Seguridad Máxima</h4>            <p class="text-xs text-gray-500 font-medium">El rol <span class="font-bold text-gray-700">ADMIN</span> posee privilegios globales heredados que no pueden ser limitados por seguridad.</p>          </div>        </div>      </div>      <!-- Matriz de Permisos por Categorías -->      <div class="flex-1 overflow-y-auto pr-2 custom-scrollbar pb-10">        <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">                    <div *ngFor="let cat of categorias" class="space-y-4">            <div class="flex items-center gap-2 px-2">              <div class="h-4 w-1 bg-blue-600 rounded-full"></div>              <h4 class="text-xs font-black text-gray-900 uppercase tracking-[0.2em]">{{ cat.nombre }}</h4>            </div>            <div class="grid gap-4">              <div *ngFor="let mod of modulosPorCategoria(cat.keys)"                    class="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 p-5 group">                                <div class="flex items-center justify-between mb-4 pb-3 border-b border-gray-50">                  <div class="flex items-center gap-3">                    <div class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center group-hover:bg-blue-50 transition-colors">                      <svg class="w-4 h-4 text-gray-400 group-hover:text-blue-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>                      </svg>                    </div>                    <span class="text-sm font-bold text-gray-800 tracking-tight">{{ mod.label }}</span>                  </div>                  <!-- Toggle Master para el módulo -->                  <div class="flex items-center gap-2">                    <span class="text-[9px] font-bold text-gray-400 uppercase tracking-widest">Todos</span>                    <button type="button"                            (click)="toggleModulo(mod.key)"                            [disabled]="esAdmin(rolSeleccionado()!)"                            [ngClass]="todosMarcados(mod.key) ? \'bg-blue-600\' : \'bg-gray-200\'"                            class="relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none disabled:opacity-30 disabled:cursor-not-allowed">                      <span [ngClass]="todosMarcados(mod.key) ? \'translate-x-4\' : \'translate-x-0\'"                            class="pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"></span>                    </button>                  </div>                </div>                <div class="grid grid-cols-2 gap-y-3 gap-x-4">                  <div *ngFor="let accion of mod.acciones"                       class="flex items-center justify-between p-2 rounded-xl border border-gray-50 hover:bg-gray-50/80 transition-colors group/item">                                        <span class="text-xs font-semibold text-gray-600 capitalize group-hover/item:text-gray-900 transition-colors">                      {{ accion }}                    </span>                    <input type="checkbox"                           [checked]="esAdmin(rolSeleccionado()!) || tienePermiso(mod.key, accion)"                           [disabled]="esAdmin(rolSeleccionado()!)"                           (change)="togglePermiso(mod.key, accion)"                           class="w-4 h-4 rounded text-blue-600 border-gray-300 focus:ring-blue-500 cursor-pointer disabled:cursor-not-allowed"/>                  </div>                </div>              </div>            </div>          </div>        </div>      </div>    </div>  </div></div><style>  .custom-scrollbar::-webkit-scrollbar {    width: 4px;  }  .custom-scrollbar::-webkit-scrollbar-track {    background: transparent;  }  .custom-scrollbar::-webkit-scrollbar-thumb {    background: #e5e7eb;    border-radius: 10px;  }  .custom-scrollbar::-webkit-scrollbar-thumb:hover {    background: #d1d5db;  }</style></div>'
+    var COMPONENTS = [{'name': 'AgendasComponent', 'selector': 'app-agendas'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'BuscadorPacienteComponent', 'selector': 'app-buscador-paciente'},{'name': 'CitasComponent', 'selector': 'app-citas'},{'name': 'ConstructorFormularioComponent', 'selector': 'app-constructor-formulario'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'EpidemiologiaDashboardComponent', 'selector': 'app-epidemiologia-dashboard'},{'name': 'EstadisticasHospitalariasComponent', 'selector': 'app-estadisticas-hospitalarias'},{'name': 'FarmaciaComponent', 'selector': 'app-farmacia'},{'name': 'GestionHospitalizacionComponent', 'selector': 'app-gestion-hospitalizacion'},{'name': 'GestionLotesModalComponent', 'selector': 'app-gestion-lotes-modal'},{'name': 'GestionReportesComponent', 'selector': 'app-gestion-reportes'},{'name': 'HistoriaClinicaComponent', 'selector': 'app-historia-clinica'},{'name': 'InfraestructuraModalComponent', 'selector': 'app-infraestructura-modal'},{'name': 'InventarioVacunasComponent', 'selector': 'app-inventario-vacunas'},{'name': 'LaboratorioComponent', 'selector': 'app-laboratorio'},{'name': 'ListaPlantillasComponent', 'selector': 'app-lista-plantillas'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MainLayoutComponent', 'selector': 'app-main-layout'},{'name': 'MantenimientoDiagnosticosComponent', 'selector': 'app-mantenimiento-diagnosticos'},{'name': 'MantenimientoEstablecimientosComponent', 'selector': 'app-mantenimiento-establecimientos'},{'name': 'MantenimientoInventarioComponent', 'selector': 'app-mantenimiento-inventario'},{'name': 'MantenimientoLaboratorioComponent', 'selector': 'app-mantenimiento-laboratorio'},{'name': 'MantenimientoLoginComponent', 'selector': 'app-mantenimiento-login'},{'name': 'MantenimientoMedicamentosComponent', 'selector': 'app-mantenimiento-medicamentos'},{'name': 'MantenimientoRadiologiaComponent', 'selector': 'app-mantenimiento-radiologia'},{'name': 'MantenimientoRolesComponent', 'selector': 'app-mantenimiento-roles'},{'name': 'MovimientosInventarioComponent', 'selector': 'app-movimientos-inventario'},{'name': 'NotificationComponent', 'selector': 'app-notification'},{'name': 'NuevaConsultaComponent', 'selector': 'app-nueva-consulta'},{'name': 'PacientesComponent', 'selector': 'app-pacientes'},{'name': 'PermisosUsuariosComponent', 'selector': 'app-permisos-usuarios'},{'name': 'RecetasPacienteComponent', 'selector': 'app-recetas-paciente'},{'name': 'RegistroVacunaModalComponent', 'selector': 'app-registro-vacuna-modal'},{'name': 'ReportesComponent', 'selector': 'app-reportes'},{'name': 'TriajeComponent', 'selector': 'app-triaje'},{'name': 'UsuariosComponent', 'selector': 'app-usuarios'},{'name': 'VacunacionComponent', 'selector': 'app-vacunacion'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'MantenimientoRolesComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'MantenimientoRolesComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

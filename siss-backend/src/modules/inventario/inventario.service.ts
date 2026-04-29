@@ -331,4 +331,15 @@ export class InventarioService {
 
     return resultados;
   }
+
+  async listarMovimientos(inventarioId: number) {
+    await this.obtener(inventarioId);
+    return this.prisma.movimientoInventario.findMany({
+      where: { inventarioId },
+      include: {
+        usuario: { select: { id: true, nombres: true, apellidos: true } },
+      },
+      orderBy: { fecha: 'desc' },
+    });
+  }
 }

@@ -1,0 +1,3280 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>siss-frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">siss-frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  MantenimientoInventarioComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/modules/mantenimiento-inventario/mantenimiento-inventario.component.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                <code>OnInit</code>
+                <code>OnDestroy</code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-mantenimiento-inventario</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                            <code>CommonModule</code>
+                            <code>ReactiveFormsModule</code>
+                            <code>DatePipe</code>
+                </td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">template</td>
+                <td class="col-md-9"><pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;space-y-5&quot;&gt;
+
+  &lt;!-- Cabecera --&gt;
+  &lt;div class&#x3D;&quot;flex flex-wrap items-center justify-between gap-3&quot;&gt;
+    &lt;div&gt;
+      &lt;h2 class&#x3D;&quot;text-xl font-bold text-gray-900 font-serif&quot;&gt;Inventario de Medicamentos&lt;/h2&gt;
+      &lt;p class&#x3D;&quot;text-sm text-gray-500 mt-0.5&quot;&gt;Asignación y control de medicamentos por establecimiento&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class&#x3D;&quot;flex items-center gap-2&quot;&gt;
+      &lt;button (click)&#x3D;&quot;abrirCargaMasiva()&quot;
+              class&#x3D;&quot;flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 text-sm font-semibold rounded-lg transition-colors shadow-sm&quot;&gt;
+        &lt;svg class&#x3D;&quot;w-4 h-4 text-gray-500&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+          &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12&quot;/&gt;
+        &lt;/svg&gt;
+        Carga Masiva
+      &lt;/button&gt;
+      &lt;button (click)&#x3D;&quot;abrirModal()&quot;
+              class&#x3D;&quot;flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg transition-colors shadow-sm&quot;&gt;
+        &lt;svg class&#x3D;&quot;w-4 h-4&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+          &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M12 4v16m8-8H4&quot;/&gt;
+        &lt;/svg&gt;
+        Asignar Medicamento
+      &lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Alertas stock bajo --&gt;
+  &lt;div *ngIf&#x3D;&quot;alertasStock().length &gt; 0&quot;
+       class&#x3D;&quot;bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-start gap-3&quot;&gt;
+    &lt;svg class&#x3D;&quot;w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+      &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot;
+            d&#x3D;&quot;M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z&quot;/&gt;
+    &lt;/svg&gt;
+    &lt;div class&#x3D;&quot;flex-1 min-w-0&quot;&gt;
+      &lt;p class&#x3D;&quot;text-sm font-semibold text-amber-800&quot;&gt;{{ alertasStock().length }} medicamento(s) con stock bajo o agotado&lt;/p&gt;
+      &lt;p class&#x3D;&quot;text-xs text-amber-600 mt-0.5 truncate&quot;&gt;
+        {{ resumenAlertas() }}
+        &lt;span *ngIf&#x3D;&quot;alertasStock().length &gt; 3&quot;&gt;…y {{ alertasStock().length - 3 }} más&lt;/span&gt;
+      &lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Filtros --&gt;
+  &lt;div class&#x3D;&quot;bg-white rounded-xl border border-gray-200 p-4 flex flex-wrap gap-3 items-center&quot;&gt;
+    &lt;div class&#x3D;&quot;relative flex-1 min-w-[240px]&quot;&gt;
+      &lt;svg class&#x3D;&quot;absolute left-3 top-2.5 w-4 h-4 text-gray-400&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+        &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z&quot;/&gt;
+      &lt;/svg&gt;
+      &lt;input type&#x3D;&quot;text&quot; placeholder&#x3D;&quot;Buscar medicamento, código, grupo…&quot;
+             (input)&#x3D;&quot;busqueda$.next($any($event.target).value)&quot;
+             class&#x3D;&quot;w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500&quot;/&gt;
+    &lt;/div&gt;
+    &lt;select *ngIf&#x3D;&quot;esAdmin()&quot; (change)&#x3D;&quot;cambiarEstablecimiento($any($event.target).value)&quot;
+            class&#x3D;&quot;border border-gray-300 rounded-lg text-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500&quot;&gt;
+      &lt;option value&#x3D;&quot;&quot;&gt;Todos los establecimientos&lt;/option&gt;
+      &lt;option *ngFor&#x3D;&quot;let e of establecimientos()&quot; [value]&#x3D;&quot;e.id&quot;&gt;{{ e.nombre }}&lt;/option&gt;
+    &lt;/select&gt;
+    &lt;span class&#x3D;&quot;text-xs text-gray-400 flex-shrink-0&quot;&gt;
+      &lt;strong class&#x3D;&quot;text-gray-700&quot;&gt;{{ items().length }}&lt;/strong&gt; registros
+    &lt;/span&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Tabla --&gt;
+  &lt;div class&#x3D;&quot;bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm&quot;&gt;
+    &lt;div *ngIf&#x3D;&quot;cargando()&quot; class&#x3D;&quot;p-12 text-center text-gray-400 text-sm&quot;&gt;Cargando…&lt;/div&gt;
+
+    &lt;div *ngIf&#x3D;&quot;!cargando() &amp;&amp; items().length &#x3D;&#x3D;&#x3D; 0&quot; class&#x3D;&quot;p-12 text-center text-gray-400 text-sm&quot;&gt;
+      No hay medicamentos asignados a este establecimiento.
+    &lt;/div&gt;
+
+    &lt;table *ngIf&#x3D;&quot;!cargando() &amp;&amp; items().length &gt; 0&quot; class&#x3D;&quot;w-full text-sm&quot;&gt;
+      &lt;thead class&#x3D;&quot;bg-gray-50 border-b border-gray-200&quot;&gt;
+        &lt;tr&gt;
+          &lt;th class&#x3D;&quot;text-left px-4 py-3 font-semibold text-gray-600 text-xs uppercase tracking-wide&quot;&gt;Medicamento&lt;/th&gt;
+          &lt;th class&#x3D;&quot;text-left px-4 py-3 font-semibold text-gray-600 text-xs uppercase tracking-wide&quot;&gt;Grupo&lt;/th&gt;
+          &lt;th class&#x3D;&quot;text-center px-4 py-3 font-semibold text-gray-600 text-xs uppercase tracking-wide&quot;&gt;Stock&lt;/th&gt;
+          &lt;th class&#x3D;&quot;text-center px-4 py-3 font-semibold text-gray-600 text-xs uppercase tracking-wide&quot;&gt;Mínimo&lt;/th&gt;
+          &lt;th class&#x3D;&quot;text-left px-4 py-3 font-semibold text-gray-600 text-xs uppercase tracking-wide&quot;&gt;Lote&lt;/th&gt;
+          &lt;th class&#x3D;&quot;text-left px-4 py-3 font-semibold text-gray-600 text-xs uppercase tracking-wide&quot;&gt;Vencimiento&lt;/th&gt;
+          &lt;th class&#x3D;&quot;text-center px-4 py-3 font-semibold text-gray-600 text-xs uppercase tracking-wide&quot;&gt;Estado&lt;/th&gt;
+          &lt;th class&#x3D;&quot;text-left px-4 py-3 font-semibold text-gray-600 text-xs uppercase tracking-wide&quot;&gt;Creado por&lt;/th&gt;
+          &lt;th class&#x3D;&quot;px-4 py-3&quot;&gt;&lt;/th&gt;
+        &lt;/tr&gt;
+      &lt;/thead&gt;
+      &lt;tbody class&#x3D;&quot;divide-y divide-gray-100&quot;&gt;
+        &lt;tr *ngFor&#x3D;&quot;let item of items()&quot; class&#x3D;&quot;hover:bg-gray-50 transition-colors&quot;&gt;
+          &lt;td class&#x3D;&quot;px-4 py-3&quot;&gt;
+            &lt;p class&#x3D;&quot;font-medium text-gray-900&quot;&gt;{{ item.medicamento.nombreGenerico }}&lt;/p&gt;
+            &lt;p class&#x3D;&quot;text-xs text-gray-400&quot;&gt;{{ item.medicamento.codigo }} · {{ item.medicamento.presentacion }} {{ item.medicamento.concentracion }}&lt;/p&gt;
+          &lt;/td&gt;
+          &lt;td class&#x3D;&quot;px-4 py-3 text-gray-600 text-xs&quot;&gt;{{ item.medicamento.grupoTerapeutico }}&lt;/td&gt;
+          &lt;td class&#x3D;&quot;px-4 py-3 text-center&quot;&gt;
+            &lt;span [class]&#x3D;&quot;stockClass(item)&quot; class&#x3D;&quot;text-base font-bold&quot;&gt;{{ item.cantidadActual }}&lt;/span&gt;
+          &lt;/td&gt;
+          &lt;td class&#x3D;&quot;px-4 py-3 text-center text-gray-500 text-xs&quot;&gt;{{ item.cantidadMinima }}&lt;/td&gt;
+          &lt;td class&#x3D;&quot;px-4 py-3 text-gray-600 text-xs&quot;&gt;{{ item.lote || &#x27;—&#x27; }}&lt;/td&gt;
+          &lt;td class&#x3D;&quot;px-4 py-3 text-xs&quot; [class.text-red-600]&#x3D;&quot;estaVencido(item)&quot; [class.text-gray-600]&#x3D;&quot;!estaVencido(item)&quot;&gt;
+            {{ item.fechaVencimiento ? (item.fechaVencimiento | date:&#x27;dd/MM/yyyy&#x27;:&#x27;UTC&#x27;) : &#x27;—&#x27; }}
+          &lt;/td&gt;
+          &lt;td class&#x3D;&quot;px-4 py-3 text-center&quot;&gt;
+            &lt;span [class]&#x3D;&quot;badgeEstado(item)&quot;
+                  class&#x3D;&quot;px-2 py-0.5 rounded-full text-xs font-semibold border&quot;&gt;
+              {{ etiquetaEstado(item) }}
+            &lt;/span&gt;
+          &lt;/td&gt;
+          &lt;td class&#x3D;&quot;px-4 py-3 text-xs text-gray-400&quot;&gt;
+            {{ item.creadoPor ? item.creadoPor.nombres + &#x27; &#x27; + item.creadoPor.apellidos : &#x27;—&#x27; }}
+          &lt;/td&gt;
+          &lt;td class&#x3D;&quot;px-4 py-3&quot;&gt;
+            &lt;div class&#x3D;&quot;flex items-center gap-1 justify-end&quot;&gt;
+              &lt;button (click)&#x3D;&quot;abrirEditar(item)&quot; title&#x3D;&quot;Editar&quot;
+                      class&#x3D;&quot;p-1.5 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 rounded transition-colors&quot;&gt;
+                &lt;svg class&#x3D;&quot;w-4 h-4&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+                  &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot;
+                        d&#x3D;&quot;M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z&quot;/&gt;
+                &lt;/svg&gt;
+              &lt;/button&gt;
+              &lt;button (click)&#x3D;&quot;confirmarEliminar(item)&quot; title&#x3D;&quot;Eliminar&quot;
+                      class&#x3D;&quot;p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors&quot;&gt;
+                &lt;svg class&#x3D;&quot;w-4 h-4&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+                  &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot;
+                        d&#x3D;&quot;M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16&quot;/&gt;
+                &lt;/svg&gt;
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Modal asignar / editar --&gt;
+  &lt;div *ngIf&#x3D;&quot;modalAbierto()&quot; class&#x3D;&quot;fixed inset-0 z-[9999] flex items-center justify-center&quot;&gt;
+    &lt;!-- Fondo con blur - Extendemos un poco los bordes para evitar la línea blanca --&gt;
+    &lt;div class&#x3D;&quot;fixed -top-10 -left-10 -right-10 -bottom-10 bg-black/40 backdrop-blur-sm&quot; (click)&#x3D;&quot;cerrarModal()&quot;&gt;&lt;/div&gt;
+
+    &lt;!-- Contenedor del Modal --&gt;
+    &lt;div class&#x3D;&quot;relative bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden border border-gray-100 m-4 animate-in fade-in zoom-in duration-200&quot;&gt;
+      &lt;div class&#x3D;&quot;flex items-center justify-between p-5 border-b border-gray-100&quot;&gt;
+        &lt;h3 class&#x3D;&quot;text-base font-bold text-gray-900 font-serif&quot;&gt;
+          {{ editando() ? &#x27;Editar registro&#x27; : &#x27;Asignar medicamento&#x27; }}
+        &lt;/h3&gt;
+        &lt;button (click)&#x3D;&quot;cerrarModal()&quot; class&#x3D;&quot;text-gray-400 hover:text-gray-600 p-1 rounded transition-colors hover:bg-gray-100&quot;&gt;
+          &lt;svg class&#x3D;&quot;w-5 h-5&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+            &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M6 18L18 6M6 6l12 12&quot;/&gt;
+          &lt;/svg&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+
+      &lt;form [formGroup]&#x3D;&quot;form&quot; (ngSubmit)&#x3D;&quot;guardar()&quot; class&#x3D;&quot;p-5 space-y-4&quot;&gt;
+        &lt;!-- Búsqueda medicamento (solo al crear) --&gt;
+        &lt;div *ngIf&#x3D;&quot;!editando()&quot; class&#x3D;&quot;space-y-1 relative&quot;&gt;
+          &lt;label class&#x3D;&quot;text-xs font-semibold text-gray-700 font-bold uppercase tracking-tight&quot;&gt;Medicamento &lt;span class&#x3D;&quot;text-red-500&quot;&gt;*&lt;/span&gt;&lt;/label&gt;
+          &lt;div class&#x3D;&quot;relative&quot;&gt;
+            &lt;svg class&#x3D;&quot;absolute left-3 top-2.5 w-4 h-4 text-gray-400&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+              &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z&quot;/&gt;
+            &lt;/svg&gt;
+            &lt;input type&#x3D;&quot;text&quot; placeholder&#x3D;&quot;Buscar medicamento…&quot;
+                   (input)&#x3D;&quot;buscarMed($any($event.target).value)&quot;
+                   [value]&#x3D;&quot;medSeleccionado()?.nombreGenerico ?? &#x27;&#x27;&quot;
+                   class&#x3D;&quot;w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all&quot;/&gt;
+          &lt;/div&gt;
+          &lt;ul *ngIf&#x3D;&quot;medSugerencias().length &gt; 0&quot;
+              class&#x3D;&quot;absolute z-[110] w-full bg-white border border-gray-200 rounded-lg shadow-xl mt-1 max-h-48 overflow-y-auto&quot;&gt;
+            &lt;li *ngFor&#x3D;&quot;let m of medSugerencias()&quot;
+                (click)&#x3D;&quot;elegirMed(m)&quot;
+                class&#x3D;&quot;px-3 py-2 text-sm hover:bg-indigo-50 cursor-pointer border-b last:border-0 border-gray-50&quot;&gt;
+              &lt;span class&#x3D;&quot;font-medium text-gray-900 block&quot;&gt;{{ m.nombreGenerico }}&lt;/span&gt;
+              &lt;span class&#x3D;&quot;text-xs text-gray-400&quot;&gt;{{ m.codigo }} · {{ m.concentracion }}&lt;/span&gt;
+            &lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Establecimiento (solo admin al crear) --&gt;
+        &lt;div *ngIf&#x3D;&quot;!editando() &amp;&amp; esAdmin()&quot; class&#x3D;&quot;space-y-1&quot;&gt;
+          &lt;label class&#x3D;&quot;text-xs font-semibold text-gray-700 font-bold uppercase tracking-tight&quot;&gt;Establecimiento &lt;span class&#x3D;&quot;text-red-500&quot;&gt;*&lt;/span&gt;&lt;/label&gt;
+          &lt;select formControlName&#x3D;&quot;establecimientoId&quot;
+                  [class.border-red-500]&#x3D;&quot;form.get(&#x27;establecimientoId&#x27;)?.touched &amp;&amp; !form.get(&#x27;establecimientoId&#x27;)?.value&quot;
+                  class&#x3D;&quot;w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 outline-none transition-all&quot;&gt;
+            &lt;option value&#x3D;&quot;&quot;&gt;Seleccione un establecimiento…&lt;/option&gt;
+            &lt;option *ngFor&#x3D;&quot;let e of establecimientos()&quot; [value]&#x3D;&quot;e.id&quot;&gt;{{ e.nombre }}&lt;/option&gt;
+          &lt;/select&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Cantidades --&gt;
+        &lt;div class&#x3D;&quot;grid grid-cols-2 gap-3&quot;&gt;
+          &lt;div class&#x3D;&quot;space-y-1&quot;&gt;
+            &lt;label class&#x3D;&quot;text-xs font-semibold text-gray-700 font-bold uppercase tracking-tight&quot;&gt;Cantidad actual &lt;span class&#x3D;&quot;text-red-500&quot;&gt;*&lt;/span&gt;&lt;/label&gt;
+            &lt;input type&#x3D;&quot;number&quot; formControlName&#x3D;&quot;cantidadActual&quot; min&#x3D;&quot;0&quot;
+                   class&#x3D;&quot;w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all&quot;/&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;space-y-1&quot;&gt;
+            &lt;label class&#x3D;&quot;text-xs font-semibold text-gray-700 font-bold uppercase tracking-tight&quot;&gt;Cantidad mínima &lt;span class&#x3D;&quot;text-red-500&quot;&gt;*&lt;/span&gt;&lt;/label&gt;
+            &lt;input type&#x3D;&quot;number&quot; formControlName&#x3D;&quot;cantidadMinima&quot; min&#x3D;&quot;0&quot;
+                   class&#x3D;&quot;w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all&quot;/&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Lote y vencimiento --&gt;
+        &lt;div class&#x3D;&quot;grid grid-cols-2 gap-3&quot;&gt;
+          &lt;div class&#x3D;&quot;space-y-1&quot;&gt;
+            &lt;label class&#x3D;&quot;text-xs font-semibold text-gray-700 font-bold uppercase tracking-tight&quot;&gt;Lote&lt;/label&gt;
+            &lt;input type&#x3D;&quot;text&quot; formControlName&#x3D;&quot;lote&quot; placeholder&#x3D;&quot;Ej. LOT-2024-001&quot;
+                   class&#x3D;&quot;w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all&quot;/&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;space-y-1&quot;&gt;
+            &lt;label class&#x3D;&quot;text-xs font-semibold text-gray-700 font-bold uppercase tracking-tight&quot;&gt;Vencimiento&lt;/label&gt;
+            &lt;input type&#x3D;&quot;date&quot; formControlName&#x3D;&quot;fechaVencimiento&quot;
+                   [class.ring-2]&#x3D;&quot;form.get(&#x27;fechaVencimiento&#x27;)?.invalid &amp;&amp; form.get(&#x27;fechaVencimiento&#x27;)?.touched&quot;
+                   [class.ring-red-500]&#x3D;&quot;form.get(&#x27;fechaVencimiento&#x27;)?.invalid &amp;&amp; form.get(&#x27;fechaVencimiento&#x27;)?.touched&quot;
+                   class&#x3D;&quot;w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all&quot;/&gt;
+            &lt;p *ngIf&#x3D;&quot;form.get(&#x27;fechaVencimiento&#x27;)?.errors?.[&#x27;dateInvalid&#x27;] &amp;&amp; form.get(&#x27;fechaVencimiento&#x27;)?.touched&quot;
+               class&#x3D;&quot;text-[10px] text-red-500 font-bold uppercase mt-1&quot;&gt;La fecha no existe&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Ubicación --&gt;
+        &lt;div class&#x3D;&quot;space-y-1&quot;&gt;
+          &lt;label class&#x3D;&quot;text-xs font-semibold text-gray-700 font-bold uppercase tracking-tight&quot;&gt;Ubicación / Estante&lt;/label&gt;
+          &lt;input type&#x3D;&quot;text&quot; formControlName&#x3D;&quot;ubicacion&quot; placeholder&#x3D;&quot;Ej. Estante A-3&quot;
+                 class&#x3D;&quot;w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all&quot;/&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Acciones --&gt;
+        &lt;div class&#x3D;&quot;flex justify-end gap-3 pt-4 border-t border-gray-100&quot;&gt;
+          &lt;button type&#x3D;&quot;button&quot; (click)&#x3D;&quot;cerrarModal()&quot;
+                  class&#x3D;&quot;px-4 py-2 text-sm font-medium text-gray-600 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors border border-gray-200&quot;&gt;
+            Cancelar
+          &lt;/button&gt;
+          &lt;div class&#x3D;&quot;flex flex-col items-end gap-1&quot;&gt;
+            &lt;button type&#x3D;&quot;submit&quot; [disabled]&#x3D;&quot;guardando() || form.invalid || (!editando() &amp;&amp; !medSeleccionado())&quot;
+                    class&#x3D;&quot;px-6 py-2.5 text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg transition-all shadow-lg active:scale-95&quot;&gt;
+              {{ guardando() ? &#x27;Guardando…&#x27; : (editando() ? &#x27;Actualizar Registro&#x27; : &#x27;Confirmar Asignación&#x27;) }}
+            &lt;/button&gt;
+            &lt;p *ngIf&#x3D;&quot;form.invalid || (!editando() &amp;&amp; !medSeleccionado())&quot; class&#x3D;&quot;text-[10px] text-red-500 font-bold uppercase tracking-tight&quot;&gt;
+              Falta: {{ !medSeleccionado() &amp;&amp; !editando() ? &#x27;Medicamento&#x27; : &#x27;&#x27; }} {{ form.get(&#x27;establecimientoId&#x27;)?.invalid ? &#x27;Establecimiento&#x27; : &#x27;&#x27; }}
+            &lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/form&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Modal Carga Masiva --&gt;
+  &lt;div *ngIf&#x3D;&quot;modalCargaAbierto()&quot; class&#x3D;&quot;fixed inset-0 z-[9999] flex items-center justify-center&quot;&gt;
+    &lt;div class&#x3D;&quot;fixed -top-10 -left-10 -right-10 -bottom-10 bg-black/40 backdrop-blur-sm&quot; (click)&#x3D;&quot;cerrarCargaMasiva()&quot;&gt;&lt;/div&gt;
+
+    &lt;div class&#x3D;&quot;relative bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden border border-gray-100 m-4 animate-in fade-in zoom-in duration-200&quot;&gt;
+      &lt;div class&#x3D;&quot;flex items-center justify-between p-5 border-b border-gray-100&quot;&gt;
+        &lt;h3 class&#x3D;&quot;text-base font-bold text-gray-900 font-serif&quot;&gt;Carga Masiva de Inventario&lt;/h3&gt;
+        &lt;button (click)&#x3D;&quot;cerrarCargaMasiva()&quot; class&#x3D;&quot;text-gray-400 hover:text-gray-600 p-1 rounded transition-colors hover:bg-gray-100&quot;&gt;
+          &lt;svg class&#x3D;&quot;w-5 h-5&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+            &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M6 18L18 6M6 6l12 12&quot;/&gt;
+          &lt;/svg&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+
+      &lt;div class&#x3D;&quot;p-6 space-y-6&quot;&gt;
+        &lt;div class&#x3D;&quot;bg-indigo-50 border border-indigo-100 rounded-xl p-4 flex gap-3 text-sm text-indigo-800&quot;&gt;
+          &lt;svg class&#x3D;&quot;w-5 h-5 text-indigo-500 flex-shrink-0&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+            &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z&quot;/&gt;
+          &lt;/svg&gt;
+          &lt;div class&#x3D;&quot;space-y-2&quot;&gt;
+            &lt;p&gt;Sube un archivo CSV con las columnas: &lt;strong&gt;codigo_medicamento, cantidad_actual, cantidad_minima, lote, fecha_vencimiento, ubicacion&lt;/strong&gt;.&lt;/p&gt;
+            &lt;button (click)&#x3D;&quot;descargarPlantilla()&quot; class&#x3D;&quot;text-indigo-600 font-bold hover:underline flex items-center gap-1&quot;&gt;
+              &lt;svg class&#x3D;&quot;w-4 h-4&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+                &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4&quot;/&gt;
+              &lt;/svg&gt;
+              Descargar plantilla .csv
+            &lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div *ngIf&#x3D;&quot;esAdmin() &amp;&amp; !resultadosCarga()&quot; class&#x3D;&quot;space-y-2&quot;&gt;
+          &lt;label class&#x3D;&quot;text-xs font-semibold text-gray-700&quot;&gt;Establecimiento destino &lt;span class&#x3D;&quot;text-red-500&quot;&gt;*&lt;/span&gt;&lt;/label&gt;
+          &lt;select [value]&#x3D;&quot;elFiltroEstablecimientoCarga()&quot; (change)&#x3D;&quot;elFiltroEstablecimientoCarga.set(+$any($event.target).value)&quot;
+                class&#x3D;&quot;w-full border border-gray-300 rounded-lg text-sm px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-500&quot;&gt;
+            &lt;option value&#x3D;&quot;&quot;&gt;Seleccione un establecimiento…&lt;/option&gt;
+            &lt;option *ngFor&#x3D;&quot;let e of establecimientos()&quot; [value]&#x3D;&quot;e.id&quot;&gt;{{ e.nombre }}&lt;/option&gt;
+          &lt;/select&gt;
+        &lt;/div&gt;
+
+        &lt;div *ngIf&#x3D;&quot;!procesandoCarga() &amp;&amp; !resultadosCarga()&quot;
+             [class.opacity-50]&#x3D;&quot;esAdmin() &amp;&amp; !elFiltroEstablecimientoCarga()&quot;
+             class&#x3D;&quot;border-2 border-dashed border-gray-200 rounded-2xl p-10 text-center hover:border-indigo-400 hover:bg-gray-50 transition-all cursor-pointer group relative&quot;&gt;
+          &lt;input type&#x3D;&quot;file&quot; #fileInput (change)&#x3D;&quot;procesarArchivo($event)&quot; [disabled]&#x3D;&quot;esAdmin() &amp;&amp; !elFiltroEstablecimientoCarga()&quot; hidden accept&#x3D;&quot;.csv&quot;&gt;
+
+          &lt;div *ngIf&#x3D;&quot;esAdmin() &amp;&amp; !elFiltroEstablecimientoCarga()&quot; class&#x3D;&quot;absolute inset-0 z-10 flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm rounded-2xl p-6&quot;&gt;
+            &lt;svg class&#x3D;&quot;w-10 h-10 text-amber-500 mb-2&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+              &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z&quot;/&gt;
+            &lt;/svg&gt;
+            &lt;p class&#x3D;&quot;text-sm font-black text-gray-900 uppercase tracking-tighter&quot;&gt;Acceso Bloqueado&lt;/p&gt;
+            &lt;p class&#x3D;&quot;text-[10px] font-bold text-amber-600 uppercase tracking-widest mt-1 text-center&quot;&gt;Debe seleccionar el establecimiento de destino en el menú superior antes de subir el archivo.&lt;/p&gt;
+          &lt;/div&gt;
+
+          &lt;button (click)&#x3D;&quot;fileInput.click()&quot; [disabled]&#x3D;&quot;esAdmin() &amp;&amp; !elFiltroEstablecimientoCarga()&quot; class&#x3D;&quot;flex flex-col items-center w-full&quot;&gt;
+            &lt;div class&#x3D;&quot;w-14 h-14 bg-gray-50 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-indigo-50 transition-all&quot;&gt;
+              &lt;svg class&#x3D;&quot;w-7 h-7 text-gray-400 group-hover:text-indigo-600&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+                &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12&quot;/&gt;
+              &lt;/svg&gt;
+            &lt;/div&gt;
+            &lt;span class&#x3D;&quot;text-base font-bold text-gray-900&quot;&gt;Seleccionar archivo CSV&lt;/span&gt;
+          &lt;/button&gt;
+        &lt;/div&gt;
+
+        &lt;div *ngIf&#x3D;&quot;procesandoCarga()&quot; class&#x3D;&quot;text-center py-10&quot;&gt;
+          &lt;div class&#x3D;&quot;animate-spin rounded-full h-10 w-10 border-b-2 border-indigo-600 mx-auto mb-4&quot;&gt;&lt;/div&gt;
+          &lt;p class&#x3D;&quot;text-[10px] font-black uppercase tracking-widest text-gray-400&quot;&gt;Procesando registros...&lt;/p&gt;
+        &lt;/div&gt;
+
+        &lt;div *ngIf&#x3D;&quot;resultadosCarga()&quot; class&#x3D;&quot;space-y-6&quot;&gt;
+          &lt;div class&#x3D;&quot;grid grid-cols-3 gap-3&quot;&gt;
+            &lt;div class&#x3D;&quot;bg-gray-50 rounded-2xl p-4 text-center border&quot;&gt;
+              &lt;p class&#x3D;&quot;text-2xl font-black text-gray-900&quot;&gt;{{ resultadosCarga()?.total }}&lt;/p&gt;
+              &lt;p class&#x3D;&quot;text-[9px] text-gray-400 uppercase font-black tracking-widest mt-1&quot;&gt;Total&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;bg-green-50 rounded-2xl p-4 text-center border border-green-100&quot;&gt;
+              &lt;p class&#x3D;&quot;text-2xl font-black text-green-600&quot;&gt;{{ resultadosCarga()?.exitosos }}&lt;/p&gt;
+              &lt;p class&#x3D;&quot;text-[9px] text-green-500 uppercase font-black tracking-widest mt-1&quot;&gt;Éxitos&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;bg-red-50 rounded-2xl p-4 text-center border border-red-100&quot;&gt;
+              &lt;p class&#x3D;&quot;text-2xl font-black text-red-500&quot;&gt;{{ resultadosCarga()?.fallidos }}&lt;/p&gt;
+              &lt;p class&#x3D;&quot;text-[9px] text-red-500 uppercase font-black tracking-widest mt-1&quot;&gt;Fallos&lt;/p&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;div *ngIf&#x3D;&quot;resultadosCarga()?.errores?.length &gt; 0&quot; class&#x3D;&quot;max-h-40 overflow-y-auto bg-gray-50 rounded-2xl p-4 border text-[11px] text-gray-500 font-serif&quot;&gt;
+            &lt;li *ngFor&#x3D;&quot;let err of resultadosCarga()?.errores&quot; class&#x3D;&quot;flex gap-2&quot;&gt;
+              &lt;span class&#x3D;&quot;text-red-500 font-bold&quot;&gt;•&lt;/span&gt; {{ err }}
+            &lt;/li&gt;
+          &lt;/div&gt;
+
+          &lt;button (click)&#x3D;&quot;cerrarCargaMasiva()&quot; class&#x3D;&quot;w-full py-4 bg-indigo-600 text-white rounded-2xl text-xs font-black tracking-widest hover:bg-indigo-700 transition-all shadow-lg active:scale-95&quot;&gt;
+            FINALIZAR Y CERRAR
+          &lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+&lt;/div&gt;
+</code></pre></td>
+            </tr>
+
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#alertasStock" >alertasStock</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#auth" >auth</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#busqueda$" >busqueda$</a>
+                            </li>
+                            <li>
+                                <a href="#cargando" >cargando</a>
+                            </li>
+                            <li>
+                                <a href="#editando" >editando</a>
+                            </li>
+                            <li>
+                                <a href="#elFiltroEstablecimientoCarga" >elFiltroEstablecimientoCarga</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#establecimientoFiltro" >establecimientoFiltro</a>
+                            </li>
+                            <li>
+                                <a href="#establecimientos" >establecimientos</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#estSvc" >estSvc</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#fb" >fb</a>
+                            </li>
+                            <li>
+                                <a href="#form" >form</a>
+                            </li>
+                            <li>
+                                <a href="#guardando" >guardando</a>
+                            </li>
+                            <li>
+                                <a href="#items" >items</a>
+                            </li>
+                            <li>
+                                <a href="#medSeleccionado" >medSeleccionado</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#medSubject" >medSubject</a>
+                            </li>
+                            <li>
+                                <a href="#medSugerencias" >medSugerencias</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#medSvc" >medSvc</a>
+                            </li>
+                            <li>
+                                <a href="#modalAbierto" >modalAbierto</a>
+                            </li>
+                            <li>
+                                <a href="#modalCargaAbierto" >modalCargaAbierto</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#notification" >notification</a>
+                            </li>
+                            <li>
+                                <a href="#procesandoCarga" >procesandoCarga</a>
+                            </li>
+                            <li>
+                                <a href="#resultadosCarga" >resultadosCarga</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#subs" >subs</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#svc" >svc</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#abrirCargaMasiva" >abrirCargaMasiva</a>
+                            </li>
+                            <li>
+                                <a href="#abrirEditar" >abrirEditar</a>
+                            </li>
+                            <li>
+                                <a href="#abrirModal" >abrirModal</a>
+                            </li>
+                            <li>
+                                <a href="#badgeEstado" >badgeEstado</a>
+                            </li>
+                            <li>
+                                <a href="#buscarMed" >buscarMed</a>
+                            </li>
+                            <li>
+                                <a href="#cambiarEstablecimiento" >cambiarEstablecimiento</a>
+                            </li>
+                            <li>
+                                <a href="#cargar" >cargar</a>
+                            </li>
+                            <li>
+                                <a href="#cerrarCargaMasiva" >cerrarCargaMasiva</a>
+                            </li>
+                            <li>
+                                <a href="#cerrarModal" >cerrarModal</a>
+                            </li>
+                            <li>
+                                <a href="#confirmarEliminar" >confirmarEliminar</a>
+                            </li>
+                            <li>
+                                <a href="#descargarPlantilla" >descargarPlantilla</a>
+                            </li>
+                            <li>
+                                <a href="#elegirMed" >elegirMed</a>
+                            </li>
+                            <li>
+                                <a href="#esAdmin" >esAdmin</a>
+                            </li>
+                            <li>
+                                <a href="#estaVencido" >estaVencido</a>
+                            </li>
+                            <li>
+                                <a href="#etiquetaEstado" >etiquetaEstado</a>
+                            </li>
+                            <li>
+                                <a href="#guardar" >guardar</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnDestroy" >ngOnDestroy</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#procesarArchivo" >procesarArchivo</a>
+                            </li>
+                            <li>
+                                <a href="#resumenAlertas" >resumenAlertas</a>
+                            </li>
+                            <li>
+                                <a href="#stockClass" >stockClass</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="abrirCargaMasiva"></a>
+                    <span class="name">
+                        <span ><b>abrirCargaMasiva</b></span>
+                        <a href="#abrirCargaMasiva"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>abrirCargaMasiva()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="553"
+                                    class="link-to-prism">src/app/modules/mantenimiento-inventario/mantenimiento-inventario.component.ts:553</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="abrirEditar"></a>
+                    <span class="name">
+                        <span ><b>abrirEditar</b></span>
+                        <a href="#abrirEditar"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>abrirEditar(item: <a href="../interfaces/InventarioItem.html" target="_self">InventarioItem</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="463"
+                                    class="link-to-prism">src/app/modules/mantenimiento-inventario/mantenimiento-inventario.component.ts:463</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>item</td>
+                                            <td>
+                                                            <code><a href="../interfaces/InventarioItem.html" target="_self" >InventarioItem</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="abrirModal"></a>
+                    <span class="name">
+                        <span ><b>abrirModal</b></span>
+                        <a href="#abrirModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>abrirModal()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="455"
+                                    class="link-to-prism">src/app/modules/mantenimiento-inventario/mantenimiento-inventario.component.ts:455</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="badgeEstado"></a>
+                    <span class="name">
+                        <span ><b>badgeEstado</b></span>
+                        <a href="#badgeEstado"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>badgeEstado(item: <a href="../interfaces/InventarioItem.html" target="_self">InventarioItem</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="692"
+                                    class="link-to-prism">src/app/modules/mantenimiento-inventario/mantenimiento-inventario.component.ts:692</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>item</td>
+                                            <td>
+                                                            <code><a href="../interfaces/InventarioItem.html" target="_self" >InventarioItem</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="buscarMed"></a>
+                    <span class="name">
+                        <span ><b>buscarMed</b></span>
+                        <a href="#buscarMed"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>buscarMed(q: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="477"
+                                    class="link-to-prism">src/app/modules/mantenimiento-inventario/mantenimiento-inventario.component.ts:477</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>q</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cambiarEstablecimiento"></a>
+                    <span class="name">
+                        <span ><b>cambiarEstablecimiento</b></span>
+                        <a href="#cambiarEstablecimiento"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cambiarEstablecimiento(val: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="450"
+                                    class="link-to-prism">src/app/modules/mantenimiento-inventario/mantenimiento-inventario.component.ts:450</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>val</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargar"></a>
+                    <span class="name">
+                        <span ><b>cargar</b></span>
+                        <a href="#cargar"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cargar(q?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="421"
+                                    class="link-to-prism">src/app/modules/mantenimiento-inventario/mantenimiento-inventario.component.ts:421</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>q</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cerrarCargaMasiva"></a>
+                    <span class="name">
+                        <span ><b>cerrarCargaMasiva</b></span>
+                        <a href="#cerrarCargaMasiva"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cerrarCargaMasiva()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="559"
+                                    class="link-to-prism">src/app/modules/mantenimiento-inventario/mantenimiento-inventario.component.ts:559</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cerrarModal"></a>
+                    <span class="name">
+                        <span ><b>cerrarModal</b></span>
+                        <a href="#cerrarModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cerrarModal()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="475"
+                                    class="link-to-prism">src/app/modules/mantenimiento-inventario/mantenimiento-inventario.component.ts:475</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="confirmarEliminar"></a>
+                    <span class="name">
+                        <span ><b>confirmarEliminar</b></span>
+                        <a href="#confirmarEliminar"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>confirmarEliminar(item: <a href="../interfaces/InventarioItem.html" target="_self">InventarioItem</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="539"
+                                    class="link-to-prism">src/app/modules/mantenimiento-inventario/mantenimiento-inventario.component.ts:539</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>item</td>
+                                            <td>
+                                                            <code><a href="../interfaces/InventarioItem.html" target="_self" >InventarioItem</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="descargarPlantilla"></a>
+                    <span class="name">
+                        <span ><b>descargarPlantilla</b></span>
+                        <a href="#descargarPlantilla"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>descargarPlantilla()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="564"
+                                    class="link-to-prism">src/app/modules/mantenimiento-inventario/mantenimiento-inventario.component.ts:564</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="elegirMed"></a>
+                    <span class="name">
+                        <span ><b>elegirMed</b></span>
+                        <a href="#elegirMed"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>elegirMed(med: <a href="../interfaces/Medicamento.html" target="_self">Medicamento</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="482"
+                                    class="link-to-prism">src/app/modules/mantenimiento-inventario/mantenimiento-inventario.component.ts:482</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>med</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Medicamento.html" target="_self" >Medicamento</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="esAdmin"></a>
+                    <span class="name">
+                        <span ><b>esAdmin</b></span>
+                        <a href="#esAdmin"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>esAdmin()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="398"
+                                    class="link-to-prism">src/app/modules/mantenimiento-inventario/mantenimiento-inventario.component.ts:398</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="estaVencido"></a>
+                    <span class="name">
+                        <span ><b>estaVencido</b></span>
+                        <a href="#estaVencido"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>estaVencido(item: <a href="../interfaces/InventarioItem.html" target="_self">InventarioItem</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="680"
+                                    class="link-to-prism">src/app/modules/mantenimiento-inventario/mantenimiento-inventario.component.ts:680</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>item</td>
+                                            <td>
+                                                            <code><a href="../interfaces/InventarioItem.html" target="_self" >InventarioItem</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="etiquetaEstado"></a>
+                    <span class="name">
+                        <span ><b>etiquetaEstado</b></span>
+                        <a href="#etiquetaEstado"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>etiquetaEstado(item: <a href="../interfaces/InventarioItem.html" target="_self">InventarioItem</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="684"
+                                    class="link-to-prism">src/app/modules/mantenimiento-inventario/mantenimiento-inventario.component.ts:684</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>item</td>
+                                            <td>
+                                                            <code><a href="../interfaces/InventarioItem.html" target="_self" >InventarioItem</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="guardar"></a>
+                    <span class="name">
+                        <span ><b>guardar</b></span>
+                        <a href="#guardar"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>guardar()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="487"
+                                    class="link-to-prism">src/app/modules/mantenimiento-inventario/mantenimiento-inventario.component.ts:487</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnDestroy"></a>
+                    <span class="name">
+                        <span ><b>ngOnDestroy</b></span>
+                        <a href="#ngOnDestroy"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnDestroy()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="419"
+                                    class="link-to-prism">src/app/modules/mantenimiento-inventario/mantenimiento-inventario.component.ts:419</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="400"
+                                    class="link-to-prism">src/app/modules/mantenimiento-inventario/mantenimiento-inventario.component.ts:400</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="procesarArchivo"></a>
+                    <span class="name">
+                        <span ><b>procesarArchivo</b></span>
+                        <a href="#procesarArchivo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>procesarArchivo(event: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="576"
+                                    class="link-to-prism">src/app/modules/mantenimiento-inventario/mantenimiento-inventario.component.ts:576</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="resumenAlertas"></a>
+                    <span class="name">
+                        <span ><b>resumenAlertas</b></span>
+                        <a href="#resumenAlertas"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>resumenAlertas()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="667"
+                                    class="link-to-prism">src/app/modules/mantenimiento-inventario/mantenimiento-inventario.component.ts:667</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="stockClass"></a>
+                    <span class="name">
+                        <span ><b>stockClass</b></span>
+                        <a href="#stockClass"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>stockClass(item: <a href="../interfaces/InventarioItem.html" target="_self">InventarioItem</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="674"
+                                    class="link-to-prism">src/app/modules/mantenimiento-inventario/mantenimiento-inventario.component.ts:674</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>item</td>
+                                            <td>
+                                                            <code><a href="../interfaces/InventarioItem.html" target="_self" >InventarioItem</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="alertasStock"></a>
+                    <span class="name">
+                        <span ><b>alertasStock</b></span>
+                        <a href="#alertasStock"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;InventarioItem[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="369" class="link-to-prism">src/app/modules/mantenimiento-inventario/mantenimiento-inventario.component.ts:369</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="auth"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>auth</b></span>
+                        <a href="#auth"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(AuthService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="364" class="link-to-prism">src/app/modules/mantenimiento-inventario/mantenimiento-inventario.component.ts:364</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="busqueda$"></a>
+                    <span class="name">
+                            <span class="modifier">Readonly</span>
+                        <span ><b>busqueda$</b></span>
+                        <a href="#busqueda$"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Subject&lt;string&gt;()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="385" class="link-to-prism">src/app/modules/mantenimiento-inventario/mantenimiento-inventario.component.ts:385</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargando"></a>
+                    <span class="name">
+                        <span ><b>cargando</b></span>
+                        <a href="#cargando"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="371" class="link-to-prism">src/app/modules/mantenimiento-inventario/mantenimiento-inventario.component.ts:371</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="editando"></a>
+                    <span class="name">
+                        <span ><b>editando</b></span>
+                        <a href="#editando"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;InventarioItem | null&gt;(null)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="374" class="link-to-prism">src/app/modules/mantenimiento-inventario/mantenimiento-inventario.component.ts:374</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="elFiltroEstablecimientoCarga"></a>
+                    <span class="name">
+                        <span ><b>elFiltroEstablecimientoCarga</b></span>
+                        <a href="#elFiltroEstablecimientoCarga"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;number | null&gt;(null)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="382" class="link-to-prism">src/app/modules/mantenimiento-inventario/mantenimiento-inventario.component.ts:382</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="establecimientoFiltro"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>establecimientoFiltro</b></span>
+                        <a href="#establecimientoFiltro"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>number | undefined</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="384" class="link-to-prism">src/app/modules/mantenimiento-inventario/mantenimiento-inventario.component.ts:384</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="establecimientos"></a>
+                    <span class="name">
+                        <span ><b>establecimientos</b></span>
+                        <a href="#establecimientos"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;any[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="370" class="link-to-prism">src/app/modules/mantenimiento-inventario/mantenimiento-inventario.component.ts:370</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="estSvc"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>estSvc</b></span>
+                        <a href="#estSvc"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(EstablecimientosService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="363" class="link-to-prism">src/app/modules/mantenimiento-inventario/mantenimiento-inventario.component.ts:363</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="fb"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>fb</b></span>
+                        <a href="#fb"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(FormBuilder)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="366" class="link-to-prism">src/app/modules/mantenimiento-inventario/mantenimiento-inventario.component.ts:366</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="form"></a>
+                    <span class="name">
+                        <span ><b>form</b></span>
+                        <a href="#form"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this.fb.group({
+    cantidadActual:    [0, [Validators.required, Validators.min(0)]],
+    cantidadMinima:    [10, [Validators.required, Validators.min(0)]],
+    lote:              [&#x27;&#x27;],
+    fechaVencimiento:  [&#x27;&#x27;, [DateValidators.dateReal()]],
+    ubicacion:         [&#x27;&#x27;],
+    establecimientoId: [&#x27;&#x27;, [Validators.required]],
+  })</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="389" class="link-to-prism">src/app/modules/mantenimiento-inventario/mantenimiento-inventario.component.ts:389</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="guardando"></a>
+                    <span class="name">
+                        <span ><b>guardando</b></span>
+                        <a href="#guardando"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="372" class="link-to-prism">src/app/modules/mantenimiento-inventario/mantenimiento-inventario.component.ts:372</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="items"></a>
+                    <span class="name">
+                        <span ><b>items</b></span>
+                        <a href="#items"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;InventarioItem[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="368" class="link-to-prism">src/app/modules/mantenimiento-inventario/mantenimiento-inventario.component.ts:368</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="medSeleccionado"></a>
+                    <span class="name">
+                        <span ><b>medSeleccionado</b></span>
+                        <a href="#medSeleccionado"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;Medicamento | null&gt;(null)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="375" class="link-to-prism">src/app/modules/mantenimiento-inventario/mantenimiento-inventario.component.ts:375</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="medSubject"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>medSubject</b></span>
+                        <a href="#medSubject"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Subject&lt;string&gt;()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="386" class="link-to-prism">src/app/modules/mantenimiento-inventario/mantenimiento-inventario.component.ts:386</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="medSugerencias"></a>
+                    <span class="name">
+                        <span ><b>medSugerencias</b></span>
+                        <a href="#medSugerencias"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;Medicamento[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="376" class="link-to-prism">src/app/modules/mantenimiento-inventario/mantenimiento-inventario.component.ts:376</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="medSvc"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>medSvc</b></span>
+                        <a href="#medSvc"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(MedicamentosService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="362" class="link-to-prism">src/app/modules/mantenimiento-inventario/mantenimiento-inventario.component.ts:362</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="modalAbierto"></a>
+                    <span class="name">
+                        <span ><b>modalAbierto</b></span>
+                        <a href="#modalAbierto"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="373" class="link-to-prism">src/app/modules/mantenimiento-inventario/mantenimiento-inventario.component.ts:373</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="modalCargaAbierto"></a>
+                    <span class="name">
+                        <span ><b>modalCargaAbierto</b></span>
+                        <a href="#modalCargaAbierto"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="379" class="link-to-prism">src/app/modules/mantenimiento-inventario/mantenimiento-inventario.component.ts:379</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="notification"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>notification</b></span>
+                        <a href="#notification"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(NotificationService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="365" class="link-to-prism">src/app/modules/mantenimiento-inventario/mantenimiento-inventario.component.ts:365</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="procesandoCarga"></a>
+                    <span class="name">
+                        <span ><b>procesandoCarga</b></span>
+                        <a href="#procesandoCarga"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="380" class="link-to-prism">src/app/modules/mantenimiento-inventario/mantenimiento-inventario.component.ts:380</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="resultadosCarga"></a>
+                    <span class="name">
+                        <span ><b>resultadosCarga</b></span>
+                        <a href="#resultadosCarga"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;any | null&gt;(null)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="381" class="link-to-prism">src/app/modules/mantenimiento-inventario/mantenimiento-inventario.component.ts:381</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="subs"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>subs</b></span>
+                        <a href="#subs"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>any[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="387" class="link-to-prism">src/app/modules/mantenimiento-inventario/mantenimiento-inventario.component.ts:387</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="svc"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>svc</b></span>
+                        <a href="#svc"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(InventarioService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="361" class="link-to-prism">src/app/modules/mantenimiento-inventario/mantenimiento-inventario.component.ts:361</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, inject, OnInit, OnDestroy, signal } from &#x27;@angular/core&#x27;;
+import { CommonModule, DatePipe } from &#x27;@angular/common&#x27;;
+import { ReactiveFormsModule, FormBuilder, Validators } from &#x27;@angular/forms&#x27;;
+import { Subject, debounceTime, distinctUntilChanged, switchMap, of } from &#x27;rxjs&#x27;;
+import { InventarioService, InventarioItem, AsignarDto } from &#x27;../../core/services/inventario.service&#x27;;
+import { MedicamentosService, Medicamento } from &#x27;../../core/services/medicamentos.service&#x27;;
+import { EstablecimientosService } from &#x27;../../core/services/establecimientos.service&#x27;;
+import { AuthService } from &#x27;../../core/services/auth.service&#x27;;
+import { NotificationService } from &#x27;../../core/services/notification.service&#x27;;
+import { DateValidators } from &#x27;../../core/validators/date.validator&#x27;;
+
+@Component({
+  selector: &#x27;app-mantenimiento-inventario&#x27;,
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, DatePipe],
+  template: &#x60;
+&lt;div class&#x3D;&quot;space-y-5&quot;&gt;
+
+  &lt;!-- Cabecera --&gt;
+  &lt;div class&#x3D;&quot;flex flex-wrap items-center justify-between gap-3&quot;&gt;
+    &lt;div&gt;
+      &lt;h2 class&#x3D;&quot;text-xl font-bold text-gray-900 font-serif&quot;&gt;Inventario de Medicamentos&lt;/h2&gt;
+      &lt;p class&#x3D;&quot;text-sm text-gray-500 mt-0.5&quot;&gt;Asignación y control de medicamentos por establecimiento&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class&#x3D;&quot;flex items-center gap-2&quot;&gt;
+      &lt;button (click)&#x3D;&quot;abrirCargaMasiva()&quot;
+              class&#x3D;&quot;flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 text-sm font-semibold rounded-lg transition-colors shadow-sm&quot;&gt;
+        &lt;svg class&#x3D;&quot;w-4 h-4 text-gray-500&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+          &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12&quot;/&gt;
+        &lt;/svg&gt;
+        Carga Masiva
+      &lt;/button&gt;
+      &lt;button (click)&#x3D;&quot;abrirModal()&quot;
+              class&#x3D;&quot;flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg transition-colors shadow-sm&quot;&gt;
+        &lt;svg class&#x3D;&quot;w-4 h-4&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+          &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M12 4v16m8-8H4&quot;/&gt;
+        &lt;/svg&gt;
+        Asignar Medicamento
+      &lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Alertas stock bajo --&gt;
+  &lt;div *ngIf&#x3D;&quot;alertasStock().length &gt; 0&quot;
+       class&#x3D;&quot;bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-start gap-3&quot;&gt;
+    &lt;svg class&#x3D;&quot;w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+      &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot;
+            d&#x3D;&quot;M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z&quot;/&gt;
+    &lt;/svg&gt;
+    &lt;div class&#x3D;&quot;flex-1 min-w-0&quot;&gt;
+      &lt;p class&#x3D;&quot;text-sm font-semibold text-amber-800&quot;&gt;{{ alertasStock().length }} medicamento(s) con stock bajo o agotado&lt;/p&gt;
+      &lt;p class&#x3D;&quot;text-xs text-amber-600 mt-0.5 truncate&quot;&gt;
+        {{ resumenAlertas() }}
+        &lt;span *ngIf&#x3D;&quot;alertasStock().length &gt; 3&quot;&gt;…y {{ alertasStock().length - 3 }} más&lt;/span&gt;
+      &lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Filtros --&gt;
+  &lt;div class&#x3D;&quot;bg-white rounded-xl border border-gray-200 p-4 flex flex-wrap gap-3 items-center&quot;&gt;
+    &lt;div class&#x3D;&quot;relative flex-1 min-w-[240px]&quot;&gt;
+      &lt;svg class&#x3D;&quot;absolute left-3 top-2.5 w-4 h-4 text-gray-400&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+        &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z&quot;/&gt;
+      &lt;/svg&gt;
+      &lt;input type&#x3D;&quot;text&quot; placeholder&#x3D;&quot;Buscar medicamento, código, grupo…&quot;
+             (input)&#x3D;&quot;busqueda$.next($any($event.target).value)&quot;
+             class&#x3D;&quot;w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500&quot;/&gt;
+    &lt;/div&gt;
+    &lt;select *ngIf&#x3D;&quot;esAdmin()&quot; (change)&#x3D;&quot;cambiarEstablecimiento($any($event.target).value)&quot;
+            class&#x3D;&quot;border border-gray-300 rounded-lg text-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500&quot;&gt;
+      &lt;option value&#x3D;&quot;&quot;&gt;Todos los establecimientos&lt;/option&gt;
+      &lt;option *ngFor&#x3D;&quot;let e of establecimientos()&quot; [value]&#x3D;&quot;e.id&quot;&gt;{{ e.nombre }}&lt;/option&gt;
+    &lt;/select&gt;
+    &lt;span class&#x3D;&quot;text-xs text-gray-400 flex-shrink-0&quot;&gt;
+      &lt;strong class&#x3D;&quot;text-gray-700&quot;&gt;{{ items().length }}&lt;/strong&gt; registros
+    &lt;/span&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Tabla --&gt;
+  &lt;div class&#x3D;&quot;bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm&quot;&gt;
+    &lt;div *ngIf&#x3D;&quot;cargando()&quot; class&#x3D;&quot;p-12 text-center text-gray-400 text-sm&quot;&gt;Cargando…&lt;/div&gt;
+
+    &lt;div *ngIf&#x3D;&quot;!cargando() &amp;&amp; items().length &#x3D;&#x3D;&#x3D; 0&quot; class&#x3D;&quot;p-12 text-center text-gray-400 text-sm&quot;&gt;
+      No hay medicamentos asignados a este establecimiento.
+    &lt;/div&gt;
+
+    &lt;table *ngIf&#x3D;&quot;!cargando() &amp;&amp; items().length &gt; 0&quot; class&#x3D;&quot;w-full text-sm&quot;&gt;
+      &lt;thead class&#x3D;&quot;bg-gray-50 border-b border-gray-200&quot;&gt;
+        &lt;tr&gt;
+          &lt;th class&#x3D;&quot;text-left px-4 py-3 font-semibold text-gray-600 text-xs uppercase tracking-wide&quot;&gt;Medicamento&lt;/th&gt;
+          &lt;th class&#x3D;&quot;text-left px-4 py-3 font-semibold text-gray-600 text-xs uppercase tracking-wide&quot;&gt;Grupo&lt;/th&gt;
+          &lt;th class&#x3D;&quot;text-center px-4 py-3 font-semibold text-gray-600 text-xs uppercase tracking-wide&quot;&gt;Stock&lt;/th&gt;
+          &lt;th class&#x3D;&quot;text-center px-4 py-3 font-semibold text-gray-600 text-xs uppercase tracking-wide&quot;&gt;Mínimo&lt;/th&gt;
+          &lt;th class&#x3D;&quot;text-left px-4 py-3 font-semibold text-gray-600 text-xs uppercase tracking-wide&quot;&gt;Lote&lt;/th&gt;
+          &lt;th class&#x3D;&quot;text-left px-4 py-3 font-semibold text-gray-600 text-xs uppercase tracking-wide&quot;&gt;Vencimiento&lt;/th&gt;
+          &lt;th class&#x3D;&quot;text-center px-4 py-3 font-semibold text-gray-600 text-xs uppercase tracking-wide&quot;&gt;Estado&lt;/th&gt;
+          &lt;th class&#x3D;&quot;text-left px-4 py-3 font-semibold text-gray-600 text-xs uppercase tracking-wide&quot;&gt;Creado por&lt;/th&gt;
+          &lt;th class&#x3D;&quot;px-4 py-3&quot;&gt;&lt;/th&gt;
+        &lt;/tr&gt;
+      &lt;/thead&gt;
+      &lt;tbody class&#x3D;&quot;divide-y divide-gray-100&quot;&gt;
+        &lt;tr *ngFor&#x3D;&quot;let item of items()&quot; class&#x3D;&quot;hover:bg-gray-50 transition-colors&quot;&gt;
+          &lt;td class&#x3D;&quot;px-4 py-3&quot;&gt;
+            &lt;p class&#x3D;&quot;font-medium text-gray-900&quot;&gt;{{ item.medicamento.nombreGenerico }}&lt;/p&gt;
+            &lt;p class&#x3D;&quot;text-xs text-gray-400&quot;&gt;{{ item.medicamento.codigo }} · {{ item.medicamento.presentacion }} {{ item.medicamento.concentracion }}&lt;/p&gt;
+          &lt;/td&gt;
+          &lt;td class&#x3D;&quot;px-4 py-3 text-gray-600 text-xs&quot;&gt;{{ item.medicamento.grupoTerapeutico }}&lt;/td&gt;
+          &lt;td class&#x3D;&quot;px-4 py-3 text-center&quot;&gt;
+            &lt;span [class]&#x3D;&quot;stockClass(item)&quot; class&#x3D;&quot;text-base font-bold&quot;&gt;{{ item.cantidadActual }}&lt;/span&gt;
+          &lt;/td&gt;
+          &lt;td class&#x3D;&quot;px-4 py-3 text-center text-gray-500 text-xs&quot;&gt;{{ item.cantidadMinima }}&lt;/td&gt;
+          &lt;td class&#x3D;&quot;px-4 py-3 text-gray-600 text-xs&quot;&gt;{{ item.lote || &#x27;—&#x27; }}&lt;/td&gt;
+          &lt;td class&#x3D;&quot;px-4 py-3 text-xs&quot; [class.text-red-600]&#x3D;&quot;estaVencido(item)&quot; [class.text-gray-600]&#x3D;&quot;!estaVencido(item)&quot;&gt;
+            {{ item.fechaVencimiento ? (item.fechaVencimiento | date:&#x27;dd/MM/yyyy&#x27;:&#x27;UTC&#x27;) : &#x27;—&#x27; }}
+          &lt;/td&gt;
+          &lt;td class&#x3D;&quot;px-4 py-3 text-center&quot;&gt;
+            &lt;span [class]&#x3D;&quot;badgeEstado(item)&quot;
+                  class&#x3D;&quot;px-2 py-0.5 rounded-full text-xs font-semibold border&quot;&gt;
+              {{ etiquetaEstado(item) }}
+            &lt;/span&gt;
+          &lt;/td&gt;
+          &lt;td class&#x3D;&quot;px-4 py-3 text-xs text-gray-400&quot;&gt;
+            {{ item.creadoPor ? item.creadoPor.nombres + &#x27; &#x27; + item.creadoPor.apellidos : &#x27;—&#x27; }}
+          &lt;/td&gt;
+          &lt;td class&#x3D;&quot;px-4 py-3&quot;&gt;
+            &lt;div class&#x3D;&quot;flex items-center gap-1 justify-end&quot;&gt;
+              &lt;button (click)&#x3D;&quot;abrirEditar(item)&quot; title&#x3D;&quot;Editar&quot;
+                      class&#x3D;&quot;p-1.5 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 rounded transition-colors&quot;&gt;
+                &lt;svg class&#x3D;&quot;w-4 h-4&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+                  &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot;
+                        d&#x3D;&quot;M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z&quot;/&gt;
+                &lt;/svg&gt;
+              &lt;/button&gt;
+              &lt;button (click)&#x3D;&quot;confirmarEliminar(item)&quot; title&#x3D;&quot;Eliminar&quot;
+                      class&#x3D;&quot;p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors&quot;&gt;
+                &lt;svg class&#x3D;&quot;w-4 h-4&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+                  &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot;
+                        d&#x3D;&quot;M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16&quot;/&gt;
+                &lt;/svg&gt;
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Modal asignar / editar --&gt;
+  &lt;div *ngIf&#x3D;&quot;modalAbierto()&quot; class&#x3D;&quot;fixed inset-0 z-[9999] flex items-center justify-center&quot;&gt;
+    &lt;!-- Fondo con blur - Extendemos un poco los bordes para evitar la línea blanca --&gt;
+    &lt;div class&#x3D;&quot;fixed -top-10 -left-10 -right-10 -bottom-10 bg-black/40 backdrop-blur-sm&quot; (click)&#x3D;&quot;cerrarModal()&quot;&gt;&lt;/div&gt;
+    
+    &lt;!-- Contenedor del Modal --&gt;
+    &lt;div class&#x3D;&quot;relative bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden border border-gray-100 m-4 animate-in fade-in zoom-in duration-200&quot;&gt;
+      &lt;div class&#x3D;&quot;flex items-center justify-between p-5 border-b border-gray-100&quot;&gt;
+        &lt;h3 class&#x3D;&quot;text-base font-bold text-gray-900 font-serif&quot;&gt;
+          {{ editando() ? &#x27;Editar registro&#x27; : &#x27;Asignar medicamento&#x27; }}
+        &lt;/h3&gt;
+        &lt;button (click)&#x3D;&quot;cerrarModal()&quot; class&#x3D;&quot;text-gray-400 hover:text-gray-600 p-1 rounded transition-colors hover:bg-gray-100&quot;&gt;
+          &lt;svg class&#x3D;&quot;w-5 h-5&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+            &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M6 18L18 6M6 6l12 12&quot;/&gt;
+          &lt;/svg&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+
+      &lt;form [formGroup]&#x3D;&quot;form&quot; (ngSubmit)&#x3D;&quot;guardar()&quot; class&#x3D;&quot;p-5 space-y-4&quot;&gt;
+        &lt;!-- Búsqueda medicamento (solo al crear) --&gt;
+        &lt;div *ngIf&#x3D;&quot;!editando()&quot; class&#x3D;&quot;space-y-1 relative&quot;&gt;
+          &lt;label class&#x3D;&quot;text-xs font-semibold text-gray-700 font-bold uppercase tracking-tight&quot;&gt;Medicamento &lt;span class&#x3D;&quot;text-red-500&quot;&gt;*&lt;/span&gt;&lt;/label&gt;
+          &lt;div class&#x3D;&quot;relative&quot;&gt;
+            &lt;svg class&#x3D;&quot;absolute left-3 top-2.5 w-4 h-4 text-gray-400&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+              &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z&quot;/&gt;
+            &lt;/svg&gt;
+            &lt;input type&#x3D;&quot;text&quot; placeholder&#x3D;&quot;Buscar medicamento…&quot;
+                   (input)&#x3D;&quot;buscarMed($any($event.target).value)&quot;
+                   [value]&#x3D;&quot;medSeleccionado()?.nombreGenerico ?? &#x27;&#x27;&quot;
+                   class&#x3D;&quot;w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all&quot;/&gt;
+          &lt;/div&gt;
+          &lt;ul *ngIf&#x3D;&quot;medSugerencias().length &gt; 0&quot;
+              class&#x3D;&quot;absolute z-[110] w-full bg-white border border-gray-200 rounded-lg shadow-xl mt-1 max-h-48 overflow-y-auto&quot;&gt;
+            &lt;li *ngFor&#x3D;&quot;let m of medSugerencias()&quot;
+                (click)&#x3D;&quot;elegirMed(m)&quot;
+                class&#x3D;&quot;px-3 py-2 text-sm hover:bg-indigo-50 cursor-pointer border-b last:border-0 border-gray-50&quot;&gt;
+              &lt;span class&#x3D;&quot;font-medium text-gray-900 block&quot;&gt;{{ m.nombreGenerico }}&lt;/span&gt;
+              &lt;span class&#x3D;&quot;text-xs text-gray-400&quot;&gt;{{ m.codigo }} · {{ m.concentracion }}&lt;/span&gt;
+            &lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Establecimiento (solo admin al crear) --&gt;
+        &lt;div *ngIf&#x3D;&quot;!editando() &amp;&amp; esAdmin()&quot; class&#x3D;&quot;space-y-1&quot;&gt;
+          &lt;label class&#x3D;&quot;text-xs font-semibold text-gray-700 font-bold uppercase tracking-tight&quot;&gt;Establecimiento &lt;span class&#x3D;&quot;text-red-500&quot;&gt;*&lt;/span&gt;&lt;/label&gt;
+          &lt;select formControlName&#x3D;&quot;establecimientoId&quot;
+                  [class.border-red-500]&#x3D;&quot;form.get(&#x27;establecimientoId&#x27;)?.touched &amp;&amp; !form.get(&#x27;establecimientoId&#x27;)?.value&quot;
+                  class&#x3D;&quot;w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 outline-none transition-all&quot;&gt;
+            &lt;option value&#x3D;&quot;&quot;&gt;Seleccione un establecimiento…&lt;/option&gt;
+            &lt;option *ngFor&#x3D;&quot;let e of establecimientos()&quot; [value]&#x3D;&quot;e.id&quot;&gt;{{ e.nombre }}&lt;/option&gt;
+          &lt;/select&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Cantidades --&gt;
+        &lt;div class&#x3D;&quot;grid grid-cols-2 gap-3&quot;&gt;
+          &lt;div class&#x3D;&quot;space-y-1&quot;&gt;
+            &lt;label class&#x3D;&quot;text-xs font-semibold text-gray-700 font-bold uppercase tracking-tight&quot;&gt;Cantidad actual &lt;span class&#x3D;&quot;text-red-500&quot;&gt;*&lt;/span&gt;&lt;/label&gt;
+            &lt;input type&#x3D;&quot;number&quot; formControlName&#x3D;&quot;cantidadActual&quot; min&#x3D;&quot;0&quot;
+                   class&#x3D;&quot;w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all&quot;/&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;space-y-1&quot;&gt;
+            &lt;label class&#x3D;&quot;text-xs font-semibold text-gray-700 font-bold uppercase tracking-tight&quot;&gt;Cantidad mínima &lt;span class&#x3D;&quot;text-red-500&quot;&gt;*&lt;/span&gt;&lt;/label&gt;
+            &lt;input type&#x3D;&quot;number&quot; formControlName&#x3D;&quot;cantidadMinima&quot; min&#x3D;&quot;0&quot;
+                   class&#x3D;&quot;w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all&quot;/&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Lote y vencimiento --&gt;
+        &lt;div class&#x3D;&quot;grid grid-cols-2 gap-3&quot;&gt;
+          &lt;div class&#x3D;&quot;space-y-1&quot;&gt;
+            &lt;label class&#x3D;&quot;text-xs font-semibold text-gray-700 font-bold uppercase tracking-tight&quot;&gt;Lote&lt;/label&gt;
+            &lt;input type&#x3D;&quot;text&quot; formControlName&#x3D;&quot;lote&quot; placeholder&#x3D;&quot;Ej. LOT-2024-001&quot;
+                   class&#x3D;&quot;w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all&quot;/&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;space-y-1&quot;&gt;
+            &lt;label class&#x3D;&quot;text-xs font-semibold text-gray-700 font-bold uppercase tracking-tight&quot;&gt;Vencimiento&lt;/label&gt;
+            &lt;input type&#x3D;&quot;date&quot; formControlName&#x3D;&quot;fechaVencimiento&quot;
+                   [class.ring-2]&#x3D;&quot;form.get(&#x27;fechaVencimiento&#x27;)?.invalid &amp;&amp; form.get(&#x27;fechaVencimiento&#x27;)?.touched&quot;
+                   [class.ring-red-500]&#x3D;&quot;form.get(&#x27;fechaVencimiento&#x27;)?.invalid &amp;&amp; form.get(&#x27;fechaVencimiento&#x27;)?.touched&quot;
+                   class&#x3D;&quot;w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all&quot;/&gt;
+            &lt;p *ngIf&#x3D;&quot;form.get(&#x27;fechaVencimiento&#x27;)?.errors?.[&#x27;dateInvalid&#x27;] &amp;&amp; form.get(&#x27;fechaVencimiento&#x27;)?.touched&quot; 
+               class&#x3D;&quot;text-[10px] text-red-500 font-bold uppercase mt-1&quot;&gt;La fecha no existe&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Ubicación --&gt;
+        &lt;div class&#x3D;&quot;space-y-1&quot;&gt;
+          &lt;label class&#x3D;&quot;text-xs font-semibold text-gray-700 font-bold uppercase tracking-tight&quot;&gt;Ubicación / Estante&lt;/label&gt;
+          &lt;input type&#x3D;&quot;text&quot; formControlName&#x3D;&quot;ubicacion&quot; placeholder&#x3D;&quot;Ej. Estante A-3&quot;
+                 class&#x3D;&quot;w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all&quot;/&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Acciones --&gt;
+        &lt;div class&#x3D;&quot;flex justify-end gap-3 pt-4 border-t border-gray-100&quot;&gt;
+          &lt;button type&#x3D;&quot;button&quot; (click)&#x3D;&quot;cerrarModal()&quot;
+                  class&#x3D;&quot;px-4 py-2 text-sm font-medium text-gray-600 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors border border-gray-200&quot;&gt;
+            Cancelar
+          &lt;/button&gt;
+          &lt;div class&#x3D;&quot;flex flex-col items-end gap-1&quot;&gt;
+            &lt;button type&#x3D;&quot;submit&quot; [disabled]&#x3D;&quot;guardando() || form.invalid || (!editando() &amp;&amp; !medSeleccionado())&quot;
+                    class&#x3D;&quot;px-6 py-2.5 text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg transition-all shadow-lg active:scale-95&quot;&gt;
+              {{ guardando() ? &#x27;Guardando…&#x27; : (editando() ? &#x27;Actualizar Registro&#x27; : &#x27;Confirmar Asignación&#x27;) }}
+            &lt;/button&gt;
+            &lt;p *ngIf&#x3D;&quot;form.invalid || (!editando() &amp;&amp; !medSeleccionado())&quot; class&#x3D;&quot;text-[10px] text-red-500 font-bold uppercase tracking-tight&quot;&gt;
+              Falta: {{ !medSeleccionado() &amp;&amp; !editando() ? &#x27;Medicamento&#x27; : &#x27;&#x27; }} {{ form.get(&#x27;establecimientoId&#x27;)?.invalid ? &#x27;Establecimiento&#x27; : &#x27;&#x27; }}
+            &lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/form&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Modal Carga Masiva --&gt;
+  &lt;div *ngIf&#x3D;&quot;modalCargaAbierto()&quot; class&#x3D;&quot;fixed inset-0 z-[9999] flex items-center justify-center&quot;&gt;
+    &lt;div class&#x3D;&quot;fixed -top-10 -left-10 -right-10 -bottom-10 bg-black/40 backdrop-blur-sm&quot; (click)&#x3D;&quot;cerrarCargaMasiva()&quot;&gt;&lt;/div&gt;
+    
+    &lt;div class&#x3D;&quot;relative bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden border border-gray-100 m-4 animate-in fade-in zoom-in duration-200&quot;&gt;
+      &lt;div class&#x3D;&quot;flex items-center justify-between p-5 border-b border-gray-100&quot;&gt;
+        &lt;h3 class&#x3D;&quot;text-base font-bold text-gray-900 font-serif&quot;&gt;Carga Masiva de Inventario&lt;/h3&gt;
+        &lt;button (click)&#x3D;&quot;cerrarCargaMasiva()&quot; class&#x3D;&quot;text-gray-400 hover:text-gray-600 p-1 rounded transition-colors hover:bg-gray-100&quot;&gt;
+          &lt;svg class&#x3D;&quot;w-5 h-5&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+            &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M6 18L18 6M6 6l12 12&quot;/&gt;
+          &lt;/svg&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+
+      &lt;div class&#x3D;&quot;p-6 space-y-6&quot;&gt;
+        &lt;div class&#x3D;&quot;bg-indigo-50 border border-indigo-100 rounded-xl p-4 flex gap-3 text-sm text-indigo-800&quot;&gt;
+          &lt;svg class&#x3D;&quot;w-5 h-5 text-indigo-500 flex-shrink-0&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+            &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z&quot;/&gt;
+          &lt;/svg&gt;
+          &lt;div class&#x3D;&quot;space-y-2&quot;&gt;
+            &lt;p&gt;Sube un archivo CSV con las columnas: &lt;strong&gt;codigo_medicamento, cantidad_actual, cantidad_minima, lote, fecha_vencimiento, ubicacion&lt;/strong&gt;.&lt;/p&gt;
+            &lt;button (click)&#x3D;&quot;descargarPlantilla()&quot; class&#x3D;&quot;text-indigo-600 font-bold hover:underline flex items-center gap-1&quot;&gt;
+              &lt;svg class&#x3D;&quot;w-4 h-4&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+                &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4&quot;/&gt;
+              &lt;/svg&gt;
+              Descargar plantilla .csv
+            &lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div *ngIf&#x3D;&quot;esAdmin() &amp;&amp; !resultadosCarga()&quot; class&#x3D;&quot;space-y-2&quot;&gt;
+          &lt;label class&#x3D;&quot;text-xs font-semibold text-gray-700&quot;&gt;Establecimiento destino &lt;span class&#x3D;&quot;text-red-500&quot;&gt;*&lt;/span&gt;&lt;/label&gt;
+          &lt;select [value]&#x3D;&quot;elFiltroEstablecimientoCarga()&quot; (change)&#x3D;&quot;elFiltroEstablecimientoCarga.set(+$any($event.target).value)&quot;
+                class&#x3D;&quot;w-full border border-gray-300 rounded-lg text-sm px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-500&quot;&gt;
+            &lt;option value&#x3D;&quot;&quot;&gt;Seleccione un establecimiento…&lt;/option&gt;
+            &lt;option *ngFor&#x3D;&quot;let e of establecimientos()&quot; [value]&#x3D;&quot;e.id&quot;&gt;{{ e.nombre }}&lt;/option&gt;
+          &lt;/select&gt;
+        &lt;/div&gt;
+
+        &lt;div *ngIf&#x3D;&quot;!procesandoCarga() &amp;&amp; !resultadosCarga()&quot; 
+             [class.opacity-50]&#x3D;&quot;esAdmin() &amp;&amp; !elFiltroEstablecimientoCarga()&quot;
+             class&#x3D;&quot;border-2 border-dashed border-gray-200 rounded-2xl p-10 text-center hover:border-indigo-400 hover:bg-gray-50 transition-all cursor-pointer group relative&quot;&gt;
+          &lt;input type&#x3D;&quot;file&quot; #fileInput (change)&#x3D;&quot;procesarArchivo($event)&quot; [disabled]&#x3D;&quot;esAdmin() &amp;&amp; !elFiltroEstablecimientoCarga()&quot; hidden accept&#x3D;&quot;.csv&quot;&gt;
+          
+          &lt;div *ngIf&#x3D;&quot;esAdmin() &amp;&amp; !elFiltroEstablecimientoCarga()&quot; class&#x3D;&quot;absolute inset-0 z-10 flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm rounded-2xl p-6&quot;&gt;
+            &lt;svg class&#x3D;&quot;w-10 h-10 text-amber-500 mb-2&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+              &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z&quot;/&gt;
+            &lt;/svg&gt;
+            &lt;p class&#x3D;&quot;text-sm font-black text-gray-900 uppercase tracking-tighter&quot;&gt;Acceso Bloqueado&lt;/p&gt;
+            &lt;p class&#x3D;&quot;text-[10px] font-bold text-amber-600 uppercase tracking-widest mt-1 text-center&quot;&gt;Debe seleccionar el establecimiento de destino en el menú superior antes de subir el archivo.&lt;/p&gt;
+          &lt;/div&gt;
+
+          &lt;button (click)&#x3D;&quot;fileInput.click()&quot; [disabled]&#x3D;&quot;esAdmin() &amp;&amp; !elFiltroEstablecimientoCarga()&quot; class&#x3D;&quot;flex flex-col items-center w-full&quot;&gt;
+            &lt;div class&#x3D;&quot;w-14 h-14 bg-gray-50 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-indigo-50 transition-all&quot;&gt;
+              &lt;svg class&#x3D;&quot;w-7 h-7 text-gray-400 group-hover:text-indigo-600&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+                &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12&quot;/&gt;
+              &lt;/svg&gt;
+            &lt;/div&gt;
+            &lt;span class&#x3D;&quot;text-base font-bold text-gray-900&quot;&gt;Seleccionar archivo CSV&lt;/span&gt;
+          &lt;/button&gt;
+        &lt;/div&gt;
+
+        &lt;div *ngIf&#x3D;&quot;procesandoCarga()&quot; class&#x3D;&quot;text-center py-10&quot;&gt;
+          &lt;div class&#x3D;&quot;animate-spin rounded-full h-10 w-10 border-b-2 border-indigo-600 mx-auto mb-4&quot;&gt;&lt;/div&gt;
+          &lt;p class&#x3D;&quot;text-[10px] font-black uppercase tracking-widest text-gray-400&quot;&gt;Procesando registros...&lt;/p&gt;
+        &lt;/div&gt;
+
+        &lt;div *ngIf&#x3D;&quot;resultadosCarga()&quot; class&#x3D;&quot;space-y-6&quot;&gt;
+          &lt;div class&#x3D;&quot;grid grid-cols-3 gap-3&quot;&gt;
+            &lt;div class&#x3D;&quot;bg-gray-50 rounded-2xl p-4 text-center border&quot;&gt;
+              &lt;p class&#x3D;&quot;text-2xl font-black text-gray-900&quot;&gt;{{ resultadosCarga()?.total }}&lt;/p&gt;
+              &lt;p class&#x3D;&quot;text-[9px] text-gray-400 uppercase font-black tracking-widest mt-1&quot;&gt;Total&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;bg-green-50 rounded-2xl p-4 text-center border border-green-100&quot;&gt;
+              &lt;p class&#x3D;&quot;text-2xl font-black text-green-600&quot;&gt;{{ resultadosCarga()?.exitosos }}&lt;/p&gt;
+              &lt;p class&#x3D;&quot;text-[9px] text-green-500 uppercase font-black tracking-widest mt-1&quot;&gt;Éxitos&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;bg-red-50 rounded-2xl p-4 text-center border border-red-100&quot;&gt;
+              &lt;p class&#x3D;&quot;text-2xl font-black text-red-500&quot;&gt;{{ resultadosCarga()?.fallidos }}&lt;/p&gt;
+              &lt;p class&#x3D;&quot;text-[9px] text-red-500 uppercase font-black tracking-widest mt-1&quot;&gt;Fallos&lt;/p&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;div *ngIf&#x3D;&quot;resultadosCarga()?.errores?.length &gt; 0&quot; class&#x3D;&quot;max-h-40 overflow-y-auto bg-gray-50 rounded-2xl p-4 border text-[11px] text-gray-500 font-serif&quot;&gt;
+            &lt;li *ngFor&#x3D;&quot;let err of resultadosCarga()?.errores&quot; class&#x3D;&quot;flex gap-2&quot;&gt;
+              &lt;span class&#x3D;&quot;text-red-500 font-bold&quot;&gt;•&lt;/span&gt; {{ err }}
+            &lt;/li&gt;
+          &lt;/div&gt;
+
+          &lt;button (click)&#x3D;&quot;cerrarCargaMasiva()&quot; class&#x3D;&quot;w-full py-4 bg-indigo-600 text-white rounded-2xl text-xs font-black tracking-widest hover:bg-indigo-700 transition-all shadow-lg active:scale-95&quot;&gt;
+            FINALIZAR Y CERRAR
+          &lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+&lt;/div&gt;
+  &#x60;,
+})
+export class MantenimientoInventarioComponent implements OnInit, OnDestroy {
+  private svc          &#x3D; inject(InventarioService);
+  private medSvc       &#x3D; inject(MedicamentosService);
+  private estSvc       &#x3D; inject(EstablecimientosService);
+  private auth         &#x3D; inject(AuthService);
+  private notification &#x3D; inject(NotificationService);
+  private fb           &#x3D; inject(FormBuilder);
+
+  items         &#x3D; signal&lt;InventarioItem[]&gt;([]);
+  alertasStock  &#x3D; signal&lt;InventarioItem[]&gt;([]);
+  establecimientos &#x3D; signal&lt;any[]&gt;([]);
+  cargando      &#x3D; signal(false);
+  guardando     &#x3D; signal(false);
+  modalAbierto  &#x3D; signal(false);
+  editando      &#x3D; signal&lt;InventarioItem | null&gt;(null);
+  medSeleccionado &#x3D; signal&lt;Medicamento | null&gt;(null);
+  medSugerencias  &#x3D; signal&lt;Medicamento[]&gt;([]);
+
+  // Estado para Carga Masiva
+  modalCargaAbierto &#x3D; signal(false);
+  procesandoCarga   &#x3D; signal(false);
+  resultadosCarga   &#x3D; signal&lt;any | null&gt;(null);
+  elFiltroEstablecimientoCarga &#x3D; signal&lt;number | null&gt;(null);
+
+  private establecimientoFiltro: number | undefined;
+  readonly busqueda$ &#x3D; new Subject&lt;string&gt;();
+  private medSubject &#x3D; new Subject&lt;string&gt;();
+  private subs: any[] &#x3D; [];
+
+  form &#x3D; this.fb.group({
+    cantidadActual:    [0, [Validators.required, Validators.min(0)]],
+    cantidadMinima:    [10, [Validators.required, Validators.min(0)]],
+    lote:              [&#x27;&#x27;],
+    fechaVencimiento:  [&#x27;&#x27;, [DateValidators.dateReal()]],
+    ubicacion:         [&#x27;&#x27;],
+    establecimientoId: [&#x27;&#x27;, [Validators.required]],
+  });
+
+  esAdmin() { return this.auth.obtenerUsuario()?.rol &#x3D;&#x3D;&#x3D; &#x27;ADMIN&#x27;; }
+
+  ngOnInit() {
+    this.cargar();
+
+    this.subs.push(
+      this.busqueda$.pipe(debounceTime(350), distinctUntilChanged())
+        .subscribe(q &#x3D;&gt; this.cargar(q)),
+
+      this.medSubject.pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+        switchMap(q &#x3D;&gt; q.length &gt;&#x3D; 2 ? this.medSvc.buscar(q) : of([])),
+      ).subscribe(res &#x3D;&gt; this.medSugerencias.set(res)),
+    );
+
+    if (this.esAdmin()) {
+      this.estSvc.listar().subscribe(res &#x3D;&gt; this.establecimientos.set(res));
+    }
+  }
+
+  ngOnDestroy() { this.subs.forEach(s &#x3D;&gt; s.unsubscribe()); }
+
+  cargar(q?: string) {
+    this.cargando.set(true);
+    const obs &#x3D; this.esAdmin()
+      ? this.svc.listarAdmin(q, this.establecimientoFiltro)
+      : this.svc.listar(q);
+
+    obs.subscribe({
+      next: data &#x3D;&gt; {
+        console.log(&#x27;Datos recibidos del inventario:&#x27;, data);
+        if (!Array.isArray(data)) {
+          console.error(&#x27;La respuesta no es un array:&#x27;, data);
+          this.notification.warn(&#x27;La respuesta del servidor no tiene el formato esperado&#x27;);
+          this.items.set([]);
+        } else {
+          this.items.set(data);
+          this.alertasStock.set(data.filter(i &#x3D;&gt; i.cantidadActual &lt;&#x3D; i.cantidadMinima &amp;&amp; i.activo));
+          if (data.length &gt; 0) {
+            this.notification.success(&#x60;${data.length} registros cargados correctamente&#x60;);
+          }
+        }
+        this.cargando.set(false);
+      },
+      error: (err) &#x3D;&gt; {
+        console.error(&#x27;Error cargando inventario:&#x27;, err);
+        this.cargando.set(false);
+      },
+    });
+  }
+
+  cambiarEstablecimiento(val: string) {
+    this.establecimientoFiltro &#x3D; val ? +val : undefined;
+    this.cargar();
+  }
+
+  abrirModal() {
+    this.editando.set(null);
+    this.medSeleccionado.set(null);
+    this.medSugerencias.set([]);
+    this.form.reset({ cantidadActual: 0, cantidadMinima: 10, lote: &#x27;&#x27;, fechaVencimiento: &#x27;&#x27;, ubicacion: &#x27;&#x27;, establecimientoId: &#x27;&#x27; });
+    this.modalAbierto.set(true);
+  }
+
+  abrirEditar(item: InventarioItem) {
+    this.editando.set(item);
+    this.form.patchValue({
+      cantidadActual:   item.cantidadActual,
+      cantidadMinima:   item.cantidadMinima,
+      lote:             item.lote ?? &#x27;&#x27;,
+      fechaVencimiento: item.fechaVencimiento ? item.fechaVencimiento.split(&#x27;T&#x27;)[0] : &#x27;&#x27;,
+      ubicacion:        item.ubicacion ?? &#x27;&#x27;,
+    });
+    this.modalAbierto.set(true);
+  }
+
+  cerrarModal() { this.modalAbierto.set(false); }
+
+  buscarMed(q: string) {
+    this.medSeleccionado.set(null);
+    this.medSubject.next(q);
+  }
+
+  elegirMed(med: Medicamento) {
+    this.medSeleccionado.set(med);
+    this.medSugerencias.set([]);
+  }
+
+  guardar() {
+    const item &#x3D; this.editando();
+    if (!item &amp;&amp; !this.medSeleccionado()) {
+      this.notification.error(&#x27;Selecciona un medicamento&#x27;);
+      return;
+    }
+    if (this.form.invalid) return;
+    this.guardando.set(true);
+
+    const v &#x3D; this.form.value;
+
+    if (item) {
+      this.svc.actualizar(item.id, {
+        cantidadActual:   v.cantidadActual!,
+        cantidadMinima:   v.cantidadMinima!,
+        lote:             v.lote || undefined,
+        fechaVencimiento: v.fechaVencimiento || undefined,
+        ubicacion:        v.ubicacion || undefined,
+      }).subscribe({
+        next: updated &#x3D;&gt; {
+          this.items.update(list &#x3D;&gt; list.map(i &#x3D;&gt; i.id &#x3D;&#x3D;&#x3D; updated.id ? updated : i));
+          this.alertasStock.set(this.items().filter(i &#x3D;&gt; i.cantidadActual &lt;&#x3D; i.cantidadMinima &amp;&amp; i.activo));
+          this.notification.success(&#x27;Inventario actualizado&#x27;);
+          this.guardando.set(false);
+          this.cerrarModal();
+        },
+        error: (e: any) &#x3D;&gt; { this.notification.error(e?.error?.message ?? &#x27;Error al actualizar&#x27;); this.guardando.set(false); },
+      });
+    } else {
+      const usuario &#x3D; this.auth.obtenerUsuario();
+      const estId &#x3D; this.esAdmin() ? +(v.establecimientoId!) : usuario!.establecimientoId;
+      const dto: AsignarDto &#x3D; {
+        medicamentoId:     this.medSeleccionado()!.id,
+        establecimientoId: estId,
+        cantidadActual:    v.cantidadActual!,
+        cantidadMinima:    v.cantidadMinima!,
+        lote:              v.lote || undefined,
+        fechaVencimiento:  v.fechaVencimiento || undefined,
+        ubicacion:         v.ubicacion || undefined,
+      };
+      this.svc.asignar(dto).subscribe({
+        next: nuevo &#x3D;&gt; {
+          this.items.update(list &#x3D;&gt; [nuevo, ...list]);
+          this.notification.success(&#x27;Medicamento asignado al inventario&#x27;);
+          this.guardando.set(false);
+          this.cerrarModal();
+        },
+        error: (e: any) &#x3D;&gt; { this.notification.error(e?.error?.message ?? &#x27;Error al asignar&#x27;); this.guardando.set(false); },
+      });
+    }
+  }
+
+  confirmarEliminar(item: InventarioItem) {
+    if (!confirm(&#x60;¿Eliminar &quot;${item.medicamento.nombreGenerico}&quot; del inventario?&#x60;)) return;
+    this.svc.eliminar(item.id).subscribe({
+      next: () &#x3D;&gt; {
+        this.items.update(list &#x3D;&gt; list.filter(i &#x3D;&gt; i.id !&#x3D;&#x3D; item.id));
+        this.alertasStock.update(list &#x3D;&gt; list.filter(i &#x3D;&gt; i.id !&#x3D;&#x3D; item.id));
+        this.notification.success(&#x27;Registro eliminado&#x27;);
+      },
+      error: (e: any) &#x3D;&gt; this.notification.error(e?.error?.message ?? &#x27;Error al eliminar&#x27;),
+    });
+  }
+
+  // --- MÉTODOS CARGA MASIVA ---
+
+  abrirCargaMasiva() {
+    this.resultadosCarga.set(null);
+    this.modalCargaAbierto.set(true);
+    this.elFiltroEstablecimientoCarga.set(null);
+  }
+
+  cerrarCargaMasiva() {
+    if (this.procesandoCarga()) return;
+    this.modalCargaAbierto.set(false);
+  }
+
+  descargarPlantilla() {
+    const headers &#x3D; &#x27;codigo_medicamento,cantidad_actual,cantidad_minima,lote,fecha_vencimiento,ubicacion\n&#x27;;
+    const example &#x3D; &#x27;MED-01,100,10,LOTE-2024,2025-12-31,ESTANTE-A1\n&#x27;;
+    const blob &#x3D; new Blob([headers + example], { type: &#x27;text/csv&#x27; });
+    const url &#x3D; window.URL.createObjectURL(blob);
+    const a &#x3D; document.createElement(&#x27;a&#x27;);
+    a.href &#x3D; url;
+    a.download &#x3D; &#x27;plantilla_inventario.csv&#x27;;
+    a.click();
+    window.URL.revokeObjectURL(url);
+  }
+
+  procesarArchivo(event: any) {
+    const file &#x3D; event.target.files[0];
+    if (!file) return;
+
+    const usuario &#x3D; this.auth.obtenerUsuario();
+    const estId &#x3D; this.esAdmin() ? this.elFiltroEstablecimientoCarga() : usuario?.establecimientoId;
+
+    if (!estId || estId &#x3D;&#x3D;&#x3D; 0) {
+      this.notification.warn(&#x27;Debe seleccionar un establecimiento de la lista para poder procesar la carga.&#x27;);
+      event.target.value &#x3D; &#x27;&#x27;;
+      return;
+    }
+
+    this.procesandoCarga.set(true);
+    const reader &#x3D; new FileReader();
+
+    reader.onload &#x3D; (e: any) &#x3D;&gt; {
+      try {
+        const csv &#x3D; e.target.result;
+        const lines &#x3D; csv.split(/\r?\n/);
+        const items &#x3D; [];
+
+        // Detectar delimitador (coma o punto y coma)
+        let delimiter &#x3D; &#x27;,&#x27;;
+        const firstLine &#x3D; lines[0] || &#x27;&#x27;;
+        if (firstLine.includes(&#x27;;&#x27;) &amp;&amp; !firstLine.includes(&#x27;,&#x27;)) {
+          delimiter &#x3D; &#x27;;&#x27;;
+        }
+
+        console.log(&#x27;Detectado delimitador:&#x27;, delimiter);
+        console.log(&#x27;Total líneas brutas:&#x27;, lines.length);
+
+        for (let i &#x3D; 1; i &lt; lines.length; i++) {
+          const line &#x3D; lines[i].trim();
+          if (!line) continue;
+
+          const cols &#x3D; line.split(delimiter);
+          if (cols.length &lt; 3) {
+            console.warn(&#x60;Línea ${i+1} ignorada (columnas insuficientes):&#x60;, line);
+            continue;
+          }
+
+          const cantActual &#x3D; parseInt(cols[1]?.trim() || &#x27;0&#x27;);
+          const cantMinima &#x3D; parseInt(cols[2]?.trim() || &#x27;0&#x27;);
+
+          if (isNaN(cantActual) || isNaN(cantMinima)) {
+            console.warn(&#x60;Línea ${i+1} ignorada (formatos numéricos):&#x60;, line);
+            continue;
+          }
+
+          items.push({
+            codigoMedicamento: cols[0]?.trim(),
+            cantidadActual:    cantActual,
+            cantidadMinima:    cantMinima,
+            lote:              cols[3]?.trim() || undefined,
+            fechaVencimiento:  cols[4]?.trim() || undefined,
+            ubicacion:         cols[5]?.trim() || undefined
+          });
+        }
+
+        console.log(&#x27;Items listos para enviar:&#x27;, items);
+
+        if (items.length &#x3D;&#x3D;&#x3D; 0) {
+          this.notification.error(&#x27;No se encontraron registros válidos en el archivo&#x27;);
+          this.procesandoCarga.set(false);
+          return;
+        }
+
+        this.svc.cargaMasiva({ establecimientoId: estId, items }).subscribe({
+          next: (res) &#x3D;&gt; {
+            this.resultadosCarga.set(res);
+            this.procesandoCarga.set(false);
+            this.cargar();
+            this.notification.success(&#x27;Procesamiento completado&#x27;);
+          },
+          error: (err) &#x3D;&gt; {
+            const msg &#x3D; err?.error?.message || &#x27;Error desconocido en el servidor&#x27;;
+            this.notification.error(&#x60;Error al procesar: ${Array.isArray(msg) ? msg[0] : msg}&#x60;);
+            this.procesandoCarga.set(false);
+          }
+        });
+      } catch (error) {
+        this.notification.error(&#x27;Error al leer el archivo CSV&#x27;);
+        this.procesandoCarga.set(false);
+      }
+    };
+
+    reader.readAsText(file);
+    event.target.value &#x3D; &#x27;&#x27;; // Reset input
+  }
+
+  resumenAlertas(): string {
+    return this.alertasStock()
+      .slice(0, 3)
+      .map(i &#x3D;&gt; i.medicamento.nombreGenerico)
+      .join(&#x27;, &#x27;);
+  }
+
+  stockClass(item: InventarioItem): string {
+    if (item.cantidadActual &#x3D;&#x3D;&#x3D; 0) return &#x27;text-red-600&#x27;;
+    if (item.cantidadActual &lt;&#x3D; item.cantidadMinima) return &#x27;text-amber-600&#x27;;
+    return &#x27;text-green-600&#x27;;
+  }
+
+  estaVencido(item: InventarioItem): boolean {
+    return !!item.fechaVencimiento &amp;&amp; new Date(item.fechaVencimiento) &lt; new Date();
+  }
+
+  etiquetaEstado(item: InventarioItem): string {
+    if (!item.activo) return &#x27;Inactivo&#x27;;
+    if (item.cantidadActual &#x3D;&#x3D;&#x3D; 0) return &#x27;Agotado&#x27;;
+    if (this.estaVencido(item)) return &#x27;Vencido&#x27;;
+    if (item.cantidadActual &lt;&#x3D; item.cantidadMinima) return &#x27;Stock bajo&#x27;;
+    return &#x27;OK&#x27;;
+  }
+
+  badgeEstado(item: InventarioItem): string {
+    if (!item.activo || item.cantidadActual &#x3D;&#x3D;&#x3D; 0) return &#x27;bg-red-100 text-red-700 border-red-200&#x27;;
+    if (this.estaVencido(item)) return &#x27;bg-red-100 text-red-700 border-red-200&#x27;;
+    if (item.cantidadActual &lt;&#x3D; item.cantidadMinima) return &#x27;bg-amber-100 text-amber-700 border-amber-200&#x27;;
+    return &#x27;bg-green-100 text-green-700 border-green-200&#x27;;
+  }
+}
+</code></pre>
+    </div>
+
+
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="space-y-5">  <!-- Cabecera -->  <div class="flex flex-wrap items-center justify-between gap-3">    <div>      <h2 class="text-xl font-bold text-gray-900 font-serif">Inventario de Medicamentos</h2>      <p class="text-sm text-gray-500 mt-0.5">Asignación y control de medicamentos por establecimiento</p>    </div>    <div class="flex items-center gap-2">      <button (click)="abrirCargaMasiva()"              class="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 text-sm font-semibold rounded-lg transition-colors shadow-sm">        <svg class="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>        </svg>        Carga Masiva      </button>      <button (click)="abrirModal()"              class="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg transition-colors shadow-sm">        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>        </svg>        Asignar Medicamento      </button>    </div>  </div>  <!-- Alertas stock bajo -->  <div *ngIf="alertasStock().length > 0"       class="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-start gap-3">    <svg class="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"            d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>    </svg>    <div class="flex-1 min-w-0">      <p class="text-sm font-semibold text-amber-800">{{ alertasStock().length }} medicamento(s) con stock bajo o agotado</p>      <p class="text-xs text-amber-600 mt-0.5 truncate">        {{ resumenAlertas() }}        <span *ngIf="alertasStock().length > 3">…y {{ alertasStock().length - 3 }} más</span>      </p>    </div>  </div>  <!-- Filtros -->  <div class="bg-white rounded-xl border border-gray-200 p-4 flex flex-wrap gap-3 items-center">    <div class="relative flex-1 min-w-[240px]">      <svg class="absolute left-3 top-2.5 w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>      </svg>      <input type="text" placeholder="Buscar medicamento, código, grupo…"             (input)="busqueda$.next($any($event.target).value)"             class="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"/>    </div>    <select *ngIf="esAdmin()" (change)="cambiarEstablecimiento($any($event.target).value)"            class="border border-gray-300 rounded-lg text-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">      <option value="">Todos los establecimientos</option>      <option *ngFor="let e of establecimientos()" [value]="e.id">{{ e.nombre }}</option>    </select>    <span class="text-xs text-gray-400 flex-shrink-0">      <strong class="text-gray-700">{{ items().length }}</strong> registros    </span>  </div>  <!-- Tabla -->  <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">    <div *ngIf="cargando()" class="p-12 text-center text-gray-400 text-sm">Cargando…</div>    <div *ngIf="!cargando() && items().length === 0" class="p-12 text-center text-gray-400 text-sm">      No hay medicamentos asignados a este establecimiento.    </div>    <table *ngIf="!cargando() && items().length > 0" class="w-full text-sm">      <thead class="bg-gray-50 border-b border-gray-200">        <tr>          <th class="text-left px-4 py-3 font-semibold text-gray-600 text-xs uppercase tracking-wide">Medicamento</th>          <th class="text-left px-4 py-3 font-semibold text-gray-600 text-xs uppercase tracking-wide">Grupo</th>          <th class="text-center px-4 py-3 font-semibold text-gray-600 text-xs uppercase tracking-wide">Stock</th>          <th class="text-center px-4 py-3 font-semibold text-gray-600 text-xs uppercase tracking-wide">Mínimo</th>          <th class="text-left px-4 py-3 font-semibold text-gray-600 text-xs uppercase tracking-wide">Lote</th>          <th class="text-left px-4 py-3 font-semibold text-gray-600 text-xs uppercase tracking-wide">Vencimiento</th>          <th class="text-center px-4 py-3 font-semibold text-gray-600 text-xs uppercase tracking-wide">Estado</th>          <th class="text-left px-4 py-3 font-semibold text-gray-600 text-xs uppercase tracking-wide">Creado por</th>          <th class="px-4 py-3"></th>        </tr>      </thead>      <tbody class="divide-y divide-gray-100">        <tr *ngFor="let item of items()" class="hover:bg-gray-50 transition-colors">          <td class="px-4 py-3">            <p class="font-medium text-gray-900">{{ item.medicamento.nombreGenerico }}</p>            <p class="text-xs text-gray-400">{{ item.medicamento.codigo }} · {{ item.medicamento.presentacion }} {{ item.medicamento.concentracion }}</p>          </td>          <td class="px-4 py-3 text-gray-600 text-xs">{{ item.medicamento.grupoTerapeutico }}</td>          <td class="px-4 py-3 text-center">            <span [class]="stockClass(item)" class="text-base font-bold">{{ item.cantidadActual }}</span>          </td>          <td class="px-4 py-3 text-center text-gray-500 text-xs">{{ item.cantidadMinima }}</td>          <td class="px-4 py-3 text-gray-600 text-xs">{{ item.lote || \'—\' }}</td>          <td class="px-4 py-3 text-xs" [class.text-red-600]="estaVencido(item)" [class.text-gray-600]="!estaVencido(item)">            {{ item.fechaVencimiento ? (item.fechaVencimiento | date:\'dd/MM/yyyy\':\'UTC\') : \'—\' }}          </td>          <td class="px-4 py-3 text-center">            <span [class]="badgeEstado(item)"                  class="px-2 py-0.5 rounded-full text-xs font-semibold border">              {{ etiquetaEstado(item) }}            </span>          </td>          <td class="px-4 py-3 text-xs text-gray-400">            {{ item.creadoPor ? item.creadoPor.nombres + \' \' + item.creadoPor.apellidos : \'—\' }}          </td>          <td class="px-4 py-3">            <div class="flex items-center gap-1 justify-end">              <button (click)="abrirEditar(item)" title="Editar"                      class="p-1.5 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 rounded transition-colors">                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>                </svg>              </button>              <button (click)="confirmarEliminar(item)" title="Eliminar"                      class="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors">                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>                </svg>              </button>            </div>          </td>        </tr>      </tbody>    </table>  </div>  <!-- Modal asignar / editar -->  <div *ngIf="modalAbierto()" class="fixed inset-0 z-[9999] flex items-center justify-center">    <!-- Fondo con blur - Extendemos un poco los bordes para evitar la línea blanca -->    <div class="fixed -top-10 -left-10 -right-10 -bottom-10 bg-black/40 backdrop-blur-sm" (click)="cerrarModal()"></div>    <!-- Contenedor del Modal -->    <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden border border-gray-100 m-4 animate-in fade-in zoom-in duration-200">      <div class="flex items-center justify-between p-5 border-b border-gray-100">        <h3 class="text-base font-bold text-gray-900 font-serif">          {{ editando() ? \'Editar registro\' : \'Asignar medicamento\' }}        </h3>        <button (click)="cerrarModal()" class="text-gray-400 hover:text-gray-600 p-1 rounded transition-colors hover:bg-gray-100">          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>          </svg>        </button>      </div>      <form [formGroup]="form" (ngSubmit)="guardar()" class="p-5 space-y-4">        <!-- Búsqueda medicamento (solo al crear) -->        <div *ngIf="!editando()" class="space-y-1 relative">          <label class="text-xs font-semibold text-gray-700 font-bold uppercase tracking-tight">Medicamento <span class="text-red-500">*</span></label>          <div class="relative">            <svg class="absolute left-3 top-2.5 w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>            </svg>            <input type="text" placeholder="Buscar medicamento…"                   (input)="buscarMed($any($event.target).value)"                   [value]="medSeleccionado()?.nombreGenerico ?? \'\'"                   class="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"/>          </div>          <ul *ngIf="medSugerencias().length > 0"              class="absolute z-[110] w-full bg-white border border-gray-200 rounded-lg shadow-xl mt-1 max-h-48 overflow-y-auto">            <li *ngFor="let m of medSugerencias()"                (click)="elegirMed(m)"                class="px-3 py-2 text-sm hover:bg-indigo-50 cursor-pointer border-b last:border-0 border-gray-50">              <span class="font-medium text-gray-900 block">{{ m.nombreGenerico }}</span>              <span class="text-xs text-gray-400">{{ m.codigo }} · {{ m.concentracion }}</span>            </li>          </ul>        </div>        <!-- Establecimiento (solo admin al crear) -->        <div *ngIf="!editando() && esAdmin()" class="space-y-1">          <label class="text-xs font-semibold text-gray-700 font-bold uppercase tracking-tight">Establecimiento <span class="text-red-500">*</span></label>          <select formControlName="establecimientoId"                  [class.border-red-500]="form.get(\'establecimientoId\')?.touched && !form.get(\'establecimientoId\')?.value"                  class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 outline-none transition-all">            <option value="">Seleccione un establecimiento…</option>            <option *ngFor="let e of establecimientos()" [value]="e.id">{{ e.nombre }}</option>          </select>        </div>        <!-- Cantidades -->        <div class="grid grid-cols-2 gap-3">          <div class="space-y-1">            <label class="text-xs font-semibold text-gray-700 font-bold uppercase tracking-tight">Cantidad actual <span class="text-red-500">*</span></label>            <input type="number" formControlName="cantidadActual" min="0"                   class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"/>          </div>          <div class="space-y-1">            <label class="text-xs font-semibold text-gray-700 font-bold uppercase tracking-tight">Cantidad mínima <span class="text-red-500">*</span></label>            <input type="number" formControlName="cantidadMinima" min="0"                   class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"/>          </div>        </div>        <!-- Lote y vencimiento -->        <div class="grid grid-cols-2 gap-3">          <div class="space-y-1">            <label class="text-xs font-semibold text-gray-700 font-bold uppercase tracking-tight">Lote</label>            <input type="text" formControlName="lote" placeholder="Ej. LOT-2024-001"                   class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"/>          </div>          <div class="space-y-1">            <label class="text-xs font-semibold text-gray-700 font-bold uppercase tracking-tight">Vencimiento</label>            <input type="date" formControlName="fechaVencimiento"                   [class.ring-2]="form.get(\'fechaVencimiento\')?.invalid && form.get(\'fechaVencimiento\')?.touched"                   [class.ring-red-500]="form.get(\'fechaVencimiento\')?.invalid && form.get(\'fechaVencimiento\')?.touched"                   class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"/>            <p *ngIf="form.get(\'fechaVencimiento\')?.errors?.[\'dateInvalid\'] && form.get(\'fechaVencimiento\')?.touched"               class="text-[10px] text-red-500 font-bold uppercase mt-1">La fecha no existe</p>          </div>        </div>        <!-- Ubicación -->        <div class="space-y-1">          <label class="text-xs font-semibold text-gray-700 font-bold uppercase tracking-tight">Ubicación / Estante</label>          <input type="text" formControlName="ubicacion" placeholder="Ej. Estante A-3"                 class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"/>        </div>        <!-- Acciones -->        <div class="flex justify-end gap-3 pt-4 border-t border-gray-100">          <button type="button" (click)="cerrarModal()"                  class="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors border border-gray-200">            Cancelar          </button>          <div class="flex flex-col items-end gap-1">            <button type="submit" [disabled]="guardando() || form.invalid || (!editando() && !medSeleccionado())"                    class="px-6 py-2.5 text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg transition-all shadow-lg active:scale-95">              {{ guardando() ? \'Guardando…\' : (editando() ? \'Actualizar Registro\' : \'Confirmar Asignación\') }}            </button>            <p *ngIf="form.invalid || (!editando() && !medSeleccionado())" class="text-[10px] text-red-500 font-bold uppercase tracking-tight">              Falta: {{ !medSeleccionado() && !editando() ? \'Medicamento\' : \'\' }} {{ form.get(\'establecimientoId\')?.invalid ? \'Establecimiento\' : \'\' }}            </p>          </div>        </div>      </form>    </div>  </div>  <!-- Modal Carga Masiva -->  <div *ngIf="modalCargaAbierto()" class="fixed inset-0 z-[9999] flex items-center justify-center">    <div class="fixed -top-10 -left-10 -right-10 -bottom-10 bg-black/40 backdrop-blur-sm" (click)="cerrarCargaMasiva()"></div>    <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden border border-gray-100 m-4 animate-in fade-in zoom-in duration-200">      <div class="flex items-center justify-between p-5 border-b border-gray-100">        <h3 class="text-base font-bold text-gray-900 font-serif">Carga Masiva de Inventario</h3>        <button (click)="cerrarCargaMasiva()" class="text-gray-400 hover:text-gray-600 p-1 rounded transition-colors hover:bg-gray-100">          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>          </svg>        </button>      </div>      <div class="p-6 space-y-6">        <div class="bg-indigo-50 border border-indigo-100 rounded-xl p-4 flex gap-3 text-sm text-indigo-800">          <svg class="w-5 h-5 text-indigo-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>          </svg>          <div class="space-y-2">            <p>Sube un archivo CSV con las columnas: <strong>codigo_medicamento, cantidad_actual, cantidad_minima, lote, fecha_vencimiento, ubicacion</strong>.</p>            <button (click)="descargarPlantilla()" class="text-indigo-600 font-bold hover:underline flex items-center gap-1">              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>              </svg>              Descargar plantilla .csv            </button>          </div>        </div>        <div *ngIf="esAdmin() && !resultadosCarga()" class="space-y-2">          <label class="text-xs font-semibold text-gray-700">Establecimiento destino <span class="text-red-500">*</span></label>          <select [value]="elFiltroEstablecimientoCarga()" (change)="elFiltroEstablecimientoCarga.set(+$any($event.target).value)"                class="w-full border border-gray-300 rounded-lg text-sm px-3 py-2 outline-none focus:ring-2 focus:ring-indigo-500">            <option value="">Seleccione un establecimiento…</option>            <option *ngFor="let e of establecimientos()" [value]="e.id">{{ e.nombre }}</option>          </select>        </div>        <div *ngIf="!procesandoCarga() && !resultadosCarga()"             [class.opacity-50]="esAdmin() && !elFiltroEstablecimientoCarga()"             class="border-2 border-dashed border-gray-200 rounded-2xl p-10 text-center hover:border-indigo-400 hover:bg-gray-50 transition-all cursor-pointer group relative">          <input type="file" #fileInput (change)="procesarArchivo($event)" [disabled]="esAdmin() && !elFiltroEstablecimientoCarga()" hidden accept=".csv">          <div *ngIf="esAdmin() && !elFiltroEstablecimientoCarga()" class="absolute inset-0 z-10 flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm rounded-2xl p-6">            <svg class="w-10 h-10 text-amber-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>            </svg>            <p class="text-sm font-black text-gray-900 uppercase tracking-tighter">Acceso Bloqueado</p>            <p class="text-[10px] font-bold text-amber-600 uppercase tracking-widest mt-1 text-center">Debe seleccionar el establecimiento de destino en el menú superior antes de subir el archivo.</p>          </div>          <button (click)="fileInput.click()" [disabled]="esAdmin() && !elFiltroEstablecimientoCarga()" class="flex flex-col items-center w-full">            <div class="w-14 h-14 bg-gray-50 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-indigo-50 transition-all">              <svg class="w-7 h-7 text-gray-400 group-hover:text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>              </svg>            </div>            <span class="text-base font-bold text-gray-900">Seleccionar archivo CSV</span>          </button>        </div>        <div *ngIf="procesandoCarga()" class="text-center py-10">          <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-indigo-600 mx-auto mb-4"></div>          <p class="text-[10px] font-black uppercase tracking-widest text-gray-400">Procesando registros...</p>        </div>        <div *ngIf="resultadosCarga()" class="space-y-6">          <div class="grid grid-cols-3 gap-3">            <div class="bg-gray-50 rounded-2xl p-4 text-center border">              <p class="text-2xl font-black text-gray-900">{{ resultadosCarga()?.total }}</p>              <p class="text-[9px] text-gray-400 uppercase font-black tracking-widest mt-1">Total</p>            </div>            <div class="bg-green-50 rounded-2xl p-4 text-center border border-green-100">              <p class="text-2xl font-black text-green-600">{{ resultadosCarga()?.exitosos }}</p>              <p class="text-[9px] text-green-500 uppercase font-black tracking-widest mt-1">Éxitos</p>            </div>            <div class="bg-red-50 rounded-2xl p-4 text-center border border-red-100">              <p class="text-2xl font-black text-red-500">{{ resultadosCarga()?.fallidos }}</p>              <p class="text-[9px] text-red-500 uppercase font-black tracking-widest mt-1">Fallos</p>            </div>          </div>          <div *ngIf="resultadosCarga()?.errores?.length > 0" class="max-h-40 overflow-y-auto bg-gray-50 rounded-2xl p-4 border text-[11px] text-gray-500 font-serif">            <li *ngFor="let err of resultadosCarga()?.errores" class="flex gap-2">              <span class="text-red-500 font-bold">•</span> {{ err }}            </li>          </div>          <button (click)="cerrarCargaMasiva()" class="w-full py-4 bg-indigo-600 text-white rounded-2xl text-xs font-black tracking-widest hover:bg-indigo-700 transition-all shadow-lg active:scale-95">            FINALIZAR Y CERRAR          </button>        </div>      </div>    </div>  </div></div></div>'
+    var COMPONENTS = [{'name': 'AgendasComponent', 'selector': 'app-agendas'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'BuscadorPacienteComponent', 'selector': 'app-buscador-paciente'},{'name': 'CitasComponent', 'selector': 'app-citas'},{'name': 'ConstructorFormularioComponent', 'selector': 'app-constructor-formulario'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'EpidemiologiaDashboardComponent', 'selector': 'app-epidemiologia-dashboard'},{'name': 'EstadisticasHospitalariasComponent', 'selector': 'app-estadisticas-hospitalarias'},{'name': 'FarmaciaComponent', 'selector': 'app-farmacia'},{'name': 'GestionHospitalizacionComponent', 'selector': 'app-gestion-hospitalizacion'},{'name': 'GestionLotesModalComponent', 'selector': 'app-gestion-lotes-modal'},{'name': 'GestionReportesComponent', 'selector': 'app-gestion-reportes'},{'name': 'HistoriaClinicaComponent', 'selector': 'app-historia-clinica'},{'name': 'InfraestructuraModalComponent', 'selector': 'app-infraestructura-modal'},{'name': 'InventarioVacunasComponent', 'selector': 'app-inventario-vacunas'},{'name': 'LaboratorioComponent', 'selector': 'app-laboratorio'},{'name': 'ListaPlantillasComponent', 'selector': 'app-lista-plantillas'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MainLayoutComponent', 'selector': 'app-main-layout'},{'name': 'MantenimientoDiagnosticosComponent', 'selector': 'app-mantenimiento-diagnosticos'},{'name': 'MantenimientoEstablecimientosComponent', 'selector': 'app-mantenimiento-establecimientos'},{'name': 'MantenimientoInventarioComponent', 'selector': 'app-mantenimiento-inventario'},{'name': 'MantenimientoLaboratorioComponent', 'selector': 'app-mantenimiento-laboratorio'},{'name': 'MantenimientoLoginComponent', 'selector': 'app-mantenimiento-login'},{'name': 'MantenimientoMedicamentosComponent', 'selector': 'app-mantenimiento-medicamentos'},{'name': 'MantenimientoRadiologiaComponent', 'selector': 'app-mantenimiento-radiologia'},{'name': 'MantenimientoRolesComponent', 'selector': 'app-mantenimiento-roles'},{'name': 'MovimientosInventarioComponent', 'selector': 'app-movimientos-inventario'},{'name': 'NotificationComponent', 'selector': 'app-notification'},{'name': 'NuevaConsultaComponent', 'selector': 'app-nueva-consulta'},{'name': 'PacientesComponent', 'selector': 'app-pacientes'},{'name': 'PermisosUsuariosComponent', 'selector': 'app-permisos-usuarios'},{'name': 'RecetasPacienteComponent', 'selector': 'app-recetas-paciente'},{'name': 'RegistroVacunaModalComponent', 'selector': 'app-registro-vacuna-modal'},{'name': 'ReportesComponent', 'selector': 'app-reportes'},{'name': 'TriajeComponent', 'selector': 'app-triaje'},{'name': 'UsuariosComponent', 'selector': 'app-usuarios'},{'name': 'VacunacionComponent', 'selector': 'app-vacunacion'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'MantenimientoInventarioComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'MantenimientoInventarioComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

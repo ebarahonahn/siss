@@ -1,0 +1,2303 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>siss-frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">siss-frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  EpidemiologiaDashboardComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#styleData" class="nav-link"
+                role="tab" id="styleData-tab" data-bs-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/modules/epidemiologia/pages/dashboard/dashboard.component.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                <code>OnInit</code>
+                <code>AfterViewInit</code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-epidemiologia-dashboard</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                            <code>CommonModule</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-3">styles</td>
+                <td class="col-md-9"><code>
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #cbd5e1; }
+    
+    :host ::ng-deep .custom-leaflet-popup .leaflet-popup-content-wrapper {
+      border-radius: 1.5rem;
+      padding: 0;
+      overflow: hidden;
+      box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    }
+    :host ::ng-deep .custom-leaflet-popup .leaflet-popup-content {
+      margin: 0;
+    }
+    :host ::ng-deep .custom-leaflet-popup .leaflet-popup-tip {
+      background: white;
+    }
+  </code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">template</td>
+                <td class="col-md-9"><pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;min-h-screen bg-slate-50 p-6 lg:p-10 space-y-8 relative&quot;&gt;
+
+  &lt;!-- Overlay de Carga --&gt;
+  &lt;div *ngIf&#x3D;&quot;cargando()&quot; class&#x3D;&quot;absolute inset-0 bg-slate-50/80 backdrop-blur-sm z-[100] flex flex-col items-center justify-center&quot;&gt;
+    &lt;div class&#x3D;&quot;w-16 h-16 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin mb-4&quot;&gt;&lt;/div&gt;
+    &lt;p class&#x3D;&quot;text-slate-900 font-black uppercase tracking-widest text-xs&quot;&gt;Cargando Inteligencia Epidemiológica...&lt;/p&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Modal de Gestión --&gt;
+  &lt;div *ngIf&#x3D;&quot;alertaSeleccionada()&quot; class&#x3D;&quot;fixed inset-0 z-[1000] flex items-center justify-center p-4&quot;&gt;
+    &lt;div class&#x3D;&quot;absolute inset-0 bg-slate-900/60 backdrop-blur-md&quot; (click)&#x3D;&quot;cerrarGestion()&quot;&gt;&lt;/div&gt;
+    &lt;div class&#x3D;&quot;bg-white w-full max-w-xl rounded-[3rem] shadow-2xl relative z-10 overflow-hidden border border-white/20 animate-in fade-in zoom-in duration-300&quot;&gt;
+      &lt;div class&#x3D;&quot;p-10 space-y-8&quot;&gt;
+        &lt;div class&#x3D;&quot;flex justify-between items-start&quot;&gt;
+          &lt;div class&#x3D;&quot;space-y-1&quot;&gt;
+            &lt;span class&#x3D;&quot;px-4 py-1.5 bg-red-600 text-white text-[10px] font-black rounded-full uppercase tracking-widest shadow-lg shadow-red-100&quot;&gt;Acción Requerida&lt;/span&gt;
+            &lt;h3 class&#x3D;&quot;text-3xl font-black text-slate-900 tracking-tight uppercase pt-2&quot;&gt;Gestionar Notificación&lt;/h3&gt;
+            &lt;p class&#x3D;&quot;text-slate-500 font-medium&quot;&gt;Paciente: {{ alertaSeleccionada().paciente.nombres }} {{ alertaSeleccionada().paciente.apellidos }}&lt;/p&gt;
+          &lt;/div&gt;
+          &lt;button (click)&#x3D;&quot;cerrarGestion()&quot; class&#x3D;&quot;p-3 bg-slate-100 hover:bg-slate-200 rounded-2xl transition-colors&quot;&gt;
+            &lt;svg class&#x3D;&quot;w-6 h-6 text-slate-500&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M6 18L18 6M6 6l12 12&quot;/&gt;&lt;/svg&gt;
+          &lt;/button&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;grid grid-cols-2 gap-4&quot;&gt;
+          &lt;div class&#x3D;&quot;p-6 bg-slate-50 rounded-3xl border border-slate-100&quot;&gt;
+            &lt;p class&#x3D;&quot;text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1&quot;&gt;Código CIE-10&lt;/p&gt;
+            &lt;p class&#x3D;&quot;text-xl font-black text-slate-900&quot;&gt;{{ alertaSeleccionada().diagnosticoCIE10 }}&lt;/p&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;p-6 bg-slate-50 rounded-3xl border border-slate-100&quot;&gt;
+            &lt;p class&#x3D;&quot;text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1&quot;&gt;Tiempo de Alerta&lt;/p&gt;
+            &lt;p class&#x3D;&quot;text-xl font-black text-red-600&quot;&gt;{{ calcularHoras(alertaSeleccionada().creadoEn) }}h&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;space-y-4&quot;&gt;
+          &lt;p class&#x3D;&quot;text-xs font-black text-slate-900 uppercase tracking-widest text-center&quot;&gt;Seleccione el resultado de la gestión&lt;/p&gt;
+          &lt;div class&#x3D;&quot;grid grid-cols-1 gap-3&quot;&gt;
+            &lt;button (click)&#x3D;&quot;confirmarGestion(&#x27;NOTIFICADO&#x27;)&quot; class&#x3D;&quot;group p-6 bg-indigo-600 hover:bg-indigo-700 rounded-[2rem] text-left transition-all shadow-xl shadow-indigo-100 flex items-center justify-between&quot;&gt;
+              &lt;div&gt;
+                &lt;p class&#x3D;&quot;text-white font-black uppercase text-sm tracking-widest&quot;&gt;Oficializar Notificación&lt;/p&gt;
+                &lt;p class&#x3D;&quot;text-indigo-100 text-xs mt-1&quot;&gt;Marcar como enviado a la Secretaría de Salud&lt;/p&gt;
+              &lt;/div&gt;
+              &lt;div class&#x3D;&quot;w-10 h-10 bg-white/20 rounded-2xl flex items-center justify-center group-hover:translate-x-1 transition-transform&quot;&gt;
+                &lt;svg class&#x3D;&quot;w-6 h-6 text-white&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;3&quot; d&#x3D;&quot;M5 13l4 4L19 7&quot;/&gt;&lt;/svg&gt;
+              &lt;/div&gt;
+            &lt;/button&gt;
+
+            &lt;button (click)&#x3D;&quot;confirmarGestion(&#x27;DESCARTADO&#x27;)&quot; class&#x3D;&quot;group p-6 bg-white border-2 border-slate-200 hover:border-slate-300 rounded-[2rem] text-left transition-all flex items-center justify-between&quot;&gt;
+              &lt;div&gt;
+                &lt;p class&#x3D;&quot;text-slate-900 font-black uppercase text-sm tracking-widest&quot;&gt;Descartar Alerta&lt;/p&gt;
+                &lt;p class&#x3D;&quot;text-slate-500 text-xs mt-1&quot;&gt;Falsa alarma o error en el diagnóstico&lt;/p&gt;
+              &lt;/div&gt;
+              &lt;div class&#x3D;&quot;w-10 h-10 bg-slate-100 rounded-2xl flex items-center justify-center&quot;&gt;
+                &lt;svg class&#x3D;&quot;w-6 h-6 text-slate-400&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;3&quot; d&#x3D;&quot;M6 18L18 6M6 6l12 12&quot;/&gt;&lt;/svg&gt;
+              &lt;/div&gt;
+            &lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Header --&gt;
+  &lt;div class&#x3D;&quot;flex flex-col md:flex-row md:items-center justify-between gap-6&quot;&gt;
+    &lt;div&gt;
+      &lt;h1 class&#x3D;&quot;text-4xl font-black text-slate-900 tracking-tight uppercase&quot;&gt;Control Epidemiológico&lt;/h1&gt;
+      &lt;p class&#x3D;&quot;text-slate-500 font-medium mt-1&quot;&gt;Panel Analítico para Vigilancia de Salud Pública — Honduras&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class&#x3D;&quot;flex items-center gap-3&quot;&gt;
+      &lt;button (click)&#x3D;&quot;cargarDatos()&quot; class&#x3D;&quot;px-6 py-3 bg-white border-2 border-slate-200 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-slate-50 transition-all shadow-sm&quot;&gt;
+        Sincronizar Datos
+      &lt;/button&gt;
+      &lt;div class&#x3D;&quot;px-6 py-3 bg-indigo-600 text-white rounded-2xl font-black text-xs uppercase tracking-widest shadow-lg shadow-indigo-100&quot;&gt;
+        En Vivo
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Stats Cards --&gt;
+  &lt;div class&#x3D;&quot;grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6&quot;&gt;
+    &lt;div class&#x3D;&quot;bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100 relative overflow-hidden&quot;&gt;
+      &lt;div class&#x3D;&quot;relative z-10&quot;&gt;
+        &lt;p class&#x3D;&quot;text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1&quot;&gt;Total Notificaciones&lt;/p&gt;
+        &lt;p class&#x3D;&quot;text-4xl font-black text-slate-900 tracking-tighter&quot;&gt;{{ stats().total }}&lt;/p&gt;
+        &lt;p class&#x3D;&quot;text-[10px] font-bold text-green-500 mt-2 flex items-center gap-1&quot;&gt;
+          &lt;svg class&#x3D;&quot;w-3 h-3&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;3&quot; d&#x3D;&quot;M5 10l7-7m0 0l7 7m-7-7v18&quot;/&gt;&lt;/svg&gt;
+          +12% vs mes anterior
+        &lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div class&#x3D;&quot;absolute -right-4 -bottom-4 opacity-5 text-indigo-600&quot;&gt;
+        &lt;svg class&#x3D;&quot;w-32 h-32&quot; fill&#x3D;&quot;currentColor&quot; viewBox&#x3D;&quot;0 0 24 24&quot;&gt;&lt;path d&#x3D;&quot;M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z&quot;/&gt;&lt;/svg&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class&#x3D;&quot;bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100&quot;&gt;
+      &lt;p class&#x3D;&quot;text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1&quot;&gt;Alertas Inmediatas&lt;/p&gt;
+      &lt;p class&#x3D;&quot;text-4xl font-black&quot; [class.text-red-600]&#x3D;&quot;stats().alertas &gt; 0&quot; [class.text-slate-900]&#x3D;&quot;stats().alertas &#x3D;&#x3D;&#x3D; 0&quot;&gt;
+        {{ stats().alertas }}
+      &lt;/p&gt;
+      &lt;div *ngIf&#x3D;&quot;stats().alertas &gt; 0&quot; class&#x3D;&quot;mt-2 px-3 py-1 bg-red-50 text-red-600 text-[9px] font-black rounded-full inline-block uppercase tracking-tighter border border-red-100&quot;&gt;
+        Acción Requerida &lt; 24h
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class&#x3D;&quot;bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100&quot;&gt;
+      &lt;p class&#x3D;&quot;text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1&quot;&gt;Semanas en Brote&lt;/p&gt;
+      &lt;p class&#x3D;&quot;text-4xl font-black text-amber-600 tracking-tighter&quot;&gt;{{ stats().brotes }}&lt;/p&gt;
+      &lt;p class&#x3D;&quot;text-[10px] font-bold text-slate-400 mt-2 uppercase tracking-tight&quot;&gt;Vigilancia Activa&lt;/p&gt;
+    &lt;/div&gt;
+
+    &lt;div class&#x3D;&quot;bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100&quot;&gt;
+      &lt;p class&#x3D;&quot;text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1&quot;&gt;Cobertura Geo&lt;/p&gt;
+      &lt;p class&#x3D;&quot;text-4xl font-black text-indigo-600 tracking-tighter&quot;&gt;{{ stats().cobertura }}%&lt;/p&gt;
+      &lt;p class&#x3D;&quot;text-[10px] font-bold text-slate-400 mt-2 uppercase tracking-tight&quot;&gt;Establecimientos Reportando&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div class&#x3D;&quot;grid grid-cols-1 lg:grid-cols-3 gap-8&quot;&gt;
+    &lt;!-- Mapa de Calor --&gt;
+    &lt;div class&#x3D;&quot;lg:col-span-2 space-y-6&quot;&gt;
+      &lt;div class&#x3D;&quot;bg-white rounded-[3rem] shadow-xl border border-white overflow-hidden p-2&quot;&gt;
+        &lt;div class&#x3D;&quot;p-6 flex items-center justify-between&quot;&gt;
+          &lt;h3 class&#x3D;&quot;text-lg font-black uppercase tracking-tight text-slate-800&quot;&gt;Mapa de Calor: Concentración de Casos&lt;/h3&gt;
+          &lt;div class&#x3D;&quot;flex items-center gap-2&quot;&gt;
+            &lt;span class&#x3D;&quot;w-3 h-3 bg-red-500 rounded-full animate-pulse&quot;&gt;&lt;/span&gt;
+            &lt;span class&#x3D;&quot;text-[10px] font-black text-slate-400 uppercase tracking-widest&quot;&gt;En Tiempo Real&lt;/span&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div id&#x3D;&quot;heatmap&quot; class&#x3D;&quot;h-[500px] w-full rounded-[2.5rem]&quot;&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Alertas de Tiempo --&gt;
+    &lt;div class&#x3D;&quot;space-y-6&quot;&gt;
+      &lt;div class&#x3D;&quot;bg-white rounded-[3rem] shadow-xl border border-white flex flex-col h-full max-h-[600px]&quot;&gt;
+        &lt;div class&#x3D;&quot;p-8 border-b border-slate-50&quot;&gt;
+          &lt;h3 class&#x3D;&quot;text-lg font-black uppercase tracking-tight text-red-600&quot;&gt;Alertas Críticas (&gt;24h)&lt;/h3&gt;
+          &lt;p class&#x3D;&quot;text-slate-400 text-xs font-medium&quot;&gt;Notificaciones inmediatas pendientes de envío&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar&quot;&gt;
+          &lt;div *ngFor&#x3D;&quot;let alerta of alertas()&quot; class&#x3D;&quot;p-6 bg-red-50 rounded-[2rem] border border-red-100 group hover:scale-[1.02] transition-all&quot;&gt;
+            &lt;div class&#x3D;&quot;flex justify-between items-start mb-3&quot;&gt;
+              &lt;span class&#x3D;&quot;px-3 py-1 bg-red-600 text-white text-[9px] font-black rounded-full uppercase tracking-widest&quot;&gt;Inmediata&lt;/span&gt;
+              &lt;span class&#x3D;&quot;text-[10px] font-black text-red-400 uppercase&quot;&gt;{{ calcularHoras(alerta.creadoEn) }}h Transcurridas&lt;/span&gt;
+            &lt;/div&gt;
+            &lt;h4 class&#x3D;&quot;font-black text-slate-900 uppercase text-sm leading-tight&quot;&gt;{{ alerta.paciente.nombres }} {{ alerta.paciente.apellidos }}&lt;/h4&gt;
+            &lt;p class&#x3D;&quot;text-red-700 text-xs font-bold mt-1&quot;&gt;{{ alerta.diagnosticoCIE10 }}&lt;/p&gt;
+            &lt;div class&#x3D;&quot;mt-4 pt-4 border-t border-red-200/50 flex items-center justify-between&quot;&gt;
+              &lt;p class&#x3D;&quot;text-[10px] font-bold text-slate-500&quot;&gt;Dr. {{ alerta.historia.medico.nombres }}&lt;/p&gt;
+              &lt;button (click)&#x3D;&quot;abrirGestion(alerta)&quot; class&#x3D;&quot;text-[10px] font-black text-red-600 uppercase tracking-widest hover:underline&quot;&gt;Gestionar&lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;div *ngIf&#x3D;&quot;alertas().length &#x3D;&#x3D;&#x3D; 0&quot; class&#x3D;&quot;flex flex-col items-center justify-center py-20 text-slate-300&quot;&gt;
+            &lt;svg class&#x3D;&quot;w-16 h-16 opacity-20 mb-4&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z&quot;/&gt;&lt;/svg&gt;
+            &lt;p class&#x3D;&quot;text-xs font-black uppercase tracking-widest&quot;&gt;Sin alertas pendientes&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Canal Endémico y Resumen --&gt;
+  &lt;div class&#x3D;&quot;grid grid-cols-1 lg:grid-cols-4 gap-8&quot;&gt;
+    &lt;!-- Canal Endémico --&gt;
+    &lt;div class&#x3D;&quot;lg:col-span-3 bg-white rounded-[3rem] shadow-xl border border-white p-10&quot;&gt;
+      &lt;div class&#x3D;&quot;flex flex-col md:flex-row md:items-center justify-between mb-10 gap-6&quot;&gt;
+        &lt;div&gt;
+          &lt;h3 class&#x3D;&quot;text-2xl font-black uppercase tracking-tight text-slate-900&quot;&gt;Canal Endémico Anual&lt;/h3&gt;
+          &lt;p class&#x3D;&quot;text-slate-400 text-sm font-medium&quot;&gt;Comparativa de casos actuales vs. umbrales históricos&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;flex items-center gap-6&quot;&gt;
+          &lt;div class&#x3D;&quot;flex items-center gap-2&quot;&gt;
+            &lt;div class&#x3D;&quot;w-4 h-4 rounded-md bg-indigo-600&quot;&gt;&lt;/div&gt;
+            &lt;span class&#x3D;&quot;text-[10px] font-black text-slate-500 uppercase tracking-widest&quot;&gt;Año Actual&lt;/span&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;flex items-center gap-2&quot;&gt;
+            &lt;div class&#x3D;&quot;w-4 h-4 rounded-md bg-green-500/20 border border-green-200&quot;&gt;&lt;/div&gt;
+            &lt;span class&#x3D;&quot;text-[10px] font-black text-slate-500 uppercase tracking-widest&quot;&gt;Éxito&lt;/span&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;flex items-center gap-2&quot;&gt;
+            &lt;div class&#x3D;&quot;w-4 h-4 rounded-md bg-amber-500/20 border border-amber-200&quot;&gt;&lt;/div&gt;
+            &lt;span class&#x3D;&quot;text-[10px] font-black text-slate-500 uppercase tracking-widest&quot;&gt;Alerta&lt;/span&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;flex items-center gap-2&quot;&gt;
+            &lt;div class&#x3D;&quot;w-4 h-4 rounded-md bg-red-500/20 border border-red-200&quot;&gt;&lt;/div&gt;
+            &lt;span class&#x3D;&quot;text-[10px] font-black text-slate-500 uppercase tracking-widest&quot;&gt;Alarma&lt;/span&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class&#x3D;&quot;h-[400px] w-full&quot;&gt;
+        &lt;canvas #canalChart&gt;&lt;/canvas&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Top Diagnósticos --&gt;
+    &lt;div class&#x3D;&quot;lg:col-span-1 bg-white rounded-[3rem] shadow-xl border border-white p-8&quot;&gt;
+      &lt;h3 class&#x3D;&quot;text-xl font-black uppercase tracking-tight text-slate-900 mb-8 pt-2&quot;&gt;Top Diagnósticos&lt;/h3&gt;
+      &lt;div class&#x3D;&quot;space-y-6&quot;&gt;
+        &lt;div *ngFor&#x3D;&quot;let d of resumenDiagnosticos(); let i &#x3D; index&quot; class&#x3D;&quot;flex items-center gap-4 group&quot;&gt;
+          &lt;div class&#x3D;&quot;w-10 h-10 rounded-2xl bg-slate-50 flex items-center justify-center font-black text-xs text-slate-400 group-hover:bg-indigo-50 group-hover:text-indigo-600 transition-colors&quot;&gt;
+            #{{ i + 1 }}
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;flex-1&quot;&gt;
+            &lt;div class&#x3D;&quot;flex justify-between items-end mb-1&quot;&gt;
+              &lt;div&gt;
+                &lt;p class&#x3D;&quot;text-xs font-black text-slate-900 uppercase leading-tight&quot;&gt;{{ d.nombre }}&lt;/p&gt;
+                &lt;p class&#x3D;&quot;text-[10px] font-bold text-slate-400 uppercase tracking-widest&quot;&gt;{{ d.codigo }}&lt;/p&gt;
+              &lt;/div&gt;
+              &lt;p class&#x3D;&quot;text-xs font-black text-indigo-600 whitespace-nowrap&quot;&gt;{{ d.total }} &lt;span class&#x3D;&quot;text-[9px] text-slate-400 uppercase tracking-tighter ml-0.5&quot;&gt;casos&lt;/span&gt;&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;h-1.5 w-full bg-slate-50 rounded-full overflow-hidden&quot;&gt;
+              &lt;div class&#x3D;&quot;h-full bg-indigo-500 rounded-full transition-all duration-1000&quot; [style.width.%]&#x3D;&quot;calcularPorcentajeDiagnostico(d.total)&quot;&gt;&lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div *ngIf&#x3D;&quot;resumenDiagnosticos().length &#x3D;&#x3D;&#x3D; 0&quot; class&#x3D;&quot;flex flex-col items-center justify-center py-20 text-slate-300&quot;&gt;
+        &lt;svg class&#x3D;&quot;w-12 h-12 opacity-10 mb-4&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z&quot;/&gt;&lt;/svg&gt;
+        &lt;p class&#x3D;&quot;text-[10px] font-black uppercase tracking-widest text-center&quot;&gt;Analizando prevalencias...&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></td>
+            </tr>
+
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#alertas" >alertas</a>
+                            </li>
+                            <li>
+                                <a href="#alertaSeleccionada" >alertaSeleccionada</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                <a href="#canalChartRef" >canalChartRef</a>
+                            </li>
+                            <li>
+                                <a href="#cargando" >cargando</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Optional</span>
+                                <a href="#chart" >chart</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#epiSvc" >epiSvc</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Optional</span>
+                                <a href="#heatLayer" >heatLayer</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Optional</span>
+                                <a href="#map" >map</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#ngZone" >ngZone</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#notify" >notify</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#rawChartData" >rawChartData</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#rawMapData" >rawMapData</a>
+                            </li>
+                            <li>
+                                <a href="#resumenDiagnosticos" >resumenDiagnosticos</a>
+                            </li>
+                            <li>
+                                <a href="#stats" >stats</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#abrirGestion" >abrirGestion</a>
+                            </li>
+                            <li>
+                                <a href="#calcularHoras" >calcularHoras</a>
+                            </li>
+                            <li>
+                                <a href="#calcularPorcentajeDiagnostico" >calcularPorcentajeDiagnostico</a>
+                            </li>
+                            <li>
+                                <a href="#cargarDatos" >cargarDatos</a>
+                            </li>
+                            <li>
+                                <a href="#cerrarGestion" >cerrarGestion</a>
+                            </li>
+                            <li>
+                                <a href="#confirmarGestion" >confirmarGestion</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#initChart" >initChart</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#initMap" >initMap</a>
+                            </li>
+                            <li>
+                                <a href="#ngAfterViewInit" >ngAfterViewInit</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#updateChart" >updateChart</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#updateHeatMap" >updateHeatMap</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="abrirGestion"></a>
+                    <span class="name">
+                        <span ><b>abrirGestion</b></span>
+                        <a href="#abrirGestion"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>abrirGestion(alerta: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="287"
+                                    class="link-to-prism">src/app/modules/epidemiologia/pages/dashboard/dashboard.component.ts:287</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>alerta</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="calcularHoras"></a>
+                    <span class="name">
+                        <span ><b>calcularHoras</b></span>
+                        <a href="#calcularHoras"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>calcularHoras(fecha: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="549"
+                                    class="link-to-prism">src/app/modules/epidemiologia/pages/dashboard/dashboard.component.ts:549</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>fecha</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="calcularPorcentajeDiagnostico"></a>
+                    <span class="name">
+                        <span ><b>calcularPorcentajeDiagnostico</b></span>
+                        <a href="#calcularPorcentajeDiagnostico"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>calcularPorcentajeDiagnostico(total: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="370"
+                                    class="link-to-prism">src/app/modules/epidemiologia/pages/dashboard/dashboard.component.ts:370</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>total</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargarDatos"></a>
+                    <span class="name">
+                        <span ><b>cargarDatos</b></span>
+                        <a href="#cargarDatos"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cargarDatos()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="327"
+                                    class="link-to-prism">src/app/modules/epidemiologia/pages/dashboard/dashboard.component.ts:327</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cerrarGestion"></a>
+                    <span class="name">
+                        <span ><b>cerrarGestion</b></span>
+                        <a href="#cerrarGestion"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cerrarGestion()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="291"
+                                    class="link-to-prism">src/app/modules/epidemiologia/pages/dashboard/dashboard.component.ts:291</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="confirmarGestion"></a>
+                    <span class="name">
+                        <span ><b>confirmarGestion</b></span>
+                        <a href="#confirmarGestion"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>confirmarGestion(estado: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="295"
+                                    class="link-to-prism">src/app/modules/epidemiologia/pages/dashboard/dashboard.component.ts:295</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>estado</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="initChart"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>initChart</b></span>
+                        <a href="#initChart"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>initChart()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="449"
+                                    class="link-to-prism">src/app/modules/epidemiologia/pages/dashboard/dashboard.component.ts:449</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="initMap"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>initMap</b></span>
+                        <a href="#initMap"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>initMap()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="376"
+                                    class="link-to-prism">src/app/modules/epidemiologia/pages/dashboard/dashboard.component.ts:376</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngAfterViewInit"></a>
+                    <span class="name">
+                        <span ><b>ngAfterViewInit</b></span>
+                        <a href="#ngAfterViewInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngAfterViewInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="309"
+                                    class="link-to-prism">src/app/modules/epidemiologia/pages/dashboard/dashboard.component.ts:309</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="283"
+                                    class="link-to-prism">src/app/modules/epidemiologia/pages/dashboard/dashboard.component.ts:283</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateChart"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>updateChart</b></span>
+                        <a href="#updateChart"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>updateChart(data: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="530"
+                                    class="link-to-prism">src/app/modules/epidemiologia/pages/dashboard/dashboard.component.ts:530</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>data</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateHeatMap"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>updateHeatMap</b></span>
+                        <a href="#updateHeatMap"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>updateHeatMap(data: any[])</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="383"
+                                    class="link-to-prism">src/app/modules/epidemiologia/pages/dashboard/dashboard.component.ts:383</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>data</td>
+                                            <td>
+                                                        <code>any[]</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="alertas"></a>
+                    <span class="name">
+                        <span ><b>alertas</b></span>
+                        <a href="#alertas"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;any[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="272" class="link-to-prism">src/app/modules/epidemiologia/pages/dashboard/dashboard.component.ts:272</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="alertaSeleccionada"></a>
+                    <span class="name">
+                        <span ><b>alertaSeleccionada</b></span>
+                        <a href="#alertaSeleccionada"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;any&gt;(null)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="273" class="link-to-prism">src/app/modules/epidemiologia/pages/dashboard/dashboard.component.ts:273</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="canalChartRef"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                        <span ><b>canalChartRef</b></span>
+                        <a href="#canalChartRef"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>ElementRef&lt;HTMLCanvasElement&gt;</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <b>Decorators : </b>
+                        <br />
+                        <code>
+                            @ViewChild(&#x27;canalChart&#x27;)<br />
+                        </code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="268" class="link-to-prism">src/app/modules/epidemiologia/pages/dashboard/dashboard.component.ts:268</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargando"></a>
+                    <span class="name">
+                        <span ><b>cargando</b></span>
+                        <a href="#cargando"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(true)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="270" class="link-to-prism">src/app/modules/epidemiologia/pages/dashboard/dashboard.component.ts:270</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="chart"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Optional</span>
+                        <span ><b>chart</b></span>
+                        <a href="#chart"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>Chart</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="278" class="link-to-prism">src/app/modules/epidemiologia/pages/dashboard/dashboard.component.ts:278</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="epiSvc"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>epiSvc</b></span>
+                        <a href="#epiSvc"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(EpidemiologiaService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="264" class="link-to-prism">src/app/modules/epidemiologia/pages/dashboard/dashboard.component.ts:264</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="heatLayer"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Optional</span>
+                        <span ><b>heatLayer</b></span>
+                        <a href="#heatLayer"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="277" class="link-to-prism">src/app/modules/epidemiologia/pages/dashboard/dashboard.component.ts:277</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="map"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Optional</span>
+                        <span ><b>map</b></span>
+                        <a href="#map"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>L.Map</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="276" class="link-to-prism">src/app/modules/epidemiologia/pages/dashboard/dashboard.component.ts:276</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngZone"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>ngZone</b></span>
+                        <a href="#ngZone"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(NgZone)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="266" class="link-to-prism">src/app/modules/epidemiologia/pages/dashboard/dashboard.component.ts:266</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="notify"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>notify</b></span>
+                        <a href="#notify"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(NotificationService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="265" class="link-to-prism">src/app/modules/epidemiologia/pages/dashboard/dashboard.component.ts:265</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="rawChartData"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>rawChartData</b></span>
+                        <a href="#rawChartData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="281" class="link-to-prism">src/app/modules/epidemiologia/pages/dashboard/dashboard.component.ts:281</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="rawMapData"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>rawMapData</b></span>
+                        <a href="#rawMapData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>any[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="280" class="link-to-prism">src/app/modules/epidemiologia/pages/dashboard/dashboard.component.ts:280</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="resumenDiagnosticos"></a>
+                    <span class="name">
+                        <span ><b>resumenDiagnosticos</b></span>
+                        <a href="#resumenDiagnosticos"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;any[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="274" class="link-to-prism">src/app/modules/epidemiologia/pages/dashboard/dashboard.component.ts:274</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="stats"></a>
+                    <span class="name">
+                        <span ><b>stats</b></span>
+                        <a href="#stats"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal({ total: 0, alertas: 0, brotes: 0, cobertura: 85 })</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="271" class="link-to-prism">src/app/modules/epidemiologia/pages/dashboard/dashboard.component.ts:271</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit, inject, signal, ViewChild, ElementRef, AfterViewInit, NgZone } from &#x27;@angular/core&#x27;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
+import { EpidemiologiaService } from &#x27;../../../../core/services/epidemiologia.service&#x27;;
+import { NotificationService } from &#x27;../../../../core/services/notification.service&#x27;;
+import * as L from &#x27;leaflet&#x27;;
+import &#x27;leaflet.heat&#x27;;
+import { Chart, registerables } from &#x27;chart.js&#x27;;
+
+Chart.register(...registerables);
+
+@Component({
+  selector: &#x27;app-epidemiologia-dashboard&#x27;,
+  standalone: true,
+  imports: [CommonModule],
+  template: &#x60;
+    &lt;div class&#x3D;&quot;min-h-screen bg-slate-50 p-6 lg:p-10 space-y-8 relative&quot;&gt;
+      
+      &lt;!-- Overlay de Carga --&gt;
+      &lt;div *ngIf&#x3D;&quot;cargando()&quot; class&#x3D;&quot;absolute inset-0 bg-slate-50/80 backdrop-blur-sm z-[100] flex flex-col items-center justify-center&quot;&gt;
+        &lt;div class&#x3D;&quot;w-16 h-16 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin mb-4&quot;&gt;&lt;/div&gt;
+        &lt;p class&#x3D;&quot;text-slate-900 font-black uppercase tracking-widest text-xs&quot;&gt;Cargando Inteligencia Epidemiológica...&lt;/p&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Modal de Gestión --&gt;
+      &lt;div *ngIf&#x3D;&quot;alertaSeleccionada()&quot; class&#x3D;&quot;fixed inset-0 z-[1000] flex items-center justify-center p-4&quot;&gt;
+        &lt;div class&#x3D;&quot;absolute inset-0 bg-slate-900/60 backdrop-blur-md&quot; (click)&#x3D;&quot;cerrarGestion()&quot;&gt;&lt;/div&gt;
+        &lt;div class&#x3D;&quot;bg-white w-full max-w-xl rounded-[3rem] shadow-2xl relative z-10 overflow-hidden border border-white/20 animate-in fade-in zoom-in duration-300&quot;&gt;
+          &lt;div class&#x3D;&quot;p-10 space-y-8&quot;&gt;
+            &lt;div class&#x3D;&quot;flex justify-between items-start&quot;&gt;
+              &lt;div class&#x3D;&quot;space-y-1&quot;&gt;
+                &lt;span class&#x3D;&quot;px-4 py-1.5 bg-red-600 text-white text-[10px] font-black rounded-full uppercase tracking-widest shadow-lg shadow-red-100&quot;&gt;Acción Requerida&lt;/span&gt;
+                &lt;h3 class&#x3D;&quot;text-3xl font-black text-slate-900 tracking-tight uppercase pt-2&quot;&gt;Gestionar Notificación&lt;/h3&gt;
+                &lt;p class&#x3D;&quot;text-slate-500 font-medium&quot;&gt;Paciente: {{ alertaSeleccionada().paciente.nombres }} {{ alertaSeleccionada().paciente.apellidos }}&lt;/p&gt;
+              &lt;/div&gt;
+              &lt;button (click)&#x3D;&quot;cerrarGestion()&quot; class&#x3D;&quot;p-3 bg-slate-100 hover:bg-slate-200 rounded-2xl transition-colors&quot;&gt;
+                &lt;svg class&#x3D;&quot;w-6 h-6 text-slate-500&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M6 18L18 6M6 6l12 12&quot;/&gt;&lt;/svg&gt;
+              &lt;/button&gt;
+            &lt;/div&gt;
+
+            &lt;div class&#x3D;&quot;grid grid-cols-2 gap-4&quot;&gt;
+              &lt;div class&#x3D;&quot;p-6 bg-slate-50 rounded-3xl border border-slate-100&quot;&gt;
+                &lt;p class&#x3D;&quot;text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1&quot;&gt;Código CIE-10&lt;/p&gt;
+                &lt;p class&#x3D;&quot;text-xl font-black text-slate-900&quot;&gt;{{ alertaSeleccionada().diagnosticoCIE10 }}&lt;/p&gt;
+              &lt;/div&gt;
+              &lt;div class&#x3D;&quot;p-6 bg-slate-50 rounded-3xl border border-slate-100&quot;&gt;
+                &lt;p class&#x3D;&quot;text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1&quot;&gt;Tiempo de Alerta&lt;/p&gt;
+                &lt;p class&#x3D;&quot;text-xl font-black text-red-600&quot;&gt;{{ calcularHoras(alertaSeleccionada().creadoEn) }}h&lt;/p&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div class&#x3D;&quot;space-y-4&quot;&gt;
+              &lt;p class&#x3D;&quot;text-xs font-black text-slate-900 uppercase tracking-widest text-center&quot;&gt;Seleccione el resultado de la gestión&lt;/p&gt;
+              &lt;div class&#x3D;&quot;grid grid-cols-1 gap-3&quot;&gt;
+                &lt;button (click)&#x3D;&quot;confirmarGestion(&#x27;NOTIFICADO&#x27;)&quot; class&#x3D;&quot;group p-6 bg-indigo-600 hover:bg-indigo-700 rounded-[2rem] text-left transition-all shadow-xl shadow-indigo-100 flex items-center justify-between&quot;&gt;
+                  &lt;div&gt;
+                    &lt;p class&#x3D;&quot;text-white font-black uppercase text-sm tracking-widest&quot;&gt;Oficializar Notificación&lt;/p&gt;
+                    &lt;p class&#x3D;&quot;text-indigo-100 text-xs mt-1&quot;&gt;Marcar como enviado a la Secretaría de Salud&lt;/p&gt;
+                  &lt;/div&gt;
+                  &lt;div class&#x3D;&quot;w-10 h-10 bg-white/20 rounded-2xl flex items-center justify-center group-hover:translate-x-1 transition-transform&quot;&gt;
+                    &lt;svg class&#x3D;&quot;w-6 h-6 text-white&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;3&quot; d&#x3D;&quot;M5 13l4 4L19 7&quot;/&gt;&lt;/svg&gt;
+                  &lt;/div&gt;
+                &lt;/button&gt;
+
+                &lt;button (click)&#x3D;&quot;confirmarGestion(&#x27;DESCARTADO&#x27;)&quot; class&#x3D;&quot;group p-6 bg-white border-2 border-slate-200 hover:border-slate-300 rounded-[2rem] text-left transition-all flex items-center justify-between&quot;&gt;
+                  &lt;div&gt;
+                    &lt;p class&#x3D;&quot;text-slate-900 font-black uppercase text-sm tracking-widest&quot;&gt;Descartar Alerta&lt;/p&gt;
+                    &lt;p class&#x3D;&quot;text-slate-500 text-xs mt-1&quot;&gt;Falsa alarma o error en el diagnóstico&lt;/p&gt;
+                  &lt;/div&gt;
+                  &lt;div class&#x3D;&quot;w-10 h-10 bg-slate-100 rounded-2xl flex items-center justify-center&quot;&gt;
+                    &lt;svg class&#x3D;&quot;w-6 h-6 text-slate-400&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;3&quot; d&#x3D;&quot;M6 18L18 6M6 6l12 12&quot;/&gt;&lt;/svg&gt;
+                  &lt;/div&gt;
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Header --&gt;
+      &lt;div class&#x3D;&quot;flex flex-col md:flex-row md:items-center justify-between gap-6&quot;&gt;
+        &lt;div&gt;
+          &lt;h1 class&#x3D;&quot;text-4xl font-black text-slate-900 tracking-tight uppercase&quot;&gt;Control Epidemiológico&lt;/h1&gt;
+          &lt;p class&#x3D;&quot;text-slate-500 font-medium mt-1&quot;&gt;Panel Analítico para Vigilancia de Salud Pública — Honduras&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;flex items-center gap-3&quot;&gt;
+          &lt;button (click)&#x3D;&quot;cargarDatos()&quot; class&#x3D;&quot;px-6 py-3 bg-white border-2 border-slate-200 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-slate-50 transition-all shadow-sm&quot;&gt;
+            Sincronizar Datos
+          &lt;/button&gt;
+          &lt;div class&#x3D;&quot;px-6 py-3 bg-indigo-600 text-white rounded-2xl font-black text-xs uppercase tracking-widest shadow-lg shadow-indigo-100&quot;&gt;
+            En Vivo
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Stats Cards --&gt;
+      &lt;div class&#x3D;&quot;grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6&quot;&gt;
+        &lt;div class&#x3D;&quot;bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100 relative overflow-hidden&quot;&gt;
+          &lt;div class&#x3D;&quot;relative z-10&quot;&gt;
+            &lt;p class&#x3D;&quot;text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1&quot;&gt;Total Notificaciones&lt;/p&gt;
+            &lt;p class&#x3D;&quot;text-4xl font-black text-slate-900 tracking-tighter&quot;&gt;{{ stats().total }}&lt;/p&gt;
+            &lt;p class&#x3D;&quot;text-[10px] font-bold text-green-500 mt-2 flex items-center gap-1&quot;&gt;
+              &lt;svg class&#x3D;&quot;w-3 h-3&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;3&quot; d&#x3D;&quot;M5 10l7-7m0 0l7 7m-7-7v18&quot;/&gt;&lt;/svg&gt;
+              +12% vs mes anterior
+            &lt;/p&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;absolute -right-4 -bottom-4 opacity-5 text-indigo-600&quot;&gt;
+            &lt;svg class&#x3D;&quot;w-32 h-32&quot; fill&#x3D;&quot;currentColor&quot; viewBox&#x3D;&quot;0 0 24 24&quot;&gt;&lt;path d&#x3D;&quot;M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z&quot;/&gt;&lt;/svg&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100&quot;&gt;
+          &lt;p class&#x3D;&quot;text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1&quot;&gt;Alertas Inmediatas&lt;/p&gt;
+          &lt;p class&#x3D;&quot;text-4xl font-black&quot; [class.text-red-600]&#x3D;&quot;stats().alertas &gt; 0&quot; [class.text-slate-900]&#x3D;&quot;stats().alertas &#x3D;&#x3D;&#x3D; 0&quot;&gt;
+            {{ stats().alertas }}
+          &lt;/p&gt;
+          &lt;div *ngIf&#x3D;&quot;stats().alertas &gt; 0&quot; class&#x3D;&quot;mt-2 px-3 py-1 bg-red-50 text-red-600 text-[9px] font-black rounded-full inline-block uppercase tracking-tighter border border-red-100&quot;&gt;
+            Acción Requerida &lt; 24h
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100&quot;&gt;
+          &lt;p class&#x3D;&quot;text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1&quot;&gt;Semanas en Brote&lt;/p&gt;
+          &lt;p class&#x3D;&quot;text-4xl font-black text-amber-600 tracking-tighter&quot;&gt;{{ stats().brotes }}&lt;/p&gt;
+          &lt;p class&#x3D;&quot;text-[10px] font-bold text-slate-400 mt-2 uppercase tracking-tight&quot;&gt;Vigilancia Activa&lt;/p&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100&quot;&gt;
+          &lt;p class&#x3D;&quot;text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1&quot;&gt;Cobertura Geo&lt;/p&gt;
+          &lt;p class&#x3D;&quot;text-4xl font-black text-indigo-600 tracking-tighter&quot;&gt;{{ stats().cobertura }}%&lt;/p&gt;
+          &lt;p class&#x3D;&quot;text-[10px] font-bold text-slate-400 mt-2 uppercase tracking-tight&quot;&gt;Establecimientos Reportando&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div class&#x3D;&quot;grid grid-cols-1 lg:grid-cols-3 gap-8&quot;&gt;
+        &lt;!-- Mapa de Calor --&gt;
+        &lt;div class&#x3D;&quot;lg:col-span-2 space-y-6&quot;&gt;
+          &lt;div class&#x3D;&quot;bg-white rounded-[3rem] shadow-xl border border-white overflow-hidden p-2&quot;&gt;
+            &lt;div class&#x3D;&quot;p-6 flex items-center justify-between&quot;&gt;
+              &lt;h3 class&#x3D;&quot;text-lg font-black uppercase tracking-tight text-slate-800&quot;&gt;Mapa de Calor: Concentración de Casos&lt;/h3&gt;
+              &lt;div class&#x3D;&quot;flex items-center gap-2&quot;&gt;
+                &lt;span class&#x3D;&quot;w-3 h-3 bg-red-500 rounded-full animate-pulse&quot;&gt;&lt;/span&gt;
+                &lt;span class&#x3D;&quot;text-[10px] font-black text-slate-400 uppercase tracking-widest&quot;&gt;En Tiempo Real&lt;/span&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div id&#x3D;&quot;heatmap&quot; class&#x3D;&quot;h-[500px] w-full rounded-[2.5rem]&quot;&gt;&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Alertas de Tiempo --&gt;
+        &lt;div class&#x3D;&quot;space-y-6&quot;&gt;
+          &lt;div class&#x3D;&quot;bg-white rounded-[3rem] shadow-xl border border-white flex flex-col h-full max-h-[600px]&quot;&gt;
+            &lt;div class&#x3D;&quot;p-8 border-b border-slate-50&quot;&gt;
+              &lt;h3 class&#x3D;&quot;text-lg font-black uppercase tracking-tight text-red-600&quot;&gt;Alertas Críticas (&gt;24h)&lt;/h3&gt;
+              &lt;p class&#x3D;&quot;text-slate-400 text-xs font-medium&quot;&gt;Notificaciones inmediatas pendientes de envío&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar&quot;&gt;
+              &lt;div *ngFor&#x3D;&quot;let alerta of alertas()&quot; class&#x3D;&quot;p-6 bg-red-50 rounded-[2rem] border border-red-100 group hover:scale-[1.02] transition-all&quot;&gt;
+                &lt;div class&#x3D;&quot;flex justify-between items-start mb-3&quot;&gt;
+                  &lt;span class&#x3D;&quot;px-3 py-1 bg-red-600 text-white text-[9px] font-black rounded-full uppercase tracking-widest&quot;&gt;Inmediata&lt;/span&gt;
+                  &lt;span class&#x3D;&quot;text-[10px] font-black text-red-400 uppercase&quot;&gt;{{ calcularHoras(alerta.creadoEn) }}h Transcurridas&lt;/span&gt;
+                &lt;/div&gt;
+                &lt;h4 class&#x3D;&quot;font-black text-slate-900 uppercase text-sm leading-tight&quot;&gt;{{ alerta.paciente.nombres }} {{ alerta.paciente.apellidos }}&lt;/h4&gt;
+                &lt;p class&#x3D;&quot;text-red-700 text-xs font-bold mt-1&quot;&gt;{{ alerta.diagnosticoCIE10 }}&lt;/p&gt;
+                &lt;div class&#x3D;&quot;mt-4 pt-4 border-t border-red-200/50 flex items-center justify-between&quot;&gt;
+                  &lt;p class&#x3D;&quot;text-[10px] font-bold text-slate-500&quot;&gt;Dr. {{ alerta.historia.medico.nombres }}&lt;/p&gt;
+                  &lt;button (click)&#x3D;&quot;abrirGestion(alerta)&quot; class&#x3D;&quot;text-[10px] font-black text-red-600 uppercase tracking-widest hover:underline&quot;&gt;Gestionar&lt;/button&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+
+              &lt;div *ngIf&#x3D;&quot;alertas().length &#x3D;&#x3D;&#x3D; 0&quot; class&#x3D;&quot;flex flex-col items-center justify-center py-20 text-slate-300&quot;&gt;
+                &lt;svg class&#x3D;&quot;w-16 h-16 opacity-20 mb-4&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z&quot;/&gt;&lt;/svg&gt;
+                &lt;p class&#x3D;&quot;text-xs font-black uppercase tracking-widest&quot;&gt;Sin alertas pendientes&lt;/p&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Canal Endémico y Resumen --&gt;
+      &lt;div class&#x3D;&quot;grid grid-cols-1 lg:grid-cols-4 gap-8&quot;&gt;
+        &lt;!-- Canal Endémico --&gt;
+        &lt;div class&#x3D;&quot;lg:col-span-3 bg-white rounded-[3rem] shadow-xl border border-white p-10&quot;&gt;
+          &lt;div class&#x3D;&quot;flex flex-col md:flex-row md:items-center justify-between mb-10 gap-6&quot;&gt;
+            &lt;div&gt;
+              &lt;h3 class&#x3D;&quot;text-2xl font-black uppercase tracking-tight text-slate-900&quot;&gt;Canal Endémico Anual&lt;/h3&gt;
+              &lt;p class&#x3D;&quot;text-slate-400 text-sm font-medium&quot;&gt;Comparativa de casos actuales vs. umbrales históricos&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;flex items-center gap-6&quot;&gt;
+              &lt;div class&#x3D;&quot;flex items-center gap-2&quot;&gt;
+                &lt;div class&#x3D;&quot;w-4 h-4 rounded-md bg-indigo-600&quot;&gt;&lt;/div&gt;
+                &lt;span class&#x3D;&quot;text-[10px] font-black text-slate-500 uppercase tracking-widest&quot;&gt;Año Actual&lt;/span&gt;
+              &lt;/div&gt;
+              &lt;div class&#x3D;&quot;flex items-center gap-2&quot;&gt;
+                &lt;div class&#x3D;&quot;w-4 h-4 rounded-md bg-green-500/20 border border-green-200&quot;&gt;&lt;/div&gt;
+                &lt;span class&#x3D;&quot;text-[10px] font-black text-slate-500 uppercase tracking-widest&quot;&gt;Éxito&lt;/span&gt;
+              &lt;/div&gt;
+              &lt;div class&#x3D;&quot;flex items-center gap-2&quot;&gt;
+                &lt;div class&#x3D;&quot;w-4 h-4 rounded-md bg-amber-500/20 border border-amber-200&quot;&gt;&lt;/div&gt;
+                &lt;span class&#x3D;&quot;text-[10px] font-black text-slate-500 uppercase tracking-widest&quot;&gt;Alerta&lt;/span&gt;
+              &lt;/div&gt;
+              &lt;div class&#x3D;&quot;flex items-center gap-2&quot;&gt;
+                &lt;div class&#x3D;&quot;w-4 h-4 rounded-md bg-red-500/20 border border-red-200&quot;&gt;&lt;/div&gt;
+                &lt;span class&#x3D;&quot;text-[10px] font-black text-slate-500 uppercase tracking-widest&quot;&gt;Alarma&lt;/span&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;h-[400px] w-full&quot;&gt;
+            &lt;canvas #canalChart&gt;&lt;/canvas&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Top Diagnósticos --&gt;
+        &lt;div class&#x3D;&quot;lg:col-span-1 bg-white rounded-[3rem] shadow-xl border border-white p-8&quot;&gt;
+          &lt;h3 class&#x3D;&quot;text-xl font-black uppercase tracking-tight text-slate-900 mb-8 pt-2&quot;&gt;Top Diagnósticos&lt;/h3&gt;
+          &lt;div class&#x3D;&quot;space-y-6&quot;&gt;
+            &lt;div *ngFor&#x3D;&quot;let d of resumenDiagnosticos(); let i &#x3D; index&quot; class&#x3D;&quot;flex items-center gap-4 group&quot;&gt;
+              &lt;div class&#x3D;&quot;w-10 h-10 rounded-2xl bg-slate-50 flex items-center justify-center font-black text-xs text-slate-400 group-hover:bg-indigo-50 group-hover:text-indigo-600 transition-colors&quot;&gt;
+                #{{ i + 1 }}
+              &lt;/div&gt;
+              &lt;div class&#x3D;&quot;flex-1&quot;&gt;
+                &lt;div class&#x3D;&quot;flex justify-between items-end mb-1&quot;&gt;
+                  &lt;div&gt;
+                    &lt;p class&#x3D;&quot;text-xs font-black text-slate-900 uppercase leading-tight&quot;&gt;{{ d.nombre }}&lt;/p&gt;
+                    &lt;p class&#x3D;&quot;text-[10px] font-bold text-slate-400 uppercase tracking-widest&quot;&gt;{{ d.codigo }}&lt;/p&gt;
+                  &lt;/div&gt;
+                  &lt;p class&#x3D;&quot;text-xs font-black text-indigo-600 whitespace-nowrap&quot;&gt;{{ d.total }} &lt;span class&#x3D;&quot;text-[9px] text-slate-400 uppercase tracking-tighter ml-0.5&quot;&gt;casos&lt;/span&gt;&lt;/p&gt;
+                &lt;/div&gt;
+                &lt;div class&#x3D;&quot;h-1.5 w-full bg-slate-50 rounded-full overflow-hidden&quot;&gt;
+                  &lt;div class&#x3D;&quot;h-full bg-indigo-500 rounded-full transition-all duration-1000&quot; [style.width.%]&#x3D;&quot;calcularPorcentajeDiagnostico(d.total)&quot;&gt;&lt;/div&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;div *ngIf&#x3D;&quot;resumenDiagnosticos().length &#x3D;&#x3D;&#x3D; 0&quot; class&#x3D;&quot;flex flex-col items-center justify-center py-20 text-slate-300&quot;&gt;
+            &lt;svg class&#x3D;&quot;w-12 h-12 opacity-10 mb-4&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z&quot;/&gt;&lt;/svg&gt;
+            &lt;p class&#x3D;&quot;text-[10px] font-black uppercase tracking-widest text-center&quot;&gt;Analizando prevalencias...&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &#x60;,
+  styles: [&#x60;
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #cbd5e1; }
+    
+    :host ::ng-deep .custom-leaflet-popup .leaflet-popup-content-wrapper {
+      border-radius: 1.5rem;
+      padding: 0;
+      overflow: hidden;
+      box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    }
+    :host ::ng-deep .custom-leaflet-popup .leaflet-popup-content {
+      margin: 0;
+    }
+    :host ::ng-deep .custom-leaflet-popup .leaflet-popup-tip {
+      background: white;
+    }
+  &#x60;]
+})
+export class EpidemiologiaDashboardComponent implements OnInit, AfterViewInit {
+  private epiSvc &#x3D; inject(EpidemiologiaService);
+  private notify &#x3D; inject(NotificationService);
+  private ngZone &#x3D; inject(NgZone);
+
+  @ViewChild(&#x27;canalChart&#x27;) canalChartRef!: ElementRef&lt;HTMLCanvasElement&gt;;
+
+  cargando &#x3D; signal(true);
+  stats &#x3D; signal({ total: 0, alertas: 0, brotes: 0, cobertura: 85 });
+  alertas &#x3D; signal&lt;any[]&gt;([]);
+  alertaSeleccionada &#x3D; signal&lt;any&gt;(null);
+  resumenDiagnosticos &#x3D; signal&lt;any[]&gt;([]);
+  
+  private map?: L.Map;
+  private heatLayer?: any;
+  private chart?: Chart;
+
+  private rawMapData: any[] &#x3D; [];
+  private rawChartData: any &#x3D; null;
+
+  ngOnInit() {
+    this.cargarDatos();
+  }
+
+  abrirGestion(alerta: any) {
+    this.alertaSeleccionada.set(alerta);
+  }
+
+  cerrarGestion() {
+    this.alertaSeleccionada.set(null);
+  }
+
+  confirmarGestion(estado: string) {
+    const alerta &#x3D; this.alertaSeleccionada();
+    if (!alerta) return;
+
+    this.epiSvc.gestionar(alerta.id, estado).subscribe({
+      next: () &#x3D;&gt; {
+        this.notify.success(&#x60;Alerta ${estado &#x3D;&#x3D;&#x3D; &#x27;NOTIFICADO&#x27; ? &#x27;oficializada&#x27; : &#x27;descartada&#x27;} con éxito&#x60;);
+        this.cerrarGestion();
+        this.cargarDatos(); // Recargamos para que desaparezca de la lista
+      },
+      error: () &#x3D;&gt; this.notify.error(&#x27;Error al procesar la gestión&#x27;)
+    });
+  }
+
+  ngAfterViewInit() {
+    this.ngZone.runOutsideAngular(() &#x3D;&gt; {
+      setTimeout(() &#x3D;&gt; {
+        try {
+          this.initMap();
+          this.initChart();
+          
+          // Si los datos llegaron antes de la inicialización, actualizamos ahora
+          if (this.rawMapData.length &gt; 0) this.updateHeatMap(this.rawMapData);
+          if (this.rawChartData) this.updateChart(this.rawChartData);
+          
+        } catch (e) {
+          console.error(&#x27;Error inicializando componentes visuales:&#x27;, e);
+        }
+      }, 1000); // Aumentamos un poco el tiempo para seguridad
+    });
+  }
+
+  cargarDatos() {
+    this.cargando.set(true);
+    
+    this.epiSvc.obtenerMapaCalor().subscribe({
+      next: (data: any[]) &#x3D;&gt; {
+        this.rawMapData &#x3D; data;
+        this.ngZone.runOutsideAngular(() &#x3D;&gt; this.updateHeatMap(data));
+        this.stats.update(s &#x3D;&gt; ({ ...s, total: data.length }));
+      },
+      error: (err) &#x3D;&gt; this.notify.error(&#x27;Error al cargar mapa de calor&#x27;)
+    });
+
+    this.epiSvc.obtenerAlertas().subscribe({
+      next: (data: any[]) &#x3D;&gt; {
+        this.alertas.set(data);
+        this.stats.update(s &#x3D;&gt; ({ ...s, alertas: data.length }));
+      },
+      error: (err) &#x3D;&gt; this.notify.error(&#x27;Error al cargar alertas&#x27;)
+    });
+
+    this.epiSvc.obtenerCanalEndemico().subscribe({
+      next: (data: any) &#x3D;&gt; {
+        this.rawChartData &#x3D; data;
+        this.ngZone.runOutsideAngular(() &#x3D;&gt; this.updateChart(data));
+        const brotes &#x3D; (data.actual || []).filter((c: any) &#x3D;&gt; {
+          const h &#x3D; data.historico.find((hist: any) &#x3D;&gt; hist.semana &#x3D;&#x3D;&#x3D; c.semana);
+          return h &amp;&amp; c.total &gt; h.alerta;
+        }).length;
+        this.stats.update(s &#x3D;&gt; ({ ...s, brotes }));
+        this.cargando.set(false);
+      },
+      error: (err) &#x3D;&gt; {
+        this.notify.error(&#x27;Error al cargar canal endémico&#x27;);
+        this.cargando.set(false);
+      }
+    });
+
+    this.epiSvc.obtenerResumenDiagnosticos().subscribe({
+      next: (data: any[]) &#x3D;&gt; this.resumenDiagnosticos.set(data),
+      error: (err) &#x3D;&gt; this.notify.error(&#x27;Error al cargar resumen de diagnósticos&#x27;)
+    });
+  }
+
+  calcularPorcentajeDiagnostico(total: number) {
+    if (this.resumenDiagnosticos().length &#x3D;&#x3D;&#x3D; 0) return 0;
+    const max &#x3D; Math.max(...this.resumenDiagnosticos().map(d &#x3D;&gt; d.total), 1);
+    return (total / max) * 100;
+  }
+
+  private initMap() {
+    this.map &#x3D; L.map(&#x27;heatmap&#x27;).setView([14.1, -87.2], 8);
+    L.tileLayer(&#x27;https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png&#x27;, {
+      attribution: &#x27;&amp;copy; OpenStreetMap&#x27;
+    }).addTo(this.map);
+  }
+
+  private updateHeatMap(data: any[]) {
+    if (!this.map) return;
+    
+    // Limpiar capas previas
+    if (this.heatLayer) this.map.removeLayer(this.heatLayer);
+    if ((this as any).markerLayer) this.map.removeLayer((this as any).markerLayer);
+
+    const heatPoints &#x3D; data.map(p &#x3D;&gt; [p.lat, p.lng, 0.5]);
+    
+    // 1. Capa de Calor
+    if ((L as any).heatLayer) {
+      this.heatLayer &#x3D; (L as any).heatLayer(heatPoints, {
+        radius: 25,
+        blur: 15,
+        maxZoom: 10,
+        gradient: { 0.4: &#x27;blue&#x27;, 0.65: &#x27;lime&#x27;, 1: &#x27;red&#x27; }
+      }).addTo(this.map);
+    }
+
+    // 2. Capa de Marcadores Interactivos
+    const markers &#x3D; data.map(p &#x3D;&gt; {
+      const fecha &#x3D; new Date(p.fecha).toLocaleDateString(&#x27;es-HN&#x27;, { day: &#x27;2-digit&#x27;, month: &#x27;short&#x27;, year: &#x27;numeric&#x27; });
+      const colorEstado &#x3D; p.estado &#x3D;&#x3D;&#x3D; &#x27;NOTIFICADO&#x27; ? &#x27;#4f46e5&#x27; : &#x27;#ef4444&#x27;;
+      
+      const popupHtml &#x3D; &#x60;
+        &lt;div class&#x3D;&quot;p-4 min-w-[240px] font-sans&quot;&gt;
+          &lt;div class&#x3D;&quot;flex items-center gap-2 mb-3&quot;&gt;
+            &lt;span class&#x3D;&quot;w-2 h-2 rounded-full&quot; style&#x3D;&quot;background-color: ${colorEstado}&quot;&gt;&lt;/span&gt;
+            &lt;span class&#x3D;&quot;text-[10px] font-black uppercase tracking-widest text-slate-400&quot;&gt;${p.estado}&lt;/span&gt;
+          &lt;/div&gt;
+          &lt;h4 class&#x3D;&quot;text-sm font-black text-slate-900 uppercase mb-1&quot;&gt;${p.paciente}&lt;/h4&gt;
+          &lt;p class&#x3D;&quot;text-[10px] font-bold text-slate-500 mb-3 italic&quot;&gt;EXP: ${p.expediente}&lt;/p&gt;
+          
+          &lt;div class&#x3D;&quot;space-y-2 pt-3 border-t border-slate-100&quot;&gt;
+            &lt;div&gt;
+              &lt;p class&#x3D;&quot;text-[9px] font-black text-slate-400 uppercase tracking-tighter&quot;&gt;Diagnóstico CIE-10&lt;/p&gt;
+              &lt;p class&#x3D;&quot;text-xs font-bold text-indigo-600&quot;&gt;${p.dx}&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div&gt;
+              &lt;p class&#x3D;&quot;text-[9px] font-black text-slate-400 uppercase tracking-tighter&quot;&gt;Establecimiento&lt;/p&gt;
+              &lt;p class&#x3D;&quot;text-xs font-bold text-slate-700&quot;&gt;${p.establecimiento}&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div&gt;
+              &lt;p class&#x3D;&quot;text-[9px] font-black text-slate-400 uppercase tracking-tighter&quot;&gt;Fecha de Registro&lt;/p&gt;
+              &lt;p class&#x3D;&quot;text-xs font-bold text-slate-700&quot;&gt;${fecha}&lt;/p&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &#x60;;
+
+      return L.circleMarker([p.lat, p.lng], {
+        radius: 6,
+        fillColor: colorEstado,
+        color: &#x27;#fff&#x27;,
+        weight: 2,
+        opacity: 0.8,
+        fillOpacity: 0.4
+      }).bindPopup(popupHtml, {
+        className: &#x27;custom-leaflet-popup&#x27;,
+        maxWidth: 300
+      });
+    });
+
+    (this as any).markerLayer &#x3D; L.layerGroup(markers).addTo(this.map);
+  }
+
+  private initChart() {
+    const ctx &#x3D; this.canalChartRef.nativeElement.getContext(&#x27;2d&#x27;);
+    if (!ctx) return;
+
+    this.chart &#x3D; new Chart(ctx, {
+      type: &#x27;line&#x27;,
+      data: {
+        labels: Array.from({ length: 52 }, (_, i) &#x3D;&gt; &#x60;${i + 1}&#x60;),
+        datasets: [
+          {
+            label: &#x27;Zona de Alarma (Rojo)&#x27;,
+            data: [],
+            borderColor: &#x27;transparent&#x27;,
+            backgroundColor: &#x27;rgba(239, 68, 68, 0.1)&#x27;,
+            fill: &#x27;origin&#x27;,
+            pointRadius: 0,
+            tension: 0.4
+          },
+          {
+            label: &#x27;Zona de Alerta (Amarillo)&#x27;,
+            data: [],
+            borderColor: &#x27;transparent&#x27;,
+            backgroundColor: &#x27;rgba(245, 158, 11, 0.2)&#x27;,
+            fill: &#x27;-1&#x27;,
+            pointRadius: 0,
+            tension: 0.4
+          },
+          {
+            label: &#x27;Zona de Seguridad (Verde)&#x27;,
+            data: [],
+            borderColor: &#x27;transparent&#x27;,
+            backgroundColor: &#x27;rgba(34, 197, 94, 0.15)&#x27;,
+            fill: &#x27;-1&#x27;,
+            pointRadius: 0,
+            tension: 0.4
+          },
+          {
+            label: &#x27;Año Actual&#x27;,
+            data: [],
+            borderColor: &#x27;#4f46e5&#x27;,
+            backgroundColor: &#x27;#4f46e5&#x27;,
+            borderWidth: 4,
+            pointRadius: 6,
+            pointBackgroundColor: &#x27;#fff&#x27;,
+            pointBorderWidth: 3,
+            spanGaps: true,
+            tension: 0.3,
+            order: 0
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: &#x27;#1e293b&#x27;,
+            titleFont: { size: 14, weight: &#x27;bold&#x27; },
+            padding: 12,
+            cornerRadius: 12,
+            callbacks: {
+              label: (context) &#x3D;&gt; &#x60; Casos: ${context.parsed.y}&#x60;
+            }
+          }
+        },
+        scales: {
+          y: { 
+            beginAtZero: true, 
+            grid: { color: &#x27;#f1f5f9&#x27; },
+            title: { display: true, text: &#x27;Número de Casos&#x27;, font: { weight: &#x27;bold&#x27; } }
+          },
+          x: { 
+            grid: { display: false },
+            title: { display: true, text: &#x27;Semana Epidemiológica&#x27;, font: { weight: &#x27;bold&#x27; } }
+          }
+        }
+      }
+    });
+  }
+
+  private updateChart(data: any) {
+    if (!this.chart) return;
+
+    const actualData &#x3D; new Array(52).fill(null);
+    (data.actual || []).forEach((c: any) &#x3D;&gt; {
+      actualData[c.semana - 1] &#x3D; c.total;
+    });
+
+    // Zona de Seguridad (Verde) -&gt; Hasta el promedio
+    this.chart.data.datasets[2].data &#x3D; data.historico.map((h: any) &#x3D;&gt; h.promedio);
+    // Zona de Alerta (Amarillo) -&gt; Del promedio a la alerta
+    this.chart.data.datasets[1].data &#x3D; data.historico.map((h: any) &#x3D;&gt; h.alerta);
+    // Zona de Alarma (Rojo) -&gt; Todo lo que exceda (simulado como un tope alto)
+    this.chart.data.datasets[0].data &#x3D; data.historico.map((h: any) &#x3D;&gt; h.alerta * 2);
+    
+    this.chart.data.datasets[3].data &#x3D; actualData;
+    this.chart.update();
+  }
+
+  calcularHoras(fecha: string) {
+    const diff &#x3D; Date.now() - new Date(fecha).getTime();
+    return Math.floor(diff / (1000 * 60 * 60));
+  }
+}
+</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="styleData">
+            <pre class="line-numbers"><code class="language-scss">
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #cbd5e1; }
+    
+    :host ::ng-deep .custom-leaflet-popup .leaflet-popup-content-wrapper {
+      border-radius: 1.5rem;
+      padding: 0;
+      overflow: hidden;
+      box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    }
+    :host ::ng-deep .custom-leaflet-popup .leaflet-popup-content {
+      margin: 0;
+    }
+    :host ::ng-deep .custom-leaflet-popup .leaflet-popup-tip {
+      background: white;
+    }
+  
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="min-h-screen bg-slate-50 p-6 lg:p-10 space-y-8 relative">  <!-- Overlay de Carga -->  <div *ngIf="cargando()" class="absolute inset-0 bg-slate-50/80 backdrop-blur-sm z-[100] flex flex-col items-center justify-center">    <div class="w-16 h-16 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin mb-4"></div>    <p class="text-slate-900 font-black uppercase tracking-widest text-xs">Cargando Inteligencia Epidemiológica...</p>  </div>  <!-- Modal de Gestión -->  <div *ngIf="alertaSeleccionada()" class="fixed inset-0 z-[1000] flex items-center justify-center p-4">    <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-md" (click)="cerrarGestion()"></div>    <div class="bg-white w-full max-w-xl rounded-[3rem] shadow-2xl relative z-10 overflow-hidden border border-white/20 animate-in fade-in zoom-in duration-300">      <div class="p-10 space-y-8">        <div class="flex justify-between items-start">          <div class="space-y-1">            <span class="px-4 py-1.5 bg-red-600 text-white text-[10px] font-black rounded-full uppercase tracking-widest shadow-lg shadow-red-100">Acción Requerida</span>            <h3 class="text-3xl font-black text-slate-900 tracking-tight uppercase pt-2">Gestionar Notificación</h3>            <p class="text-slate-500 font-medium">Paciente: {{ alertaSeleccionada().paciente.nombres }} {{ alertaSeleccionada().paciente.apellidos }}</p>          </div>          <button (click)="cerrarGestion()" class="p-3 bg-slate-100 hover:bg-slate-200 rounded-2xl transition-colors">            <svg class="w-6 h-6 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>          </button>        </div>        <div class="grid grid-cols-2 gap-4">          <div class="p-6 bg-slate-50 rounded-3xl border border-slate-100">            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Código CIE-10</p>            <p class="text-xl font-black text-slate-900">{{ alertaSeleccionada().diagnosticoCIE10 }}</p>          </div>          <div class="p-6 bg-slate-50 rounded-3xl border border-slate-100">            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Tiempo de Alerta</p>            <p class="text-xl font-black text-red-600">{{ calcularHoras(alertaSeleccionada().creadoEn) }}h</p>          </div>        </div>        <div class="space-y-4">          <p class="text-xs font-black text-slate-900 uppercase tracking-widest text-center">Seleccione el resultado de la gestión</p>          <div class="grid grid-cols-1 gap-3">            <button (click)="confirmarGestion(\'NOTIFICADO\')" class="group p-6 bg-indigo-600 hover:bg-indigo-700 rounded-[2rem] text-left transition-all shadow-xl shadow-indigo-100 flex items-center justify-between">              <div>                <p class="text-white font-black uppercase text-sm tracking-widest">Oficializar Notificación</p>                <p class="text-indigo-100 text-xs mt-1">Marcar como enviado a la Secretaría de Salud</p>              </div>              <div class="w-10 h-10 bg-white/20 rounded-2xl flex items-center justify-center group-hover:translate-x-1 transition-transform">                <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>              </div>            </button>            <button (click)="confirmarGestion(\'DESCARTADO\')" class="group p-6 bg-white border-2 border-slate-200 hover:border-slate-300 rounded-[2rem] text-left transition-all flex items-center justify-between">              <div>                <p class="text-slate-900 font-black uppercase text-sm tracking-widest">Descartar Alerta</p>                <p class="text-slate-500 text-xs mt-1">Falsa alarma o error en el diagnóstico</p>              </div>              <div class="w-10 h-10 bg-slate-100 rounded-2xl flex items-center justify-center">                <svg class="w-6 h-6 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"/></svg>              </div>            </button>          </div>        </div>      </div>    </div>  </div>  <!-- Header -->  <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">    <div>      <h1 class="text-4xl font-black text-slate-900 tracking-tight uppercase">Control Epidemiológico</h1>      <p class="text-slate-500 font-medium mt-1">Panel Analítico para Vigilancia de Salud Pública — Honduras</p>    </div>    <div class="flex items-center gap-3">      <button (click)="cargarDatos()" class="px-6 py-3 bg-white border-2 border-slate-200 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-slate-50 transition-all shadow-sm">        Sincronizar Datos      </button>      <div class="px-6 py-3 bg-indigo-600 text-white rounded-2xl font-black text-xs uppercase tracking-widest shadow-lg shadow-indigo-100">        En Vivo      </div>    </div>  </div>  <!-- Stats Cards -->  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">    <div class="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100 relative overflow-hidden">      <div class="relative z-10">        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Total Notificaciones</p>        <p class="text-4xl font-black text-slate-900 tracking-tighter">{{ stats().total }}</p>        <p class="text-[10px] font-bold text-green-500 mt-2 flex items-center gap-1">          <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>          +12% vs mes anterior        </p>      </div>      <div class="absolute -right-4 -bottom-4 opacity-5 text-indigo-600">        <svg class="w-32 h-32" fill="currentColor" viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>      </div>    </div>    <div class="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100">      <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Alertas Inmediatas</p>      <p class="text-4xl font-black" [class.text-red-600]="stats().alertas > 0" [class.text-slate-900]="stats().alertas === 0">        {{ stats().alertas }}      </p>      <div *ngIf="stats().alertas > 0" class="mt-2 px-3 py-1 bg-red-50 text-red-600 text-[9px] font-black rounded-full inline-block uppercase tracking-tighter border border-red-100">        Acción Requerida < 24h      </div>    </div>    <div class="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100">      <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Semanas en Brote</p>      <p class="text-4xl font-black text-amber-600 tracking-tighter">{{ stats().brotes }}</p>      <p class="text-[10px] font-bold text-slate-400 mt-2 uppercase tracking-tight">Vigilancia Activa</p>    </div>    <div class="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100">      <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Cobertura Geo</p>      <p class="text-4xl font-black text-indigo-600 tracking-tighter">{{ stats().cobertura }}%</p>      <p class="text-[10px] font-bold text-slate-400 mt-2 uppercase tracking-tight">Establecimientos Reportando</p>    </div>  </div>  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">    <!-- Mapa de Calor -->    <div class="lg:col-span-2 space-y-6">      <div class="bg-white rounded-[3rem] shadow-xl border border-white overflow-hidden p-2">        <div class="p-6 flex items-center justify-between">          <h3 class="text-lg font-black uppercase tracking-tight text-slate-800">Mapa de Calor: Concentración de Casos</h3>          <div class="flex items-center gap-2">            <span class="w-3 h-3 bg-red-500 rounded-full animate-pulse"></span>            <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">En Tiempo Real</span>          </div>        </div>        <div id="heatmap" class="h-[500px] w-full rounded-[2.5rem]"></div>      </div>    </div>    <!-- Alertas de Tiempo -->    <div class="space-y-6">      <div class="bg-white rounded-[3rem] shadow-xl border border-white flex flex-col h-full max-h-[600px]">        <div class="p-8 border-b border-slate-50">          <h3 class="text-lg font-black uppercase tracking-tight text-red-600">Alertas Críticas (>24h)</h3>          <p class="text-slate-400 text-xs font-medium">Notificaciones inmediatas pendientes de envío</p>        </div>        <div class="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar">          <div *ngFor="let alerta of alertas()" class="p-6 bg-red-50 rounded-[2rem] border border-red-100 group hover:scale-[1.02] transition-all">            <div class="flex justify-between items-start mb-3">              <span class="px-3 py-1 bg-red-600 text-white text-[9px] font-black rounded-full uppercase tracking-widest">Inmediata</span>              <span class="text-[10px] font-black text-red-400 uppercase">{{ calcularHoras(alerta.creadoEn) }}h Transcurridas</span>            </div>            <h4 class="font-black text-slate-900 uppercase text-sm leading-tight">{{ alerta.paciente.nombres }} {{ alerta.paciente.apellidos }}</h4>            <p class="text-red-700 text-xs font-bold mt-1">{{ alerta.diagnosticoCIE10 }}</p>            <div class="mt-4 pt-4 border-t border-red-200/50 flex items-center justify-between">              <p class="text-[10px] font-bold text-slate-500">Dr. {{ alerta.historia.medico.nombres }}</p>              <button (click)="abrirGestion(alerta)" class="text-[10px] font-black text-red-600 uppercase tracking-widest hover:underline">Gestionar</button>            </div>          </div>          <div *ngIf="alertas().length === 0" class="flex flex-col items-center justify-center py-20 text-slate-300">            <svg class="w-16 h-16 opacity-20 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>            <p class="text-xs font-black uppercase tracking-widest">Sin alertas pendientes</p>          </div>        </div>      </div>    </div>  </div>  <!-- Canal Endémico y Resumen -->  <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">    <!-- Canal Endémico -->    <div class="lg:col-span-3 bg-white rounded-[3rem] shadow-xl border border-white p-10">      <div class="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-6">        <div>          <h3 class="text-2xl font-black uppercase tracking-tight text-slate-900">Canal Endémico Anual</h3>          <p class="text-slate-400 text-sm font-medium">Comparativa de casos actuales vs. umbrales históricos</p>        </div>        <div class="flex items-center gap-6">          <div class="flex items-center gap-2">            <div class="w-4 h-4 rounded-md bg-indigo-600"></div>            <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Año Actual</span>          </div>          <div class="flex items-center gap-2">            <div class="w-4 h-4 rounded-md bg-green-500/20 border border-green-200"></div>            <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Éxito</span>          </div>          <div class="flex items-center gap-2">            <div class="w-4 h-4 rounded-md bg-amber-500/20 border border-amber-200"></div>            <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Alerta</span>          </div>          <div class="flex items-center gap-2">            <div class="w-4 h-4 rounded-md bg-red-500/20 border border-red-200"></div>            <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Alarma</span>          </div>        </div>      </div>      <div class="h-[400px] w-full">        <canvas #canalChart></canvas>      </div>    </div>    <!-- Top Diagnósticos -->    <div class="lg:col-span-1 bg-white rounded-[3rem] shadow-xl border border-white p-8">      <h3 class="text-xl font-black uppercase tracking-tight text-slate-900 mb-8 pt-2">Top Diagnósticos</h3>      <div class="space-y-6">        <div *ngFor="let d of resumenDiagnosticos(); let i = index" class="flex items-center gap-4 group">          <div class="w-10 h-10 rounded-2xl bg-slate-50 flex items-center justify-center font-black text-xs text-slate-400 group-hover:bg-indigo-50 group-hover:text-indigo-600 transition-colors">            #{{ i + 1 }}          </div>          <div class="flex-1">            <div class="flex justify-between items-end mb-1">              <div>                <p class="text-xs font-black text-slate-900 uppercase leading-tight">{{ d.nombre }}</p>                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{{ d.codigo }}</p>              </div>              <p class="text-xs font-black text-indigo-600 whitespace-nowrap">{{ d.total }} <span class="text-[9px] text-slate-400 uppercase tracking-tighter ml-0.5">casos</span></p>            </div>            <div class="h-1.5 w-full bg-slate-50 rounded-full overflow-hidden">              <div class="h-full bg-indigo-500 rounded-full transition-all duration-1000" [style.width.%]="calcularPorcentajeDiagnostico(d.total)"></div>            </div>          </div>        </div>      </div>      <div *ngIf="resumenDiagnosticos().length === 0" class="flex flex-col items-center justify-center py-20 text-slate-300">        <svg class="w-12 h-12 opacity-10 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>        <p class="text-[10px] font-black uppercase tracking-widest text-center">Analizando prevalencias...</p>      </div>    </div>  </div></div></div>'
+    var COMPONENTS = [{'name': 'AgendasComponent', 'selector': 'app-agendas'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'BuscadorPacienteComponent', 'selector': 'app-buscador-paciente'},{'name': 'CitasComponent', 'selector': 'app-citas'},{'name': 'ConstructorFormularioComponent', 'selector': 'app-constructor-formulario'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'EpidemiologiaDashboardComponent', 'selector': 'app-epidemiologia-dashboard'},{'name': 'EstadisticasHospitalariasComponent', 'selector': 'app-estadisticas-hospitalarias'},{'name': 'FarmaciaComponent', 'selector': 'app-farmacia'},{'name': 'GestionHospitalizacionComponent', 'selector': 'app-gestion-hospitalizacion'},{'name': 'GestionLotesModalComponent', 'selector': 'app-gestion-lotes-modal'},{'name': 'GestionReportesComponent', 'selector': 'app-gestion-reportes'},{'name': 'HistoriaClinicaComponent', 'selector': 'app-historia-clinica'},{'name': 'InfraestructuraModalComponent', 'selector': 'app-infraestructura-modal'},{'name': 'InventarioVacunasComponent', 'selector': 'app-inventario-vacunas'},{'name': 'LaboratorioComponent', 'selector': 'app-laboratorio'},{'name': 'ListaPlantillasComponent', 'selector': 'app-lista-plantillas'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MainLayoutComponent', 'selector': 'app-main-layout'},{'name': 'MantenimientoDiagnosticosComponent', 'selector': 'app-mantenimiento-diagnosticos'},{'name': 'MantenimientoEstablecimientosComponent', 'selector': 'app-mantenimiento-establecimientos'},{'name': 'MantenimientoInventarioComponent', 'selector': 'app-mantenimiento-inventario'},{'name': 'MantenimientoLaboratorioComponent', 'selector': 'app-mantenimiento-laboratorio'},{'name': 'MantenimientoLoginComponent', 'selector': 'app-mantenimiento-login'},{'name': 'MantenimientoMedicamentosComponent', 'selector': 'app-mantenimiento-medicamentos'},{'name': 'MantenimientoRadiologiaComponent', 'selector': 'app-mantenimiento-radiologia'},{'name': 'MantenimientoRolesComponent', 'selector': 'app-mantenimiento-roles'},{'name': 'MovimientosInventarioComponent', 'selector': 'app-movimientos-inventario'},{'name': 'NotificationComponent', 'selector': 'app-notification'},{'name': 'NuevaConsultaComponent', 'selector': 'app-nueva-consulta'},{'name': 'PacientesComponent', 'selector': 'app-pacientes'},{'name': 'PermisosUsuariosComponent', 'selector': 'app-permisos-usuarios'},{'name': 'RecetasPacienteComponent', 'selector': 'app-recetas-paciente'},{'name': 'RegistroVacunaModalComponent', 'selector': 'app-registro-vacuna-modal'},{'name': 'ReportesComponent', 'selector': 'app-reportes'},{'name': 'TriajeComponent', 'selector': 'app-triaje'},{'name': 'UsuariosComponent', 'selector': 'app-usuarios'},{'name': 'VacunacionComponent', 'selector': 'app-vacunacion'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'EpidemiologiaDashboardComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'EpidemiologiaDashboardComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

@@ -7,6 +7,7 @@ import { UsuariosService, UsuarioResumen } from '../../core/services/usuarios.se
 import { NotificationService } from '../../core/services/notification.service';
 import { EstablecimientosService } from '../../core/services/establecimientos.service';
 import { Subject, takeUntil } from 'rxjs';
+import { DateUtils } from '../../core/utils/date-utils';
 
 @Component({
   selector: 'app-agendas',
@@ -224,6 +225,9 @@ export class AgendasComponent implements OnInit {
       this.notificationService.warn('Debe completar las fechas');
       return;
     }
+    if (!DateUtils.esFechaValida(this.nuevaExcepcion.fechaInicio) || !DateUtils.esFechaValida(this.nuevaExcepcion.fechaFin)) {
+      return;
+    }
     const payload = {
       ...this.nuevaExcepcion,
       medicoId: Number(this.medicoId),
@@ -302,5 +306,9 @@ export class AgendasComponent implements OnInit {
       case 'INCAPACIDAD': return 'bg-red-100 text-red-800 border-red-200';
       default: return 'bg-gray-100 text-gray-800 border-gray-200';
     }
+  }
+
+  esFechaValida(fecha: string): boolean {
+    return DateUtils.esFechaValida(fecha);
   }
 }

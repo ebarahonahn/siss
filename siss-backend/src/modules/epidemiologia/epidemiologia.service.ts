@@ -88,18 +88,37 @@ export class EpidemiologiaService {
         longitud: { not: null },
       },
       select: {
+        id: true,
         latitud: true,
         longitud: true,
         diagnosticoCIE10: true,
         creadoEn: true,
+        estado: true,
+        paciente: {
+          select: { nombres: true, apellidos: true, numeroExpediente: true }
+        },
+        historia: {
+          select: {
+            medico: {
+              select: {
+                establecimiento: { select: { nombre: true } }
+              }
+            }
+          }
+        }
       },
     });
 
     return notificaciones.map(n => ({
+      id: n.id,
       lat: Number(n.latitud),
       lng: Number(n.longitud),
-      dx: n.diagnosticoCIE10,
+      dx: n.diagnosticoCIE10 || 'N/A',
       fecha: n.creadoEn,
+      estado: n.estado || 'PENDIENTE',
+      paciente: n.paciente ? `${n.paciente.nombres} ${n.paciente.apellidos}` : 'PACIENTE SIN NOMBRE',
+      expediente: n.paciente?.numeroExpediente || 'N/A',
+      establecimiento: n.historia?.medico?.establecimiento?.nombre || 'ESTABLECIMIENTO NO REGISTRADO'
     }));
   }
 
@@ -130,6 +149,27 @@ export class EpidemiologiaService {
       actual: casos.map(c => ({ semana: c.semanaEpidemiologica, total: c._count.id })),
       historico,
     };
+  }
+
+  async obtenerResumenDiagnosticos() {
+    const resumen = await this.prisma.notificacionEpidemiologica.groupBy({
+      by: ['diagnosticoCIE10'],
+      _count: { id: true },
+      orderBy: { _count: { id: 'desc' } },
+      take: 10,
+    });
+
+    const codigos = resumen.map(r => r.diagnosticoCIE10);
+    const catalogos = await this.prisma.catDiagnostico.findMany({
+      where: { codigo: { in: codigos } },
+      select: { codigo: true, descripcion: true }
+    });
+
+    return resumen.map(r => ({
+      codigo: r.diagnosticoCIE10,
+      nombre: catalogos.find(c => c.codigo === r.diagnosticoCIE10)?.descripcion || 'Sin descripción',
+      total: r._count.id
+    }));
   }
 
   async obtenerAlertasTiempo() {

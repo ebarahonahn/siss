@@ -88,4 +88,8 @@ export class CrearTriajeDto {
   @IsOptional()
   @IsString()
   observaciones?: string;
+
+  @IsOptional()
+  @IsString()
+  creadoEn?: string;
 }

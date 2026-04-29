@@ -1,0 +1,891 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>siss-frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">siss-frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  BuscadorPacienteComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#styleData" class="nav-link"
+                role="tab" id="styleData-tab" data-bs-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/shared/components/buscador-paciente/buscador.component.ts</code>
+</p>
+
+
+
+
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-buscador-paciente</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                            <code>CommonModule</code>
+                            <code>FormsModule</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-3">styles</td>
+                <td class="col-md-9"><code>
+    .scale-in { animation: scaleIn 0.2s ease-out; }
+    @keyframes scaleIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+  </code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">template</td>
+                <td class="col-md-9"><pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;relative&quot;&gt;
+  &lt;div class&#x3D;&quot;relative flex items-center&quot;&gt;
+    &lt;div class&#x3D;&quot;absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none&quot;&gt;
+      &lt;i class&#x3D;&quot;bi bi-search text-gray-400&quot;&gt;&lt;/i&gt;
+    &lt;/div&gt;
+    &lt;input
+      type&#x3D;&quot;text&quot;
+      class&#x3D;&quot;block w-full pl-11 pr-4 py-3.5 bg-gray-50 border-transparent focus:bg-white focus:ring-2 focus:ring-blue-500 rounded-2xl text-sm font-medium transition-all outline-none shadow-sm&quot;
+      placeholder&#x3D;&quot;Buscar paciente por DNI, Nombre...&quot;
+      (input)&#x3D;&quot;onInput($event)&quot;
+      #searchInput
+    &gt;
+  &lt;/div&gt;
+
+  &lt;!-- Resultados desplegables --&gt;
+  &lt;div class&#x3D;&quot;absolute z-[1000] left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden scale-in&quot;
+       *ngIf&#x3D;&quot;resultados.length &gt; 0&quot;&gt;
+    &lt;div class&#x3D;&quot;max-h-[350px] overflow-y-auto divide-y divide-gray-50&quot;&gt;
+      &lt;button
+        type&#x3D;&quot;button&quot;
+        class&#x3D;&quot;w-full text-left px-5 py-4 hover:bg-blue-50 transition-colors group flex items-center justify-between&quot;
+        *ngFor&#x3D;&quot;let p of resultados&quot;
+        (click)&#x3D;&quot;seleccionar(p)&quot;
+      &gt;
+        &lt;div&gt;
+          &lt;h6 class&#x3D;&quot;font-bold text-gray-900 group-hover:text-blue-700 transition-colors uppercase&quot;&gt;{{ p.nombres }} {{ p.apellidos }}&lt;/h6&gt;
+          &lt;div class&#x3D;&quot;flex items-center gap-2 mt-1&quot;&gt;
+            &lt;span class&#x3D;&quot;text-[10px] font-bold bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded uppercase tracking-tighter&quot;&gt;{{ p.numeroExpediente }}&lt;/span&gt;
+            &lt;span class&#x3D;&quot;text-[11px] text-gray-400 font-medium&quot;&gt;DNI: {{ p.dni }}&lt;/span&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;i class&#x3D;&quot;bi bi-chevron-right text-gray-300 group-hover:text-blue-500 transition-all group-hover:translate-x-1&quot;&gt;&lt;/i&gt;
+      &lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Empty / Loading States --&gt;
+  &lt;div class&#x3D;&quot;absolute z-[1000] left-0 right-0 mt-2 bg-white rounded-2xl shadow-xl border border-gray-100 p-6 text-center animate__animated animate__fadeIn&quot;
+       *ngIf&#x3D;&quot;buscando &amp;&amp; resultados.length &#x3D;&#x3D;&#x3D; 0 &amp;&amp; !loading&quot;&gt;
+    &lt;i class&#x3D;&quot;bi bi-emoji-frown text-2xl text-gray-300&quot;&gt;&lt;/i&gt;
+    &lt;p class&#x3D;&quot;text-xs text-gray-500 font-bold uppercase mt-2 tracking-widest&quot;&gt;Sin coincidencias&lt;/p&gt;
+  &lt;/div&gt;
+
+  &lt;div class&#x3D;&quot;absolute right-4 top-1/2 -translate-y-1/2&quot; *ngIf&#x3D;&quot;loading&quot;&gt;
+    &lt;div class&#x3D;&quot;animate-spin h-4 w-4 border-2 border-blue-600 border-b-transparent rounded-full&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></td>
+            </tr>
+
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#buscando" >buscando</a>
+                            </li>
+                            <li>
+                                <a href="#loading" >loading</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#pacientesService" >pacientesService</a>
+                            </li>
+                            <li>
+                                <a href="#resultados" >resultados</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#searchSubject" >searchSubject</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#onInput" >onInput</a>
+                            </li>
+                            <li>
+                                <a href="#seleccionar" >seleccionar</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Outputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#pacienteSeleccionado" >pacienteSeleccionado</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor()</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="74" class="link-to-prism">src/app/shared/components/buscador-paciente/buscador.component.ts:74</a></div>
+                            </td>
+                        </tr>
+
+            </tbody>
+        </table>
+</section>
+
+
+    <section data-compodoc="block-outputs">
+    <h3 id="outputs">Outputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="pacienteSeleccionado"></a>
+                        <b>pacienteSeleccionado</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>EventEmitter</code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="69" class="link-to-prism">src/app/shared/components/buscador-paciente/buscador.component.ts:69</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+</section>
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onInput"></a>
+                    <span class="name">
+                        <span ><b>onInput</b></span>
+                        <a href="#onInput"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onInput(event: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="103"
+                                    class="link-to-prism">src/app/shared/components/buscador-paciente/buscador.component.ts:103</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="seleccionar"></a>
+                    <span class="name">
+                        <span ><b>seleccionar</b></span>
+                        <a href="#seleccionar"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>seleccionar(paciente: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="107"
+                                    class="link-to-prism">src/app/shared/components/buscador-paciente/buscador.component.ts:107</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>paciente</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="buscando"></a>
+                    <span class="name">
+                        <span ><b>buscando</b></span>
+                        <a href="#buscando"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="73" class="link-to-prism">src/app/shared/components/buscador-paciente/buscador.component.ts:73</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="loading"></a>
+                    <span class="name">
+                        <span ><b>loading</b></span>
+                        <a href="#loading"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="72" class="link-to-prism">src/app/shared/components/buscador-paciente/buscador.component.ts:72</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="pacientesService"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>pacientesService</b></span>
+                        <a href="#pacientesService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(PacientesService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="67" class="link-to-prism">src/app/shared/components/buscador-paciente/buscador.component.ts:67</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="resultados"></a>
+                    <span class="name">
+                        <span ><b>resultados</b></span>
+                        <a href="#resultados"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>any[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="71" class="link-to-prism">src/app/shared/components/buscador-paciente/buscador.component.ts:71</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="searchSubject"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>searchSubject</b></span>
+                        <a href="#searchSubject"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new BehaviorSubject&lt;string&gt;(&#x27;&#x27;)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="74" class="link-to-prism">src/app/shared/components/buscador-paciente/buscador.component.ts:74</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, EventEmitter, Output, inject } from &#x27;@angular/core&#x27;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
+import { FormsModule } from &#x27;@angular/forms&#x27;;
+import { PacientesService } from &#x27;../../../core/services/pacientes.service&#x27;;
+import { debounceTime, distinctUntilChanged, switchMap, BehaviorSubject, of, tap } from &#x27;rxjs&#x27;;
+
+@Component({
+  selector: &#x27;app-buscador-paciente&#x27;,
+  standalone: true,
+  imports: [CommonModule, FormsModule],
+  template: &#x60;
+    &lt;div class&#x3D;&quot;relative&quot;&gt;
+      &lt;div class&#x3D;&quot;relative flex items-center&quot;&gt;
+        &lt;div class&#x3D;&quot;absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none&quot;&gt;
+          &lt;i class&#x3D;&quot;bi bi-search text-gray-400&quot;&gt;&lt;/i&gt;
+        &lt;/div&gt;
+        &lt;input 
+          type&#x3D;&quot;text&quot; 
+          class&#x3D;&quot;block w-full pl-11 pr-4 py-3.5 bg-gray-50 border-transparent focus:bg-white focus:ring-2 focus:ring-blue-500 rounded-2xl text-sm font-medium transition-all outline-none shadow-sm&quot; 
+          placeholder&#x3D;&quot;Buscar paciente por DNI, Nombre...&quot;
+          (input)&#x3D;&quot;onInput($event)&quot;
+          #searchInput
+        &gt;
+      &lt;/div&gt;
+
+      &lt;!-- Resultados desplegables --&gt;
+      &lt;div class&#x3D;&quot;absolute z-[1000] left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden scale-in&quot; 
+           *ngIf&#x3D;&quot;resultados.length &gt; 0&quot;&gt;
+        &lt;div class&#x3D;&quot;max-h-[350px] overflow-y-auto divide-y divide-gray-50&quot;&gt;
+          &lt;button 
+            type&#x3D;&quot;button&quot; 
+            class&#x3D;&quot;w-full text-left px-5 py-4 hover:bg-blue-50 transition-colors group flex items-center justify-between&quot;
+            *ngFor&#x3D;&quot;let p of resultados&quot;
+            (click)&#x3D;&quot;seleccionar(p)&quot;
+          &gt;
+            &lt;div&gt;
+              &lt;h6 class&#x3D;&quot;font-bold text-gray-900 group-hover:text-blue-700 transition-colors uppercase&quot;&gt;{{ p.nombres }} {{ p.apellidos }}&lt;/h6&gt;
+              &lt;div class&#x3D;&quot;flex items-center gap-2 mt-1&quot;&gt;
+                &lt;span class&#x3D;&quot;text-[10px] font-bold bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded uppercase tracking-tighter&quot;&gt;{{ p.numeroExpediente }}&lt;/span&gt;
+                &lt;span class&#x3D;&quot;text-[11px] text-gray-400 font-medium&quot;&gt;DNI: {{ p.dni }}&lt;/span&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;i class&#x3D;&quot;bi bi-chevron-right text-gray-300 group-hover:text-blue-500 transition-all group-hover:translate-x-1&quot;&gt;&lt;/i&gt;
+          &lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Empty / Loading States --&gt;
+      &lt;div class&#x3D;&quot;absolute z-[1000] left-0 right-0 mt-2 bg-white rounded-2xl shadow-xl border border-gray-100 p-6 text-center animate__animated animate__fadeIn&quot; 
+           *ngIf&#x3D;&quot;buscando &amp;&amp; resultados.length &#x3D;&#x3D;&#x3D; 0 &amp;&amp; !loading&quot;&gt;
+        &lt;i class&#x3D;&quot;bi bi-emoji-frown text-2xl text-gray-300&quot;&gt;&lt;/i&gt;
+        &lt;p class&#x3D;&quot;text-xs text-gray-500 font-bold uppercase mt-2 tracking-widest&quot;&gt;Sin coincidencias&lt;/p&gt;
+      &lt;/div&gt;
+      
+      &lt;div class&#x3D;&quot;absolute right-4 top-1/2 -translate-y-1/2&quot; *ngIf&#x3D;&quot;loading&quot;&gt;
+        &lt;div class&#x3D;&quot;animate-spin h-4 w-4 border-2 border-blue-600 border-b-transparent rounded-full&quot;&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &#x60;,
+  styles: [&#x60;
+    .scale-in { animation: scaleIn 0.2s ease-out; }
+    @keyframes scaleIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+  &#x60;]
+})
+export class BuscadorPacienteComponent {
+  private pacientesService &#x3D; inject(PacientesService);
+  
+  @Output() pacienteSeleccionado &#x3D; new EventEmitter&lt;any&gt;();
+  
+  resultados: any[] &#x3D; [];
+  loading: boolean &#x3D; false;
+  buscando: boolean &#x3D; false;
+  private searchSubject &#x3D; new BehaviorSubject&lt;string&gt;(&#x27;&#x27;);
+
+  constructor() {
+    this.searchSubject.pipe(
+      debounceTime(400),
+      distinctUntilChanged(),
+      switchMap(term &#x3D;&gt; {
+        if (!term || term.length &lt; 3) {
+          this.buscando &#x3D; false;
+          return of({ data: { data: [] } });
+        }
+        this.loading &#x3D; true;
+        this.buscando &#x3D; true;
+        return this.pacientesService.buscar(term);
+      })
+    ).subscribe({
+      next: (res: any) &#x3D;&gt; {
+        // Estructura exacta según PacientesComponent
+        this.resultados &#x3D; res?.data?.data || [];
+        this.loading &#x3D; false;
+      },
+      error: (err) &#x3D;&gt; {
+        console.error(&#x27;Error en búsqueda:&#x27;, err);
+        this.resultados &#x3D; [];
+        this.loading &#x3D; false;
+      }
+    });
+  }
+
+  onInput(event: any) {
+    this.searchSubject.next(event.target.value);
+  }
+
+  seleccionar(paciente: any) {
+    this.pacienteSeleccionado.emit(paciente);
+    this.resultados &#x3D; [];
+    this.buscando &#x3D; false;
+    // El input se limpia si el padre lo desea o se queda así para referencia
+  }
+}
+</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="styleData">
+            <pre class="line-numbers"><code class="language-scss">
+    .scale-in { animation: scaleIn 0.2s ease-out; }
+    @keyframes scaleIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+  
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="relative">  <div class="relative flex items-center">    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">      <i class="bi bi-search text-gray-400"></i>    </div>    <input      type="text"      class="block w-full pl-11 pr-4 py-3.5 bg-gray-50 border-transparent focus:bg-white focus:ring-2 focus:ring-blue-500 rounded-2xl text-sm font-medium transition-all outline-none shadow-sm"      placeholder="Buscar paciente por DNI, Nombre..."      (input)="onInput($event)"      #searchInput    >  </div>  <!-- Resultados desplegables -->  <div class="absolute z-[1000] left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden scale-in"       *ngIf="resultados.length > 0">    <div class="max-h-[350px] overflow-y-auto divide-y divide-gray-50">      <button        type="button"        class="w-full text-left px-5 py-4 hover:bg-blue-50 transition-colors group flex items-center justify-between"        *ngFor="let p of resultados"        (click)="seleccionar(p)"      >        <div>          <h6 class="font-bold text-gray-900 group-hover:text-blue-700 transition-colors uppercase">{{ p.nombres }} {{ p.apellidos }}</h6>          <div class="flex items-center gap-2 mt-1">            <span class="text-[10px] font-bold bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded uppercase tracking-tighter">{{ p.numeroExpediente }}</span>            <span class="text-[11px] text-gray-400 font-medium">DNI: {{ p.dni }}</span>          </div>        </div>        <i class="bi bi-chevron-right text-gray-300 group-hover:text-blue-500 transition-all group-hover:translate-x-1"></i>      </button>    </div>  </div>  <!-- Empty / Loading States -->  <div class="absolute z-[1000] left-0 right-0 mt-2 bg-white rounded-2xl shadow-xl border border-gray-100 p-6 text-center animate__animated animate__fadeIn"       *ngIf="buscando && resultados.length === 0 && !loading">    <i class="bi bi-emoji-frown text-2xl text-gray-300"></i>    <p class="text-xs text-gray-500 font-bold uppercase mt-2 tracking-widest">Sin coincidencias</p>  </div>  <div class="absolute right-4 top-1/2 -translate-y-1/2" *ngIf="loading">    <div class="animate-spin h-4 w-4 border-2 border-blue-600 border-b-transparent rounded-full"></div>  </div></div></div>'
+    var COMPONENTS = [{'name': 'AgendasComponent', 'selector': 'app-agendas'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'BuscadorPacienteComponent', 'selector': 'app-buscador-paciente'},{'name': 'CitasComponent', 'selector': 'app-citas'},{'name': 'ConstructorFormularioComponent', 'selector': 'app-constructor-formulario'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'EpidemiologiaDashboardComponent', 'selector': 'app-epidemiologia-dashboard'},{'name': 'EstadisticasHospitalariasComponent', 'selector': 'app-estadisticas-hospitalarias'},{'name': 'FarmaciaComponent', 'selector': 'app-farmacia'},{'name': 'GestionHospitalizacionComponent', 'selector': 'app-gestion-hospitalizacion'},{'name': 'GestionLotesModalComponent', 'selector': 'app-gestion-lotes-modal'},{'name': 'GestionReportesComponent', 'selector': 'app-gestion-reportes'},{'name': 'HistoriaClinicaComponent', 'selector': 'app-historia-clinica'},{'name': 'InfraestructuraModalComponent', 'selector': 'app-infraestructura-modal'},{'name': 'InventarioVacunasComponent', 'selector': 'app-inventario-vacunas'},{'name': 'LaboratorioComponent', 'selector': 'app-laboratorio'},{'name': 'ListaPlantillasComponent', 'selector': 'app-lista-plantillas'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MainLayoutComponent', 'selector': 'app-main-layout'},{'name': 'MantenimientoDiagnosticosComponent', 'selector': 'app-mantenimiento-diagnosticos'},{'name': 'MantenimientoEstablecimientosComponent', 'selector': 'app-mantenimiento-establecimientos'},{'name': 'MantenimientoInventarioComponent', 'selector': 'app-mantenimiento-inventario'},{'name': 'MantenimientoLaboratorioComponent', 'selector': 'app-mantenimiento-laboratorio'},{'name': 'MantenimientoLoginComponent', 'selector': 'app-mantenimiento-login'},{'name': 'MantenimientoMedicamentosComponent', 'selector': 'app-mantenimiento-medicamentos'},{'name': 'MantenimientoRadiologiaComponent', 'selector': 'app-mantenimiento-radiologia'},{'name': 'MantenimientoRolesComponent', 'selector': 'app-mantenimiento-roles'},{'name': 'MovimientosInventarioComponent', 'selector': 'app-movimientos-inventario'},{'name': 'NotificationComponent', 'selector': 'app-notification'},{'name': 'NuevaConsultaComponent', 'selector': 'app-nueva-consulta'},{'name': 'PacientesComponent', 'selector': 'app-pacientes'},{'name': 'PermisosUsuariosComponent', 'selector': 'app-permisos-usuarios'},{'name': 'RecetasPacienteComponent', 'selector': 'app-recetas-paciente'},{'name': 'RegistroVacunaModalComponent', 'selector': 'app-registro-vacuna-modal'},{'name': 'ReportesComponent', 'selector': 'app-reportes'},{'name': 'TriajeComponent', 'selector': 'app-triaje'},{'name': 'UsuariosComponent', 'selector': 'app-usuarios'},{'name': 'VacunacionComponent', 'selector': 'app-vacunacion'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'BuscadorPacienteComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'BuscadorPacienteComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

@@ -1,0 +1,2455 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>siss-frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">siss-frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  InfraestructuraModalComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#styleData" class="nav-link"
+                role="tab" id="styleData-tab" data-bs-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/modules/mantenimiento-establecimientos/infraestructura-modal.component.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                <code>OnInit</code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-infraestructura-modal</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                            <code>CommonModule</code>
+                            <code>ReactiveFormsModule</code>
+                            <code>FormsModule</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-3">styles</td>
+                <td class="col-md-9"><code>
+    @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes slide-in-from-bottom-2 { from { transform: translateY(0.5rem); } to { transform: translateY(0); } }
+    .animate-in { animation: fade-in 0.3s ease-out, slide-in-from-bottom-2 0.3s ease-out; }
+  </code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">template</td>
+                <td class="col-md-9"><pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm&quot;
+     (click)&#x3D;&quot;cerrar.emit()&quot;&gt;
+  &lt;div class&#x3D;&quot;bg-slate-50 rounded-2xl shadow-2xl w-full max-w-5xl max-h-[90vh] overflow-hidden flex flex-col&quot;
+       (click)&#x3D;&quot;$event.stopPropagation()&quot;&gt;
+
+    &lt;!-- Header --&gt;
+    &lt;div class&#x3D;&quot;px-8 py-6 bg-white border-b border-slate-100 flex items-center justify-between&quot;&gt;
+      &lt;div&gt;
+        &lt;div class&#x3D;&quot;flex items-center gap-2 mb-1&quot;&gt;
+          &lt;span class&#x3D;&quot;text-blue-600&quot;&gt;
+            &lt;svg class&#x3D;&quot;w-6 h-6&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4&quot;/&gt;&lt;/svg&gt;
+          &lt;/span&gt;
+          &lt;h3 class&#x3D;&quot;text-xl font-bold text-slate-900&quot;&gt;Infraestructura Hospitalaria&lt;/h3&gt;
+        &lt;/div&gt;
+        &lt;p class&#x3D;&quot;text-xs text-slate-500 font-medium&quot;&gt;
+          {{ establecimientoNombre }} / {{ servicioNombre }}
+        &lt;/p&gt;
+      &lt;/div&gt;
+      &lt;button (click)&#x3D;&quot;cerrar.emit()&quot; class&#x3D;&quot;p-2 hover:bg-slate-100 rounded-full transition-colors&quot;&gt;
+        &lt;svg class&#x3D;&quot;w-6 h-6 text-slate-400&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M6 18L18 6M6 6l12 12&quot;/&gt;&lt;/svg&gt;
+      &lt;/button&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Breadcrumbs / Navegación --&gt;
+    &lt;div class&#x3D;&quot;px-8 py-3 bg-slate-100/50 border-b border-slate-200 flex items-center gap-2 text-xs font-bold uppercase tracking-wider&quot;&gt;
+      &lt;button (click)&#x3D;&quot;nivel.set(&#x27;salas&#x27;)&quot; [class.text-blue-600]&#x3D;&quot;nivel() &#x3D;&#x3D;&#x3D; &#x27;salas&#x27;&quot; class&#x3D;&quot;hover:underline transition-all&quot;&gt;Salas&lt;/button&gt;
+
+      &lt;ng-container *ngIf&#x3D;&quot;salaSeleccionada()&quot;&gt;
+        &lt;svg class&#x3D;&quot;w-3 h-3 text-slate-400&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M9 5l7 7-7 7&quot;/&gt;&lt;/svg&gt;
+        &lt;button (click)&#x3D;&quot;nivel.set(&#x27;habitaciones&#x27;)&quot; [class.text-blue-600]&#x3D;&quot;nivel() &#x3D;&#x3D;&#x3D; &#x27;habitaciones&#x27;&quot; class&#x3D;&quot;hover:underline transition-all&quot;&gt;{{ salaSeleccionada()?.nombre }}&lt;/button&gt;
+      &lt;/ng-container&gt;
+
+      &lt;ng-container *ngIf&#x3D;&quot;habitacionSeleccionada()&quot;&gt;
+        &lt;svg class&#x3D;&quot;w-3 h-3 text-slate-400&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M9 5l7 7-7 7&quot;/&gt;&lt;/svg&gt;
+        &lt;span class&#x3D;&quot;text-slate-500&quot;&gt;Pieza {{ habitacionSeleccionada()?.numero }}&lt;/span&gt;
+      &lt;/ng-container&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Contenido --&gt;
+    &lt;div class&#x3D;&quot;flex-1 overflow-y-auto p-8 bg-slate-50/50&quot;&gt;
+
+      &lt;!-- Vista de SALAS --&gt;
+      &lt;div *ngIf&#x3D;&quot;nivel() &#x3D;&#x3D;&#x3D; &#x27;salas&#x27;&quot; class&#x3D;&quot;space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300&quot;&gt;
+        &lt;div class&#x3D;&quot;flex items-center justify-between&quot;&gt;
+          &lt;h4 class&#x3D;&quot;text-sm font-bold text-slate-700&quot;&gt;Listado de Salas&lt;/h4&gt;
+          &lt;button (click)&#x3D;&quot;abrirFormSala()&quot; class&#x3D;&quot;px-4 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-bold shadow-sm hover:bg-blue-700 transition-all&quot;&gt;+ Nueva Sala&lt;/button&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4&quot;&gt;
+          &lt;div *ngFor&#x3D;&quot;let s of salas()&quot;
+               class&#x3D;&quot;bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:shadow-md hover:border-blue-200 transition-all cursor-pointer group&quot;
+               (click)&#x3D;&quot;seleccionarSala(s)&quot;&gt;
+            &lt;div class&#x3D;&quot;flex justify-between items-start mb-3&quot;&gt;
+              &lt;div class&#x3D;&quot;p-2 bg-blue-50 rounded-lg group-hover:bg-blue-100 transition-colors&quot;&gt;
+                &lt;svg class&#x3D;&quot;w-5 h-5 text-blue-600&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4&quot;/&gt;&lt;/svg&gt;
+              &lt;/div&gt;
+              &lt;div class&#x3D;&quot;flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity&quot; (click)&#x3D;&quot;$event.stopPropagation()&quot;&gt;
+                &lt;button (click)&#x3D;&quot;abrirFormSala(s)&quot; class&#x3D;&quot;p-1 text-slate-400 hover:text-blue-600 transition-colors&quot;&gt;
+                  &lt;svg class&#x3D;&quot;w-4 h-4&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z&quot;/&gt;&lt;/svg&gt;
+                &lt;/button&gt;
+                &lt;button (click)&#x3D;&quot;eliminarSala(s)&quot; class&#x3D;&quot;p-1 text-slate-400 hover:text-red-600 transition-colors&quot;&gt;
+                  &lt;svg class&#x3D;&quot;w-4 h-4&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16&quot;/&gt;&lt;/svg&gt;
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;h5 class&#x3D;&quot;font-bold text-slate-900&quot;&gt;{{ s.nombre }}&lt;/h5&gt;
+            &lt;p class&#x3D;&quot;text-[10px] text-slate-400 font-mono mb-2&quot;&gt;{{ s.codigo || &#x27;SIN CÓDIGO&#x27; }}&lt;/p&gt;
+            &lt;div class&#x3D;&quot;flex items-center gap-2 mt-4&quot;&gt;
+              &lt;span class&#x3D;&quot;text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-bold&quot;&gt;
+                {{ s._count?.habitaciones || 0 }} Piezas
+              &lt;/span&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div *ngIf&#x3D;&quot;salas().length &#x3D;&#x3D;&#x3D; 0&quot; class&#x3D;&quot;py-20 text-center&quot;&gt;
+          &lt;div class&#x3D;&quot;bg-slate-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4&quot;&gt;
+            &lt;svg class&#x3D;&quot;w-8 h-8 text-slate-300&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4&quot;/&gt;&lt;/svg&gt;
+          &lt;/div&gt;
+          &lt;p class&#x3D;&quot;text-slate-400 font-medium&quot;&gt;No hay salas registradas para este servicio&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Vista de HABITACIONES (PIEZAS) --&gt;
+      &lt;div *ngIf&#x3D;&quot;nivel() &#x3D;&#x3D;&#x3D; &#x27;habitaciones&#x27;&quot; class&#x3D;&quot;space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300&quot;&gt;
+        &lt;div class&#x3D;&quot;flex items-center justify-between&quot;&gt;
+          &lt;div class&#x3D;&quot;flex items-center gap-2&quot;&gt;
+            &lt;button (click)&#x3D;&quot;nivel.set(&#x27;salas&#x27;)&quot; class&#x3D;&quot;p-1 hover:bg-slate-200 rounded transition-colors text-slate-500&quot;&gt;
+              &lt;svg class&#x3D;&quot;w-5 h-5&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M15 19l-7-7 7-7&quot;/&gt;&lt;/svg&gt;
+            &lt;/button&gt;
+            &lt;h4 class&#x3D;&quot;text-sm font-bold text-slate-700&quot;&gt;Piezas en {{ salaSeleccionada()?.nombre }}&lt;/h4&gt;
+          &lt;/div&gt;
+          &lt;button (click)&#x3D;&quot;abrirFormHabitacion()&quot; class&#x3D;&quot;px-4 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-bold shadow-sm hover:bg-blue-700 transition-all&quot;&gt;+ Nueva Pieza&lt;/button&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4&quot;&gt;
+          &lt;div *ngFor&#x3D;&quot;let h of habitaciones()&quot;
+               class&#x3D;&quot;bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:shadow-md hover:border-blue-200 transition-all cursor-pointer group&quot;
+               (click)&#x3D;&quot;seleccionarHabitacion(h)&quot;&gt;
+            &lt;div class&#x3D;&quot;flex justify-between items-start mb-3&quot;&gt;
+              &lt;span class&#x3D;&quot;text-[10px] font-black bg-slate-100 text-slate-500 px-2 py-0.5 rounded uppercase&quot;&gt;
+                {{ h.tipoHabitacion?.nombre }}
+              &lt;/span&gt;
+              &lt;div class&#x3D;&quot;flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity&quot; (click)&#x3D;&quot;$event.stopPropagation()&quot;&gt;
+                &lt;button (click)&#x3D;&quot;abrirFormHabitacion(h)&quot; class&#x3D;&quot;p-1 text-slate-400 hover:text-blue-600&quot;&gt;
+                  &lt;svg class&#x3D;&quot;w-4 h-4&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z&quot;/&gt;&lt;/svg&gt;
+                &lt;/button&gt;
+                &lt;button (click)&#x3D;&quot;eliminarHabitacion(h)&quot; class&#x3D;&quot;p-1 text-slate-400 hover:text-red-600&quot;&gt;
+                  &lt;svg class&#x3D;&quot;w-4 h-4&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16&quot;/&gt;&lt;/svg&gt;
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;h5 class&#x3D;&quot;text-2xl font-black text-slate-900 mb-1&quot;&gt;#{{ h.numero }}&lt;/h5&gt;
+            &lt;div class&#x3D;&quot;flex items-center gap-2 mt-4&quot;&gt;
+              &lt;span class&#x3D;&quot;text-[10px] bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full font-bold&quot;&gt;
+                {{ h._count?.camas || 0 }} Camas
+              &lt;/span&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div *ngIf&#x3D;&quot;habitaciones().length &#x3D;&#x3D;&#x3D; 0&quot; class&#x3D;&quot;py-20 text-center&quot;&gt;
+           &lt;p class&#x3D;&quot;text-slate-400 font-medium&quot;&gt;No hay piezas registradas en esta sala&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Vista de CAMAS --&gt;
+      &lt;div *ngIf&#x3D;&quot;nivel() &#x3D;&#x3D;&#x3D; &#x27;camas&#x27;&quot; class&#x3D;&quot;space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300&quot;&gt;
+        &lt;div class&#x3D;&quot;flex items-center justify-between&quot;&gt;
+          &lt;div class&#x3D;&quot;flex items-center gap-2&quot;&gt;
+            &lt;button (click)&#x3D;&quot;nivel.set(&#x27;habitaciones&#x27;)&quot; class&#x3D;&quot;p-1 hover:bg-slate-200 rounded transition-colors text-slate-500&quot;&gt;
+              &lt;svg class&#x3D;&quot;w-5 h-5&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M15 19l-7-7 7-7&quot;/&gt;&lt;/svg&gt;
+            &lt;/button&gt;
+            &lt;h4 class&#x3D;&quot;text-sm font-bold text-slate-700&quot;&gt;Camas en Pieza {{ habitacionSeleccionada()?.numero }}&lt;/h4&gt;
+          &lt;/div&gt;
+          &lt;button (click)&#x3D;&quot;abrirFormCama()&quot; class&#x3D;&quot;px-4 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-bold shadow-sm hover:bg-blue-700 transition-all&quot;&gt;+ Nueva Cama&lt;/button&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4&quot;&gt;
+          &lt;div *ngFor&#x3D;&quot;let c of camas()&quot;
+               class&#x3D;&quot;bg-white p-4 rounded-xl border border-slate-200 shadow-sm relative group overflow-hidden&quot;&gt;
+
+            &lt;!-- Status bar --&gt;
+            &lt;div class&#x3D;&quot;absolute top-0 left-0 right-0 h-1&quot; [ngClass]&#x3D;&quot;{
+              &#x27;bg-emerald-500&#x27;: c.estado &#x3D;&#x3D;&#x3D; &#x27;DISPONIBLE&#x27;,
+              &#x27;bg-red-500&#x27;: c.estado &#x3D;&#x3D;&#x3D; &#x27;OCUPADA&#x27;,
+              &#x27;bg-amber-500&#x27;: c.estado &#x3D;&#x3D;&#x3D; &#x27;RESERVADA&#x27;,
+              &#x27;bg-slate-400&#x27;: c.estado &#x3D;&#x3D;&#x3D; &#x27;MANTENIMIENTO&#x27;,
+              &#x27;bg-blue-400&#x27;: c.estado &#x3D;&#x3D;&#x3D; &#x27;LIMPIEZA&#x27;
+            }&quot;&gt;&lt;/div&gt;
+
+            &lt;div class&#x3D;&quot;flex justify-between items-start mb-2 pt-2&quot;&gt;
+              &lt;div class&#x3D;&quot;text-[9px] font-bold px-1.5 py-0.5 rounded&quot; [ngClass]&#x3D;&quot;{
+                &#x27;bg-emerald-50 text-emerald-600&#x27;: c.estado &#x3D;&#x3D;&#x3D; &#x27;DISPONIBLE&#x27;,
+                &#x27;bg-red-50 text-red-600&#x27;: c.estado &#x3D;&#x3D;&#x3D; &#x27;OCUPADA&#x27;,
+                &#x27;bg-amber-50 text-amber-600&#x27;: c.estado &#x3D;&#x3D;&#x3D; &#x27;RESERVADA&#x27;,
+                &#x27;bg-slate-100 text-slate-500&#x27;: c.estado &#x3D;&#x3D;&#x3D; &#x27;MANTENIMIENTO&#x27;,
+                &#x27;bg-blue-50 text-blue-600&#x27;: c.estado &#x3D;&#x3D;&#x3D; &#x27;LIMPIEZA&#x27;
+              }&quot;&gt;
+                {{ c.estado }}
+              &lt;/div&gt;
+              &lt;div class&#x3D;&quot;flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity&quot;&gt;
+                &lt;button (click)&#x3D;&quot;abrirFormCama(c)&quot; class&#x3D;&quot;text-slate-400 hover:text-blue-600&quot;&gt;&lt;svg class&#x3D;&quot;w-3 h-3&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z&quot;/&gt;&lt;/svg&gt;&lt;/button&gt;
+                &lt;button (click)&#x3D;&quot;eliminarCama(c)&quot; class&#x3D;&quot;text-slate-400 hover:text-red-600&quot;&gt;&lt;svg class&#x3D;&quot;w-3 h-3&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16&quot;/&gt;&lt;/svg&gt;&lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div class&#x3D;&quot;flex flex-col items-center py-2&quot;&gt;
+              &lt;svg class&#x3D;&quot;w-10 h-10 mb-2&quot; [ngClass]&#x3D;&quot;{&#x27;text-slate-200&#x27;: c.estado &#x3D;&#x3D;&#x3D; &#x27;DISPONIBLE&#x27;, &#x27;text-slate-400&#x27;: c.estado !&#x3D;&#x3D; &#x27;DISPONIBLE&#x27;}&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+                &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M5 13l4 4L19 7&quot; /&gt;
+              &lt;/svg&gt;
+              &lt;span class&#x3D;&quot;font-black text-slate-800 tracking-tight&quot;&gt;{{ c.codigo }}&lt;/span&gt;
+              &lt;span class&#x3D;&quot;text-[8px] text-slate-400 font-bold uppercase mt-1&quot;&gt;{{ c.tipoCama?.nombre }}&lt;/span&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div *ngIf&#x3D;&quot;camas().length &#x3D;&#x3D;&#x3D; 0&quot; class&#x3D;&quot;py-20 text-center&quot;&gt;
+           &lt;p class&#x3D;&quot;text-slate-400 font-medium&quot;&gt;No hay camas registradas en esta pieza&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+    &lt;/div&gt;
+
+    &lt;!-- Footers / Modales de Edición (Sub-capas) --&gt;
+    &lt;div *ngIf&#x3D;&quot;formAbierto()&quot; class&#x3D;&quot;absolute inset-0 z-[70] bg-black/20 backdrop-blur-[2px] flex items-center justify-center p-4&quot; (click)&#x3D;&quot;cerrarForm()&quot;&gt;
+      &lt;div class&#x3D;&quot;bg-white rounded-xl shadow-2xl w-full max-w-md overflow-hidden&quot; (click)&#x3D;&quot;$event.stopPropagation()&quot;&gt;
+        &lt;div class&#x3D;&quot;px-6 py-4 border-b border-slate-100 flex justify-between items-center&quot;&gt;
+          &lt;h4 class&#x3D;&quot;font-bold text-slate-800&quot;&gt;{{ editando() ? &#x27;Editar&#x27; : &#x27;Nueva&#x27; }} {{ tipoForm() }}&lt;/h4&gt;
+          &lt;button (click)&#x3D;&quot;cerrarForm()&quot; class&#x3D;&quot;text-slate-400 hover:text-slate-600&quot;&gt;&lt;svg class&#x3D;&quot;w-5 h-5&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M6 18L18 6M6 6l12 12&quot;/&gt;&lt;/svg&gt;&lt;/button&gt;
+        &lt;/div&gt;
+
+        &lt;form [formGroup]&#x3D;&quot;form&quot; class&#x3D;&quot;p-6 space-y-4&quot;&gt;
+          &lt;!-- Sala Form --&gt;
+          &lt;ng-container *ngIf&#x3D;&quot;tipoForm() &#x3D;&#x3D;&#x3D; &#x27;Sala&#x27;&quot;&gt;
+            &lt;div class&#x3D;&quot;space-y-1&quot;&gt;
+              &lt;label class&#x3D;&quot;text-[10px] font-bold text-slate-400 uppercase ml-1&quot;&gt;Nombre&lt;/label&gt;
+              &lt;input formControlName&#x3D;&quot;nombre&quot; type&#x3D;&quot;text&quot; class&#x3D;&quot;w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none&quot;/&gt;
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;space-y-1&quot;&gt;
+              &lt;label class&#x3D;&quot;text-[10px] font-bold text-slate-400 uppercase ml-1&quot;&gt;Código&lt;/label&gt;
+              &lt;input formControlName&#x3D;&quot;codigo&quot; type&#x3D;&quot;text&quot; class&#x3D;&quot;w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none&quot;/&gt;
+            &lt;/div&gt;
+          &lt;/ng-container&gt;
+
+          &lt;!-- Habitacion Form --&gt;
+          &lt;ng-container *ngIf&#x3D;&quot;tipoForm() &#x3D;&#x3D;&#x3D; &#x27;Pieza&#x27;&quot;&gt;
+            &lt;div class&#x3D;&quot;space-y-1&quot;&gt;
+              &lt;label class&#x3D;&quot;text-[10px] font-bold text-slate-400 uppercase ml-1&quot;&gt;Número&lt;/label&gt;
+              &lt;input formControlName&#x3D;&quot;numero&quot; type&#x3D;&quot;text&quot; class&#x3D;&quot;w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none&quot;/&gt;
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;space-y-1&quot;&gt;
+              &lt;label class&#x3D;&quot;text-[10px] font-bold text-slate-400 uppercase ml-1&quot;&gt;Tipo&lt;/label&gt;
+              &lt;select formControlName&#x3D;&quot;tipoHabitacionId&quot; class&#x3D;&quot;w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none&quot;&gt;
+                &lt;option [value]&#x3D;&quot;null&quot;&gt;Seleccione...&lt;/option&gt;
+                &lt;option *ngFor&#x3D;&quot;let t of tiposHabitacion()&quot; [value]&#x3D;&quot;t.id&quot;&gt;{{ t.nombre }}&lt;/option&gt;
+              &lt;/select&gt;
+            &lt;/div&gt;
+          &lt;/ng-container&gt;
+
+          &lt;!-- Cama Form --&gt;
+          &lt;ng-container *ngIf&#x3D;&quot;tipoForm() &#x3D;&#x3D;&#x3D; &#x27;Cama&#x27;&quot;&gt;
+            &lt;div class&#x3D;&quot;space-y-1&quot;&gt;
+              &lt;label class&#x3D;&quot;text-[10px] font-bold text-slate-400 uppercase ml-1&quot;&gt;Código de Cama&lt;/label&gt;
+              &lt;input formControlName&#x3D;&quot;codigo&quot; type&#x3D;&quot;text&quot; class&#x3D;&quot;w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none&quot;/&gt;
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;space-y-1&quot;&gt;
+              &lt;label class&#x3D;&quot;text-[10px] font-bold text-slate-400 uppercase ml-1&quot;&gt;Tipo de Cama&lt;/label&gt;
+              &lt;select formControlName&#x3D;&quot;tipoCamaId&quot; class&#x3D;&quot;w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none&quot;&gt;
+                &lt;option [value]&#x3D;&quot;null&quot;&gt;Seleccione...&lt;/option&gt;
+                &lt;option *ngFor&#x3D;&quot;let t of tiposCama()&quot; [value]&#x3D;&quot;t.id&quot;&gt;{{ t.nombre }}&lt;/option&gt;
+              &lt;/select&gt;
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;space-y-1&quot;&gt;
+              &lt;label class&#x3D;&quot;text-[10px] font-bold text-slate-400 uppercase ml-1&quot;&gt;Estado&lt;/label&gt;
+              &lt;select formControlName&#x3D;&quot;estado&quot; class&#x3D;&quot;w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none&quot;&gt;
+                &lt;option value&#x3D;&quot;DISPONIBLE&quot;&gt;DISPONIBLE&lt;/option&gt;
+                &lt;option value&#x3D;&quot;OCUPADA&quot;&gt;OCUPADA&lt;/option&gt;
+                &lt;option value&#x3D;&quot;RESERVADA&quot;&gt;RESERVADA&lt;/option&gt;
+                &lt;option value&#x3D;&quot;MANTENIMIENTO&quot;&gt;MANTENIMIENTO&lt;/option&gt;
+                &lt;option value&#x3D;&quot;LIMPIEZA&quot;&gt;LIMPIEZA&lt;/option&gt;
+              &lt;/select&gt;
+            &lt;/div&gt;
+          &lt;/ng-container&gt;
+
+          &lt;div class&#x3D;&quot;flex justify-end gap-2 mt-6&quot;&gt;
+            &lt;button type&#x3D;&quot;button&quot; (click)&#x3D;&quot;cerrarForm()&quot; class&#x3D;&quot;px-4 py-2 text-slate-500 text-sm font-bold hover:bg-slate-100 rounded-lg&quot;&gt;Cancelar&lt;/button&gt;
+            &lt;button type&#x3D;&quot;button&quot; (click)&#x3D;&quot;guardar()&quot; [disabled]&#x3D;&quot;form.invalid || enviando()&quot; class&#x3D;&quot;px-6 py-2 bg-blue-600 text-white text-sm font-bold rounded-lg hover:bg-blue-700 shadow-lg shadow-blue-100 disabled:opacity-50&quot;&gt;
+              {{ enviando() ? &#x27;Guardando...&#x27; : &#x27;Guardar&#x27; }}
+            &lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/form&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></td>
+            </tr>
+
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#camas" >camas</a>
+                            </li>
+                            <li>
+                                <a href="#editando" >editando</a>
+                            </li>
+                            <li>
+                                <a href="#enviando" >enviando</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#fb" >fb</a>
+                            </li>
+                            <li>
+                                <a href="#form" >form</a>
+                            </li>
+                            <li>
+                                <a href="#formAbierto" >formAbierto</a>
+                            </li>
+                            <li>
+                                <a href="#habitaciones" >habitaciones</a>
+                            </li>
+                            <li>
+                                <a href="#habitacionSeleccionada" >habitacionSeleccionada</a>
+                            </li>
+                            <li>
+                                <a href="#nivel" >nivel</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#notification" >notification</a>
+                            </li>
+                            <li>
+                                <a href="#salas" >salas</a>
+                            </li>
+                            <li>
+                                <a href="#salaSeleccionada" >salaSeleccionada</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#svc" >svc</a>
+                            </li>
+                            <li>
+                                <a href="#tipoForm" >tipoForm</a>
+                            </li>
+                            <li>
+                                <a href="#tiposCama" >tiposCama</a>
+                            </li>
+                            <li>
+                                <a href="#tiposHabitacion" >tiposHabitacion</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#abrirFormCama" >abrirFormCama</a>
+                            </li>
+                            <li>
+                                <a href="#abrirFormHabitacion" >abrirFormHabitacion</a>
+                            </li>
+                            <li>
+                                <a href="#abrirFormSala" >abrirFormSala</a>
+                            </li>
+                            <li>
+                                <a href="#cargarCatalogos" >cargarCatalogos</a>
+                            </li>
+                            <li>
+                                <a href="#cargarSalas" >cargarSalas</a>
+                            </li>
+                            <li>
+                                <a href="#cerrarForm" >cerrarForm</a>
+                            </li>
+                            <li>
+                                <a href="#eliminarCama" >eliminarCama</a>
+                            </li>
+                            <li>
+                                <a href="#eliminarHabitacion" >eliminarHabitacion</a>
+                            </li>
+                            <li>
+                                <a href="#eliminarSala" >eliminarSala</a>
+                            </li>
+                            <li>
+                                <a href="#guardar" >guardar</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#seleccionarHabitacion" >seleccionarHabitacion</a>
+                            </li>
+                            <li>
+                                <a href="#seleccionarSala" >seleccionarSala</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Inputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#establecimientoId" >establecimientoId</a>
+                            </li>
+                            <li>
+                                <a href="#establecimientoNombre" >establecimientoNombre</a>
+                            </li>
+                            <li>
+                                <a href="#servicioId" >servicioId</a>
+                            </li>
+                            <li>
+                                <a href="#servicioNombre" >servicioNombre</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Outputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#cerrar" >cerrar</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+        </tbody>
+    </table>
+</section>
+
+
+    <section data-compodoc="block-inputs">
+    <h3 id="inputs">Inputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="establecimientoId"></a>
+                        <b>establecimientoId</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="278" class="link-to-prism">src/app/modules/mantenimiento-establecimientos/infraestructura-modal.component.ts:278</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="establecimientoNombre"></a>
+                        <b>establecimientoNombre</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="279" class="link-to-prism">src/app/modules/mantenimiento-establecimientos/infraestructura-modal.component.ts:279</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="servicioId"></a>
+                        <b>servicioId</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="280" class="link-to-prism">src/app/modules/mantenimiento-establecimientos/infraestructura-modal.component.ts:280</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="servicioNombre"></a>
+                        <b>servicioNombre</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="281" class="link-to-prism">src/app/modules/mantenimiento-establecimientos/infraestructura-modal.component.ts:281</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+</section>
+    <section data-compodoc="block-outputs">
+    <h3 id="outputs">Outputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="cerrar"></a>
+                        <b>cerrar</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>EventEmitter</code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="282" class="link-to-prism">src/app/modules/mantenimiento-establecimientos/infraestructura-modal.component.ts:282</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+</section>
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="abrirFormCama"></a>
+                    <span class="name">
+                        <span ><b>abrirFormCama</b></span>
+                        <a href="#abrirFormCama"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>abrirFormCama(c?: <a href="../interfaces/Cama.html" target="_self">Cama</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="366"
+                                    class="link-to-prism">src/app/modules/mantenimiento-establecimientos/infraestructura-modal.component.ts:366</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>c</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Cama.html" target="_self" >Cama</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="abrirFormHabitacion"></a>
+                    <span class="name">
+                        <span ><b>abrirFormHabitacion</b></span>
+                        <a href="#abrirFormHabitacion"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>abrirFormHabitacion(h?: <a href="../interfaces/Habitacion.html" target="_self">Habitacion</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="356"
+                                    class="link-to-prism">src/app/modules/mantenimiento-establecimientos/infraestructura-modal.component.ts:356</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>h</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Habitacion.html" target="_self" >Habitacion</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="abrirFormSala"></a>
+                    <span class="name">
+                        <span ><b>abrirFormSala</b></span>
+                        <a href="#abrirFormSala"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>abrirFormSala(s?: <a href="../interfaces/Sala.html" target="_self">Sala</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="346"
+                                    class="link-to-prism">src/app/modules/mantenimiento-establecimientos/infraestructura-modal.component.ts:346</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>s</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Sala.html" target="_self" >Sala</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargarCatalogos"></a>
+                    <span class="name">
+                        <span ><b>cargarCatalogos</b></span>
+                        <a href="#cargarCatalogos"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cargarCatalogos()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="321"
+                                    class="link-to-prism">src/app/modules/mantenimiento-establecimientos/infraestructura-modal.component.ts:321</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargarSalas"></a>
+                    <span class="name">
+                        <span ><b>cargarSalas</b></span>
+                        <a href="#cargarSalas"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cargarSalas()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="326"
+                                    class="link-to-prism">src/app/modules/mantenimiento-establecimientos/infraestructura-modal.component.ts:326</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cerrarForm"></a>
+                    <span class="name">
+                        <span ><b>cerrarForm</b></span>
+                        <a href="#cerrarForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cerrarForm()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="376"
+                                    class="link-to-prism">src/app/modules/mantenimiento-establecimientos/infraestructura-modal.component.ts:376</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="eliminarCama"></a>
+                    <span class="name">
+                        <span ><b>eliminarCama</b></span>
+                        <a href="#eliminarCama"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>eliminarCama(c: <a href="../interfaces/Cama.html" target="_self">Cama</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="436"
+                                    class="link-to-prism">src/app/modules/mantenimiento-establecimientos/infraestructura-modal.component.ts:436</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>c</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Cama.html" target="_self" >Cama</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="eliminarHabitacion"></a>
+                    <span class="name">
+                        <span ><b>eliminarHabitacion</b></span>
+                        <a href="#eliminarHabitacion"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>eliminarHabitacion(h: <a href="../interfaces/Habitacion.html" target="_self">Habitacion</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="427"
+                                    class="link-to-prism">src/app/modules/mantenimiento-establecimientos/infraestructura-modal.component.ts:427</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>h</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Habitacion.html" target="_self" >Habitacion</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="eliminarSala"></a>
+                    <span class="name">
+                        <span ><b>eliminarSala</b></span>
+                        <a href="#eliminarSala"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>eliminarSala(s: <a href="../interfaces/Sala.html" target="_self">Sala</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="418"
+                                    class="link-to-prism">src/app/modules/mantenimiento-establecimientos/infraestructura-modal.component.ts:418</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>s</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Sala.html" target="_self" >Sala</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="guardar"></a>
+                    <span class="name">
+                        <span ><b>guardar</b></span>
+                        <a href="#guardar"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>guardar()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="381"
+                                    class="link-to-prism">src/app/modules/mantenimiento-establecimientos/infraestructura-modal.component.ts:381</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="316"
+                                    class="link-to-prism">src/app/modules/mantenimiento-establecimientos/infraestructura-modal.component.ts:316</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="seleccionarHabitacion"></a>
+                    <span class="name">
+                        <span ><b>seleccionarHabitacion</b></span>
+                        <a href="#seleccionarHabitacion"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>seleccionarHabitacion(h: <a href="../interfaces/Habitacion.html" target="_self">Habitacion</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="338"
+                                    class="link-to-prism">src/app/modules/mantenimiento-establecimientos/infraestructura-modal.component.ts:338</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>h</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Habitacion.html" target="_self" >Habitacion</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="seleccionarSala"></a>
+                    <span class="name">
+                        <span ><b>seleccionarSala</b></span>
+                        <a href="#seleccionarSala"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>seleccionarSala(s: <a href="../interfaces/Sala.html" target="_self">Sala</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="330"
+                                    class="link-to-prism">src/app/modules/mantenimiento-establecimientos/infraestructura-modal.component.ts:330</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>s</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Sala.html" target="_self" >Sala</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="camas"></a>
+                    <span class="name">
+                        <span ><b>camas</b></span>
+                        <a href="#camas"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;Cama[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="291" class="link-to-prism">src/app/modules/mantenimiento-establecimientos/infraestructura-modal.component.ts:291</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="editando"></a>
+                    <span class="name">
+                        <span ><b>editando</b></span>
+                        <a href="#editando"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;any&gt;(null)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="301" class="link-to-prism">src/app/modules/mantenimiento-establecimientos/infraestructura-modal.component.ts:301</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="enviando"></a>
+                    <span class="name">
+                        <span ><b>enviando</b></span>
+                        <a href="#enviando"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="302" class="link-to-prism">src/app/modules/mantenimiento-establecimientos/infraestructura-modal.component.ts:302</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="fb"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>fb</b></span>
+                        <a href="#fb"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(FormBuilder)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="285" class="link-to-prism">src/app/modules/mantenimiento-establecimientos/infraestructura-modal.component.ts:285</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="form"></a>
+                    <span class="name">
+                        <span ><b>form</b></span>
+                        <a href="#form"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this.fb.group({
+    // Sala
+    nombre: [&#x27;&#x27;],
+    codigo: [&#x27;&#x27;],
+    // Habitacion
+    numero: [&#x27;&#x27;],
+    tipoHabitacionId: [null as number | null],
+    // Cama
+    tipoCamaId: [null as number | null],
+    estado: [&#x27;DISPONIBLE&#x27;]
+  })</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="304" class="link-to-prism">src/app/modules/mantenimiento-establecimientos/infraestructura-modal.component.ts:304</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="formAbierto"></a>
+                    <span class="name">
+                        <span ><b>formAbierto</b></span>
+                        <a href="#formAbierto"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="299" class="link-to-prism">src/app/modules/mantenimiento-establecimientos/infraestructura-modal.component.ts:299</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="habitaciones"></a>
+                    <span class="name">
+                        <span ><b>habitaciones</b></span>
+                        <a href="#habitaciones"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;Habitacion[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="290" class="link-to-prism">src/app/modules/mantenimiento-establecimientos/infraestructura-modal.component.ts:290</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="habitacionSeleccionada"></a>
+                    <span class="name">
+                        <span ><b>habitacionSeleccionada</b></span>
+                        <a href="#habitacionSeleccionada"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;Habitacion | null&gt;(null)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="294" class="link-to-prism">src/app/modules/mantenimiento-establecimientos/infraestructura-modal.component.ts:294</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="nivel"></a>
+                    <span class="name">
+                        <span ><b>nivel</b></span>
+                        <a href="#nivel"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;&#x27;salas&#x27; | &#x27;habitaciones&#x27; | &#x27;camas&#x27;&gt;(&#x27;salas&#x27;)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="288" class="link-to-prism">src/app/modules/mantenimiento-establecimientos/infraestructura-modal.component.ts:288</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="notification"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>notification</b></span>
+                        <a href="#notification"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(NotificationService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="286" class="link-to-prism">src/app/modules/mantenimiento-establecimientos/infraestructura-modal.component.ts:286</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="salas"></a>
+                    <span class="name">
+                        <span ><b>salas</b></span>
+                        <a href="#salas"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;Sala[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="289" class="link-to-prism">src/app/modules/mantenimiento-establecimientos/infraestructura-modal.component.ts:289</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="salaSeleccionada"></a>
+                    <span class="name">
+                        <span ><b>salaSeleccionada</b></span>
+                        <a href="#salaSeleccionada"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;Sala | null&gt;(null)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="293" class="link-to-prism">src/app/modules/mantenimiento-establecimientos/infraestructura-modal.component.ts:293</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="svc"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>svc</b></span>
+                        <a href="#svc"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(HospitalizacionService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="284" class="link-to-prism">src/app/modules/mantenimiento-establecimientos/infraestructura-modal.component.ts:284</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="tipoForm"></a>
+                    <span class="name">
+                        <span ><b>tipoForm</b></span>
+                        <a href="#tipoForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;&#x27;Sala&#x27; | &#x27;Pieza&#x27; | &#x27;Cama&#x27;&gt;(&#x27;Sala&#x27;)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="300" class="link-to-prism">src/app/modules/mantenimiento-establecimientos/infraestructura-modal.component.ts:300</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="tiposCama"></a>
+                    <span class="name">
+                        <span ><b>tiposCama</b></span>
+                        <a href="#tiposCama"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;any[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="297" class="link-to-prism">src/app/modules/mantenimiento-establecimientos/infraestructura-modal.component.ts:297</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="tiposHabitacion"></a>
+                    <span class="name">
+                        <span ><b>tiposHabitacion</b></span>
+                        <a href="#tiposHabitacion"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;any[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="296" class="link-to-prism">src/app/modules/mantenimiento-establecimientos/infraestructura-modal.component.ts:296</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, Input, OnInit, Output, EventEmitter, inject, signal, effect } from &#x27;@angular/core&#x27;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
+import { ReactiveFormsModule, FormBuilder, Validators, FormsModule } from &#x27;@angular/forms&#x27;;
+import { Observable } from &#x27;rxjs&#x27;;
+import { HospitalizacionService, Sala, Habitacion, Cama } from &#x27;../../core/services/hospitalizacion.service&#x27;;
+import { NotificationService } from &#x27;../../core/services/notification.service&#x27;;
+
+@Component({
+  selector: &#x27;app-infraestructura-modal&#x27;,
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  template: &#x60;
+    &lt;div class&#x3D;&quot;fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm&quot;
+         (click)&#x3D;&quot;cerrar.emit()&quot;&gt;
+      &lt;div class&#x3D;&quot;bg-slate-50 rounded-2xl shadow-2xl w-full max-w-5xl max-h-[90vh] overflow-hidden flex flex-col&quot;
+           (click)&#x3D;&quot;$event.stopPropagation()&quot;&gt;
+        
+        &lt;!-- Header --&gt;
+        &lt;div class&#x3D;&quot;px-8 py-6 bg-white border-b border-slate-100 flex items-center justify-between&quot;&gt;
+          &lt;div&gt;
+            &lt;div class&#x3D;&quot;flex items-center gap-2 mb-1&quot;&gt;
+              &lt;span class&#x3D;&quot;text-blue-600&quot;&gt;
+                &lt;svg class&#x3D;&quot;w-6 h-6&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4&quot;/&gt;&lt;/svg&gt;
+              &lt;/span&gt;
+              &lt;h3 class&#x3D;&quot;text-xl font-bold text-slate-900&quot;&gt;Infraestructura Hospitalaria&lt;/h3&gt;
+            &lt;/div&gt;
+            &lt;p class&#x3D;&quot;text-xs text-slate-500 font-medium&quot;&gt;
+              {{ establecimientoNombre }} / {{ servicioNombre }}
+            &lt;/p&gt;
+          &lt;/div&gt;
+          &lt;button (click)&#x3D;&quot;cerrar.emit()&quot; class&#x3D;&quot;p-2 hover:bg-slate-100 rounded-full transition-colors&quot;&gt;
+            &lt;svg class&#x3D;&quot;w-6 h-6 text-slate-400&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M6 18L18 6M6 6l12 12&quot;/&gt;&lt;/svg&gt;
+          &lt;/button&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Breadcrumbs / Navegación --&gt;
+        &lt;div class&#x3D;&quot;px-8 py-3 bg-slate-100/50 border-b border-slate-200 flex items-center gap-2 text-xs font-bold uppercase tracking-wider&quot;&gt;
+          &lt;button (click)&#x3D;&quot;nivel.set(&#x27;salas&#x27;)&quot; [class.text-blue-600]&#x3D;&quot;nivel() &#x3D;&#x3D;&#x3D; &#x27;salas&#x27;&quot; class&#x3D;&quot;hover:underline transition-all&quot;&gt;Salas&lt;/button&gt;
+          
+          &lt;ng-container *ngIf&#x3D;&quot;salaSeleccionada()&quot;&gt;
+            &lt;svg class&#x3D;&quot;w-3 h-3 text-slate-400&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M9 5l7 7-7 7&quot;/&gt;&lt;/svg&gt;
+            &lt;button (click)&#x3D;&quot;nivel.set(&#x27;habitaciones&#x27;)&quot; [class.text-blue-600]&#x3D;&quot;nivel() &#x3D;&#x3D;&#x3D; &#x27;habitaciones&#x27;&quot; class&#x3D;&quot;hover:underline transition-all&quot;&gt;{{ salaSeleccionada()?.nombre }}&lt;/button&gt;
+          &lt;/ng-container&gt;
+
+          &lt;ng-container *ngIf&#x3D;&quot;habitacionSeleccionada()&quot;&gt;
+            &lt;svg class&#x3D;&quot;w-3 h-3 text-slate-400&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M9 5l7 7-7 7&quot;/&gt;&lt;/svg&gt;
+            &lt;span class&#x3D;&quot;text-slate-500&quot;&gt;Pieza {{ habitacionSeleccionada()?.numero }}&lt;/span&gt;
+          &lt;/ng-container&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Contenido --&gt;
+        &lt;div class&#x3D;&quot;flex-1 overflow-y-auto p-8 bg-slate-50/50&quot;&gt;
+          
+          &lt;!-- Vista de SALAS --&gt;
+          &lt;div *ngIf&#x3D;&quot;nivel() &#x3D;&#x3D;&#x3D; &#x27;salas&#x27;&quot; class&#x3D;&quot;space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300&quot;&gt;
+            &lt;div class&#x3D;&quot;flex items-center justify-between&quot;&gt;
+              &lt;h4 class&#x3D;&quot;text-sm font-bold text-slate-700&quot;&gt;Listado de Salas&lt;/h4&gt;
+              &lt;button (click)&#x3D;&quot;abrirFormSala()&quot; class&#x3D;&quot;px-4 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-bold shadow-sm hover:bg-blue-700 transition-all&quot;&gt;+ Nueva Sala&lt;/button&gt;
+            &lt;/div&gt;
+
+            &lt;div class&#x3D;&quot;grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4&quot;&gt;
+              &lt;div *ngFor&#x3D;&quot;let s of salas()&quot; 
+                   class&#x3D;&quot;bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:shadow-md hover:border-blue-200 transition-all cursor-pointer group&quot;
+                   (click)&#x3D;&quot;seleccionarSala(s)&quot;&gt;
+                &lt;div class&#x3D;&quot;flex justify-between items-start mb-3&quot;&gt;
+                  &lt;div class&#x3D;&quot;p-2 bg-blue-50 rounded-lg group-hover:bg-blue-100 transition-colors&quot;&gt;
+                    &lt;svg class&#x3D;&quot;w-5 h-5 text-blue-600&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4&quot;/&gt;&lt;/svg&gt;
+                  &lt;/div&gt;
+                  &lt;div class&#x3D;&quot;flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity&quot; (click)&#x3D;&quot;$event.stopPropagation()&quot;&gt;
+                    &lt;button (click)&#x3D;&quot;abrirFormSala(s)&quot; class&#x3D;&quot;p-1 text-slate-400 hover:text-blue-600 transition-colors&quot;&gt;
+                      &lt;svg class&#x3D;&quot;w-4 h-4&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z&quot;/&gt;&lt;/svg&gt;
+                    &lt;/button&gt;
+                    &lt;button (click)&#x3D;&quot;eliminarSala(s)&quot; class&#x3D;&quot;p-1 text-slate-400 hover:text-red-600 transition-colors&quot;&gt;
+                      &lt;svg class&#x3D;&quot;w-4 h-4&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16&quot;/&gt;&lt;/svg&gt;
+                    &lt;/button&gt;
+                  &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;h5 class&#x3D;&quot;font-bold text-slate-900&quot;&gt;{{ s.nombre }}&lt;/h5&gt;
+                &lt;p class&#x3D;&quot;text-[10px] text-slate-400 font-mono mb-2&quot;&gt;{{ s.codigo || &#x27;SIN CÓDIGO&#x27; }}&lt;/p&gt;
+                &lt;div class&#x3D;&quot;flex items-center gap-2 mt-4&quot;&gt;
+                  &lt;span class&#x3D;&quot;text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-bold&quot;&gt;
+                    {{ s._count?.habitaciones || 0 }} Piezas
+                  &lt;/span&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div *ngIf&#x3D;&quot;salas().length &#x3D;&#x3D;&#x3D; 0&quot; class&#x3D;&quot;py-20 text-center&quot;&gt;
+              &lt;div class&#x3D;&quot;bg-slate-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4&quot;&gt;
+                &lt;svg class&#x3D;&quot;w-8 h-8 text-slate-300&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4&quot;/&gt;&lt;/svg&gt;
+              &lt;/div&gt;
+              &lt;p class&#x3D;&quot;text-slate-400 font-medium&quot;&gt;No hay salas registradas para este servicio&lt;/p&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;!-- Vista de HABITACIONES (PIEZAS) --&gt;
+          &lt;div *ngIf&#x3D;&quot;nivel() &#x3D;&#x3D;&#x3D; &#x27;habitaciones&#x27;&quot; class&#x3D;&quot;space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300&quot;&gt;
+            &lt;div class&#x3D;&quot;flex items-center justify-between&quot;&gt;
+              &lt;div class&#x3D;&quot;flex items-center gap-2&quot;&gt;
+                &lt;button (click)&#x3D;&quot;nivel.set(&#x27;salas&#x27;)&quot; class&#x3D;&quot;p-1 hover:bg-slate-200 rounded transition-colors text-slate-500&quot;&gt;
+                  &lt;svg class&#x3D;&quot;w-5 h-5&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M15 19l-7-7 7-7&quot;/&gt;&lt;/svg&gt;
+                &lt;/button&gt;
+                &lt;h4 class&#x3D;&quot;text-sm font-bold text-slate-700&quot;&gt;Piezas en {{ salaSeleccionada()?.nombre }}&lt;/h4&gt;
+              &lt;/div&gt;
+              &lt;button (click)&#x3D;&quot;abrirFormHabitacion()&quot; class&#x3D;&quot;px-4 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-bold shadow-sm hover:bg-blue-700 transition-all&quot;&gt;+ Nueva Pieza&lt;/button&gt;
+            &lt;/div&gt;
+
+            &lt;div class&#x3D;&quot;grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4&quot;&gt;
+              &lt;div *ngFor&#x3D;&quot;let h of habitaciones()&quot; 
+                   class&#x3D;&quot;bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:shadow-md hover:border-blue-200 transition-all cursor-pointer group&quot;
+                   (click)&#x3D;&quot;seleccionarHabitacion(h)&quot;&gt;
+                &lt;div class&#x3D;&quot;flex justify-between items-start mb-3&quot;&gt;
+                  &lt;span class&#x3D;&quot;text-[10px] font-black bg-slate-100 text-slate-500 px-2 py-0.5 rounded uppercase&quot;&gt;
+                    {{ h.tipoHabitacion?.nombre }}
+                  &lt;/span&gt;
+                  &lt;div class&#x3D;&quot;flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity&quot; (click)&#x3D;&quot;$event.stopPropagation()&quot;&gt;
+                    &lt;button (click)&#x3D;&quot;abrirFormHabitacion(h)&quot; class&#x3D;&quot;p-1 text-slate-400 hover:text-blue-600&quot;&gt;
+                      &lt;svg class&#x3D;&quot;w-4 h-4&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z&quot;/&gt;&lt;/svg&gt;
+                    &lt;/button&gt;
+                    &lt;button (click)&#x3D;&quot;eliminarHabitacion(h)&quot; class&#x3D;&quot;p-1 text-slate-400 hover:text-red-600&quot;&gt;
+                      &lt;svg class&#x3D;&quot;w-4 h-4&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16&quot;/&gt;&lt;/svg&gt;
+                    &lt;/button&gt;
+                  &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;h5 class&#x3D;&quot;text-2xl font-black text-slate-900 mb-1&quot;&gt;#{{ h.numero }}&lt;/h5&gt;
+                &lt;div class&#x3D;&quot;flex items-center gap-2 mt-4&quot;&gt;
+                  &lt;span class&#x3D;&quot;text-[10px] bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full font-bold&quot;&gt;
+                    {{ h._count?.camas || 0 }} Camas
+                  &lt;/span&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div *ngIf&#x3D;&quot;habitaciones().length &#x3D;&#x3D;&#x3D; 0&quot; class&#x3D;&quot;py-20 text-center&quot;&gt;
+               &lt;p class&#x3D;&quot;text-slate-400 font-medium&quot;&gt;No hay piezas registradas en esta sala&lt;/p&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;!-- Vista de CAMAS --&gt;
+          &lt;div *ngIf&#x3D;&quot;nivel() &#x3D;&#x3D;&#x3D; &#x27;camas&#x27;&quot; class&#x3D;&quot;space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300&quot;&gt;
+            &lt;div class&#x3D;&quot;flex items-center justify-between&quot;&gt;
+              &lt;div class&#x3D;&quot;flex items-center gap-2&quot;&gt;
+                &lt;button (click)&#x3D;&quot;nivel.set(&#x27;habitaciones&#x27;)&quot; class&#x3D;&quot;p-1 hover:bg-slate-200 rounded transition-colors text-slate-500&quot;&gt;
+                  &lt;svg class&#x3D;&quot;w-5 h-5&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M15 19l-7-7 7-7&quot;/&gt;&lt;/svg&gt;
+                &lt;/button&gt;
+                &lt;h4 class&#x3D;&quot;text-sm font-bold text-slate-700&quot;&gt;Camas en Pieza {{ habitacionSeleccionada()?.numero }}&lt;/h4&gt;
+              &lt;/div&gt;
+              &lt;button (click)&#x3D;&quot;abrirFormCama()&quot; class&#x3D;&quot;px-4 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-bold shadow-sm hover:bg-blue-700 transition-all&quot;&gt;+ Nueva Cama&lt;/button&gt;
+            &lt;/div&gt;
+
+            &lt;div class&#x3D;&quot;grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4&quot;&gt;
+              &lt;div *ngFor&#x3D;&quot;let c of camas()&quot; 
+                   class&#x3D;&quot;bg-white p-4 rounded-xl border border-slate-200 shadow-sm relative group overflow-hidden&quot;&gt;
+                
+                &lt;!-- Status bar --&gt;
+                &lt;div class&#x3D;&quot;absolute top-0 left-0 right-0 h-1&quot; [ngClass]&#x3D;&quot;{
+                  &#x27;bg-emerald-500&#x27;: c.estado &#x3D;&#x3D;&#x3D; &#x27;DISPONIBLE&#x27;,
+                  &#x27;bg-red-500&#x27;: c.estado &#x3D;&#x3D;&#x3D; &#x27;OCUPADA&#x27;,
+                  &#x27;bg-amber-500&#x27;: c.estado &#x3D;&#x3D;&#x3D; &#x27;RESERVADA&#x27;,
+                  &#x27;bg-slate-400&#x27;: c.estado &#x3D;&#x3D;&#x3D; &#x27;MANTENIMIENTO&#x27;,
+                  &#x27;bg-blue-400&#x27;: c.estado &#x3D;&#x3D;&#x3D; &#x27;LIMPIEZA&#x27;
+                }&quot;&gt;&lt;/div&gt;
+
+                &lt;div class&#x3D;&quot;flex justify-between items-start mb-2 pt-2&quot;&gt;
+                  &lt;div class&#x3D;&quot;text-[9px] font-bold px-1.5 py-0.5 rounded&quot; [ngClass]&#x3D;&quot;{
+                    &#x27;bg-emerald-50 text-emerald-600&#x27;: c.estado &#x3D;&#x3D;&#x3D; &#x27;DISPONIBLE&#x27;,
+                    &#x27;bg-red-50 text-red-600&#x27;: c.estado &#x3D;&#x3D;&#x3D; &#x27;OCUPADA&#x27;,
+                    &#x27;bg-amber-50 text-amber-600&#x27;: c.estado &#x3D;&#x3D;&#x3D; &#x27;RESERVADA&#x27;,
+                    &#x27;bg-slate-100 text-slate-500&#x27;: c.estado &#x3D;&#x3D;&#x3D; &#x27;MANTENIMIENTO&#x27;,
+                    &#x27;bg-blue-50 text-blue-600&#x27;: c.estado &#x3D;&#x3D;&#x3D; &#x27;LIMPIEZA&#x27;
+                  }&quot;&gt;
+                    {{ c.estado }}
+                  &lt;/div&gt;
+                  &lt;div class&#x3D;&quot;flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity&quot;&gt;
+                    &lt;button (click)&#x3D;&quot;abrirFormCama(c)&quot; class&#x3D;&quot;text-slate-400 hover:text-blue-600&quot;&gt;&lt;svg class&#x3D;&quot;w-3 h-3&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z&quot;/&gt;&lt;/svg&gt;&lt;/button&gt;
+                    &lt;button (click)&#x3D;&quot;eliminarCama(c)&quot; class&#x3D;&quot;text-slate-400 hover:text-red-600&quot;&gt;&lt;svg class&#x3D;&quot;w-3 h-3&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16&quot;/&gt;&lt;/svg&gt;&lt;/button&gt;
+                  &lt;/div&gt;
+                &lt;/div&gt;
+
+                &lt;div class&#x3D;&quot;flex flex-col items-center py-2&quot;&gt;
+                  &lt;svg class&#x3D;&quot;w-10 h-10 mb-2&quot; [ngClass]&#x3D;&quot;{&#x27;text-slate-200&#x27;: c.estado &#x3D;&#x3D;&#x3D; &#x27;DISPONIBLE&#x27;, &#x27;text-slate-400&#x27;: c.estado !&#x3D;&#x3D; &#x27;DISPONIBLE&#x27;}&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+                    &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M5 13l4 4L19 7&quot; /&gt;
+                  &lt;/svg&gt;
+                  &lt;span class&#x3D;&quot;font-black text-slate-800 tracking-tight&quot;&gt;{{ c.codigo }}&lt;/span&gt;
+                  &lt;span class&#x3D;&quot;text-[8px] text-slate-400 font-bold uppercase mt-1&quot;&gt;{{ c.tipoCama?.nombre }}&lt;/span&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div *ngIf&#x3D;&quot;camas().length &#x3D;&#x3D;&#x3D; 0&quot; class&#x3D;&quot;py-20 text-center&quot;&gt;
+               &lt;p class&#x3D;&quot;text-slate-400 font-medium&quot;&gt;No hay camas registradas en esta pieza&lt;/p&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+
+        &lt;/div&gt;
+
+        &lt;!-- Footers / Modales de Edición (Sub-capas) --&gt;
+        &lt;div *ngIf&#x3D;&quot;formAbierto()&quot; class&#x3D;&quot;absolute inset-0 z-[70] bg-black/20 backdrop-blur-[2px] flex items-center justify-center p-4&quot; (click)&#x3D;&quot;cerrarForm()&quot;&gt;
+          &lt;div class&#x3D;&quot;bg-white rounded-xl shadow-2xl w-full max-w-md overflow-hidden&quot; (click)&#x3D;&quot;$event.stopPropagation()&quot;&gt;
+            &lt;div class&#x3D;&quot;px-6 py-4 border-b border-slate-100 flex justify-between items-center&quot;&gt;
+              &lt;h4 class&#x3D;&quot;font-bold text-slate-800&quot;&gt;{{ editando() ? &#x27;Editar&#x27; : &#x27;Nueva&#x27; }} {{ tipoForm() }}&lt;/h4&gt;
+              &lt;button (click)&#x3D;&quot;cerrarForm()&quot; class&#x3D;&quot;text-slate-400 hover:text-slate-600&quot;&gt;&lt;svg class&#x3D;&quot;w-5 h-5&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M6 18L18 6M6 6l12 12&quot;/&gt;&lt;/svg&gt;&lt;/button&gt;
+            &lt;/div&gt;
+            
+            &lt;form [formGroup]&#x3D;&quot;form&quot; class&#x3D;&quot;p-6 space-y-4&quot;&gt;
+              &lt;!-- Sala Form --&gt;
+              &lt;ng-container *ngIf&#x3D;&quot;tipoForm() &#x3D;&#x3D;&#x3D; &#x27;Sala&#x27;&quot;&gt;
+                &lt;div class&#x3D;&quot;space-y-1&quot;&gt;
+                  &lt;label class&#x3D;&quot;text-[10px] font-bold text-slate-400 uppercase ml-1&quot;&gt;Nombre&lt;/label&gt;
+                  &lt;input formControlName&#x3D;&quot;nombre&quot; type&#x3D;&quot;text&quot; class&#x3D;&quot;w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none&quot;/&gt;
+                &lt;/div&gt;
+                &lt;div class&#x3D;&quot;space-y-1&quot;&gt;
+                  &lt;label class&#x3D;&quot;text-[10px] font-bold text-slate-400 uppercase ml-1&quot;&gt;Código&lt;/label&gt;
+                  &lt;input formControlName&#x3D;&quot;codigo&quot; type&#x3D;&quot;text&quot; class&#x3D;&quot;w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none&quot;/&gt;
+                &lt;/div&gt;
+              &lt;/ng-container&gt;
+
+              &lt;!-- Habitacion Form --&gt;
+              &lt;ng-container *ngIf&#x3D;&quot;tipoForm() &#x3D;&#x3D;&#x3D; &#x27;Pieza&#x27;&quot;&gt;
+                &lt;div class&#x3D;&quot;space-y-1&quot;&gt;
+                  &lt;label class&#x3D;&quot;text-[10px] font-bold text-slate-400 uppercase ml-1&quot;&gt;Número&lt;/label&gt;
+                  &lt;input formControlName&#x3D;&quot;numero&quot; type&#x3D;&quot;text&quot; class&#x3D;&quot;w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none&quot;/&gt;
+                &lt;/div&gt;
+                &lt;div class&#x3D;&quot;space-y-1&quot;&gt;
+                  &lt;label class&#x3D;&quot;text-[10px] font-bold text-slate-400 uppercase ml-1&quot;&gt;Tipo&lt;/label&gt;
+                  &lt;select formControlName&#x3D;&quot;tipoHabitacionId&quot; class&#x3D;&quot;w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none&quot;&gt;
+                    &lt;option [value]&#x3D;&quot;null&quot;&gt;Seleccione...&lt;/option&gt;
+                    &lt;option *ngFor&#x3D;&quot;let t of tiposHabitacion()&quot; [value]&#x3D;&quot;t.id&quot;&gt;{{ t.nombre }}&lt;/option&gt;
+                  &lt;/select&gt;
+                &lt;/div&gt;
+              &lt;/ng-container&gt;
+
+              &lt;!-- Cama Form --&gt;
+              &lt;ng-container *ngIf&#x3D;&quot;tipoForm() &#x3D;&#x3D;&#x3D; &#x27;Cama&#x27;&quot;&gt;
+                &lt;div class&#x3D;&quot;space-y-1&quot;&gt;
+                  &lt;label class&#x3D;&quot;text-[10px] font-bold text-slate-400 uppercase ml-1&quot;&gt;Código de Cama&lt;/label&gt;
+                  &lt;input formControlName&#x3D;&quot;codigo&quot; type&#x3D;&quot;text&quot; class&#x3D;&quot;w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none&quot;/&gt;
+                &lt;/div&gt;
+                &lt;div class&#x3D;&quot;space-y-1&quot;&gt;
+                  &lt;label class&#x3D;&quot;text-[10px] font-bold text-slate-400 uppercase ml-1&quot;&gt;Tipo de Cama&lt;/label&gt;
+                  &lt;select formControlName&#x3D;&quot;tipoCamaId&quot; class&#x3D;&quot;w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none&quot;&gt;
+                    &lt;option [value]&#x3D;&quot;null&quot;&gt;Seleccione...&lt;/option&gt;
+                    &lt;option *ngFor&#x3D;&quot;let t of tiposCama()&quot; [value]&#x3D;&quot;t.id&quot;&gt;{{ t.nombre }}&lt;/option&gt;
+                  &lt;/select&gt;
+                &lt;/div&gt;
+                &lt;div class&#x3D;&quot;space-y-1&quot;&gt;
+                  &lt;label class&#x3D;&quot;text-[10px] font-bold text-slate-400 uppercase ml-1&quot;&gt;Estado&lt;/label&gt;
+                  &lt;select formControlName&#x3D;&quot;estado&quot; class&#x3D;&quot;w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none&quot;&gt;
+                    &lt;option value&#x3D;&quot;DISPONIBLE&quot;&gt;DISPONIBLE&lt;/option&gt;
+                    &lt;option value&#x3D;&quot;OCUPADA&quot;&gt;OCUPADA&lt;/option&gt;
+                    &lt;option value&#x3D;&quot;RESERVADA&quot;&gt;RESERVADA&lt;/option&gt;
+                    &lt;option value&#x3D;&quot;MANTENIMIENTO&quot;&gt;MANTENIMIENTO&lt;/option&gt;
+                    &lt;option value&#x3D;&quot;LIMPIEZA&quot;&gt;LIMPIEZA&lt;/option&gt;
+                  &lt;/select&gt;
+                &lt;/div&gt;
+              &lt;/ng-container&gt;
+
+              &lt;div class&#x3D;&quot;flex justify-end gap-2 mt-6&quot;&gt;
+                &lt;button type&#x3D;&quot;button&quot; (click)&#x3D;&quot;cerrarForm()&quot; class&#x3D;&quot;px-4 py-2 text-slate-500 text-sm font-bold hover:bg-slate-100 rounded-lg&quot;&gt;Cancelar&lt;/button&gt;
+                &lt;button type&#x3D;&quot;button&quot; (click)&#x3D;&quot;guardar()&quot; [disabled]&#x3D;&quot;form.invalid || enviando()&quot; class&#x3D;&quot;px-6 py-2 bg-blue-600 text-white text-sm font-bold rounded-lg hover:bg-blue-700 shadow-lg shadow-blue-100 disabled:opacity-50&quot;&gt;
+                  {{ enviando() ? &#x27;Guardando...&#x27; : &#x27;Guardar&#x27; }}
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/form&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &#x60;,
+  styles: [&#x60;
+    @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes slide-in-from-bottom-2 { from { transform: translateY(0.5rem); } to { transform: translateY(0); } }
+    .animate-in { animation: fade-in 0.3s ease-out, slide-in-from-bottom-2 0.3s ease-out; }
+  &#x60;]
+})
+export class InfraestructuraModalComponent implements OnInit {
+  @Input() establecimientoId!: number;
+  @Input() establecimientoNombre!: string;
+  @Input() servicioId!: number;
+  @Input() servicioNombre!: string;
+  @Output() cerrar &#x3D; new EventEmitter&lt;void&gt;();
+
+  private svc &#x3D; inject(HospitalizacionService);
+  private fb &#x3D; inject(FormBuilder);
+  private notification &#x3D; inject(NotificationService);
+
+  nivel &#x3D; signal&lt;&#x27;salas&#x27; | &#x27;habitaciones&#x27; | &#x27;camas&#x27;&gt;(&#x27;salas&#x27;);
+  salas &#x3D; signal&lt;Sala[]&gt;([]);
+  habitaciones &#x3D; signal&lt;Habitacion[]&gt;([]);
+  camas &#x3D; signal&lt;Cama[]&gt;([]);
+  
+  salaSeleccionada &#x3D; signal&lt;Sala | null&gt;(null);
+  habitacionSeleccionada &#x3D; signal&lt;Habitacion | null&gt;(null);
+
+  tiposHabitacion &#x3D; signal&lt;any[]&gt;([]);
+  tiposCama &#x3D; signal&lt;any[]&gt;([]);
+
+  formAbierto &#x3D; signal(false);
+  tipoForm &#x3D; signal&lt;&#x27;Sala&#x27; | &#x27;Pieza&#x27; | &#x27;Cama&#x27;&gt;(&#x27;Sala&#x27;);
+  editando &#x3D; signal&lt;any&gt;(null);
+  enviando &#x3D; signal(false);
+
+  form &#x3D; this.fb.group({
+    // Sala
+    nombre: [&#x27;&#x27;],
+    codigo: [&#x27;&#x27;],
+    // Habitacion
+    numero: [&#x27;&#x27;],
+    tipoHabitacionId: [null as number | null],
+    // Cama
+    tipoCamaId: [null as number | null],
+    estado: [&#x27;DISPONIBLE&#x27;]
+  });
+
+  ngOnInit() {
+    this.cargarSalas();
+    this.cargarCatalogos();
+  }
+
+  cargarCatalogos() {
+    this.svc.listarTiposHabitacion().subscribe(res &#x3D;&gt; this.tiposHabitacion.set(res));
+    this.svc.listarTiposCama().subscribe(res &#x3D;&gt; this.tiposCama.set(res));
+  }
+
+  cargarSalas() {
+    this.svc.listarSalas(this.servicioId).subscribe(res &#x3D;&gt; this.salas.set(res));
+  }
+
+  seleccionarSala(s: Sala) {
+    this.salaSeleccionada.set(s);
+    this.svc.listarHabitaciones(s.id).subscribe(res &#x3D;&gt; {
+      this.habitaciones.set(res);
+      this.nivel.set(&#x27;habitaciones&#x27;);
+    });
+  }
+
+  seleccionarHabitacion(h: Habitacion) {
+    this.habitacionSeleccionada.set(h);
+    this.svc.listarCamas(h.id).subscribe(res &#x3D;&gt; {
+      this.camas.set(res);
+      this.nivel.set(&#x27;camas&#x27;);
+    });
+  }
+
+  abrirFormSala(s?: Sala) {
+    this.tipoForm.set(&#x27;Sala&#x27;);
+    this.editando.set(s || null);
+    this.form.reset();
+    if (s) {
+      this.form.patchValue({ nombre: s.nombre, codigo: s.codigo });
+    }
+    this.formAbierto.set(true);
+  }
+
+  abrirFormHabitacion(h?: Habitacion) {
+    this.tipoForm.set(&#x27;Pieza&#x27;);
+    this.editando.set(h || null);
+    this.form.reset();
+    if (h) {
+      this.form.patchValue({ numero: h.numero, tipoHabitacionId: h.tipoHabitacionId });
+    }
+    this.formAbierto.set(true);
+  }
+
+  abrirFormCama(c?: Cama) {
+    this.tipoForm.set(&#x27;Cama&#x27;);
+    this.editando.set(c || null);
+    this.form.reset();
+    if (c) {
+      this.form.patchValue({ codigo: c.codigo, tipoCamaId: c.tipoCamaId, estado: c.estado });
+    }
+    this.formAbierto.set(true);
+  }
+
+  cerrarForm() {
+    this.formAbierto.set(false);
+    this.editando.set(null);
+  }
+
+  guardar() {
+    this.enviando.set(true);
+    const val &#x3D; this.form.value;
+    let obs: Observable&lt;any&gt;;
+    const isEdit &#x3D; !!this.editando();
+    const tForm &#x3D; this.tipoForm(); // Guardamos el tipo actual antes de que cambie
+
+    if (tForm &#x3D;&#x3D;&#x3D; &#x27;Sala&#x27;) {
+      const data: any &#x3D; { nombre: val.nombre, codigo: val.codigo };
+      if (!isEdit) data.servicioId &#x3D; this.servicioId;
+      obs &#x3D; isEdit ? this.svc.actualizarSala(this.editando().id, data) : this.svc.crearSala(data);
+    } else if (tForm &#x3D;&#x3D;&#x3D; &#x27;Pieza&#x27;) {
+      const data: any &#x3D; { numero: val.numero, tipoHabitacionId: Number(val.tipoHabitacionId) };
+      if (!isEdit) data.salaId &#x3D; this.salaSeleccionada()!.id;
+      obs &#x3D; isEdit ? this.svc.actualizarHabitacion(this.editando().id, data) : this.svc.crearHabitacion(data);
+    } else {
+      const data: any &#x3D; { codigo: val.codigo, tipoCamaId: Number(val.tipoCamaId), estado: val.estado };
+      if (!isEdit) data.habitacionId &#x3D; this.habitacionSeleccionada()!.id;
+      obs &#x3D; isEdit ? this.svc.actualizarCama(this.editando().id, data) : this.svc.crearCama(data);
+    }
+
+    obs.subscribe({
+      next: () &#x3D;&gt; {
+        this.notification.success(&#x27;Registro guardado&#x27;);
+        this.enviando.set(false);
+        this.cerrarForm();
+        if (tForm &#x3D;&#x3D;&#x3D; &#x27;Sala&#x27;) this.cargarSalas();
+        if (tForm &#x3D;&#x3D;&#x3D; &#x27;Pieza&#x27;) this.seleccionarSala(this.salaSeleccionada()!);
+        if (tForm &#x3D;&#x3D;&#x3D; &#x27;Cama&#x27;) this.seleccionarHabitacion(this.habitacionSeleccionada()!);
+      },
+      error: (err) &#x3D;&gt; {
+        this.enviando.set(false);
+        this.notification.error(err.error?.message || &#x27;Error al guardar&#x27;);
+      }
+    });
+  }
+
+  eliminarSala(s: Sala) {
+    if (confirm(&#x60;¿Eliminar sala ${s.nombre}?&#x60;)) {
+      this.svc.eliminarSala(s.id).subscribe(() &#x3D;&gt; {
+        this.notification.info(&#x27;Sala eliminada&#x27;);
+        this.cargarSalas();
+      });
+    }
+  }
+
+  eliminarHabitacion(h: Habitacion) {
+    if (confirm(&#x60;¿Eliminar pieza ${h.numero}?&#x60;)) {
+      this.svc.eliminarHabitacion(h.id).subscribe(() &#x3D;&gt; {
+        this.notification.info(&#x27;Pieza eliminada&#x27;);
+        this.seleccionarSala(this.salaSeleccionada()!);
+      });
+    }
+  }
+
+  eliminarCama(c: Cama) {
+    if (confirm(&#x60;¿Eliminar cama ${c.codigo}?&#x60;)) {
+      this.svc.eliminarCama(c.id).subscribe(() &#x3D;&gt; {
+        this.notification.info(&#x27;Cama eliminada&#x27;);
+        this.seleccionarHabitacion(this.habitacionSeleccionada()!);
+      });
+    }
+  }
+}
+</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="styleData">
+            <pre class="line-numbers"><code class="language-scss">
+    @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes slide-in-from-bottom-2 { from { transform: translateY(0.5rem); } to { transform: translateY(0); } }
+    .animate-in { animation: fade-in 0.3s ease-out, slide-in-from-bottom-2 0.3s ease-out; }
+  
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"     (click)="cerrar.emit()">  <div class="bg-slate-50 rounded-2xl shadow-2xl w-full max-w-5xl max-h-[90vh] overflow-hidden flex flex-col"       (click)="$event.stopPropagation()">    <!-- Header -->    <div class="px-8 py-6 bg-white border-b border-slate-100 flex items-center justify-between">      <div>        <div class="flex items-center gap-2 mb-1">          <span class="text-blue-600">            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>          </span>          <h3 class="text-xl font-bold text-slate-900">Infraestructura Hospitalaria</h3>        </div>        <p class="text-xs text-slate-500 font-medium">          {{ establecimientoNombre }} / {{ servicioNombre }}        </p>      </div>      <button (click)="cerrar.emit()" class="p-2 hover:bg-slate-100 rounded-full transition-colors">        <svg class="w-6 h-6 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>      </button>    </div>    <!-- Breadcrumbs / Navegación -->    <div class="px-8 py-3 bg-slate-100/50 border-b border-slate-200 flex items-center gap-2 text-xs font-bold uppercase tracking-wider">      <button (click)="nivel.set(\'salas\')" [class.text-blue-600]="nivel() === \'salas\'" class="hover:underline transition-all">Salas</button>      <ng-container *ngIf="salaSeleccionada()">        <svg class="w-3 h-3 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>        <button (click)="nivel.set(\'habitaciones\')" [class.text-blue-600]="nivel() === \'habitaciones\'" class="hover:underline transition-all">{{ salaSeleccionada()?.nombre }}</button>      </ng-container>      <ng-container *ngIf="habitacionSeleccionada()">        <svg class="w-3 h-3 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>        <span class="text-slate-500">Pieza {{ habitacionSeleccionada()?.numero }}</span>      </ng-container>    </div>    <!-- Contenido -->    <div class="flex-1 overflow-y-auto p-8 bg-slate-50/50">      <!-- Vista de SALAS -->      <div *ngIf="nivel() === \'salas\'" class="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300">        <div class="flex items-center justify-between">          <h4 class="text-sm font-bold text-slate-700">Listado de Salas</h4>          <button (click)="abrirFormSala()" class="px-4 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-bold shadow-sm hover:bg-blue-700 transition-all">+ Nueva Sala</button>        </div>        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">          <div *ngFor="let s of salas()"               class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:shadow-md hover:border-blue-200 transition-all cursor-pointer group"               (click)="seleccionarSala(s)">            <div class="flex justify-between items-start mb-3">              <div class="p-2 bg-blue-50 rounded-lg group-hover:bg-blue-100 transition-colors">                <svg class="w-5 h-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>              </div>              <div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity" (click)="$event.stopPropagation()">                <button (click)="abrirFormSala(s)" class="p-1 text-slate-400 hover:text-blue-600 transition-colors">                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>                </button>                <button (click)="eliminarSala(s)" class="p-1 text-slate-400 hover:text-red-600 transition-colors">                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>                </button>              </div>            </div>            <h5 class="font-bold text-slate-900">{{ s.nombre }}</h5>            <p class="text-[10px] text-slate-400 font-mono mb-2">{{ s.codigo || \'SIN CÓDIGO\' }}</p>            <div class="flex items-center gap-2 mt-4">              <span class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-bold">                {{ s._count?.habitaciones || 0 }} Piezas              </span>            </div>          </div>        </div>        <div *ngIf="salas().length === 0" class="py-20 text-center">          <div class="bg-slate-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">            <svg class="w-8 h-8 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/></svg>          </div>          <p class="text-slate-400 font-medium">No hay salas registradas para este servicio</p>        </div>      </div>      <!-- Vista de HABITACIONES (PIEZAS) -->      <div *ngIf="nivel() === \'habitaciones\'" class="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300">        <div class="flex items-center justify-between">          <div class="flex items-center gap-2">            <button (click)="nivel.set(\'salas\')" class="p-1 hover:bg-slate-200 rounded transition-colors text-slate-500">              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>            </button>            <h4 class="text-sm font-bold text-slate-700">Piezas en {{ salaSeleccionada()?.nombre }}</h4>          </div>          <button (click)="abrirFormHabitacion()" class="px-4 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-bold shadow-sm hover:bg-blue-700 transition-all">+ Nueva Pieza</button>        </div>        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">          <div *ngFor="let h of habitaciones()"               class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:shadow-md hover:border-blue-200 transition-all cursor-pointer group"               (click)="seleccionarHabitacion(h)">            <div class="flex justify-between items-start mb-3">              <span class="text-[10px] font-black bg-slate-100 text-slate-500 px-2 py-0.5 rounded uppercase">                {{ h.tipoHabitacion?.nombre }}              </span>              <div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity" (click)="$event.stopPropagation()">                <button (click)="abrirFormHabitacion(h)" class="p-1 text-slate-400 hover:text-blue-600">                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>                </button>                <button (click)="eliminarHabitacion(h)" class="p-1 text-slate-400 hover:text-red-600">                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>                </button>              </div>            </div>            <h5 class="text-2xl font-black text-slate-900 mb-1">#{{ h.numero }}</h5>            <div class="flex items-center gap-2 mt-4">              <span class="text-[10px] bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full font-bold">                {{ h._count?.camas || 0 }} Camas              </span>            </div>          </div>        </div>        <div *ngIf="habitaciones().length === 0" class="py-20 text-center">           <p class="text-slate-400 font-medium">No hay piezas registradas en esta sala</p>        </div>      </div>      <!-- Vista de CAMAS -->      <div *ngIf="nivel() === \'camas\'" class="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300">        <div class="flex items-center justify-between">          <div class="flex items-center gap-2">            <button (click)="nivel.set(\'habitaciones\')" class="p-1 hover:bg-slate-200 rounded transition-colors text-slate-500">              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>            </button>            <h4 class="text-sm font-bold text-slate-700">Camas en Pieza {{ habitacionSeleccionada()?.numero }}</h4>          </div>          <button (click)="abrirFormCama()" class="px-4 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-bold shadow-sm hover:bg-blue-700 transition-all">+ Nueva Cama</button>        </div>        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">          <div *ngFor="let c of camas()"               class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm relative group overflow-hidden">            <!-- Status bar -->            <div class="absolute top-0 left-0 right-0 h-1" [ngClass]="{              \'bg-emerald-500\': c.estado === \'DISPONIBLE\',              \'bg-red-500\': c.estado === \'OCUPADA\',              \'bg-amber-500\': c.estado === \'RESERVADA\',              \'bg-slate-400\': c.estado === \'MANTENIMIENTO\',              \'bg-blue-400\': c.estado === \'LIMPIEZA\'            }"></div>            <div class="flex justify-between items-start mb-2 pt-2">              <div class="text-[9px] font-bold px-1.5 py-0.5 rounded" [ngClass]="{                \'bg-emerald-50 text-emerald-600\': c.estado === \'DISPONIBLE\',                \'bg-red-50 text-red-600\': c.estado === \'OCUPADA\',                \'bg-amber-50 text-amber-600\': c.estado === \'RESERVADA\',                \'bg-slate-100 text-slate-500\': c.estado === \'MANTENIMIENTO\',                \'bg-blue-50 text-blue-600\': c.estado === \'LIMPIEZA\'              }">                {{ c.estado }}              </div>              <div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">                <button (click)="abrirFormCama(c)" class="text-slate-400 hover:text-blue-600"><svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button>                <button (click)="eliminarCama(c)" class="text-slate-400 hover:text-red-600"><svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>              </div>            </div>            <div class="flex flex-col items-center py-2">              <svg class="w-10 h-10 mb-2" [ngClass]="{\'text-slate-200\': c.estado === \'DISPONIBLE\', \'text-slate-400\': c.estado !== \'DISPONIBLE\'}" fill="none" viewBox="0 0 24 24" stroke="currentColor">                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />              </svg>              <span class="font-black text-slate-800 tracking-tight">{{ c.codigo }}</span>              <span class="text-[8px] text-slate-400 font-bold uppercase mt-1">{{ c.tipoCama?.nombre }}</span>            </div>          </div>        </div>        <div *ngIf="camas().length === 0" class="py-20 text-center">           <p class="text-slate-400 font-medium">No hay camas registradas en esta pieza</p>        </div>      </div>    </div>    <!-- Footers / Modales de Edición (Sub-capas) -->    <div *ngIf="formAbierto()" class="absolute inset-0 z-[70] bg-black/20 backdrop-blur-[2px] flex items-center justify-center p-4" (click)="cerrarForm()">      <div class="bg-white rounded-xl shadow-2xl w-full max-w-md overflow-hidden" (click)="$event.stopPropagation()">        <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center">          <h4 class="font-bold text-slate-800">{{ editando() ? \'Editar\' : \'Nueva\' }} {{ tipoForm() }}</h4>          <button (click)="cerrarForm()" class="text-slate-400 hover:text-slate-600"><svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>        </div>        <form [formGroup]="form" class="p-6 space-y-4">          <!-- Sala Form -->          <ng-container *ngIf="tipoForm() === \'Sala\'">            <div class="space-y-1">              <label class="text-[10px] font-bold text-slate-400 uppercase ml-1">Nombre</label>              <input formControlName="nombre" type="text" class="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"/>            </div>            <div class="space-y-1">              <label class="text-[10px] font-bold text-slate-400 uppercase ml-1">Código</label>              <input formControlName="codigo" type="text" class="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"/>            </div>          </ng-container>          <!-- Habitacion Form -->          <ng-container *ngIf="tipoForm() === \'Pieza\'">            <div class="space-y-1">              <label class="text-[10px] font-bold text-slate-400 uppercase ml-1">Número</label>              <input formControlName="numero" type="text" class="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"/>            </div>            <div class="space-y-1">              <label class="text-[10px] font-bold text-slate-400 uppercase ml-1">Tipo</label>              <select formControlName="tipoHabitacionId" class="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none">                <option [value]="null">Seleccione...</option>                <option *ngFor="let t of tiposHabitacion()" [value]="t.id">{{ t.nombre }}</option>              </select>            </div>          </ng-container>          <!-- Cama Form -->          <ng-container *ngIf="tipoForm() === \'Cama\'">            <div class="space-y-1">              <label class="text-[10px] font-bold text-slate-400 uppercase ml-1">Código de Cama</label>              <input formControlName="codigo" type="text" class="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"/>            </div>            <div class="space-y-1">              <label class="text-[10px] font-bold text-slate-400 uppercase ml-1">Tipo de Cama</label>              <select formControlName="tipoCamaId" class="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none">                <option [value]="null">Seleccione...</option>                <option *ngFor="let t of tiposCama()" [value]="t.id">{{ t.nombre }}</option>              </select>            </div>            <div class="space-y-1">              <label class="text-[10px] font-bold text-slate-400 uppercase ml-1">Estado</label>              <select formControlName="estado" class="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none">                <option value="DISPONIBLE">DISPONIBLE</option>                <option value="OCUPADA">OCUPADA</option>                <option value="RESERVADA">RESERVADA</option>                <option value="MANTENIMIENTO">MANTENIMIENTO</option>                <option value="LIMPIEZA">LIMPIEZA</option>              </select>            </div>          </ng-container>          <div class="flex justify-end gap-2 mt-6">            <button type="button" (click)="cerrarForm()" class="px-4 py-2 text-slate-500 text-sm font-bold hover:bg-slate-100 rounded-lg">Cancelar</button>            <button type="button" (click)="guardar()" [disabled]="form.invalid || enviando()" class="px-6 py-2 bg-blue-600 text-white text-sm font-bold rounded-lg hover:bg-blue-700 shadow-lg shadow-blue-100 disabled:opacity-50">              {{ enviando() ? \'Guardando...\' : \'Guardar\' }}            </button>          </div>        </form>      </div>    </div>  </div></div></div>'
+    var COMPONENTS = [{'name': 'AgendasComponent', 'selector': 'app-agendas'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'BuscadorPacienteComponent', 'selector': 'app-buscador-paciente'},{'name': 'CitasComponent', 'selector': 'app-citas'},{'name': 'ConstructorFormularioComponent', 'selector': 'app-constructor-formulario'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'EpidemiologiaDashboardComponent', 'selector': 'app-epidemiologia-dashboard'},{'name': 'EstadisticasHospitalariasComponent', 'selector': 'app-estadisticas-hospitalarias'},{'name': 'FarmaciaComponent', 'selector': 'app-farmacia'},{'name': 'GestionHospitalizacionComponent', 'selector': 'app-gestion-hospitalizacion'},{'name': 'GestionLotesModalComponent', 'selector': 'app-gestion-lotes-modal'},{'name': 'GestionReportesComponent', 'selector': 'app-gestion-reportes'},{'name': 'HistoriaClinicaComponent', 'selector': 'app-historia-clinica'},{'name': 'InfraestructuraModalComponent', 'selector': 'app-infraestructura-modal'},{'name': 'InventarioVacunasComponent', 'selector': 'app-inventario-vacunas'},{'name': 'LaboratorioComponent', 'selector': 'app-laboratorio'},{'name': 'ListaPlantillasComponent', 'selector': 'app-lista-plantillas'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MainLayoutComponent', 'selector': 'app-main-layout'},{'name': 'MantenimientoDiagnosticosComponent', 'selector': 'app-mantenimiento-diagnosticos'},{'name': 'MantenimientoEstablecimientosComponent', 'selector': 'app-mantenimiento-establecimientos'},{'name': 'MantenimientoInventarioComponent', 'selector': 'app-mantenimiento-inventario'},{'name': 'MantenimientoLaboratorioComponent', 'selector': 'app-mantenimiento-laboratorio'},{'name': 'MantenimientoLoginComponent', 'selector': 'app-mantenimiento-login'},{'name': 'MantenimientoMedicamentosComponent', 'selector': 'app-mantenimiento-medicamentos'},{'name': 'MantenimientoRadiologiaComponent', 'selector': 'app-mantenimiento-radiologia'},{'name': 'MantenimientoRolesComponent', 'selector': 'app-mantenimiento-roles'},{'name': 'MovimientosInventarioComponent', 'selector': 'app-movimientos-inventario'},{'name': 'NotificationComponent', 'selector': 'app-notification'},{'name': 'NuevaConsultaComponent', 'selector': 'app-nueva-consulta'},{'name': 'PacientesComponent', 'selector': 'app-pacientes'},{'name': 'PermisosUsuariosComponent', 'selector': 'app-permisos-usuarios'},{'name': 'RecetasPacienteComponent', 'selector': 'app-recetas-paciente'},{'name': 'RegistroVacunaModalComponent', 'selector': 'app-registro-vacuna-modal'},{'name': 'ReportesComponent', 'selector': 'app-reportes'},{'name': 'TriajeComponent', 'selector': 'app-triaje'},{'name': 'UsuariosComponent', 'selector': 'app-usuarios'},{'name': 'VacunacionComponent', 'selector': 'app-vacunacion'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'InfraestructuraModalComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'InfraestructuraModalComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

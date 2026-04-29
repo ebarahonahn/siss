@@ -1,0 +1,1920 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>siss-frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">siss-frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  ListaPlantillasComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/modules/mantenimiento-formularios/pages/lista-plantillas/lista-plantillas.component.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                <code>OnInit</code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-lista-plantillas</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                            <code>CommonModule</code>
+                            <code>RouterModule</code>
+                            <code>FormsModule</code>
+                </td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">template</td>
+                <td class="col-md-9"><pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;min-h-screen bg-gray-50 p-6&quot;&gt;
+  &lt;div class&#x3D;&quot;max-w-5xl mx-auto&quot;&gt;
+
+    &lt;!-- Cabecera --&gt;
+    &lt;div class&#x3D;&quot;flex items-center justify-between mb-8&quot;&gt;
+      &lt;div&gt;
+        &lt;h1 class&#x3D;&quot;text-3xl font-black text-gray-900 tracking-tight&quot;&gt;Formularios Clínicos&lt;/h1&gt;
+        &lt;p class&#x3D;&quot;text-sm text-gray-500 mt-1&quot;&gt;Gestión de plantillas dinámicas por especialidad&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div class&#x3D;&quot;flex items-center gap-3&quot;&gt;
+        &lt;a routerLink&#x3D;&quot;/dashboard&quot; class&#x3D;&quot;px-4 py-2 text-sm font-bold text-gray-500 hover:text-gray-700 bg-white border border-gray-200 rounded-xl transition-all&quot;&gt;
+          ← VOLVER
+        &lt;/a&gt;
+        &lt;button (click)&#x3D;&quot;abrirModalCrear()&quot;
+                class&#x3D;&quot;px-6 py-2.5 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-100 flex items-center gap-2&quot;&gt;
+          &lt;svg class&#x3D;&quot;w-5 h-5&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+            &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;3&quot; d&#x3D;&quot;M12 4v16m8-8H4&quot;/&gt;
+          &lt;/svg&gt;
+          NUEVO FORMULARIO
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Lista de plantillas --&gt;
+    &lt;div class&#x3D;&quot;grid grid-cols-1 gap-4&quot;&gt;
+      &lt;div *ngFor&#x3D;&quot;let p of plantillas&quot;
+           class&#x3D;&quot;bg-white rounded-[2rem] shadow-sm border border-gray-100 p-6
+                  flex items-center justify-between hover:shadow-md hover:border-blue-200 transition-all group&quot;&gt;
+        &lt;div class&#x3D;&quot;flex items-center gap-5&quot;&gt;
+          &lt;div class&#x3D;&quot;w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-all&quot;&gt;
+            &lt;svg class&#x3D;&quot;w-7 h-7&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+              &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z&quot;/&gt;
+            &lt;/svg&gt;
+          &lt;/div&gt;
+          &lt;div&gt;
+            &lt;div class&#x3D;&quot;flex items-center gap-3&quot;&gt;
+              &lt;h3 class&#x3D;&quot;font-bold text-lg text-gray-900&quot;&gt;{{ p.nombre }}&lt;/h3&gt;
+              &lt;span class&#x3D;&quot;text-[10px] font-black bg-gray-100 text-gray-500 px-2 py-0.5 rounded-lg border border-gray-200&quot;&gt;
+                VERSION {{ p.version }}
+              &lt;/span&gt;
+              &lt;span *ngIf&#x3D;&quot;p.activa&quot;
+                    class&#x3D;&quot;text-[10px] font-black bg-green-100 text-green-700 px-2 py-0.5 rounded-lg border border-green-200 uppercase tracking-wider&quot;&gt;
+                Activa
+              &lt;/span&gt;
+            &lt;/div&gt;
+            &lt;p class&#x3D;&quot;text-sm text-gray-500 mt-1&quot;&gt;
+               En &lt;span class&#x3D;&quot;font-bold text-gray-700 uppercase tracking-tighter&quot;&gt;{{ p.especialidad?.nombre }}&lt;/span&gt; ·
+               {{ p._count?.secciones || 0 }} secciones configuradas
+            &lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;flex gap-3&quot;&gt;
+          &lt;button (click)&#x3D;&quot;abrirModalEditar(p)&quot;
+                  title&#x3D;&quot;Editar información básica&quot;
+                  class&#x3D;&quot;p-3 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-2xl transition-all border border-transparent hover:border-blue-100&quot;&gt;
+            &lt;svg class&#x3D;&quot;w-6 h-6&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+              &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z&quot;/&gt;
+            &lt;/svg&gt;
+          &lt;/button&gt;
+          &lt;a [routerLink]&#x3D;&quot;[&#x27;/mantenimiento/formularios&#x27;, p.id, &#x27;constructor&#x27;]&quot;
+             title&#x3D;&quot;Editar estructura (Secciones y Campos)&quot;
+             class&#x3D;&quot;p-3 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-2xl transition-all border border-transparent hover:border-blue-100&quot;&gt;
+            &lt;svg class&#x3D;&quot;w-6 h-6&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+              &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4&quot;/&gt;
+            &lt;/svg&gt;
+          &lt;/a&gt;
+          &lt;button *ngIf&#x3D;&quot;!p.activa&quot;
+                  (click)&#x3D;&quot;activar(p.id)&quot;
+                  title&#x3D;&quot;Activar plantilla&quot;
+                  class&#x3D;&quot;p-3 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-2xl transition-all border border-transparent hover:border-green-100&quot;&gt;
+            &lt;svg class&#x3D;&quot;w-6 h-6&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+              &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M5 13l4 4L19 7&quot;/&gt;
+            &lt;/svg&gt;
+          &lt;/button&gt;
+          &lt;button (click)&#x3D;&quot;duplicar(p.id)&quot;
+                  title&#x3D;&quot;Duplicar como nueva versión&quot;
+                  class&#x3D;&quot;p-3 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-2xl transition-all border border-transparent hover:border-indigo-100&quot;&gt;
+            &lt;svg class&#x3D;&quot;w-6 h-6&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+              &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V7a2 2 0 01-2 2h-2M10 11V9a2 2 0 012-2h4&quot;/&gt;
+            &lt;/svg&gt;
+          &lt;/button&gt;
+          &lt;button *ngIf&#x3D;&quot;!p.activa&quot;
+                  (click)&#x3D;&quot;eliminar(p)&quot;
+                  title&#x3D;&quot;Eliminar plantilla&quot;
+                  class&#x3D;&quot;p-3 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-2xl transition-all border border-transparent hover:border-red-100&quot;&gt;
+            &lt;svg class&#x3D;&quot;w-6 h-6&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+              &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16&quot;/&gt;
+            &lt;/svg&gt;
+          &lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;div *ngIf&#x3D;&quot;plantillas.length &#x3D;&#x3D;&#x3D; 0&quot;
+           class&#x3D;&quot;bg-white rounded-[3rem] p-16 text-center shadow-sm border border-dashed border-gray-200&quot;&gt;
+        &lt;div class&#x3D;&quot;w-20 h-20 bg-gray-50 rounded-3xl flex items-center justify-center mx-auto mb-6 text-gray-200&quot;&gt;
+           &lt;svg class&#x3D;&quot;w-10 h-10&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+             &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10&quot;/&gt;
+           &lt;/svg&gt;
+        &lt;/div&gt;
+        &lt;p class&#x3D;&quot;text-xl font-bold text-gray-400&quot;&gt;No hay plantillas creadas aún&lt;/p&gt;
+        &lt;p class&#x3D;&quot;text-sm text-gray-300 mt-1&quot;&gt;Cree la primera plantilla pulsando el botón superior&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- ── Modal Creación ── --&gt;
+&lt;div *ngIf&#x3D;&quot;mostrarModal()&quot;
+     class&#x3D;&quot;fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 animate-in fade-in duration-200&quot;
+     (click)&#x3D;&quot;cerrarModal()&quot;&gt;
+  &lt;div class&#x3D;&quot;bg-white rounded-[2.5rem] shadow-2xl w-full max-w-lg p-8 space-y-6 animate-in zoom-in-95 duration-200&quot;
+       (click)&#x3D;&quot;$event.stopPropagation()&quot;&gt;
+
+    &lt;div class&#x3D;&quot;flex items-center gap-4&quot;&gt;
+      &lt;div class&#x3D;&quot;w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center text-white shadow-lg&quot;&gt;
+        &lt;svg class&#x3D;&quot;w-6 h-6&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+          &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; [attr.d]&#x3D;&quot;editando() ? &#x27;M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z&#x27; : &#x27;M12 4v16m8-8H4&#x27;&quot;/&gt;
+        &lt;/svg&gt;
+      &lt;/div&gt;
+      &lt;div&gt;
+        &lt;h3 class&#x3D;&quot;text-xl font-black text-gray-900 leading-tight&quot;&gt;
+            {{ editando() ? &#x27;Editar Plantilla&#x27; : &#x27;Configurar Nueva Plantilla&#x27; }}
+        &lt;/h3&gt;
+        &lt;p class&#x3D;&quot;text-sm text-gray-500&quot;&gt;Defina la especialidad y el nombre básico.&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class&#x3D;&quot;space-y-4&quot;&gt;
+      &lt;div&gt;
+        &lt;label class&#x3D;&quot;block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1.5 ml-1&quot;&gt;Especialidad Médica&lt;/label&gt;
+        &lt;select [(ngModel)]&#x3D;&quot;nuevaPlantilla.especialidadId&quot;
+                class&#x3D;&quot;w-full px-4 py-3 bg-gray-50 border-2 border-transparent focus:border-blue-500 focus:bg-white rounded-2xl outline-none transition-all text-sm font-bold text-gray-700&quot;&gt;
+          &lt;option [ngValue]&#x3D;&quot;null&quot;&gt;Seleccione una especialidad...&lt;/option&gt;
+          &lt;option *ngFor&#x3D;&quot;let esp of especialidades()&quot; [value]&#x3D;&quot;esp.id&quot;&gt;
+            {{ esp.nombre | uppercase }}
+          &lt;/option&gt;
+        &lt;/select&gt;
+      &lt;/div&gt;
+
+      &lt;div&gt;
+        &lt;label class&#x3D;&quot;block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1.5 ml-1&quot;&gt;Nombre del Formulario&lt;/label&gt;
+        &lt;input type&#x3D;&quot;text&quot; [(ngModel)]&#x3D;&quot;nuevaPlantilla.nombre&quot;
+               placeholder&#x3D;&quot;Ej: Evaluación Inicial de Pediatría&quot;
+               class&#x3D;&quot;w-full px-4 py-3 bg-gray-50 border-2 border-transparent focus:border-blue-500 focus:bg-white rounded-2xl outline-none transition-all text-sm font-bold text-gray-700&quot;/&gt;
+      &lt;/div&gt;
+
+      &lt;div&gt;
+        &lt;label class&#x3D;&quot;block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1.5 ml-1&quot;&gt;Descripción (Opcional)&lt;/label&gt;
+        &lt;textarea [(ngModel)]&#x3D;&quot;nuevaPlantilla.descripcion&quot;
+                  rows&#x3D;&quot;3&quot;
+                  placeholder&#x3D;&quot;Breve detalle sobre el uso de este formulario...&quot;
+                  class&#x3D;&quot;w-full px-4 py-3 bg-gray-50 border-2 border-transparent focus:border-blue-500 focus:bg-white rounded-2xl outline-none transition-all text-sm font-bold text-gray-700 resize-none&quot;&gt;&lt;/textarea&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class&#x3D;&quot;flex gap-4 pt-2&quot;&gt;
+      &lt;button (click)&#x3D;&quot;cerrarModal()&quot;
+              class&#x3D;&quot;flex-1 py-3.5 text-sm font-black text-gray-500 hover:bg-gray-100 rounded-2xl transition-all&quot;&gt;
+        CANCELAR
+      &lt;/button&gt;
+      &lt;button (click)&#x3D;&quot;guardar()&quot;
+              [disabled]&#x3D;&quot;!esValido() || guardando()&quot;
+              class&#x3D;&quot;flex-1 py-3.5 text-sm font-black text-white bg-blue-600 hover:bg-blue-700 rounded-2xl transition-all shadow-lg shadow-blue-100 disabled:opacity-50 disabled:cursor-wait&quot;&gt;
+        &lt;span *ngIf&#x3D;&quot;!guardando()&quot;&gt;{{ editando() ? &#x27;GUARDAR CAMBIOS&#x27; : &#x27;CREAR Y CONTINUAR&#x27; }}&lt;/span&gt;
+        &lt;span *ngIf&#x3D;&quot;guardando()&quot; class&#x3D;&quot;flex items-center justify-center gap-2&quot;&gt;
+          &lt;svg class&#x3D;&quot;w-4 h-4 animate-spin&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot;&gt;&lt;circle class&#x3D;&quot;opacity-25&quot; cx&#x3D;&quot;12&quot; cy&#x3D;&quot;12&quot; r&#x3D;&quot;10&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;4&quot;&gt;&lt;/circle&gt;&lt;path class&#x3D;&quot;opacity-75&quot; fill&#x3D;&quot;currentColor&quot; d&#x3D;&quot;M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;
+          PROCESANDO...
+        &lt;/span&gt;
+      &lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- ── Modal Confirmar Eliminación ── --&gt;
+&lt;div *ngIf&#x3D;&quot;plantillaAEliminar()&quot;
+     class&#x3D;&quot;fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 animate-in fade-in duration-200&quot;
+     (click)&#x3D;&quot;plantillaAEliminar.set(null)&quot;&gt;
+  &lt;div class&#x3D;&quot;bg-white rounded-[2.5rem] shadow-2xl w-full max-w-md p-8 space-y-6 animate-in zoom-in-95 duration-200&quot;
+       (click)&#x3D;&quot;$event.stopPropagation()&quot;&gt;
+
+    &lt;div class&#x3D;&quot;flex items-start gap-4&quot;&gt;
+      &lt;div class&#x3D;&quot;w-12 h-12 bg-red-100 rounded-2xl flex items-center justify-center text-red-600 flex-shrink-0&quot;&gt;
+        &lt;svg class&#x3D;&quot;w-6 h-6&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+          &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16&quot;/&gt;
+        &lt;/svg&gt;
+      &lt;/div&gt;
+      &lt;div&gt;
+        &lt;h3 class&#x3D;&quot;text-xl font-black text-gray-900 leading-tight&quot;&gt;Eliminar Plantilla&lt;/h3&gt;
+        &lt;p class&#x3D;&quot;text-sm text-gray-500 mt-1&quot;&gt;Esta acción no se puede deshacer.&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class&#x3D;&quot;bg-red-50 border border-red-100 rounded-2xl px-5 py-4&quot;&gt;
+      &lt;p class&#x3D;&quot;text-sm font-bold text-gray-700&quot;&gt;
+        ¿Está seguro que desea eliminar
+        &lt;span class&#x3D;&quot;text-red-600&quot;&gt;&quot;{{ plantillaAEliminar()?.nombre }}&quot;&lt;/span&gt;?
+      &lt;/p&gt;
+      &lt;p class&#x3D;&quot;text-xs text-gray-400 mt-1&quot;&gt;
+        Especialidad: &lt;span class&#x3D;&quot;font-bold&quot;&gt;{{ plantillaAEliminar()?.especialidad?.nombre }}&lt;/span&gt;
+        · Versión {{ plantillaAEliminar()?.version }}
+      &lt;/p&gt;
+    &lt;/div&gt;
+
+    &lt;div class&#x3D;&quot;flex gap-4 pt-2&quot;&gt;
+      &lt;button (click)&#x3D;&quot;plantillaAEliminar.set(null)&quot;
+              class&#x3D;&quot;flex-1 py-3.5 text-sm font-black text-gray-500 hover:bg-gray-100 rounded-2xl transition-all&quot;&gt;
+        CANCELAR
+      &lt;/button&gt;
+      &lt;button (click)&#x3D;&quot;confirmarEliminar()&quot;
+              class&#x3D;&quot;flex-1 py-3.5 text-sm font-black text-white bg-red-600 hover:bg-red-700 rounded-2xl transition-all shadow-lg shadow-red-100&quot;&gt;
+        SÍ, ELIMINAR
+      &lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></td>
+            </tr>
+
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#editando" >editando</a>
+                            </li>
+                            <li>
+                                <a href="#especialidades" >especialidades</a>
+                            </li>
+                            <li>
+                                <a href="#guardando" >guardando</a>
+                            </li>
+                            <li>
+                                <a href="#mostrarModal" >mostrarModal</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#ns" >ns</a>
+                            </li>
+                            <li>
+                                <a href="#nuevaPlantilla" >nuevaPlantilla</a>
+                            </li>
+                            <li>
+                                <a href="#plantillaAEliminar" >plantillaAEliminar</a>
+                            </li>
+                            <li>
+                                <a href="#plantillaIdEditando" >plantillaIdEditando</a>
+                            </li>
+                            <li>
+                                <a href="#plantillas" >plantillas</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#router" >router</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#service" >service</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#usuariosSvc" >usuariosSvc</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#abrirModalCrear" >abrirModalCrear</a>
+                            </li>
+                            <li>
+                                <a href="#abrirModalEditar" >abrirModalEditar</a>
+                            </li>
+                            <li>
+                                <a href="#activar" >activar</a>
+                            </li>
+                            <li>
+                                <a href="#cargar" >cargar</a>
+                            </li>
+                            <li>
+                                <a href="#cargarEspecialidades" >cargarEspecialidades</a>
+                            </li>
+                            <li>
+                                <a href="#cerrarModal" >cerrarModal</a>
+                            </li>
+                            <li>
+                                <a href="#confirmarEliminar" >confirmarEliminar</a>
+                            </li>
+                            <li>
+                                <a href="#duplicar" >duplicar</a>
+                            </li>
+                            <li>
+                                <a href="#eliminar" >eliminar</a>
+                            </li>
+                            <li>
+                                <a href="#esValido" >esValido</a>
+                            </li>
+                            <li>
+                                <a href="#guardar" >guardar</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="abrirModalCrear"></a>
+                    <span class="name">
+                        <span ><b>abrirModalCrear</b></span>
+                        <a href="#abrirModalCrear"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>abrirModalCrear()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="316"
+                                    class="link-to-prism">src/app/modules/mantenimiento-formularios/pages/lista-plantillas/lista-plantillas.component.ts:316</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="abrirModalEditar"></a>
+                    <span class="name">
+                        <span ><b>abrirModalEditar</b></span>
+                        <a href="#abrirModalEditar"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>abrirModalEditar(p: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="323"
+                                    class="link-to-prism">src/app/modules/mantenimiento-formularios/pages/lista-plantillas/lista-plantillas.component.ts:323</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>p</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="activar"></a>
+                    <span class="name">
+                        <span ><b>activar</b></span>
+                        <a href="#activar"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>activar(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="272"
+                                    class="link-to-prism">src/app/modules/mantenimiento-formularios/pages/lista-plantillas/lista-plantillas.component.ts:272</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>id</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargar"></a>
+                    <span class="name">
+                        <span ><b>cargar</b></span>
+                        <a href="#cargar"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cargar()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="259"
+                                    class="link-to-prism">src/app/modules/mantenimiento-formularios/pages/lista-plantillas/lista-plantillas.component.ts:259</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargarEspecialidades"></a>
+                    <span class="name">
+                        <span ><b>cargarEspecialidades</b></span>
+                        <a href="#cargarEspecialidades"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cargarEspecialidades()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="265"
+                                    class="link-to-prism">src/app/modules/mantenimiento-formularios/pages/lista-plantillas/lista-plantillas.component.ts:265</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cerrarModal"></a>
+                    <span class="name">
+                        <span ><b>cerrarModal</b></span>
+                        <a href="#cerrarModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cerrarModal()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="334"
+                                    class="link-to-prism">src/app/modules/mantenimiento-formularios/pages/lista-plantillas/lista-plantillas.component.ts:334</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="confirmarEliminar"></a>
+                    <span class="name">
+                        <span ><b>confirmarEliminar</b></span>
+                        <a href="#confirmarEliminar"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>confirmarEliminar()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="300"
+                                    class="link-to-prism">src/app/modules/mantenimiento-formularios/pages/lista-plantillas/lista-plantillas.component.ts:300</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="duplicar"></a>
+                    <span class="name">
+                        <span ><b>duplicar</b></span>
+                        <a href="#duplicar"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>duplicar(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="282"
+                                    class="link-to-prism">src/app/modules/mantenimiento-formularios/pages/lista-plantillas/lista-plantillas.component.ts:282</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>id</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="eliminar"></a>
+                    <span class="name">
+                        <span ><b>eliminar</b></span>
+                        <a href="#eliminar"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>eliminar(plantilla: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="292"
+                                    class="link-to-prism">src/app/modules/mantenimiento-formularios/pages/lista-plantillas/lista-plantillas.component.ts:292</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>plantilla</td>
+                                            <td>
+                                                            <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="esValido"></a>
+                    <span class="name">
+                        <span ><b>esValido</b></span>
+                        <a href="#esValido"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>esValido()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="339"
+                                    class="link-to-prism">src/app/modules/mantenimiento-formularios/pages/lista-plantillas/lista-plantillas.component.ts:339</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="guardar"></a>
+                    <span class="name">
+                        <span ><b>guardar</b></span>
+                        <a href="#guardar"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>guardar()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="343"
+                                    class="link-to-prism">src/app/modules/mantenimiento-formularios/pages/lista-plantillas/lista-plantillas.component.ts:343</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="254"
+                                    class="link-to-prism">src/app/modules/mantenimiento-formularios/pages/lista-plantillas/lista-plantillas.component.ts:254</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="editando"></a>
+                    <span class="name">
+                        <span ><b>editando</b></span>
+                        <a href="#editando"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="243" class="link-to-prism">src/app/modules/mantenimiento-formularios/pages/lista-plantillas/lista-plantillas.component.ts:243</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="especialidades"></a>
+                    <span class="name">
+                        <span ><b>especialidades</b></span>
+                        <a href="#especialidades"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;any[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="245" class="link-to-prism">src/app/modules/mantenimiento-formularios/pages/lista-plantillas/lista-plantillas.component.ts:245</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="guardando"></a>
+                    <span class="name">
+                        <span ><b>guardando</b></span>
+                        <a href="#guardando"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="242" class="link-to-prism">src/app/modules/mantenimiento-formularios/pages/lista-plantillas/lista-plantillas.component.ts:242</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="mostrarModal"></a>
+                    <span class="name">
+                        <span ><b>mostrarModal</b></span>
+                        <a href="#mostrarModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="241" class="link-to-prism">src/app/modules/mantenimiento-formularios/pages/lista-plantillas/lista-plantillas.component.ts:241</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ns"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>ns</b></span>
+                        <a href="#ns"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(NotificationService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="236" class="link-to-prism">src/app/modules/mantenimiento-formularios/pages/lista-plantillas/lista-plantillas.component.ts:236</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="nuevaPlantilla"></a>
+                    <span class="name">
+                        <span ><b>nuevaPlantilla</b></span>
+                        <a href="#nuevaPlantilla"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank" >object</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+    nombre: &#x27;&#x27;,
+    descripcion: &#x27;&#x27;,
+    especialidadId: null as number | null
+  }</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="248" class="link-to-prism">src/app/modules/mantenimiento-formularios/pages/lista-plantillas/lista-plantillas.component.ts:248</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="plantillaAEliminar"></a>
+                    <span class="name">
+                        <span ><b>plantillaAEliminar</b></span>
+                        <a href="#plantillaAEliminar"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;any&gt;(null)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="246" class="link-to-prism">src/app/modules/mantenimiento-formularios/pages/lista-plantillas/lista-plantillas.component.ts:246</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="plantillaIdEditando"></a>
+                    <span class="name">
+                        <span ><b>plantillaIdEditando</b></span>
+                        <a href="#plantillaIdEditando"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;number | null&gt;(null)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="244" class="link-to-prism">src/app/modules/mantenimiento-formularios/pages/lista-plantillas/lista-plantillas.component.ts:244</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="plantillas"></a>
+                    <span class="name">
+                        <span ><b>plantillas</b></span>
+                        <a href="#plantillas"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>any[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="238" class="link-to-prism">src/app/modules/mantenimiento-formularios/pages/lista-plantillas/lista-plantillas.component.ts:238</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="router"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>router</b></span>
+                        <a href="#router"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(Router)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="235" class="link-to-prism">src/app/modules/mantenimiento-formularios/pages/lista-plantillas/lista-plantillas.component.ts:235</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="service"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>service</b></span>
+                        <a href="#service"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(FormulariosService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="233" class="link-to-prism">src/app/modules/mantenimiento-formularios/pages/lista-plantillas/lista-plantillas.component.ts:233</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="usuariosSvc"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>usuariosSvc</b></span>
+                        <a href="#usuariosSvc"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(UsuariosService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="234" class="link-to-prism">src/app/modules/mantenimiento-formularios/pages/lista-plantillas/lista-plantillas.component.ts:234</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, inject, OnInit, signal } from &#x27;@angular/core&#x27;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
+import { RouterModule, Router } from &#x27;@angular/router&#x27;;
+import { FormsModule } from &#x27;@angular/forms&#x27;;
+import { FormulariosService } from &#x27;../../../../core/services/formularios.service&#x27;;
+import { UsuariosService } from &#x27;../../../../core/services/usuarios.service&#x27;;
+import { NotificationService } from &#x27;../../../../core/services/notification.service&#x27;;
+
+@Component({
+  selector: &#x27;app-lista-plantillas&#x27;,
+  standalone: true,
+  imports: [CommonModule, RouterModule, FormsModule],
+  template: &#x60;
+    &lt;div class&#x3D;&quot;min-h-screen bg-gray-50 p-6&quot;&gt;
+      &lt;div class&#x3D;&quot;max-w-5xl mx-auto&quot;&gt;
+
+        &lt;!-- Cabecera --&gt;
+        &lt;div class&#x3D;&quot;flex items-center justify-between mb-8&quot;&gt;
+          &lt;div&gt;
+            &lt;h1 class&#x3D;&quot;text-3xl font-black text-gray-900 tracking-tight&quot;&gt;Formularios Clínicos&lt;/h1&gt;
+            &lt;p class&#x3D;&quot;text-sm text-gray-500 mt-1&quot;&gt;Gestión de plantillas dinámicas por especialidad&lt;/p&gt;
+          &lt;/div&gt;
+          &lt;div class&#x3D;&quot;flex items-center gap-3&quot;&gt;
+            &lt;a routerLink&#x3D;&quot;/dashboard&quot; class&#x3D;&quot;px-4 py-2 text-sm font-bold text-gray-500 hover:text-gray-700 bg-white border border-gray-200 rounded-xl transition-all&quot;&gt;
+              ← VOLVER
+            &lt;/a&gt;
+            &lt;button (click)&#x3D;&quot;abrirModalCrear()&quot; 
+                    class&#x3D;&quot;px-6 py-2.5 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-100 flex items-center gap-2&quot;&gt;
+              &lt;svg class&#x3D;&quot;w-5 h-5&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+                &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;3&quot; d&#x3D;&quot;M12 4v16m8-8H4&quot;/&gt;
+              &lt;/svg&gt;
+              NUEVO FORMULARIO
+            &lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Lista de plantillas --&gt;
+        &lt;div class&#x3D;&quot;grid grid-cols-1 gap-4&quot;&gt;
+          &lt;div *ngFor&#x3D;&quot;let p of plantillas&quot;
+               class&#x3D;&quot;bg-white rounded-[2rem] shadow-sm border border-gray-100 p-6
+                      flex items-center justify-between hover:shadow-md hover:border-blue-200 transition-all group&quot;&gt;
+            &lt;div class&#x3D;&quot;flex items-center gap-5&quot;&gt;
+              &lt;div class&#x3D;&quot;w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-all&quot;&gt;
+                &lt;svg class&#x3D;&quot;w-7 h-7&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+                  &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z&quot;/&gt;
+                &lt;/svg&gt;
+              &lt;/div&gt;
+              &lt;div&gt;
+                &lt;div class&#x3D;&quot;flex items-center gap-3&quot;&gt;
+                  &lt;h3 class&#x3D;&quot;font-bold text-lg text-gray-900&quot;&gt;{{ p.nombre }}&lt;/h3&gt;
+                  &lt;span class&#x3D;&quot;text-[10px] font-black bg-gray-100 text-gray-500 px-2 py-0.5 rounded-lg border border-gray-200&quot;&gt;
+                    VERSION {{ p.version }}
+                  &lt;/span&gt;
+                  &lt;span *ngIf&#x3D;&quot;p.activa&quot;
+                        class&#x3D;&quot;text-[10px] font-black bg-green-100 text-green-700 px-2 py-0.5 rounded-lg border border-green-200 uppercase tracking-wider&quot;&gt;
+                    Activa
+                  &lt;/span&gt;
+                &lt;/div&gt;
+                &lt;p class&#x3D;&quot;text-sm text-gray-500 mt-1&quot;&gt;
+                   En &lt;span class&#x3D;&quot;font-bold text-gray-700 uppercase tracking-tighter&quot;&gt;{{ p.especialidad?.nombre }}&lt;/span&gt; · 
+                   {{ p._count?.secciones || 0 }} secciones configuradas
+                &lt;/p&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div class&#x3D;&quot;flex gap-3&quot;&gt;
+              &lt;button (click)&#x3D;&quot;abrirModalEditar(p)&quot;
+                      title&#x3D;&quot;Editar información básica&quot;
+                      class&#x3D;&quot;p-3 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-2xl transition-all border border-transparent hover:border-blue-100&quot;&gt;
+                &lt;svg class&#x3D;&quot;w-6 h-6&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+                  &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z&quot;/&gt;
+                &lt;/svg&gt;
+              &lt;/button&gt;
+              &lt;a [routerLink]&#x3D;&quot;[&#x27;/mantenimiento/formularios&#x27;, p.id, &#x27;constructor&#x27;]&quot;
+                 title&#x3D;&quot;Editar estructura (Secciones y Campos)&quot;
+                 class&#x3D;&quot;p-3 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-2xl transition-all border border-transparent hover:border-blue-100&quot;&gt;
+                &lt;svg class&#x3D;&quot;w-6 h-6&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+                  &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4&quot;/&gt;
+                &lt;/svg&gt;
+              &lt;/a&gt;
+              &lt;button *ngIf&#x3D;&quot;!p.activa&quot;
+                      (click)&#x3D;&quot;activar(p.id)&quot;
+                      title&#x3D;&quot;Activar plantilla&quot;
+                      class&#x3D;&quot;p-3 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-2xl transition-all border border-transparent hover:border-green-100&quot;&gt;
+                &lt;svg class&#x3D;&quot;w-6 h-6&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+                  &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M5 13l4 4L19 7&quot;/&gt;
+                &lt;/svg&gt;
+              &lt;/button&gt;
+              &lt;button (click)&#x3D;&quot;duplicar(p.id)&quot;
+                      title&#x3D;&quot;Duplicar como nueva versión&quot;
+                      class&#x3D;&quot;p-3 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-2xl transition-all border border-transparent hover:border-indigo-100&quot;&gt;
+                &lt;svg class&#x3D;&quot;w-6 h-6&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+                  &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V7a2 2 0 01-2 2h-2M10 11V9a2 2 0 012-2h4&quot;/&gt;
+                &lt;/svg&gt;
+              &lt;/button&gt;
+              &lt;button *ngIf&#x3D;&quot;!p.activa&quot;
+                      (click)&#x3D;&quot;eliminar(p)&quot;
+                      title&#x3D;&quot;Eliminar plantilla&quot;
+                      class&#x3D;&quot;p-3 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-2xl transition-all border border-transparent hover:border-red-100&quot;&gt;
+                &lt;svg class&#x3D;&quot;w-6 h-6&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+                  &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16&quot;/&gt;
+                &lt;/svg&gt;
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;div *ngIf&#x3D;&quot;plantillas.length &#x3D;&#x3D;&#x3D; 0&quot;
+               class&#x3D;&quot;bg-white rounded-[3rem] p-16 text-center shadow-sm border border-dashed border-gray-200&quot;&gt;
+            &lt;div class&#x3D;&quot;w-20 h-20 bg-gray-50 rounded-3xl flex items-center justify-center mx-auto mb-6 text-gray-200&quot;&gt;
+               &lt;svg class&#x3D;&quot;w-10 h-10&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+                 &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10&quot;/&gt;
+               &lt;/svg&gt;
+            &lt;/div&gt;
+            &lt;p class&#x3D;&quot;text-xl font-bold text-gray-400&quot;&gt;No hay plantillas creadas aún&lt;/p&gt;
+            &lt;p class&#x3D;&quot;text-sm text-gray-300 mt-1&quot;&gt;Cree la primera plantilla pulsando el botón superior&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- ── Modal Creación ── --&gt;
+    &lt;div *ngIf&#x3D;&quot;mostrarModal()&quot; 
+         class&#x3D;&quot;fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 animate-in fade-in duration-200&quot;
+         (click)&#x3D;&quot;cerrarModal()&quot;&gt;
+      &lt;div class&#x3D;&quot;bg-white rounded-[2.5rem] shadow-2xl w-full max-w-lg p-8 space-y-6 animate-in zoom-in-95 duration-200&quot;
+           (click)&#x3D;&quot;$event.stopPropagation()&quot;&gt;
+        
+        &lt;div class&#x3D;&quot;flex items-center gap-4&quot;&gt;
+          &lt;div class&#x3D;&quot;w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center text-white shadow-lg&quot;&gt;
+            &lt;svg class&#x3D;&quot;w-6 h-6&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+              &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; [attr.d]&#x3D;&quot;editando() ? &#x27;M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z&#x27; : &#x27;M12 4v16m8-8H4&#x27;&quot;/&gt;
+            &lt;/svg&gt;
+          &lt;/div&gt;
+          &lt;div&gt;
+            &lt;h3 class&#x3D;&quot;text-xl font-black text-gray-900 leading-tight&quot;&gt;
+                {{ editando() ? &#x27;Editar Plantilla&#x27; : &#x27;Configurar Nueva Plantilla&#x27; }}
+            &lt;/h3&gt;
+            &lt;p class&#x3D;&quot;text-sm text-gray-500&quot;&gt;Defina la especialidad y el nombre básico.&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;space-y-4&quot;&gt;
+          &lt;div&gt;
+            &lt;label class&#x3D;&quot;block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1.5 ml-1&quot;&gt;Especialidad Médica&lt;/label&gt;
+            &lt;select [(ngModel)]&#x3D;&quot;nuevaPlantilla.especialidadId&quot; 
+                    class&#x3D;&quot;w-full px-4 py-3 bg-gray-50 border-2 border-transparent focus:border-blue-500 focus:bg-white rounded-2xl outline-none transition-all text-sm font-bold text-gray-700&quot;&gt;
+              &lt;option [ngValue]&#x3D;&quot;null&quot;&gt;Seleccione una especialidad...&lt;/option&gt;
+              &lt;option *ngFor&#x3D;&quot;let esp of especialidades()&quot; [value]&#x3D;&quot;esp.id&quot;&gt;
+                {{ esp.nombre | uppercase }}
+              &lt;/option&gt;
+            &lt;/select&gt;
+          &lt;/div&gt;
+
+          &lt;div&gt;
+            &lt;label class&#x3D;&quot;block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1.5 ml-1&quot;&gt;Nombre del Formulario&lt;/label&gt;
+            &lt;input type&#x3D;&quot;text&quot; [(ngModel)]&#x3D;&quot;nuevaPlantilla.nombre&quot;
+                   placeholder&#x3D;&quot;Ej: Evaluación Inicial de Pediatría&quot;
+                   class&#x3D;&quot;w-full px-4 py-3 bg-gray-50 border-2 border-transparent focus:border-blue-500 focus:bg-white rounded-2xl outline-none transition-all text-sm font-bold text-gray-700&quot;/&gt;
+          &lt;/div&gt;
+
+          &lt;div&gt;
+            &lt;label class&#x3D;&quot;block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1.5 ml-1&quot;&gt;Descripción (Opcional)&lt;/label&gt;
+            &lt;textarea [(ngModel)]&#x3D;&quot;nuevaPlantilla.descripcion&quot;
+                      rows&#x3D;&quot;3&quot;
+                      placeholder&#x3D;&quot;Breve detalle sobre el uso de este formulario...&quot;
+                      class&#x3D;&quot;w-full px-4 py-3 bg-gray-50 border-2 border-transparent focus:border-blue-500 focus:bg-white rounded-2xl outline-none transition-all text-sm font-bold text-gray-700 resize-none&quot;&gt;&lt;/textarea&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;flex gap-4 pt-2&quot;&gt;
+          &lt;button (click)&#x3D;&quot;cerrarModal()&quot;
+                  class&#x3D;&quot;flex-1 py-3.5 text-sm font-black text-gray-500 hover:bg-gray-100 rounded-2xl transition-all&quot;&gt;
+            CANCELAR
+          &lt;/button&gt;
+          &lt;button (click)&#x3D;&quot;guardar()&quot;
+                  [disabled]&#x3D;&quot;!esValido() || guardando()&quot;
+                  class&#x3D;&quot;flex-1 py-3.5 text-sm font-black text-white bg-blue-600 hover:bg-blue-700 rounded-2xl transition-all shadow-lg shadow-blue-100 disabled:opacity-50 disabled:cursor-wait&quot;&gt;
+            &lt;span *ngIf&#x3D;&quot;!guardando()&quot;&gt;{{ editando() ? &#x27;GUARDAR CAMBIOS&#x27; : &#x27;CREAR Y CONTINUAR&#x27; }}&lt;/span&gt;
+            &lt;span *ngIf&#x3D;&quot;guardando()&quot; class&#x3D;&quot;flex items-center justify-center gap-2&quot;&gt;
+              &lt;svg class&#x3D;&quot;w-4 h-4 animate-spin&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot;&gt;&lt;circle class&#x3D;&quot;opacity-25&quot; cx&#x3D;&quot;12&quot; cy&#x3D;&quot;12&quot; r&#x3D;&quot;10&quot; stroke&#x3D;&quot;currentColor&quot; stroke-width&#x3D;&quot;4&quot;&gt;&lt;/circle&gt;&lt;path class&#x3D;&quot;opacity-75&quot; fill&#x3D;&quot;currentColor&quot; d&#x3D;&quot;M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;
+              PROCESANDO...
+            &lt;/span&gt;
+          &lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- ── Modal Confirmar Eliminación ── --&gt;
+    &lt;div *ngIf&#x3D;&quot;plantillaAEliminar()&quot;
+         class&#x3D;&quot;fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 animate-in fade-in duration-200&quot;
+         (click)&#x3D;&quot;plantillaAEliminar.set(null)&quot;&gt;
+      &lt;div class&#x3D;&quot;bg-white rounded-[2.5rem] shadow-2xl w-full max-w-md p-8 space-y-6 animate-in zoom-in-95 duration-200&quot;
+           (click)&#x3D;&quot;$event.stopPropagation()&quot;&gt;
+
+        &lt;div class&#x3D;&quot;flex items-start gap-4&quot;&gt;
+          &lt;div class&#x3D;&quot;w-12 h-12 bg-red-100 rounded-2xl flex items-center justify-center text-red-600 flex-shrink-0&quot;&gt;
+            &lt;svg class&#x3D;&quot;w-6 h-6&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+              &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16&quot;/&gt;
+            &lt;/svg&gt;
+          &lt;/div&gt;
+          &lt;div&gt;
+            &lt;h3 class&#x3D;&quot;text-xl font-black text-gray-900 leading-tight&quot;&gt;Eliminar Plantilla&lt;/h3&gt;
+            &lt;p class&#x3D;&quot;text-sm text-gray-500 mt-1&quot;&gt;Esta acción no se puede deshacer.&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;bg-red-50 border border-red-100 rounded-2xl px-5 py-4&quot;&gt;
+          &lt;p class&#x3D;&quot;text-sm font-bold text-gray-700&quot;&gt;
+            ¿Está seguro que desea eliminar
+            &lt;span class&#x3D;&quot;text-red-600&quot;&gt;&quot;{{ plantillaAEliminar()?.nombre }}&quot;&lt;/span&gt;?
+          &lt;/p&gt;
+          &lt;p class&#x3D;&quot;text-xs text-gray-400 mt-1&quot;&gt;
+            Especialidad: &lt;span class&#x3D;&quot;font-bold&quot;&gt;{{ plantillaAEliminar()?.especialidad?.nombre }}&lt;/span&gt;
+            · Versión {{ plantillaAEliminar()?.version }}
+          &lt;/p&gt;
+        &lt;/div&gt;
+
+        &lt;div class&#x3D;&quot;flex gap-4 pt-2&quot;&gt;
+          &lt;button (click)&#x3D;&quot;plantillaAEliminar.set(null)&quot;
+                  class&#x3D;&quot;flex-1 py-3.5 text-sm font-black text-gray-500 hover:bg-gray-100 rounded-2xl transition-all&quot;&gt;
+            CANCELAR
+          &lt;/button&gt;
+          &lt;button (click)&#x3D;&quot;confirmarEliminar()&quot;
+                  class&#x3D;&quot;flex-1 py-3.5 text-sm font-black text-white bg-red-600 hover:bg-red-700 rounded-2xl transition-all shadow-lg shadow-red-100&quot;&gt;
+            SÍ, ELIMINAR
+          &lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &#x60;,
+})
+export class ListaPlantillasComponent implements OnInit {
+  private service &#x3D; inject(FormulariosService);
+  private usuariosSvc &#x3D; inject(UsuariosService);
+  private router &#x3D; inject(Router);
+  private ns &#x3D; inject(NotificationService);
+
+  plantillas: any[] &#x3D; [];
+  
+  // Estado del modal
+  mostrarModal &#x3D; signal(false);
+  guardando &#x3D; signal(false);
+  editando &#x3D; signal(false);
+  plantillaIdEditando &#x3D; signal&lt;number | null&gt;(null);
+  especialidades &#x3D; signal&lt;any[]&gt;([]);
+  plantillaAEliminar &#x3D; signal&lt;any&gt;(null);
+  
+  nuevaPlantilla &#x3D; {
+    nombre: &#x27;&#x27;,
+    descripcion: &#x27;&#x27;,
+    especialidadId: null as number | null
+  };
+
+  ngOnInit() {
+    this.cargar();
+    this.cargarEspecialidades();
+  }
+
+  cargar() {
+    this.service.listarPlantillas().subscribe((res: any) &#x3D;&gt; {
+      this.plantillas &#x3D; res?.data ?? [];
+    });
+  }
+
+  cargarEspecialidades() {
+    this.usuariosSvc.listarEspecialidades().subscribe({
+      next: (data: any) &#x3D;&gt; this.especialidades.set(data),
+      error: () &#x3D;&gt; this.ns.error(&#x27;No se pudieron cargar las especialidades&#x27;)
+    });
+  }
+
+  activar(id: number) {
+    this.service.activarPlantilla(id).subscribe({
+      next: () &#x3D;&gt; {
+        this.ns.success(&#x27;Plantilla activada correctamente&#x27;);
+        this.cargar();
+      },
+      error: () &#x3D;&gt; this.ns.error(&#x27;Error al activar la plantilla&#x27;)
+    });
+  }
+
+  duplicar(id: number) {
+    this.service.duplicarPlantilla(id).subscribe({
+      next: () &#x3D;&gt; {
+        this.ns.success(&#x27;Nueva versión creada con éxito&#x27;);
+        this.cargar();
+      },
+      error: () &#x3D;&gt; this.ns.error(&#x27;Error al duplicar la plantilla&#x27;)
+    });
+  }
+
+  eliminar(plantilla: any) {
+    if (plantilla.activa) {
+      this.ns.error(&#x27;No se puede eliminar una plantilla activa. Desactívela primero.&#x27;);
+      return;
+    }
+    this.plantillaAEliminar.set(plantilla);
+  }
+
+  confirmarEliminar() {
+    const p &#x3D; this.plantillaAEliminar();
+    if (!p) return;
+    this.service.eliminarPlantilla(p.id).subscribe({
+      next: () &#x3D;&gt; {
+        this.ns.success(&#x27;Plantilla eliminada&#x27;);
+        this.plantillaAEliminar.set(null);
+        this.cargar();
+      },
+      error: () &#x3D;&gt; {
+        this.ns.error(&#x27;Error al eliminar la plantilla&#x27;);
+        this.plantillaAEliminar.set(null);
+      }
+    });
+  }
+
+  abrirModalCrear() {
+    this.editando.set(false);
+    this.plantillaIdEditando.set(null);
+    this.nuevaPlantilla &#x3D; { nombre: &#x27;&#x27;, descripcion: &#x27;&#x27;, especialidadId: null };
+    this.mostrarModal.set(true);
+  }
+
+  abrirModalEditar(p: any) {
+    this.editando.set(true);
+    this.plantillaIdEditando.set(p.id);
+    this.nuevaPlantilla &#x3D; {
+      nombre: p.nombre,
+      descripcion: p.descripcion || &#x27;&#x27;,
+      especialidadId: p.especialidadId
+    };
+    this.mostrarModal.set(true);
+  }
+
+  cerrarModal() {
+    if (this.guardando()) return;
+    this.mostrarModal.set(false);
+  }
+
+  esValido() {
+    return this.nuevaPlantilla.nombre.trim().length &gt;&#x3D; 3 &amp;&amp; this.nuevaPlantilla.especialidadId;
+  }
+
+  guardar() {
+    if (!this.esValido()) return;
+    this.guardando.set(true);
+    
+    const datos &#x3D; {
+      ...this.nuevaPlantilla,
+      especialidadId: Number(this.nuevaPlantilla.especialidadId)
+    };
+
+    if (this.editando()) {
+      this.service.actualizarPlantilla(this.plantillaIdEditando()!, datos).subscribe({
+        next: () &#x3D;&gt; {
+          this.ns.success(&#x27;Plantilla actualizada con éxito&#x27;);
+          this.mostrarModal.set(false);
+          this.guardando.set(false);
+          this.cargar();
+        },
+        error: () &#x3D;&gt; {
+          this.ns.error(&#x27;Error al actualizar la plantilla&#x27;);
+          this.guardando.set(false);
+        }
+      });
+    } else {
+      this.service.crearPlantilla(datos).subscribe({
+        next: (res: any) &#x3D;&gt; {
+          this.ns.success(&#x27;Plantilla creada con éxito&#x27;);
+          this.mostrarModal.set(false);
+          const id &#x3D; res.data?.id || res.id;
+          this.router.navigate([&#x27;/mantenimiento/formularios&#x27;, id, &#x27;constructor&#x27;]);
+        },
+        error: () &#x3D;&gt; {
+          this.ns.error(&#x27;Error al crear la plantilla&#x27;);
+          this.guardando.set(false);
+        }
+      });
+    }
+  }
+}
+</code></pre>
+    </div>
+
+
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="min-h-screen bg-gray-50 p-6">  <div class="max-w-5xl mx-auto">    <!-- Cabecera -->    <div class="flex items-center justify-between mb-8">      <div>        <h1 class="text-3xl font-black text-gray-900 tracking-tight">Formularios Clínicos</h1>        <p class="text-sm text-gray-500 mt-1">Gestión de plantillas dinámicas por especialidad</p>      </div>      <div class="flex items-center gap-3">        <a routerLink="/dashboard" class="px-4 py-2 text-sm font-bold text-gray-500 hover:text-gray-700 bg-white border border-gray-200 rounded-xl transition-all">          ← VOLVER        </a>        <button (click)="abrirModalCrear()"                class="px-6 py-2.5 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-100 flex items-center gap-2">          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4"/>          </svg>          NUEVO FORMULARIO        </button>      </div>    </div>    <!-- Lista de plantillas -->    <div class="grid grid-cols-1 gap-4">      <div *ngFor="let p of plantillas"           class="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-6                  flex items-center justify-between hover:shadow-md hover:border-blue-200 transition-all group">        <div class="flex items-center gap-5">          <div class="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-all">            <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>            </svg>          </div>          <div>            <div class="flex items-center gap-3">              <h3 class="font-bold text-lg text-gray-900">{{ p.nombre }}</h3>              <span class="text-[10px] font-black bg-gray-100 text-gray-500 px-2 py-0.5 rounded-lg border border-gray-200">                VERSION {{ p.version }}              </span>              <span *ngIf="p.activa"                    class="text-[10px] font-black bg-green-100 text-green-700 px-2 py-0.5 rounded-lg border border-green-200 uppercase tracking-wider">                Activa              </span>            </div>            <p class="text-sm text-gray-500 mt-1">               En <span class="font-bold text-gray-700 uppercase tracking-tighter">{{ p.especialidad?.nombre }}</span> ·               {{ p._count?.secciones || 0 }} secciones configuradas            </p>          </div>        </div>        <div class="flex gap-3">          <button (click)="abrirModalEditar(p)"                  title="Editar información básica"                  class="p-3 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-2xl transition-all border border-transparent hover:border-blue-100">            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>            </svg>          </button>          <a [routerLink]="[\'/mantenimiento/formularios\', p.id, \'constructor\']"             title="Editar estructura (Secciones y Campos)"             class="p-3 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-2xl transition-all border border-transparent hover:border-blue-100">            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>            </svg>          </a>          <button *ngIf="!p.activa"                  (click)="activar(p.id)"                  title="Activar plantilla"                  class="p-3 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-2xl transition-all border border-transparent hover:border-green-100">            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>            </svg>          </button>          <button (click)="duplicar(p.id)"                  title="Duplicar como nueva versión"                  class="p-3 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-2xl transition-all border border-transparent hover:border-indigo-100">            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V7a2 2 0 01-2 2h-2M10 11V9a2 2 0 012-2h4"/>            </svg>          </button>          <button *ngIf="!p.activa"                  (click)="eliminar(p)"                  title="Eliminar plantilla"                  class="p-3 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-2xl transition-all border border-transparent hover:border-red-100">            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>            </svg>          </button>        </div>      </div>      <div *ngIf="plantillas.length === 0"           class="bg-white rounded-[3rem] p-16 text-center shadow-sm border border-dashed border-gray-200">        <div class="w-20 h-20 bg-gray-50 rounded-3xl flex items-center justify-center mx-auto mb-6 text-gray-200">           <svg class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>           </svg>        </div>        <p class="text-xl font-bold text-gray-400">No hay plantillas creadas aún</p>        <p class="text-sm text-gray-300 mt-1">Cree la primera plantilla pulsando el botón superior</p>      </div>    </div>  </div></div><!-- ── Modal Creación ── --><div *ngIf="mostrarModal()"     class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 animate-in fade-in duration-200"     (click)="cerrarModal()">  <div class="bg-white rounded-[2.5rem] shadow-2xl w-full max-w-lg p-8 space-y-6 animate-in zoom-in-95 duration-200"       (click)="$event.stopPropagation()">    <div class="flex items-center gap-4">      <div class="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center text-white shadow-lg">        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" [attr.d]="editando() ? \'M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z\' : \'M12 4v16m8-8H4\'"/>        </svg>      </div>      <div>        <h3 class="text-xl font-black text-gray-900 leading-tight">            {{ editando() ? \'Editar Plantilla\' : \'Configurar Nueva Plantilla\' }}        </h3>        <p class="text-sm text-gray-500">Defina la especialidad y el nombre básico.</p>      </div>    </div>    <div class="space-y-4">      <div>        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Especialidad Médica</label>        <select [(ngModel)]="nuevaPlantilla.especialidadId"                class="w-full px-4 py-3 bg-gray-50 border-2 border-transparent focus:border-blue-500 focus:bg-white rounded-2xl outline-none transition-all text-sm font-bold text-gray-700">          <option [ngValue]="null">Seleccione una especialidad...</option>          <option *ngFor="let esp of especialidades()" [value]="esp.id">            {{ esp.nombre | uppercase }}          </option>        </select>      </div>      <div>        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Nombre del Formulario</label>        <input type="text" [(ngModel)]="nuevaPlantilla.nombre"               placeholder="Ej: Evaluación Inicial de Pediatría"               class="w-full px-4 py-3 bg-gray-50 border-2 border-transparent focus:border-blue-500 focus:bg-white rounded-2xl outline-none transition-all text-sm font-bold text-gray-700"/>      </div>      <div>        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Descripción (Opcional)</label>        <textarea [(ngModel)]="nuevaPlantilla.descripcion"                  rows="3"                  placeholder="Breve detalle sobre el uso de este formulario..."                  class="w-full px-4 py-3 bg-gray-50 border-2 border-transparent focus:border-blue-500 focus:bg-white rounded-2xl outline-none transition-all text-sm font-bold text-gray-700 resize-none"></textarea>      </div>    </div>    <div class="flex gap-4 pt-2">      <button (click)="cerrarModal()"              class="flex-1 py-3.5 text-sm font-black text-gray-500 hover:bg-gray-100 rounded-2xl transition-all">        CANCELAR      </button>      <button (click)="guardar()"              [disabled]="!esValido() || guardando()"              class="flex-1 py-3.5 text-sm font-black text-white bg-blue-600 hover:bg-blue-700 rounded-2xl transition-all shadow-lg shadow-blue-100 disabled:opacity-50 disabled:cursor-wait">        <span *ngIf="!guardando()">{{ editando() ? \'GUARDAR CAMBIOS\' : \'CREAR Y CONTINUAR\' }}</span>        <span *ngIf="guardando()" class="flex items-center justify-center gap-2">          <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>          PROCESANDO...        </span>      </button>    </div>  </div></div><!-- ── Modal Confirmar Eliminación ── --><div *ngIf="plantillaAEliminar()"     class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 animate-in fade-in duration-200"     (click)="plantillaAEliminar.set(null)">  <div class="bg-white rounded-[2.5rem] shadow-2xl w-full max-w-md p-8 space-y-6 animate-in zoom-in-95 duration-200"       (click)="$event.stopPropagation()">    <div class="flex items-start gap-4">      <div class="w-12 h-12 bg-red-100 rounded-2xl flex items-center justify-center text-red-600 flex-shrink-0">        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>        </svg>      </div>      <div>        <h3 class="text-xl font-black text-gray-900 leading-tight">Eliminar Plantilla</h3>        <p class="text-sm text-gray-500 mt-1">Esta acción no se puede deshacer.</p>      </div>    </div>    <div class="bg-red-50 border border-red-100 rounded-2xl px-5 py-4">      <p class="text-sm font-bold text-gray-700">        ¿Está seguro que desea eliminar        <span class="text-red-600">"{{ plantillaAEliminar()?.nombre }}"</span>?      </p>      <p class="text-xs text-gray-400 mt-1">        Especialidad: <span class="font-bold">{{ plantillaAEliminar()?.especialidad?.nombre }}</span>        · Versión {{ plantillaAEliminar()?.version }}      </p>    </div>    <div class="flex gap-4 pt-2">      <button (click)="plantillaAEliminar.set(null)"              class="flex-1 py-3.5 text-sm font-black text-gray-500 hover:bg-gray-100 rounded-2xl transition-all">        CANCELAR      </button>      <button (click)="confirmarEliminar()"              class="flex-1 py-3.5 text-sm font-black text-white bg-red-600 hover:bg-red-700 rounded-2xl transition-all shadow-lg shadow-red-100">        SÍ, ELIMINAR      </button>    </div>  </div></div></div>'
+    var COMPONENTS = [{'name': 'AgendasComponent', 'selector': 'app-agendas'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'BuscadorPacienteComponent', 'selector': 'app-buscador-paciente'},{'name': 'CitasComponent', 'selector': 'app-citas'},{'name': 'ConstructorFormularioComponent', 'selector': 'app-constructor-formulario'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'EpidemiologiaDashboardComponent', 'selector': 'app-epidemiologia-dashboard'},{'name': 'EstadisticasHospitalariasComponent', 'selector': 'app-estadisticas-hospitalarias'},{'name': 'FarmaciaComponent', 'selector': 'app-farmacia'},{'name': 'GestionHospitalizacionComponent', 'selector': 'app-gestion-hospitalizacion'},{'name': 'GestionLotesModalComponent', 'selector': 'app-gestion-lotes-modal'},{'name': 'GestionReportesComponent', 'selector': 'app-gestion-reportes'},{'name': 'HistoriaClinicaComponent', 'selector': 'app-historia-clinica'},{'name': 'InfraestructuraModalComponent', 'selector': 'app-infraestructura-modal'},{'name': 'InventarioVacunasComponent', 'selector': 'app-inventario-vacunas'},{'name': 'LaboratorioComponent', 'selector': 'app-laboratorio'},{'name': 'ListaPlantillasComponent', 'selector': 'app-lista-plantillas'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MainLayoutComponent', 'selector': 'app-main-layout'},{'name': 'MantenimientoDiagnosticosComponent', 'selector': 'app-mantenimiento-diagnosticos'},{'name': 'MantenimientoEstablecimientosComponent', 'selector': 'app-mantenimiento-establecimientos'},{'name': 'MantenimientoInventarioComponent', 'selector': 'app-mantenimiento-inventario'},{'name': 'MantenimientoLaboratorioComponent', 'selector': 'app-mantenimiento-laboratorio'},{'name': 'MantenimientoLoginComponent', 'selector': 'app-mantenimiento-login'},{'name': 'MantenimientoMedicamentosComponent', 'selector': 'app-mantenimiento-medicamentos'},{'name': 'MantenimientoRadiologiaComponent', 'selector': 'app-mantenimiento-radiologia'},{'name': 'MantenimientoRolesComponent', 'selector': 'app-mantenimiento-roles'},{'name': 'MovimientosInventarioComponent', 'selector': 'app-movimientos-inventario'},{'name': 'NotificationComponent', 'selector': 'app-notification'},{'name': 'NuevaConsultaComponent', 'selector': 'app-nueva-consulta'},{'name': 'PacientesComponent', 'selector': 'app-pacientes'},{'name': 'PermisosUsuariosComponent', 'selector': 'app-permisos-usuarios'},{'name': 'RecetasPacienteComponent', 'selector': 'app-recetas-paciente'},{'name': 'RegistroVacunaModalComponent', 'selector': 'app-registro-vacuna-modal'},{'name': 'ReportesComponent', 'selector': 'app-reportes'},{'name': 'TriajeComponent', 'selector': 'app-triaje'},{'name': 'UsuariosComponent', 'selector': 'app-usuarios'},{'name': 'VacunacionComponent', 'selector': 'app-vacunacion'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'ListaPlantillasComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'ListaPlantillasComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

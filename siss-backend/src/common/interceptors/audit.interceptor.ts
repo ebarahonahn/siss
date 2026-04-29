@@ -7,6 +7,7 @@ import {
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { PrismaService } from '../../prisma/prisma.service';
+import { DateUtils } from '../../common/utils/date-utils';
 
 @Injectable()
 export class AuditInterceptor implements NestInterceptor {
@@ -34,7 +35,7 @@ export class AuditInterceptor implements NestInterceptor {
               entidad,
               ip: ip ?? null,
               duracionMs: duracion,
-              timestamp: new Date(),
+              timestamp: DateUtils.getLiteralNow(),
             },
           })
           .catch(() => {});

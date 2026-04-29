@@ -5,6 +5,7 @@ import { EstablecimientosService, Establecimiento, Servicio } from '../../core/s
 import { GeoService } from '../../core/services/geo.service';
 import { ServiciosService as CatServiciosService } from '../../core/services/servicios.service';
 import { NotificationService } from '../../core/services/notification.service';
+import { InfraestructuraModalComponent } from './infraestructura-modal.component';
 
 const TIPOS = [
   'HOSPITAL_NACIONAL',
@@ -18,7 +19,7 @@ const TIPOS = [
 @Component({
   selector: 'app-mantenimiento-establecimientos',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, InfraestructuraModalComponent],
   template: `
     <div class="space-y-6">
       <!-- Cabecera -->
@@ -75,7 +76,14 @@ const TIPOS = [
           </div>
 
           <div class="mt-auto pt-3 border-t border-gray-50">
-            <p class="text-[10px] font-bold text-gray-400 uppercase mb-2">Servicios ({{ est.servicios?.length || 0 }})</p>
+            <div class="flex justify-between items-center mb-2">
+              <p class="text-[10px] font-bold text-gray-400 uppercase">Servicios ({{ est.servicios?.length || 0 }})</p>
+              <button (click)="gestionarInfraestructura(est)" 
+                      class="text-[10px] font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1 bg-blue-50 px-2 py-0.5 rounded">
+                <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                Infraestructura
+              </button>
+            </div>
             <div class="flex flex-wrap gap-1">
               <span *ngFor="let s of est.servicios?.slice(0, 3)" class="text-[10px] bg-gray-100 px-2 py-0.5 rounded">
                 {{ s.catServicio?.nombre }}
@@ -85,6 +93,41 @@ const TIPOS = [
         </div>
       </div>
     </div>
+
+    <!-- Modal de Selección de Servicio para Infraestructura -->
+    <div *ngIf="modalServiciosAbierto()" 
+         class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm"
+         (click)="modalServiciosAbierto.set(false)">
+      <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden" (click)="$event.stopPropagation()">
+        <div class="p-6 border-b border-gray-100 flex justify-between items-center">
+          <div>
+            <h3 class="text-lg font-bold text-gray-900">Seleccionar Servicio</h3>
+            <p class="text-xs text-gray-500">{{ estSeleccionado()?.nombre }}</p>
+          </div>
+          <button (click)="modalServiciosAbierto.set(false)" class="text-gray-400 hover:text-gray-600"><svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+        </div>
+        <div class="p-6 space-y-3">
+          <div *ngFor="let s of estSeleccionado()?.servicios" 
+               (click)="abrirInfraestructura(s)"
+               class="flex items-center justify-between p-4 bg-slate-50 hover:bg-blue-50 border border-slate-100 hover:border-blue-200 rounded-xl cursor-pointer transition-all group">
+            <span class="font-bold text-sm text-slate-700 group-hover:text-blue-600">{{ s.catServicio?.nombre }}</span>
+            <svg class="w-5 h-5 text-slate-300 group-hover:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </div>
+          <div *ngIf="estSeleccionado()?.servicios?.length === 0" class="text-center py-8 text-gray-400 text-sm italic">
+            Este establecimiento no tiene servicios asignados
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de Infraestructura (Nivel Detalle) -->
+    <app-infraestructura-modal *ngIf="infraModalAbierto()"
+      [establecimientoId]="estSeleccionado()!.id"
+      [establecimientoNombre]="estSeleccionado()!.nombre"
+      [servicioId]="servSeleccionado()!.id!"
+      [servicioNombre]="servSeleccionado()!.catServicio!.nombre"
+      (cerrar)="infraModalAbierto.set(false)">
+    </app-infraestructura-modal>
 
     <!-- Modal -->
     <div *ngIf="modalAbierto()" 
@@ -249,6 +292,12 @@ export class MantenimientoEstablecimientosComponent implements OnInit {
   // Mantenemos los IDs de servicios seleccionados
   serviciosSeleccionados = signal<number[]>([]);
 
+  // Estados para Infraestructura
+  modalServiciosAbierto = signal(false);
+  infraModalAbierto = signal(false);
+  estSeleccionado = signal<Establecimiento | null>(null);
+  servSeleccionado = signal<Servicio | null>(null);
+
   ngOnInit() {
     this.cargar();
     this.cargarCat();
@@ -396,5 +445,16 @@ export class MantenimientoEstablecimientosComponent implements OnInit {
         error: () => this.notification.error('Error al eliminar'),
       });
     }
+  }
+
+  gestionarInfraestructura(est: Establecimiento) {
+    this.estSeleccionado.set(est);
+    this.modalServiciosAbierto.set(true);
+  }
+
+  abrirInfraestructura(serv: Servicio) {
+    this.servSeleccionado.set(serv);
+    this.modalServiciosAbierto.set(false);
+    this.infraModalAbierto.set(true);
   }
 }

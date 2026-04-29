@@ -1,0 +1,2418 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>siss-frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">siss-frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  MantenimientoEstablecimientosComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#styleData" class="nav-link"
+                role="tab" id="styleData-tab" data-bs-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/modules/mantenimiento-establecimientos/mantenimiento-establecimientos.component.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                <code>OnInit</code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-mantenimiento-establecimientos</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                            <code>CommonModule</code>
+                            <code>ReactiveFormsModule</code>
+                            <code>FormsModule</code>
+                                <code><a href="../components/InfraestructuraModalComponent.html" target="_self" >InfraestructuraModalComponent</a></code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-3">styles</td>
+                <td class="col-md-9"><code>
+    .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #cbd5e1; }
+  </code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">template</td>
+                <td class="col-md-9"><pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;space-y-6&quot;&gt;
+  &lt;!-- Cabecera --&gt;
+  &lt;div class&#x3D;&quot;flex items-center justify-between border-b border-gray-100 pb-4&quot;&gt;
+    &lt;div&gt;
+      &lt;h2 class&#x3D;&quot;text-2xl font-bold text-gray-900&quot;&gt;Mantenimiento de Establecimientos&lt;/h2&gt;
+      &lt;p class&#x3D;&quot;text-sm text-gray-500&quot;&gt;Gestión de centros de salud y sus servicios&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;button (click)&#x3D;&quot;abrirModal()&quot;
+            class&#x3D;&quot;px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold shadow-md transition-all active:scale-95&quot;&gt;
+      + Nuevo Establecimiento
+    &lt;/button&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Buscador --&gt;
+  &lt;div class&#x3D;&quot;bg-white p-4 rounded-xl border border-gray-200&quot;&gt;
+    &lt;input type&#x3D;&quot;text&quot; placeholder&#x3D;&quot;Buscar...&quot;
+           [(ngModel)]&#x3D;&quot;filtro&quot; (ngModelChange)&#x3D;&quot;filtrar()&quot;
+           [ngModelOptions]&#x3D;&quot;{standalone: true}&quot;
+           class&#x3D;&quot;w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500&quot;/&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Lista --&gt;
+  &lt;div class&#x3D;&quot;grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4&quot;&gt;
+    &lt;div *ngIf&#x3D;&quot;cargando()&quot; class&#x3D;&quot;col-span-full py-10 text-center text-gray-500&quot;&gt;
+      Cargando...
+    &lt;/div&gt;
+
+    &lt;div *ngFor&#x3D;&quot;let est of establecimientosFiltrados()&quot;
+         class&#x3D;&quot;bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex flex-col&quot;&gt;
+
+      &lt;div class&#x3D;&quot;flex justify-between items-start mb-3&quot;&gt;
+        &lt;span class&#x3D;&quot;text-[10px] font-bold px-2 py-1 bg-blue-50 text-blue-600 rounded uppercase&quot;&gt;
+          {{ est.tipo.replace(&#x27;_&#x27;, &#x27; &#x27;) }}
+        &lt;/span&gt;
+        &lt;div class&#x3D;&quot;flex gap-2&quot;&gt;
+          &lt;button (click)&#x3D;&quot;abrirModal(est)&quot; class&#x3D;&quot;text-gray-400 hover:text-blue-600&quot;&gt;
+            &lt;svg class&#x3D;&quot;w-4 h-4&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z&quot;/&gt;&lt;/svg&gt;
+          &lt;/button&gt;
+          &lt;button (click)&#x3D;&quot;eliminar(est)&quot; class&#x3D;&quot;text-gray-400 hover:text-red-600&quot;&gt;
+            &lt;svg class&#x3D;&quot;w-4 h-4&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16&quot;/&gt;&lt;/svg&gt;
+          &lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;h3 class&#x3D;&quot;font-bold text-gray-900&quot;&gt;{{ est.nombre }}&lt;/h3&gt;
+      &lt;p class&#x3D;&quot;text-xs text-gray-400 font-mono mb-3&quot;&gt;{{ est.codigo }}&lt;/p&gt;
+
+      &lt;div class&#x3D;&quot;text-sm text-gray-600 space-y-1 mb-4&quot;&gt;
+        &lt;p class&#x3D;&quot;flex items-center gap-1&quot;&gt;
+          &lt;svg class&#x3D;&quot;w-3 h-3&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z&quot;/&gt;&lt;/svg&gt;
+          {{ est.municipio?.nombre }}, {{ est.departamento?.nombre }}
+        &lt;/p&gt;
+      &lt;/div&gt;
+
+      &lt;div class&#x3D;&quot;mt-auto pt-3 border-t border-gray-50&quot;&gt;
+        &lt;div class&#x3D;&quot;flex justify-between items-center mb-2&quot;&gt;
+          &lt;p class&#x3D;&quot;text-[10px] font-bold text-gray-400 uppercase&quot;&gt;Servicios ({{ est.servicios?.length || 0 }})&lt;/p&gt;
+          &lt;button (click)&#x3D;&quot;gestionarInfraestructura(est)&quot;
+                  class&#x3D;&quot;text-[10px] font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1 bg-blue-50 px-2 py-0.5 rounded&quot;&gt;
+            &lt;svg class&#x3D;&quot;w-3 h-3&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4&quot;/&gt;&lt;/svg&gt;
+            Infraestructura
+          &lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;flex flex-wrap gap-1&quot;&gt;
+          &lt;span *ngFor&#x3D;&quot;let s of est.servicios?.slice(0, 3)&quot; class&#x3D;&quot;text-[10px] bg-gray-100 px-2 py-0.5 rounded&quot;&gt;
+            {{ s.catServicio?.nombre }}
+          &lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Modal de Selección de Servicio para Infraestructura --&gt;
+&lt;div *ngIf&#x3D;&quot;modalServiciosAbierto()&quot;
+     class&#x3D;&quot;fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm&quot;
+     (click)&#x3D;&quot;modalServiciosAbierto.set(false)&quot;&gt;
+  &lt;div class&#x3D;&quot;bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden&quot; (click)&#x3D;&quot;$event.stopPropagation()&quot;&gt;
+    &lt;div class&#x3D;&quot;p-6 border-b border-gray-100 flex justify-between items-center&quot;&gt;
+      &lt;div&gt;
+        &lt;h3 class&#x3D;&quot;text-lg font-bold text-gray-900&quot;&gt;Seleccionar Servicio&lt;/h3&gt;
+        &lt;p class&#x3D;&quot;text-xs text-gray-500&quot;&gt;{{ estSeleccionado()?.nombre }}&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;button (click)&#x3D;&quot;modalServiciosAbierto.set(false)&quot; class&#x3D;&quot;text-gray-400 hover:text-gray-600&quot;&gt;&lt;svg class&#x3D;&quot;w-6 h-6&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M6 18L18 6M6 6l12 12&quot;/&gt;&lt;/svg&gt;&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class&#x3D;&quot;p-6 space-y-3&quot;&gt;
+      &lt;div *ngFor&#x3D;&quot;let s of estSeleccionado()?.servicios&quot;
+           (click)&#x3D;&quot;abrirInfraestructura(s)&quot;
+           class&#x3D;&quot;flex items-center justify-between p-4 bg-slate-50 hover:bg-blue-50 border border-slate-100 hover:border-blue-200 rounded-xl cursor-pointer transition-all group&quot;&gt;
+        &lt;span class&#x3D;&quot;font-bold text-sm text-slate-700 group-hover:text-blue-600&quot;&gt;{{ s.catServicio?.nombre }}&lt;/span&gt;
+        &lt;svg class&#x3D;&quot;w-5 h-5 text-slate-300 group-hover:text-blue-400&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M9 5l7 7-7 7&quot;/&gt;&lt;/svg&gt;
+      &lt;/div&gt;
+      &lt;div *ngIf&#x3D;&quot;estSeleccionado()?.servicios?.length &#x3D;&#x3D;&#x3D; 0&quot; class&#x3D;&quot;text-center py-8 text-gray-400 text-sm italic&quot;&gt;
+        Este establecimiento no tiene servicios asignados
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Modal de Infraestructura (Nivel Detalle) --&gt;
+&lt;app-infraestructura-modal *ngIf&#x3D;&quot;infraModalAbierto()&quot;
+  [establecimientoId]&#x3D;&quot;estSeleccionado()!.id&quot;
+  [establecimientoNombre]&#x3D;&quot;estSeleccionado()!.nombre&quot;
+  [servicioId]&#x3D;&quot;servSeleccionado()!.id!&quot;
+  [servicioNombre]&#x3D;&quot;servSeleccionado()!.catServicio!.nombre&quot;
+  (cerrar)&#x3D;&quot;infraModalAbierto.set(false)&quot;&gt;
+&lt;/app-infraestructura-modal&gt;
+
+&lt;!-- Modal --&gt;
+&lt;div *ngIf&#x3D;&quot;modalAbierto()&quot;
+     class&#x3D;&quot;fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50&quot;
+     (click)&#x3D;&quot;cerrarModal()&quot;&gt;
+  &lt;div class&#x3D;&quot;bg-white rounded-xl shadow-xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col&quot;
+       (click)&#x3D;&quot;$event.stopPropagation()&quot;&gt;
+
+    &lt;!-- Header --&gt;
+    &lt;div class&#x3D;&quot;px-8 py-6 border-b border-gray-100 flex items-center justify-between bg-white sticky top-0 z-10&quot;&gt;
+      &lt;div&gt;
+        &lt;h3 class&#x3D;&quot;text-xl font-bold text-gray-900&quot;&gt;{{ editando() ? &#x27;Editar Establecimiento&#x27; : &#x27;Nuevo Establecimiento&#x27; }}&lt;/h3&gt;
+        &lt;p class&#x3D;&quot;text-xs text-gray-500 mt-1&quot;&gt;Completa la información técnica y los servicios disponibles&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;button (click)&#x3D;&quot;cerrarModal()&quot; class&#x3D;&quot;p-2 hover:bg-gray-100 rounded-full transition-colors&quot;&gt;
+        &lt;svg class&#x3D;&quot;w-6 h-6 text-gray-400&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+          &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M6 18L18 6M6 6l12 12&quot;/&gt;
+        &lt;/svg&gt;
+      &lt;/button&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Body --&gt;
+    &lt;div class&#x3D;&quot;flex-1 overflow-y-auto p-8&quot;&gt;
+      &lt;form [formGroup]&#x3D;&quot;form&quot; class&#x3D;&quot;space-y-8&quot;&gt;
+
+        &lt;div class&#x3D;&quot;grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6&quot;&gt;
+          &lt;!-- Datos Generales --&gt;
+          &lt;div class&#x3D;&quot;space-y-6&quot;&gt;
+            &lt;h4 class&#x3D;&quot;text-sm font-bold text-blue-600 uppercase tracking-widest border-l-4 border-blue-500 pl-3&quot;&gt;Información General&lt;/h4&gt;
+
+            &lt;div class&#x3D;&quot;grid grid-cols-2 gap-4&quot;&gt;
+              &lt;div class&#x3D;&quot;space-y-1&quot;&gt;
+                &lt;label class&#x3D;&quot;text-xs font-semibold text-gray-500 ml-1&quot;&gt;Código&lt;/label&gt;
+                &lt;input formControlName&#x3D;&quot;codigo&quot; type&#x3D;&quot;text&quot; placeholder&#x3D;&quot;HOSP-001&quot;
+                       class&#x3D;&quot;w-full px-4 py-2.5 bg-gray-50 border-none rounded-xl text-sm focus:ring-2 focus:ring-blue-500 font-mono uppercase&quot;/&gt;
+              &lt;/div&gt;
+              &lt;div class&#x3D;&quot;space-y-1&quot;&gt;
+                &lt;label class&#x3D;&quot;text-xs font-semibold text-gray-500 ml-1&quot;&gt;Tipo&lt;/label&gt;
+                &lt;select formControlName&#x3D;&quot;tipo&quot; class&#x3D;&quot;w-full px-4 py-2.5 bg-gray-50 border-none rounded-xl text-sm focus:ring-2 focus:ring-blue-500&quot;&gt;
+                  &lt;option value&#x3D;&quot;&quot;&gt;Seleccione…&lt;/option&gt;
+                  &lt;option *ngFor&#x3D;&quot;let t of tipos&quot; [value]&#x3D;&quot;t&quot;&gt;{{ t.replace(&#x27;_&#x27;, &#x27; &#x27;) }}&lt;/option&gt;
+                &lt;/select&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div class&#x3D;&quot;space-y-1&quot;&gt;
+              &lt;label class&#x3D;&quot;text-xs font-semibold text-gray-500 ml-1&quot;&gt;Nombre del Establecimiento&lt;/label&gt;
+              &lt;input formControlName&#x3D;&quot;nombre&quot; type&#x3D;&quot;text&quot; placeholder&#x3D;&quot;Ej: Hospital Escuela&quot;
+                     class&#x3D;&quot;w-full px-4 py-2.5 bg-gray-50 border-none rounded-xl text-sm focus:ring-2 focus:ring-blue-500&quot;/&gt;
+            &lt;/div&gt;
+
+            &lt;div class&#x3D;&quot;grid grid-cols-2 gap-4&quot;&gt;
+              &lt;div class&#x3D;&quot;space-y-1&quot;&gt;
+                &lt;label class&#x3D;&quot;text-xs font-semibold text-gray-500 ml-1&quot;&gt;Departamento&lt;/label&gt;
+                &lt;select formControlName&#x3D;&quot;departamentoId&quot; (change)&#x3D;&quot;onDeptoChange()&quot;
+                        class&#x3D;&quot;w-full px-4 py-2.5 bg-gray-50 border-none rounded-xl text-sm focus:ring-2 focus:ring-blue-500&quot;&gt;
+                  &lt;option [value]&#x3D;&quot;null&quot;&gt;Seleccione…&lt;/option&gt;
+                  &lt;option *ngFor&#x3D;&quot;let d of departamentos()&quot; [value]&#x3D;&quot;d.id&quot;&gt;{{ d.nombre }}&lt;/option&gt;
+                &lt;/select&gt;
+              &lt;/div&gt;
+              &lt;div class&#x3D;&quot;space-y-1&quot;&gt;
+                &lt;label class&#x3D;&quot;text-xs font-semibold text-gray-500 ml-1&quot;&gt;Municipio&lt;/label&gt;
+                &lt;select formControlName&#x3D;&quot;municipioId&quot;
+                        class&#x3D;&quot;w-full px-4 py-2.5 bg-gray-50 border-none rounded-xl text-sm focus:ring-2 focus:ring-blue-500&quot;&gt;
+                  &lt;option [value]&#x3D;&quot;null&quot;&gt;Seleccione…&lt;/option&gt;
+                  &lt;option *ngFor&#x3D;&quot;let m of municipios()&quot; [value]&#x3D;&quot;m.id&quot;&gt;{{ m.nombre }}&lt;/option&gt;
+                &lt;/select&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div class&#x3D;&quot;space-y-1&quot;&gt;
+              &lt;label class&#x3D;&quot;text-xs font-semibold text-gray-500 ml-1&quot;&gt;Teléfono de Contacto&lt;/label&gt;
+              &lt;input formControlName&#x3D;&quot;telefono&quot; type&#x3D;&quot;text&quot; placeholder&#x3D;&quot;Ej: +504 2222-2222&quot;
+                     class&#x3D;&quot;w-full px-4 py-2.5 bg-gray-50 border-none rounded-xl text-sm focus:ring-2 focus:ring-blue-500&quot;/&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;!-- Sección de Servicios mejorada con Checkboxes --&gt;
+          &lt;div class&#x3D;&quot;space-y-4&quot;&gt;
+            &lt;div class&#x3D;&quot;flex items-center justify-between&quot;&gt;
+              &lt;h4 class&#x3D;&quot;text-sm font-bold text-blue-600 uppercase tracking-widest border-l-4 border-blue-500 pl-3&quot;&gt;Servicios Disponibles&lt;/h4&gt;
+              &lt;span class&#x3D;&quot;text-[10px] bg-blue-50 text-blue-600 px-2 py-1 rounded-full font-bold&quot;&gt;
+                {{ serviciosSeleccionados().length }} seleccionados
+              &lt;/span&gt;
+            &lt;/div&gt;
+
+            &lt;div class&#x3D;&quot;grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar p-1&quot;&gt;
+              &lt;div *ngFor&#x3D;&quot;let cs of catServicios()&quot;
+                   (click)&#x3D;&quot;toggleService(cs.id)&quot;
+                   [class.border-blue-200]&#x3D;&quot;isServiceSelected(cs.id)&quot;
+                   [class.bg-blue-50]&#x3D;&quot;isServiceSelected(cs.id)&quot;
+                   class&#x3D;&quot;flex items-center gap-3 p-3 bg-white border border-gray-100 rounded-xl cursor-pointer hover:border-blue-300 hover:shadow-sm transition-all group&quot;&gt;
+
+                &lt;div [class.bg-blue-500]&#x3D;&quot;isServiceSelected(cs.id)&quot;
+                     [class.border-gray-200]&#x3D;&quot;!isServiceSelected(cs.id)&quot;
+                     class&#x3D;&quot;w-5 h-5 border-2 rounded flex items-center justify-center transition-colors&quot;&gt;
+                  &lt;svg *ngIf&#x3D;&quot;isServiceSelected(cs.id)&quot; class&#x3D;&quot;w-3.5 h-3.5 text-white&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; viewBox&#x3D;&quot;0 0 24 24&quot;&gt;
+                    &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;3&quot; d&#x3D;&quot;M5 13l4 4L19 7&quot; /&gt;
+                  &lt;/svg&gt;
+                &lt;/div&gt;
+
+                &lt;div class&#x3D;&quot;flex-1&quot;&gt;
+                  &lt;p class&#x3D;&quot;text-xs font-bold text-gray-700 group-hover:text-blue-600 transition-colors&quot;&gt;{{ cs.nombre }}&lt;/p&gt;
+                  &lt;p class&#x3D;&quot;text-[9px] text-gray-400 line-clamp-1&quot;&gt;{{ cs.descripcion }}&lt;/p&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+      &lt;/form&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Footer --&gt;
+    &lt;div class&#x3D;&quot;px-8 py-6 border-t border-gray-100 flex justify-end gap-3 bg-gray-50&quot;&gt;
+      &lt;button (click)&#x3D;&quot;cerrarModal()&quot; class&#x3D;&quot;px-6 py-2.5 text-gray-600 text-sm font-semibold hover:bg-gray-100 rounded-xl transition-colors&quot;&gt;
+        Cancelar
+      &lt;/button&gt;
+      &lt;button (click)&#x3D;&quot;guardar()&quot; [disabled]&#x3D;&quot;form.invalid || enviando()&quot;
+              class&#x3D;&quot;px-8 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl transition-all shadow-lg hover:shadow-blue-200 disabled:opacity-50 disabled:shadow-none&quot;&gt;
+        {{ enviando() ? &#x27;Procesando…&#x27; : (editando() ? &#x27;Guardar Cambios&#x27; : &#x27;Crear Establecimiento&#x27;) }}
+      &lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></td>
+            </tr>
+
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#cargando" >cargando</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#catServ" >catServ</a>
+                            </li>
+                            <li>
+                                <a href="#catServicios" >catServicios</a>
+                            </li>
+                            <li>
+                                <a href="#departamentos" >departamentos</a>
+                            </li>
+                            <li>
+                                <a href="#editando" >editando</a>
+                            </li>
+                            <li>
+                                <a href="#enviando" >enviando</a>
+                            </li>
+                            <li>
+                                <a href="#establecimientos" >establecimientos</a>
+                            </li>
+                            <li>
+                                <a href="#establecimientosFiltrados" >establecimientosFiltrados</a>
+                            </li>
+                            <li>
+                                <a href="#estSeleccionado" >estSeleccionado</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#fb" >fb</a>
+                            </li>
+                            <li>
+                                <a href="#filtro" >filtro</a>
+                            </li>
+                            <li>
+                                <a href="#form" >form</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#geo" >geo</a>
+                            </li>
+                            <li>
+                                <a href="#infraModalAbierto" >infraModalAbierto</a>
+                            </li>
+                            <li>
+                                <a href="#modalAbierto" >modalAbierto</a>
+                            </li>
+                            <li>
+                                <a href="#modalServiciosAbierto" >modalServiciosAbierto</a>
+                            </li>
+                            <li>
+                                <a href="#municipios" >municipios</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#notification" >notification</a>
+                            </li>
+                            <li>
+                                <a href="#serviciosSeleccionados" >serviciosSeleccionados</a>
+                            </li>
+                            <li>
+                                <a href="#servSeleccionado" >servSeleccionado</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#svc" >svc</a>
+                            </li>
+                            <li>
+                                <a href="#tipos" >tipos</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#abrirInfraestructura" >abrirInfraestructura</a>
+                            </li>
+                            <li>
+                                <a href="#abrirModal" >abrirModal</a>
+                            </li>
+                            <li>
+                                <a href="#cargar" >cargar</a>
+                            </li>
+                            <li>
+                                <a href="#cargarCat" >cargarCat</a>
+                            </li>
+                            <li>
+                                <a href="#cerrarModal" >cerrarModal</a>
+                            </li>
+                            <li>
+                                <a href="#eliminar" >eliminar</a>
+                            </li>
+                            <li>
+                                <a href="#filtrar" >filtrar</a>
+                            </li>
+                            <li>
+                                <a href="#gestionarInfraestructura" >gestionarInfraestructura</a>
+                            </li>
+                            <li>
+                                <a href="#guardar" >guardar</a>
+                            </li>
+                            <li>
+                                <a href="#isServiceSelected" >isServiceSelected</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#onDeptoChange" >onDeptoChange</a>
+                            </li>
+                            <li>
+                                <a href="#toggleService" >toggleService</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="abrirInfraestructura"></a>
+                    <span class="name">
+                        <span ><b>abrirInfraestructura</b></span>
+                        <a href="#abrirInfraestructura"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>abrirInfraestructura(serv: <a href="../interfaces/Servicio.html" target="_self">Servicio</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="455"
+                                    class="link-to-prism">src/app/modules/mantenimiento-establecimientos/mantenimiento-establecimientos.component.ts:455</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>serv</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Servicio.html" target="_self" >Servicio</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="abrirModal"></a>
+                    <span class="name">
+                        <span ><b>abrirModal</b></span>
+                        <a href="#abrirModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>abrirModal(est?: <a href="../interfaces/Establecimiento.html" target="_self">Establecimiento</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="370"
+                                    class="link-to-prism">src/app/modules/mantenimiento-establecimientos/mantenimiento-establecimientos.component.ts:370</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>est</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Establecimiento.html" target="_self" >Establecimiento</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargar"></a>
+                    <span class="name">
+                        <span ><b>cargar</b></span>
+                        <a href="#cargar"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cargar()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="307"
+                                    class="link-to-prism">src/app/modules/mantenimiento-establecimientos/mantenimiento-establecimientos.component.ts:307</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargarCat"></a>
+                    <span class="name">
+                        <span ><b>cargarCat</b></span>
+                        <a href="#cargarCat"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cargarCat()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="319"
+                                    class="link-to-prism">src/app/modules/mantenimiento-establecimientos/mantenimiento-establecimientos.component.ts:319</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cerrarModal"></a>
+                    <span class="name">
+                        <span ><b>cerrarModal</b></span>
+                        <a href="#cerrarModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cerrarModal()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="401"
+                                    class="link-to-prism">src/app/modules/mantenimiento-establecimientos/mantenimiento-establecimientos.component.ts:401</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="eliminar"></a>
+                    <span class="name">
+                        <span ><b>eliminar</b></span>
+                        <a href="#eliminar"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>eliminar(est: <a href="../interfaces/Establecimiento.html" target="_self">Establecimiento</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="438"
+                                    class="link-to-prism">src/app/modules/mantenimiento-establecimientos/mantenimiento-establecimientos.component.ts:438</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>est</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Establecimiento.html" target="_self" >Establecimiento</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="filtrar"></a>
+                    <span class="name">
+                        <span ><b>filtrar</b></span>
+                        <a href="#filtrar"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>filtrar()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="361"
+                                    class="link-to-prism">src/app/modules/mantenimiento-establecimientos/mantenimiento-establecimientos.component.ts:361</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="gestionarInfraestructura"></a>
+                    <span class="name">
+                        <span ><b>gestionarInfraestructura</b></span>
+                        <a href="#gestionarInfraestructura"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>gestionarInfraestructura(est: <a href="../interfaces/Establecimiento.html" target="_self">Establecimiento</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="450"
+                                    class="link-to-prism">src/app/modules/mantenimiento-establecimientos/mantenimiento-establecimientos.component.ts:450</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>est</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Establecimiento.html" target="_self" >Establecimiento</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="guardar"></a>
+                    <span class="name">
+                        <span ><b>guardar</b></span>
+                        <a href="#guardar"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>guardar()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="408"
+                                    class="link-to-prism">src/app/modules/mantenimiento-establecimientos/mantenimiento-establecimientos.component.ts:408</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isServiceSelected"></a>
+                    <span class="name">
+                        <span ><b>isServiceSelected</b></span>
+                        <a href="#isServiceSelected"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>isServiceSelected(catId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="357"
+                                    class="link-to-prism">src/app/modules/mantenimiento-establecimientos/mantenimiento-establecimientos.component.ts:357</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>catId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="301"
+                                    class="link-to-prism">src/app/modules/mantenimiento-establecimientos/mantenimiento-establecimientos.component.ts:301</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onDeptoChange"></a>
+                    <span class="name">
+                        <span ><b>onDeptoChange</b></span>
+                        <a href="#onDeptoChange"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onDeptoChange()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="333"
+                                    class="link-to-prism">src/app/modules/mantenimiento-establecimientos/mantenimiento-establecimientos.component.ts:333</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="toggleService"></a>
+                    <span class="name">
+                        <span ><b>toggleService</b></span>
+                        <a href="#toggleService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>toggleService(catId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="348"
+                                    class="link-to-prism">src/app/modules/mantenimiento-establecimientos/mantenimiento-establecimientos.component.ts:348</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>catId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargando"></a>
+                    <span class="name">
+                        <span ><b>cargando</b></span>
+                        <a href="#cargando"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(true)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="276" class="link-to-prism">src/app/modules/mantenimiento-establecimientos/mantenimiento-establecimientos.component.ts:276</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="catServ"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>catServ</b></span>
+                        <a href="#catServ"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(CatServiciosService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="267" class="link-to-prism">src/app/modules/mantenimiento-establecimientos/mantenimiento-establecimientos.component.ts:267</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="catServicios"></a>
+                    <span class="name">
+                        <span ><b>catServicios</b></span>
+                        <a href="#catServicios"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;any[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="275" class="link-to-prism">src/app/modules/mantenimiento-establecimientos/mantenimiento-establecimientos.component.ts:275</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="departamentos"></a>
+                    <span class="name">
+                        <span ><b>departamentos</b></span>
+                        <a href="#departamentos"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;any[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="273" class="link-to-prism">src/app/modules/mantenimiento-establecimientos/mantenimiento-establecimientos.component.ts:273</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="editando"></a>
+                    <span class="name">
+                        <span ><b>editando</b></span>
+                        <a href="#editando"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;Establecimiento | null&gt;(null)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="278" class="link-to-prism">src/app/modules/mantenimiento-establecimientos/mantenimiento-establecimientos.component.ts:278</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="enviando"></a>
+                    <span class="name">
+                        <span ><b>enviando</b></span>
+                        <a href="#enviando"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="279" class="link-to-prism">src/app/modules/mantenimiento-establecimientos/mantenimiento-establecimientos.component.ts:279</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="establecimientos"></a>
+                    <span class="name">
+                        <span ><b>establecimientos</b></span>
+                        <a href="#establecimientos"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;Establecimiento[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="271" class="link-to-prism">src/app/modules/mantenimiento-establecimientos/mantenimiento-establecimientos.component.ts:271</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="establecimientosFiltrados"></a>
+                    <span class="name">
+                        <span ><b>establecimientosFiltrados</b></span>
+                        <a href="#establecimientosFiltrados"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;Establecimiento[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="272" class="link-to-prism">src/app/modules/mantenimiento-establecimientos/mantenimiento-establecimientos.component.ts:272</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="estSeleccionado"></a>
+                    <span class="name">
+                        <span ><b>estSeleccionado</b></span>
+                        <a href="#estSeleccionado"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;Establecimiento | null&gt;(null)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="298" class="link-to-prism">src/app/modules/mantenimiento-establecimientos/mantenimiento-establecimientos.component.ts:298</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="fb"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>fb</b></span>
+                        <a href="#fb"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(FormBuilder)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="268" class="link-to-prism">src/app/modules/mantenimiento-establecimientos/mantenimiento-establecimientos.component.ts:268</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="filtro"></a>
+                    <span class="name">
+                        <span ><b>filtro</b></span>
+                        <a href="#filtro"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="280" class="link-to-prism">src/app/modules/mantenimiento-establecimientos/mantenimiento-establecimientos.component.ts:280</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="form"></a>
+                    <span class="name">
+                        <span ><b>form</b></span>
+                        <a href="#form"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this.fb.group({
+    codigo: [&#x27;&#x27;, Validators.required],
+    nombre: [&#x27;&#x27;, Validators.required],
+    tipo: [&#x27;&#x27;, Validators.required],
+    departamentoId: [null as number | null, Validators.required],
+    municipioId: [null as number | null, Validators.required],
+    telefono: [&#x27;&#x27;],
+  })</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="283" class="link-to-prism">src/app/modules/mantenimiento-establecimientos/mantenimiento-establecimientos.component.ts:283</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="geo"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>geo</b></span>
+                        <a href="#geo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(GeoService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="266" class="link-to-prism">src/app/modules/mantenimiento-establecimientos/mantenimiento-establecimientos.component.ts:266</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="infraModalAbierto"></a>
+                    <span class="name">
+                        <span ><b>infraModalAbierto</b></span>
+                        <a href="#infraModalAbierto"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="297" class="link-to-prism">src/app/modules/mantenimiento-establecimientos/mantenimiento-establecimientos.component.ts:297</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="modalAbierto"></a>
+                    <span class="name">
+                        <span ><b>modalAbierto</b></span>
+                        <a href="#modalAbierto"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="277" class="link-to-prism">src/app/modules/mantenimiento-establecimientos/mantenimiento-establecimientos.component.ts:277</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="modalServiciosAbierto"></a>
+                    <span class="name">
+                        <span ><b>modalServiciosAbierto</b></span>
+                        <a href="#modalServiciosAbierto"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal(false)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="296" class="link-to-prism">src/app/modules/mantenimiento-establecimientos/mantenimiento-establecimientos.component.ts:296</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="municipios"></a>
+                    <span class="name">
+                        <span ><b>municipios</b></span>
+                        <a href="#municipios"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;any[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="274" class="link-to-prism">src/app/modules/mantenimiento-establecimientos/mantenimiento-establecimientos.component.ts:274</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="notification"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>notification</b></span>
+                        <a href="#notification"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(NotificationService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="269" class="link-to-prism">src/app/modules/mantenimiento-establecimientos/mantenimiento-establecimientos.component.ts:269</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="serviciosSeleccionados"></a>
+                    <span class="name">
+                        <span ><b>serviciosSeleccionados</b></span>
+                        <a href="#serviciosSeleccionados"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;number[]&gt;([])</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="293" class="link-to-prism">src/app/modules/mantenimiento-establecimientos/mantenimiento-establecimientos.component.ts:293</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="servSeleccionado"></a>
+                    <span class="name">
+                        <span ><b>servSeleccionado</b></span>
+                        <a href="#servSeleccionado"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;Servicio | null&gt;(null)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="299" class="link-to-prism">src/app/modules/mantenimiento-establecimientos/mantenimiento-establecimientos.component.ts:299</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="svc"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>svc</b></span>
+                        <a href="#svc"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(EstablecimientosService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="265" class="link-to-prism">src/app/modules/mantenimiento-establecimientos/mantenimiento-establecimientos.component.ts:265</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="tipos"></a>
+                    <span class="name">
+                        <span ><b>tipos</b></span>
+                        <a href="#tipos"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>TIPOS</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="281" class="link-to-prism">src/app/modules/mantenimiento-establecimientos/mantenimiento-establecimientos.component.ts:281</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, inject, OnInit, signal } from &#x27;@angular/core&#x27;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
+import { ReactiveFormsModule, FormBuilder, Validators, FormArray, FormsModule } from &#x27;@angular/forms&#x27;;
+import { EstablecimientosService, Establecimiento, Servicio } from &#x27;../../core/services/establecimientos.service&#x27;;
+import { GeoService } from &#x27;../../core/services/geo.service&#x27;;
+import { ServiciosService as CatServiciosService } from &#x27;../../core/services/servicios.service&#x27;;
+import { NotificationService } from &#x27;../../core/services/notification.service&#x27;;
+import { InfraestructuraModalComponent } from &#x27;./infraestructura-modal.component&#x27;;
+
+const TIPOS &#x3D; [
+  &#x27;HOSPITAL_NACIONAL&#x27;,
+  &#x27;HOSPITAL_REGIONAL&#x27;,
+  &#x27;CENTRO_SALUD&#x27;,
+  &#x27;CLINICA_PERIFERICA&#x27;,
+  &#x27;CESAMO&#x27;,
+  &#x27;CESAR&#x27;
+];
+
+@Component({
+  selector: &#x27;app-mantenimiento-establecimientos&#x27;,
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, InfraestructuraModalComponent],
+  template: &#x60;
+    &lt;div class&#x3D;&quot;space-y-6&quot;&gt;
+      &lt;!-- Cabecera --&gt;
+      &lt;div class&#x3D;&quot;flex items-center justify-between border-b border-gray-100 pb-4&quot;&gt;
+        &lt;div&gt;
+          &lt;h2 class&#x3D;&quot;text-2xl font-bold text-gray-900&quot;&gt;Mantenimiento de Establecimientos&lt;/h2&gt;
+          &lt;p class&#x3D;&quot;text-sm text-gray-500&quot;&gt;Gestión de centros de salud y sus servicios&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;button (click)&#x3D;&quot;abrirModal()&quot;
+                class&#x3D;&quot;px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold shadow-md transition-all active:scale-95&quot;&gt;
+          + Nuevo Establecimiento
+        &lt;/button&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Buscador --&gt;
+      &lt;div class&#x3D;&quot;bg-white p-4 rounded-xl border border-gray-200&quot;&gt;
+        &lt;input type&#x3D;&quot;text&quot; placeholder&#x3D;&quot;Buscar...&quot;
+               [(ngModel)]&#x3D;&quot;filtro&quot; (ngModelChange)&#x3D;&quot;filtrar()&quot;
+               [ngModelOptions]&#x3D;&quot;{standalone: true}&quot;
+               class&#x3D;&quot;w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500&quot;/&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Lista --&gt;
+      &lt;div class&#x3D;&quot;grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4&quot;&gt;
+        &lt;div *ngIf&#x3D;&quot;cargando()&quot; class&#x3D;&quot;col-span-full py-10 text-center text-gray-500&quot;&gt;
+          Cargando...
+        &lt;/div&gt;
+
+        &lt;div *ngFor&#x3D;&quot;let est of establecimientosFiltrados()&quot;
+             class&#x3D;&quot;bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex flex-col&quot;&gt;
+          
+          &lt;div class&#x3D;&quot;flex justify-between items-start mb-3&quot;&gt;
+            &lt;span class&#x3D;&quot;text-[10px] font-bold px-2 py-1 bg-blue-50 text-blue-600 rounded uppercase&quot;&gt;
+              {{ est.tipo.replace(&#x27;_&#x27;, &#x27; &#x27;) }}
+            &lt;/span&gt;
+            &lt;div class&#x3D;&quot;flex gap-2&quot;&gt;
+              &lt;button (click)&#x3D;&quot;abrirModal(est)&quot; class&#x3D;&quot;text-gray-400 hover:text-blue-600&quot;&gt;
+                &lt;svg class&#x3D;&quot;w-4 h-4&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z&quot;/&gt;&lt;/svg&gt;
+              &lt;/button&gt;
+              &lt;button (click)&#x3D;&quot;eliminar(est)&quot; class&#x3D;&quot;text-gray-400 hover:text-red-600&quot;&gt;
+                &lt;svg class&#x3D;&quot;w-4 h-4&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16&quot;/&gt;&lt;/svg&gt;
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;h3 class&#x3D;&quot;font-bold text-gray-900&quot;&gt;{{ est.nombre }}&lt;/h3&gt;
+          &lt;p class&#x3D;&quot;text-xs text-gray-400 font-mono mb-3&quot;&gt;{{ est.codigo }}&lt;/p&gt;
+          
+          &lt;div class&#x3D;&quot;text-sm text-gray-600 space-y-1 mb-4&quot;&gt;
+            &lt;p class&#x3D;&quot;flex items-center gap-1&quot;&gt;
+              &lt;svg class&#x3D;&quot;w-3 h-3&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z&quot;/&gt;&lt;/svg&gt;
+              {{ est.municipio?.nombre }}, {{ est.departamento?.nombre }}
+            &lt;/p&gt;
+          &lt;/div&gt;
+
+          &lt;div class&#x3D;&quot;mt-auto pt-3 border-t border-gray-50&quot;&gt;
+            &lt;div class&#x3D;&quot;flex justify-between items-center mb-2&quot;&gt;
+              &lt;p class&#x3D;&quot;text-[10px] font-bold text-gray-400 uppercase&quot;&gt;Servicios ({{ est.servicios?.length || 0 }})&lt;/p&gt;
+              &lt;button (click)&#x3D;&quot;gestionarInfraestructura(est)&quot; 
+                      class&#x3D;&quot;text-[10px] font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1 bg-blue-50 px-2 py-0.5 rounded&quot;&gt;
+                &lt;svg class&#x3D;&quot;w-3 h-3&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4&quot;/&gt;&lt;/svg&gt;
+                Infraestructura
+              &lt;/button&gt;
+            &lt;/div&gt;
+            &lt;div class&#x3D;&quot;flex flex-wrap gap-1&quot;&gt;
+              &lt;span *ngFor&#x3D;&quot;let s of est.servicios?.slice(0, 3)&quot; class&#x3D;&quot;text-[10px] bg-gray-100 px-2 py-0.5 rounded&quot;&gt;
+                {{ s.catServicio?.nombre }}
+              &lt;/span&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Modal de Selección de Servicio para Infraestructura --&gt;
+    &lt;div *ngIf&#x3D;&quot;modalServiciosAbierto()&quot; 
+         class&#x3D;&quot;fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm&quot;
+         (click)&#x3D;&quot;modalServiciosAbierto.set(false)&quot;&gt;
+      &lt;div class&#x3D;&quot;bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden&quot; (click)&#x3D;&quot;$event.stopPropagation()&quot;&gt;
+        &lt;div class&#x3D;&quot;p-6 border-b border-gray-100 flex justify-between items-center&quot;&gt;
+          &lt;div&gt;
+            &lt;h3 class&#x3D;&quot;text-lg font-bold text-gray-900&quot;&gt;Seleccionar Servicio&lt;/h3&gt;
+            &lt;p class&#x3D;&quot;text-xs text-gray-500&quot;&gt;{{ estSeleccionado()?.nombre }}&lt;/p&gt;
+          &lt;/div&gt;
+          &lt;button (click)&#x3D;&quot;modalServiciosAbierto.set(false)&quot; class&#x3D;&quot;text-gray-400 hover:text-gray-600&quot;&gt;&lt;svg class&#x3D;&quot;w-6 h-6&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M6 18L18 6M6 6l12 12&quot;/&gt;&lt;/svg&gt;&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;p-6 space-y-3&quot;&gt;
+          &lt;div *ngFor&#x3D;&quot;let s of estSeleccionado()?.servicios&quot; 
+               (click)&#x3D;&quot;abrirInfraestructura(s)&quot;
+               class&#x3D;&quot;flex items-center justify-between p-4 bg-slate-50 hover:bg-blue-50 border border-slate-100 hover:border-blue-200 rounded-xl cursor-pointer transition-all group&quot;&gt;
+            &lt;span class&#x3D;&quot;font-bold text-sm text-slate-700 group-hover:text-blue-600&quot;&gt;{{ s.catServicio?.nombre }}&lt;/span&gt;
+            &lt;svg class&#x3D;&quot;w-5 h-5 text-slate-300 group-hover:text-blue-400&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;&lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M9 5l7 7-7 7&quot;/&gt;&lt;/svg&gt;
+          &lt;/div&gt;
+          &lt;div *ngIf&#x3D;&quot;estSeleccionado()?.servicios?.length &#x3D;&#x3D;&#x3D; 0&quot; class&#x3D;&quot;text-center py-8 text-gray-400 text-sm italic&quot;&gt;
+            Este establecimiento no tiene servicios asignados
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Modal de Infraestructura (Nivel Detalle) --&gt;
+    &lt;app-infraestructura-modal *ngIf&#x3D;&quot;infraModalAbierto()&quot;
+      [establecimientoId]&#x3D;&quot;estSeleccionado()!.id&quot;
+      [establecimientoNombre]&#x3D;&quot;estSeleccionado()!.nombre&quot;
+      [servicioId]&#x3D;&quot;servSeleccionado()!.id!&quot;
+      [servicioNombre]&#x3D;&quot;servSeleccionado()!.catServicio!.nombre&quot;
+      (cerrar)&#x3D;&quot;infraModalAbierto.set(false)&quot;&gt;
+    &lt;/app-infraestructura-modal&gt;
+
+    &lt;!-- Modal --&gt;
+    &lt;div *ngIf&#x3D;&quot;modalAbierto()&quot; 
+         class&#x3D;&quot;fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50&quot;
+         (click)&#x3D;&quot;cerrarModal()&quot;&gt;
+      &lt;div class&#x3D;&quot;bg-white rounded-xl shadow-xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col&quot;
+           (click)&#x3D;&quot;$event.stopPropagation()&quot;&gt;
+        
+        &lt;!-- Header --&gt;
+        &lt;div class&#x3D;&quot;px-8 py-6 border-b border-gray-100 flex items-center justify-between bg-white sticky top-0 z-10&quot;&gt;
+          &lt;div&gt;
+            &lt;h3 class&#x3D;&quot;text-xl font-bold text-gray-900&quot;&gt;{{ editando() ? &#x27;Editar Establecimiento&#x27; : &#x27;Nuevo Establecimiento&#x27; }}&lt;/h3&gt;
+            &lt;p class&#x3D;&quot;text-xs text-gray-500 mt-1&quot;&gt;Completa la información técnica y los servicios disponibles&lt;/p&gt;
+          &lt;/div&gt;
+          &lt;button (click)&#x3D;&quot;cerrarModal()&quot; class&#x3D;&quot;p-2 hover:bg-gray-100 rounded-full transition-colors&quot;&gt;
+            &lt;svg class&#x3D;&quot;w-6 h-6 text-gray-400&quot; fill&#x3D;&quot;none&quot; viewBox&#x3D;&quot;0 0 24 24&quot; stroke&#x3D;&quot;currentColor&quot;&gt;
+              &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;2&quot; d&#x3D;&quot;M6 18L18 6M6 6l12 12&quot;/&gt;
+            &lt;/svg&gt;
+          &lt;/button&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Body --&gt;
+        &lt;div class&#x3D;&quot;flex-1 overflow-y-auto p-8&quot;&gt;
+          &lt;form [formGroup]&#x3D;&quot;form&quot; class&#x3D;&quot;space-y-8&quot;&gt;
+            
+            &lt;div class&#x3D;&quot;grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6&quot;&gt;
+              &lt;!-- Datos Generales --&gt;
+              &lt;div class&#x3D;&quot;space-y-6&quot;&gt;
+                &lt;h4 class&#x3D;&quot;text-sm font-bold text-blue-600 uppercase tracking-widest border-l-4 border-blue-500 pl-3&quot;&gt;Información General&lt;/h4&gt;
+                
+                &lt;div class&#x3D;&quot;grid grid-cols-2 gap-4&quot;&gt;
+                  &lt;div class&#x3D;&quot;space-y-1&quot;&gt;
+                    &lt;label class&#x3D;&quot;text-xs font-semibold text-gray-500 ml-1&quot;&gt;Código&lt;/label&gt;
+                    &lt;input formControlName&#x3D;&quot;codigo&quot; type&#x3D;&quot;text&quot; placeholder&#x3D;&quot;HOSP-001&quot;
+                           class&#x3D;&quot;w-full px-4 py-2.5 bg-gray-50 border-none rounded-xl text-sm focus:ring-2 focus:ring-blue-500 font-mono uppercase&quot;/&gt;
+                  &lt;/div&gt;
+                  &lt;div class&#x3D;&quot;space-y-1&quot;&gt;
+                    &lt;label class&#x3D;&quot;text-xs font-semibold text-gray-500 ml-1&quot;&gt;Tipo&lt;/label&gt;
+                    &lt;select formControlName&#x3D;&quot;tipo&quot; class&#x3D;&quot;w-full px-4 py-2.5 bg-gray-50 border-none rounded-xl text-sm focus:ring-2 focus:ring-blue-500&quot;&gt;
+                      &lt;option value&#x3D;&quot;&quot;&gt;Seleccione…&lt;/option&gt;
+                      &lt;option *ngFor&#x3D;&quot;let t of tipos&quot; [value]&#x3D;&quot;t&quot;&gt;{{ t.replace(&#x27;_&#x27;, &#x27; &#x27;) }}&lt;/option&gt;
+                    &lt;/select&gt;
+                  &lt;/div&gt;
+                &lt;/div&gt;
+
+                &lt;div class&#x3D;&quot;space-y-1&quot;&gt;
+                  &lt;label class&#x3D;&quot;text-xs font-semibold text-gray-500 ml-1&quot;&gt;Nombre del Establecimiento&lt;/label&gt;
+                  &lt;input formControlName&#x3D;&quot;nombre&quot; type&#x3D;&quot;text&quot; placeholder&#x3D;&quot;Ej: Hospital Escuela&quot;
+                         class&#x3D;&quot;w-full px-4 py-2.5 bg-gray-50 border-none rounded-xl text-sm focus:ring-2 focus:ring-blue-500&quot;/&gt;
+                &lt;/div&gt;
+
+                &lt;div class&#x3D;&quot;grid grid-cols-2 gap-4&quot;&gt;
+                  &lt;div class&#x3D;&quot;space-y-1&quot;&gt;
+                    &lt;label class&#x3D;&quot;text-xs font-semibold text-gray-500 ml-1&quot;&gt;Departamento&lt;/label&gt;
+                    &lt;select formControlName&#x3D;&quot;departamentoId&quot; (change)&#x3D;&quot;onDeptoChange()&quot; 
+                            class&#x3D;&quot;w-full px-4 py-2.5 bg-gray-50 border-none rounded-xl text-sm focus:ring-2 focus:ring-blue-500&quot;&gt;
+                      &lt;option [value]&#x3D;&quot;null&quot;&gt;Seleccione…&lt;/option&gt;
+                      &lt;option *ngFor&#x3D;&quot;let d of departamentos()&quot; [value]&#x3D;&quot;d.id&quot;&gt;{{ d.nombre }}&lt;/option&gt;
+                    &lt;/select&gt;
+                  &lt;/div&gt;
+                  &lt;div class&#x3D;&quot;space-y-1&quot;&gt;
+                    &lt;label class&#x3D;&quot;text-xs font-semibold text-gray-500 ml-1&quot;&gt;Municipio&lt;/label&gt;
+                    &lt;select formControlName&#x3D;&quot;municipioId&quot; 
+                            class&#x3D;&quot;w-full px-4 py-2.5 bg-gray-50 border-none rounded-xl text-sm focus:ring-2 focus:ring-blue-500&quot;&gt;
+                      &lt;option [value]&#x3D;&quot;null&quot;&gt;Seleccione…&lt;/option&gt;
+                      &lt;option *ngFor&#x3D;&quot;let m of municipios()&quot; [value]&#x3D;&quot;m.id&quot;&gt;{{ m.nombre }}&lt;/option&gt;
+                    &lt;/select&gt;
+                  &lt;/div&gt;
+                &lt;/div&gt;
+
+                &lt;div class&#x3D;&quot;space-y-1&quot;&gt;
+                  &lt;label class&#x3D;&quot;text-xs font-semibold text-gray-500 ml-1&quot;&gt;Teléfono de Contacto&lt;/label&gt;
+                  &lt;input formControlName&#x3D;&quot;telefono&quot; type&#x3D;&quot;text&quot; placeholder&#x3D;&quot;Ej: +504 2222-2222&quot;
+                         class&#x3D;&quot;w-full px-4 py-2.5 bg-gray-50 border-none rounded-xl text-sm focus:ring-2 focus:ring-blue-500&quot;/&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+
+              &lt;!-- Sección de Servicios mejorada con Checkboxes --&gt;
+              &lt;div class&#x3D;&quot;space-y-4&quot;&gt;
+                &lt;div class&#x3D;&quot;flex items-center justify-between&quot;&gt;
+                  &lt;h4 class&#x3D;&quot;text-sm font-bold text-blue-600 uppercase tracking-widest border-l-4 border-blue-500 pl-3&quot;&gt;Servicios Disponibles&lt;/h4&gt;
+                  &lt;span class&#x3D;&quot;text-[10px] bg-blue-50 text-blue-600 px-2 py-1 rounded-full font-bold&quot;&gt;
+                    {{ serviciosSeleccionados().length }} seleccionados
+                  &lt;/span&gt;
+                &lt;/div&gt;
+
+                &lt;div class&#x3D;&quot;grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar p-1&quot;&gt;
+                  &lt;div *ngFor&#x3D;&quot;let cs of catServicios()&quot; 
+                       (click)&#x3D;&quot;toggleService(cs.id)&quot;
+                       [class.border-blue-200]&#x3D;&quot;isServiceSelected(cs.id)&quot;
+                       [class.bg-blue-50]&#x3D;&quot;isServiceSelected(cs.id)&quot;
+                       class&#x3D;&quot;flex items-center gap-3 p-3 bg-white border border-gray-100 rounded-xl cursor-pointer hover:border-blue-300 hover:shadow-sm transition-all group&quot;&gt;
+                    
+                    &lt;div [class.bg-blue-500]&#x3D;&quot;isServiceSelected(cs.id)&quot;
+                         [class.border-gray-200]&#x3D;&quot;!isServiceSelected(cs.id)&quot;
+                         class&#x3D;&quot;w-5 h-5 border-2 rounded flex items-center justify-center transition-colors&quot;&gt;
+                      &lt;svg *ngIf&#x3D;&quot;isServiceSelected(cs.id)&quot; class&#x3D;&quot;w-3.5 h-3.5 text-white&quot; fill&#x3D;&quot;none&quot; stroke&#x3D;&quot;currentColor&quot; viewBox&#x3D;&quot;0 0 24 24&quot;&gt;
+                        &lt;path stroke-linecap&#x3D;&quot;round&quot; stroke-linejoin&#x3D;&quot;round&quot; stroke-width&#x3D;&quot;3&quot; d&#x3D;&quot;M5 13l4 4L19 7&quot; /&gt;
+                      &lt;/svg&gt;
+                    &lt;/div&gt;
+
+                    &lt;div class&#x3D;&quot;flex-1&quot;&gt;
+                      &lt;p class&#x3D;&quot;text-xs font-bold text-gray-700 group-hover:text-blue-600 transition-colors&quot;&gt;{{ cs.nombre }}&lt;/p&gt;
+                      &lt;p class&#x3D;&quot;text-[9px] text-gray-400 line-clamp-1&quot;&gt;{{ cs.descripcion }}&lt;/p&gt;
+                    &lt;/div&gt;
+                  &lt;/div&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+
+          &lt;/form&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Footer --&gt;
+        &lt;div class&#x3D;&quot;px-8 py-6 border-t border-gray-100 flex justify-end gap-3 bg-gray-50&quot;&gt;
+          &lt;button (click)&#x3D;&quot;cerrarModal()&quot; class&#x3D;&quot;px-6 py-2.5 text-gray-600 text-sm font-semibold hover:bg-gray-100 rounded-xl transition-colors&quot;&gt;
+            Cancelar
+          &lt;/button&gt;
+          &lt;button (click)&#x3D;&quot;guardar()&quot; [disabled]&#x3D;&quot;form.invalid || enviando()&quot;
+                  class&#x3D;&quot;px-8 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl transition-all shadow-lg hover:shadow-blue-200 disabled:opacity-50 disabled:shadow-none&quot;&gt;
+            {{ enviando() ? &#x27;Procesando…&#x27; : (editando() ? &#x27;Guardar Cambios&#x27; : &#x27;Crear Establecimiento&#x27;) }}
+          &lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &#x60;,
+  styles: [&#x60;
+    .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #cbd5e1; }
+  &#x60;]
+})
+export class MantenimientoEstablecimientosComponent implements OnInit {
+  private svc &#x3D; inject(EstablecimientosService);
+  private geo &#x3D; inject(GeoService);
+  private catServ &#x3D; inject(CatServiciosService);
+  private fb  &#x3D; inject(FormBuilder);
+  private notification &#x3D; inject(NotificationService);
+
+  establecimientos &#x3D; signal&lt;Establecimiento[]&gt;([]);
+  establecimientosFiltrados &#x3D; signal&lt;Establecimiento[]&gt;([]);
+  departamentos &#x3D; signal&lt;any[]&gt;([]);
+  municipios &#x3D; signal&lt;any[]&gt;([]);
+  catServicios &#x3D; signal&lt;any[]&gt;([]);
+  cargando &#x3D; signal(true);
+  modalAbierto &#x3D; signal(false);
+  editando &#x3D; signal&lt;Establecimiento | null&gt;(null);
+  enviando &#x3D; signal(false);
+  filtro &#x3D; &#x27;&#x27;;
+  tipos &#x3D; TIPOS;
+
+  form &#x3D; this.fb.group({
+    codigo: [&#x27;&#x27;, Validators.required],
+    nombre: [&#x27;&#x27;, Validators.required],
+    tipo: [&#x27;&#x27;, Validators.required],
+    departamentoId: [null as number | null, Validators.required],
+    municipioId: [null as number | null, Validators.required],
+    telefono: [&#x27;&#x27;],
+  });
+
+  // Mantenemos los IDs de servicios seleccionados
+  serviciosSeleccionados &#x3D; signal&lt;number[]&gt;([]);
+
+  // Estados para Infraestructura
+  modalServiciosAbierto &#x3D; signal(false);
+  infraModalAbierto &#x3D; signal(false);
+  estSeleccionado &#x3D; signal&lt;Establecimiento | null&gt;(null);
+  servSeleccionado &#x3D; signal&lt;Servicio | null&gt;(null);
+
+  ngOnInit() {
+    this.cargar();
+    this.cargarCat();
+  }
+
+
+  cargar() {
+    this.cargando.set(true);
+    this.svc.listar().subscribe({
+      next: (res) &#x3D;&gt; {
+        this.establecimientos.set(Array.isArray(res) ? res : []);
+        this.filtrar();
+        this.cargando.set(false);
+      },
+      error: () &#x3D;&gt; this.cargando.set(false),
+    });
+  }
+
+  cargarCat() {
+    this.geo.listarDepartamentos().subscribe({
+      next: (res) &#x3D;&gt; this.departamentos.set(res || []),
+      error: (err) &#x3D;&gt; {
+        console.error(&#x27;Error cargando departamentos:&#x27;, err);
+        this.notification.error(&#x27;No se pudo cargar el catálogo de departamentos&#x27;);
+      }
+    });
+    this.catServ.obtenerCatalogo().subscribe({
+      next: (res) &#x3D;&gt; this.catServicios.set(res || []),
+      error: (err) &#x3D;&gt; console.error(&#x27;Error cargando catálogo de servicios:&#x27;, err)
+    });
+  }
+
+  onDeptoChange() {
+    const deptoId &#x3D; this.form.get(&#x27;departamentoId&#x27;)?.value;
+    this.municipios.set([]);
+    this.form.get(&#x27;municipioId&#x27;)?.disable();
+    this.form.patchValue({ municipioId: null });
+    if (deptoId &amp;&amp; !isNaN(Number(deptoId))) {
+      this.geo.listarMunicipios(Number(deptoId)).subscribe(res &#x3D;&gt; {
+        const list &#x3D; res || [];
+        this.municipios.set(list);
+        if (list.length &gt; 0) this.form.get(&#x27;municipioId&#x27;)?.enable();
+      });
+    }
+  }
+
+
+  toggleService(catId: number) {
+    const actuales &#x3D; this.serviciosSeleccionados();
+    if (actuales.includes(catId)) {
+      this.serviciosSeleccionados.set(actuales.filter(id &#x3D;&gt; id !&#x3D;&#x3D; catId));
+    } else {
+      this.serviciosSeleccionados.set([...actuales, catId]);
+    }
+  }
+
+  isServiceSelected(catId: number): boolean {
+    return this.serviciosSeleccionados().includes(catId);
+  }
+
+  filtrar() {
+    const q &#x3D; this.filtro.toLowerCase();
+    this.establecimientosFiltrados.set(
+      this.establecimientos().filter(e &#x3D;&gt; 
+        e.nombre.toLowerCase().includes(q) || e.codigo.toLowerCase().includes(q)
+      )
+    );
+  }
+
+  abrirModal(est?: Establecimiento) {
+    this.editando.set(est ?? null);
+    if (est) {
+      this.form.patchValue({
+        codigo: est.codigo,
+        nombre: est.nombre,
+        tipo: est.tipo,
+        departamentoId: est.departamentoId,
+        municipioId: est.municipioId,
+        telefono: est.telefono,
+      });
+      // Cargar municipios del depto
+      if (est.departamentoId) {
+        this.geo.listarMunicipios(est.departamentoId).subscribe(res &#x3D;&gt; {
+          const list &#x3D; res || [];
+          this.municipios.set(list);
+          if (list.length &gt; 0) this.form.get(&#x27;municipioId&#x27;)?.enable();
+          this.form.patchValue({ municipioId: est.municipioId });
+        });
+      }
+      // Cargar servicios seleccionados
+      this.serviciosSeleccionados.set(est.servicios?.map(s &#x3D;&gt; s.catServicioId) || []);
+    } else {
+      this.form.reset();
+      this.form.get(&#x27;municipioId&#x27;)?.disable();
+      this.municipios.set([]);
+      this.serviciosSeleccionados.set([]);
+    }
+    this.modalAbierto.set(true);
+  }
+
+  cerrarModal() {
+    this.modalAbierto.set(false);
+    this.editando.set(null);
+    this.form.reset();
+    this.serviciosSeleccionados.set([]);
+  }
+
+  guardar() {
+    if (this.form.invalid) return;
+    this.enviando.set(true);
+    
+    // Mapeamos los servicios seleccionados al formato que espera el backend
+    const data &#x3D; {
+      ...this.form.value,
+      servicios: this.serviciosSeleccionados().map(catId &#x3D;&gt; ({
+        catServicioId: catId
+      }))
+    };
+
+    const req &#x3D; this.editando()
+      ? this.svc.actualizar(this.editando()!.id, data as any)
+      : this.svc.crear(data as any);
+
+    req.subscribe({
+      next: () &#x3D;&gt; {
+        this.notification.success(this.editando() ? &#x27;Establecimiento actualizado&#x27; : &#x27;Establecimiento creado&#x27;);
+        this.cerrarModal();
+        this.enviando.set(false);
+        this.cargar();
+      },
+      error: (err) &#x3D;&gt; {
+        this.enviando.set(false);
+        this.notification.error(err.error?.message ?? &#x27;Error al guardar&#x27;);
+      },
+    });
+  }
+
+  eliminar(est: Establecimiento) {
+    if (confirm(&#x60;¿Está seguro de eliminar el establecimiento ${est.nombre}?&#x60;)) {
+      this.svc.eliminar(est.id).subscribe({
+        next: () &#x3D;&gt; {
+          this.notification.info(&#x27;Establecimiento eliminado&#x27;);
+          this.cargar();
+        },
+        error: () &#x3D;&gt; this.notification.error(&#x27;Error al eliminar&#x27;),
+      });
+    }
+  }
+
+  gestionarInfraestructura(est: Establecimiento) {
+    this.estSeleccionado.set(est);
+    this.modalServiciosAbierto.set(true);
+  }
+
+  abrirInfraestructura(serv: Servicio) {
+    this.servSeleccionado.set(serv);
+    this.modalServiciosAbierto.set(false);
+    this.infraModalAbierto.set(true);
+  }
+}
+</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="styleData">
+            <pre class="line-numbers"><code class="language-scss">
+    .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #cbd5e1; }
+  
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="space-y-6">  <!-- Cabecera -->  <div class="flex items-center justify-between border-b border-gray-100 pb-4">    <div>      <h2 class="text-2xl font-bold text-gray-900">Mantenimiento de Establecimientos</h2>      <p class="text-sm text-gray-500">Gestión de centros de salud y sus servicios</p>    </div>    <button (click)="abrirModal()"            class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold shadow-md transition-all active:scale-95">      + Nuevo Establecimiento    </button>  </div>  <!-- Buscador -->  <div class="bg-white p-4 rounded-xl border border-gray-200">    <input type="text" placeholder="Buscar..."           [(ngModel)]="filtro" (ngModelChange)="filtrar()"           [ngModelOptions]="{standalone: true}"           class="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"/>  </div>  <!-- Lista -->  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">    <div *ngIf="cargando()" class="col-span-full py-10 text-center text-gray-500">      Cargando...    </div>    <div *ngFor="let est of establecimientosFiltrados()"         class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex flex-col">      <div class="flex justify-between items-start mb-3">        <span class="text-[10px] font-bold px-2 py-1 bg-blue-50 text-blue-600 rounded uppercase">          {{ est.tipo.replace(\'_\', \' \') }}        </span>        <div class="flex gap-2">          <button (click)="abrirModal(est)" class="text-gray-400 hover:text-blue-600">            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>          </button>          <button (click)="eliminar(est)" class="text-gray-400 hover:text-red-600">            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>          </button>        </div>      </div>      <h3 class="font-bold text-gray-900">{{ est.nombre }}</h3>      <p class="text-xs text-gray-400 font-mono mb-3">{{ est.codigo }}</p>      <div class="text-sm text-gray-600 space-y-1 mb-4">        <p class="flex items-center gap-1">          <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>          {{ est.municipio?.nombre }}, {{ est.departamento?.nombre }}        </p>      </div>      <div class="mt-auto pt-3 border-t border-gray-50">        <div class="flex justify-between items-center mb-2">          <p class="text-[10px] font-bold text-gray-400 uppercase">Servicios ({{ est.servicios?.length || 0 }})</p>          <button (click)="gestionarInfraestructura(est)"                  class="text-[10px] font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1 bg-blue-50 px-2 py-0.5 rounded">            <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>            Infraestructura          </button>        </div>        <div class="flex flex-wrap gap-1">          <span *ngFor="let s of est.servicios?.slice(0, 3)" class="text-[10px] bg-gray-100 px-2 py-0.5 rounded">            {{ s.catServicio?.nombre }}          </span>        </div>      </div>    </div>  </div></div><!-- Modal de Selección de Servicio para Infraestructura --><div *ngIf="modalServiciosAbierto()"     class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm"     (click)="modalServiciosAbierto.set(false)">  <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden" (click)="$event.stopPropagation()">    <div class="p-6 border-b border-gray-100 flex justify-between items-center">      <div>        <h3 class="text-lg font-bold text-gray-900">Seleccionar Servicio</h3>        <p class="text-xs text-gray-500">{{ estSeleccionado()?.nombre }}</p>      </div>      <button (click)="modalServiciosAbierto.set(false)" class="text-gray-400 hover:text-gray-600"><svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>    </div>    <div class="p-6 space-y-3">      <div *ngFor="let s of estSeleccionado()?.servicios"           (click)="abrirInfraestructura(s)"           class="flex items-center justify-between p-4 bg-slate-50 hover:bg-blue-50 border border-slate-100 hover:border-blue-200 rounded-xl cursor-pointer transition-all group">        <span class="font-bold text-sm text-slate-700 group-hover:text-blue-600">{{ s.catServicio?.nombre }}</span>        <svg class="w-5 h-5 text-slate-300 group-hover:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>      </div>      <div *ngIf="estSeleccionado()?.servicios?.length === 0" class="text-center py-8 text-gray-400 text-sm italic">        Este establecimiento no tiene servicios asignados      </div>    </div>  </div></div><!-- Modal de Infraestructura (Nivel Detalle) --><app-infraestructura-modal *ngIf="infraModalAbierto()"  [establecimientoId]="estSeleccionado()!.id"  [establecimientoNombre]="estSeleccionado()!.nombre"  [servicioId]="servSeleccionado()!.id!"  [servicioNombre]="servSeleccionado()!.catServicio!.nombre"  (cerrar)="infraModalAbierto.set(false)"></app-infraestructura-modal><!-- Modal --><div *ngIf="modalAbierto()"     class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50"     (click)="cerrarModal()">  <div class="bg-white rounded-xl shadow-xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col"       (click)="$event.stopPropagation()">    <!-- Header -->    <div class="px-8 py-6 border-b border-gray-100 flex items-center justify-between bg-white sticky top-0 z-10">      <div>        <h3 class="text-xl font-bold text-gray-900">{{ editando() ? \'Editar Establecimiento\' : \'Nuevo Establecimiento\' }}</h3>        <p class="text-xs text-gray-500 mt-1">Completa la información técnica y los servicios disponibles</p>      </div>      <button (click)="cerrarModal()" class="p-2 hover:bg-gray-100 rounded-full transition-colors">        <svg class="w-6 h-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>        </svg>      </button>    </div>    <!-- Body -->    <div class="flex-1 overflow-y-auto p-8">      <form [formGroup]="form" class="space-y-8">        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">          <!-- Datos Generales -->          <div class="space-y-6">            <h4 class="text-sm font-bold text-blue-600 uppercase tracking-widest border-l-4 border-blue-500 pl-3">Información General</h4>            <div class="grid grid-cols-2 gap-4">              <div class="space-y-1">                <label class="text-xs font-semibold text-gray-500 ml-1">Código</label>                <input formControlName="codigo" type="text" placeholder="HOSP-001"                       class="w-full px-4 py-2.5 bg-gray-50 border-none rounded-xl text-sm focus:ring-2 focus:ring-blue-500 font-mono uppercase"/>              </div>              <div class="space-y-1">                <label class="text-xs font-semibold text-gray-500 ml-1">Tipo</label>                <select formControlName="tipo" class="w-full px-4 py-2.5 bg-gray-50 border-none rounded-xl text-sm focus:ring-2 focus:ring-blue-500">                  <option value="">Seleccione…</option>                  <option *ngFor="let t of tipos" [value]="t">{{ t.replace(\'_\', \' \') }}</option>                </select>              </div>            </div>            <div class="space-y-1">              <label class="text-xs font-semibold text-gray-500 ml-1">Nombre del Establecimiento</label>              <input formControlName="nombre" type="text" placeholder="Ej: Hospital Escuela"                     class="w-full px-4 py-2.5 bg-gray-50 border-none rounded-xl text-sm focus:ring-2 focus:ring-blue-500"/>            </div>            <div class="grid grid-cols-2 gap-4">              <div class="space-y-1">                <label class="text-xs font-semibold text-gray-500 ml-1">Departamento</label>                <select formControlName="departamentoId" (change)="onDeptoChange()"                        class="w-full px-4 py-2.5 bg-gray-50 border-none rounded-xl text-sm focus:ring-2 focus:ring-blue-500">                  <option [value]="null">Seleccione…</option>                  <option *ngFor="let d of departamentos()" [value]="d.id">{{ d.nombre }}</option>                </select>              </div>              <div class="space-y-1">                <label class="text-xs font-semibold text-gray-500 ml-1">Municipio</label>                <select formControlName="municipioId"                        class="w-full px-4 py-2.5 bg-gray-50 border-none rounded-xl text-sm focus:ring-2 focus:ring-blue-500">                  <option [value]="null">Seleccione…</option>                  <option *ngFor="let m of municipios()" [value]="m.id">{{ m.nombre }}</option>                </select>              </div>            </div>            <div class="space-y-1">              <label class="text-xs font-semibold text-gray-500 ml-1">Teléfono de Contacto</label>              <input formControlName="telefono" type="text" placeholder="Ej: +504 2222-2222"                     class="w-full px-4 py-2.5 bg-gray-50 border-none rounded-xl text-sm focus:ring-2 focus:ring-blue-500"/>            </div>          </div>          <!-- Sección de Servicios mejorada con Checkboxes -->          <div class="space-y-4">            <div class="flex items-center justify-between">              <h4 class="text-sm font-bold text-blue-600 uppercase tracking-widest border-l-4 border-blue-500 pl-3">Servicios Disponibles</h4>              <span class="text-[10px] bg-blue-50 text-blue-600 px-2 py-1 rounded-full font-bold">                {{ serviciosSeleccionados().length }} seleccionados              </span>            </div>            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar p-1">              <div *ngFor="let cs of catServicios()"                   (click)="toggleService(cs.id)"                   [class.border-blue-200]="isServiceSelected(cs.id)"                   [class.bg-blue-50]="isServiceSelected(cs.id)"                   class="flex items-center gap-3 p-3 bg-white border border-gray-100 rounded-xl cursor-pointer hover:border-blue-300 hover:shadow-sm transition-all group">                <div [class.bg-blue-500]="isServiceSelected(cs.id)"                     [class.border-gray-200]="!isServiceSelected(cs.id)"                     class="w-5 h-5 border-2 rounded flex items-center justify-center transition-colors">                  <svg *ngIf="isServiceSelected(cs.id)" class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />                  </svg>                </div>                <div class="flex-1">                  <p class="text-xs font-bold text-gray-700 group-hover:text-blue-600 transition-colors">{{ cs.nombre }}</p>                  <p class="text-[9px] text-gray-400 line-clamp-1">{{ cs.descripcion }}</p>                </div>              </div>            </div>          </div>        </div>      </form>    </div>    <!-- Footer -->    <div class="px-8 py-6 border-t border-gray-100 flex justify-end gap-3 bg-gray-50">      <button (click)="cerrarModal()" class="px-6 py-2.5 text-gray-600 text-sm font-semibold hover:bg-gray-100 rounded-xl transition-colors">        Cancelar      </button>      <button (click)="guardar()" [disabled]="form.invalid || enviando()"              class="px-8 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl transition-all shadow-lg hover:shadow-blue-200 disabled:opacity-50 disabled:shadow-none">        {{ enviando() ? \'Procesando…\' : (editando() ? \'Guardar Cambios\' : \'Crear Establecimiento\') }}      </button>    </div>  </div></div></div>'
+    var COMPONENTS = [{'name': 'AgendasComponent', 'selector': 'app-agendas'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'BuscadorPacienteComponent', 'selector': 'app-buscador-paciente'},{'name': 'CitasComponent', 'selector': 'app-citas'},{'name': 'ConstructorFormularioComponent', 'selector': 'app-constructor-formulario'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'EpidemiologiaDashboardComponent', 'selector': 'app-epidemiologia-dashboard'},{'name': 'EstadisticasHospitalariasComponent', 'selector': 'app-estadisticas-hospitalarias'},{'name': 'FarmaciaComponent', 'selector': 'app-farmacia'},{'name': 'GestionHospitalizacionComponent', 'selector': 'app-gestion-hospitalizacion'},{'name': 'GestionLotesModalComponent', 'selector': 'app-gestion-lotes-modal'},{'name': 'GestionReportesComponent', 'selector': 'app-gestion-reportes'},{'name': 'HistoriaClinicaComponent', 'selector': 'app-historia-clinica'},{'name': 'InfraestructuraModalComponent', 'selector': 'app-infraestructura-modal'},{'name': 'InventarioVacunasComponent', 'selector': 'app-inventario-vacunas'},{'name': 'LaboratorioComponent', 'selector': 'app-laboratorio'},{'name': 'ListaPlantillasComponent', 'selector': 'app-lista-plantillas'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MainLayoutComponent', 'selector': 'app-main-layout'},{'name': 'MantenimientoDiagnosticosComponent', 'selector': 'app-mantenimiento-diagnosticos'},{'name': 'MantenimientoEstablecimientosComponent', 'selector': 'app-mantenimiento-establecimientos'},{'name': 'MantenimientoInventarioComponent', 'selector': 'app-mantenimiento-inventario'},{'name': 'MantenimientoLaboratorioComponent', 'selector': 'app-mantenimiento-laboratorio'},{'name': 'MantenimientoLoginComponent', 'selector': 'app-mantenimiento-login'},{'name': 'MantenimientoMedicamentosComponent', 'selector': 'app-mantenimiento-medicamentos'},{'name': 'MantenimientoRadiologiaComponent', 'selector': 'app-mantenimiento-radiologia'},{'name': 'MantenimientoRolesComponent', 'selector': 'app-mantenimiento-roles'},{'name': 'MovimientosInventarioComponent', 'selector': 'app-movimientos-inventario'},{'name': 'NotificationComponent', 'selector': 'app-notification'},{'name': 'NuevaConsultaComponent', 'selector': 'app-nueva-consulta'},{'name': 'PacientesComponent', 'selector': 'app-pacientes'},{'name': 'PermisosUsuariosComponent', 'selector': 'app-permisos-usuarios'},{'name': 'RecetasPacienteComponent', 'selector': 'app-recetas-paciente'},{'name': 'RegistroVacunaModalComponent', 'selector': 'app-registro-vacuna-modal'},{'name': 'ReportesComponent', 'selector': 'app-reportes'},{'name': 'TriajeComponent', 'selector': 'app-triaje'},{'name': 'UsuariosComponent', 'selector': 'app-usuarios'},{'name': 'VacunacionComponent', 'selector': 'app-vacunacion'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'MantenimientoEstablecimientosComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'MantenimientoEstablecimientosComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

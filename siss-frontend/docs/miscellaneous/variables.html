@@ -1,0 +1,802 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>siss-frontend documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">siss-frontend documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content miscellaneous-variables">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Miscellaneous</li>
+  <li class="breadcrumb-item">Variables</li>
+</ol>
+
+<section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <ul class="index-list">
+                        <li>
+                            <a href="#appConfig" title="src/app/app.config.ts" ><b>appConfig</b>&nbsp;&nbsp;&nbsp;(src/.../app.config.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#authGuard" title="src/app/core/guards/auth.guard.ts" ><b>authGuard</b>&nbsp;&nbsp;&nbsp;(src/.../auth.guard.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#CATEGORIAS" title="src/app/modules/mantenimiento-roles/mantenimiento-roles.component.ts" ><b>CATEGORIAS</b>&nbsp;&nbsp;&nbsp;(src/.../mantenimiento-roles.component.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#CATEGORIAS" title="src/app/modules/triaje/triaje.component.ts" ><b>CATEGORIAS</b>&nbsp;&nbsp;&nbsp;(src/.../triaje.component.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#CONCIENCIA" title="src/app/modules/triaje/triaje.component.ts" ><b>CONCIENCIA</b>&nbsp;&nbsp;&nbsp;(src/.../triaje.component.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#environment" title="src/environments/environment.prod.ts" ><b>environment</b>&nbsp;&nbsp;&nbsp;(src/.../environment.prod.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#environment" title="src/environments/environment.ts" ><b>environment</b>&nbsp;&nbsp;&nbsp;(src/.../environment.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#jwtInterceptor" title="src/app/core/interceptors/jwt.interceptor.ts" ><b>jwtInterceptor</b>&nbsp;&nbsp;&nbsp;(src/.../jwt.interceptor.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#MODULOS" title="src/app/modules/mantenimiento-roles/mantenimiento-roles.component.ts" ><b>MODULOS</b>&nbsp;&nbsp;&nbsp;(src/.../mantenimiento-roles.component.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#offlineInterceptor" title="src/app/core/interceptors/offline.interceptor.ts" ><b>offlineInterceptor</b>&nbsp;&nbsp;&nbsp;(src/.../offline.interceptor.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ROL_COLOR" title="src/app/modules/mantenimiento-roles/mantenimiento-roles.component.ts" ><b>ROL_COLOR</b>&nbsp;&nbsp;&nbsp;(src/.../mantenimiento-roles.component.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#roleGuard" title="src/app/core/guards/role.guard.ts" ><b>roleGuard</b>&nbsp;&nbsp;&nbsp;(src/.../role.guard.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ROLES" title="src/app/modules/usuarios/usuarios.component.ts" ><b>ROLES</b>&nbsp;&nbsp;&nbsp;(src/.../usuarios.component.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#TIPOS" title="src/app/modules/mantenimiento-establecimientos/mantenimiento-establecimientos.component.ts" ><b>TIPOS</b>&nbsp;&nbsp;&nbsp;(src/.../mantenimiento-establecimientos.component.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#VIAS" title="src/app/modules/mantenimiento-medicamentos/mantenimiento-medicamentos.component.ts" ><b>VIAS</b>&nbsp;&nbsp;&nbsp;(src/.../mantenimiento-medicamentos.component.ts)</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+    <h3>src/app/app.config.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="appConfig"></a>
+                    <span class="name">
+                        <span ><b>appConfig</b></span>
+                        <a href="#appConfig"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>ApplicationConfig</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+  providers: [
+    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideRouter(routes),
+    provideHttpClient(
+      withInterceptors([offlineInterceptor, jwtInterceptor]),
+    ),
+    { provide: LOCALE_ID, useValue: &#x27;es&#x27; },
+  ],
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/app/core/guards/auth.guard.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="authGuard"></a>
+                    <span class="name">
+                        <span ><b>authGuard</b></span>
+                        <a href="#authGuard"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>CanActivateFn</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>() &#x3D;&gt; {
+  const auth &#x3D; inject(AuthService);
+  const router &#x3D; inject(Router);
+
+  if (auth.estaAutenticado()) return true;
+
+  return router.createUrlTree([&#x27;/login&#x27;]);
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/app/modules/mantenimiento-roles/mantenimiento-roles.component.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="CATEGORIAS"></a>
+                    <span class="name">
+                        <span ><b>CATEGORIAS</b></span>
+                        <a href="#CATEGORIAS"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[
+  { nombre: &#x27;Atención al Paciente&#x27;,   keys: [&#x27;pacientes&#x27;, &#x27;citas&#x27;, &#x27;triaje&#x27;, &#x27;historia_clinica&#x27;, &#x27;vacunacion&#x27;, &#x27;agendas&#x27;] },
+  { nombre: &#x27;Servicios Clínicos&#x27;,      keys: [&#x27;formularios&#x27;, &#x27;recetas&#x27;, &#x27;laboratorio&#x27;, &#x27;radiologia&#x27;, &#x27;diagnosticos&#x27;, &#x27;farmacia&#x27;] },
+  { nombre: &#x27;Gestión Administrativa&#x27;, keys: [&#x27;usuarios&#x27;, &#x27;inventario&#x27;, &#x27;medicamentos&#x27;] },
+  { nombre: &#x27;Configuración y Otros&#x27;,  keys: [&#x27;especialidades&#x27;, &#x27;establecimientos&#x27;, &#x27;reportes&#x27;, &#x27;geo&#x27;, &#x27;catalogos&#x27;] },
+]</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="MODULOS"></a>
+                    <span class="name">
+                        <span ><b>MODULOS</b></span>
+                        <a href="#MODULOS"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/ModuloPermiso.html" target="_self" >ModuloPermiso[]</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[
+  // Atención al Paciente
+  { key: &#x27;pacientes&#x27;,        label: &#x27;Pacientes&#x27;,         acciones: [&#x27;leer&#x27;, &#x27;crear&#x27;, &#x27;editar&#x27;, &#x27;eliminar&#x27;] },
+  { key: &#x27;citas&#x27;,            label: &#x27;Citas&#x27;,             acciones: [&#x27;leer&#x27;, &#x27;crear&#x27;, &#x27;editar&#x27;, &#x27;cancelar&#x27;] },
+  { key: &#x27;triaje&#x27;,           label: &#x27;Triaje&#x27;,            acciones: [&#x27;leer&#x27;, &#x27;crear&#x27;] },
+  { key: &#x27;historia_clinica&#x27;, label: &#x27;Historia Clínica&#x27;,  acciones: [&#x27;leer&#x27;, &#x27;crear&#x27;, &#x27;editar&#x27;] },
+  { key: &#x27;vacunacion&#x27;,       label: &#x27;Vacunación (PAI)&#x27;,  acciones: [&#x27;leer&#x27;, &#x27;gestionar&#x27;, &#x27;editar&#x27;, &#x27;eliminar&#x27;] },
+  { key: &#x27;agendas&#x27;,          label: &#x27;Agendas Médicas&#x27;,   acciones: [&#x27;leer&#x27;, &#x27;gestionar&#x27;] },
+  
+  // Servicios Clínicos
+  { key: &#x27;formularios&#x27;,      label: &#x27;Formularios&#x27;,       acciones: [&#x27;leer&#x27;, &#x27;llenar&#x27;, &#x27;crear&#x27;, &#x27;editar&#x27;] },
+  { key: &#x27;recetas&#x27;,          label: &#x27;Recetas&#x27;,           acciones: [&#x27;leer&#x27;, &#x27;crear&#x27;, &#x27;dispensar&#x27;] },
+  { key: &#x27;laboratorio&#x27;,      label: &#x27;Laboratorio&#x27;,       acciones: [&#x27;leer&#x27;, &#x27;gestionar&#x27;] },
+  { key: &#x27;radiologia&#x27;,       label: &#x27;Radiología e Imagen&#x27;, acciones: [&#x27;leer&#x27;, &#x27;gestionar&#x27;, &#x27;solicitar&#x27;] },
+  { key: &#x27;diagnosticos&#x27;,     label: &#x27;Diagnósticos CIE-10&#x27;, acciones: [&#x27;leer&#x27;, &#x27;crear&#x27;] },
+  { key: &#x27;farmacia&#x27;,         label: &#x27;Farmacia (Dispensación)&#x27;, acciones: [&#x27;leer&#x27;, &#x27;crear&#x27;] },
+  
+  // Gestión Administrativa
+  { key: &#x27;usuarios&#x27;,         label: &#x27;Usuarios&#x27;,          acciones: [&#x27;leer&#x27;, &#x27;gestionar&#x27;] },
+  { key: &#x27;inventario&#x27;,       label: &#x27;Inventario&#x27;,        acciones: [&#x27;leer&#x27;, &#x27;gestionar&#x27;] },
+  { key: &#x27;medicamentos&#x27;,     label: &#x27;Medicamentos&#x27;,         acciones: [&#x27;leer&#x27;, &#x27;gestionar&#x27;] },
+  
+  // Configuración
+  { key: &#x27;especialidades&#x27;,   label: &#x27;Especialidades&#x27;,    acciones: [&#x27;leer&#x27;, &#x27;crear&#x27;, &#x27;editar&#x27;] },
+  { key: &#x27;establecimientos&#x27;, label: &#x27;Establecimientos&#x27;,  acciones: [&#x27;leer&#x27;, &#x27;crear&#x27;, &#x27;editar&#x27;] },
+  { key: &#x27;reportes&#x27;,         label: &#x27;Reportes&#x27;,          acciones: [&#x27;generar&#x27;] },
+  { key: &#x27;geo&#x27;,              label: &#x27;Geografía&#x27;,         acciones: [&#x27;leer&#x27;] },
+  { key: &#x27;catalogos&#x27;,        label: &#x27;Catálogos&#x27;,         acciones: [&#x27;leer&#x27;] },
+]</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ROL_COLOR"></a>
+                    <span class="name">
+                        <span ><b>ROL_COLOR</b></span>
+                        <a href="#ROL_COLOR"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>Record&lt;string, string&gt;</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+  ADMIN:         &#x27;bg-red-100 text-red-700 border-red-200&#x27;,
+  MEDICO:        &#x27;bg-blue-100 text-blue-700 border-blue-200&#x27;,
+  ENFERMERA:     &#x27;bg-green-100 text-green-700 border-green-200&#x27;,
+  FARMACEUTICO:  &#x27;bg-purple-100 text-purple-700 border-purple-200&#x27;,
+  RECEPCIONISTA: &#x27;bg-orange-100 text-orange-700 border-orange-200&#x27;,
+  EPIDEMIOLOGO:  &#x27;bg-teal-100 text-teal-700 border-teal-200&#x27;,
+  ADMIN_ESTABLECIMIENTO: &#x27;bg-indigo-100 text-indigo-700 border-indigo-200&#x27;,
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/app/modules/triaje/triaje.component.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="CATEGORIAS"></a>
+                    <span class="name">
+                        <span ><b>CATEGORIAS</b></span>
+                        <a href="#CATEGORIAS"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[
+  { valor: &#x27;ROJO&#x27;,     label: &#x27;ROJO — Inmediato&#x27;,        tiempo: &#x27;&lt; 1 min&#x27;,   bg: &#x27;bg-red-600&#x27;,    text: &#x27;text-white&#x27;,      ring: &#x27;ring-red-400&#x27; },
+  { valor: &#x27;NARANJA&#x27;,  label: &#x27;NARANJA — Muy urgente&#x27;,   tiempo: &#x27;≤ 10 min&#x27;,  bg: &#x27;bg-orange-500&#x27;, text: &#x27;text-white&#x27;,      ring: &#x27;ring-orange-400&#x27; },
+  { valor: &#x27;AMARILLO&#x27;, label: &#x27;AMARILLO — Urgente&#x27;,      tiempo: &#x27;≤ 30 min&#x27;,  bg: &#x27;bg-yellow-400&#x27;, text: &#x27;text-yellow-900&#x27;, ring: &#x27;ring-yellow-400&#x27; },
+  { valor: &#x27;VERDE&#x27;,    label: &#x27;VERDE — Menos urgente&#x27;,   tiempo: &#x27;≤ 2 h&#x27;,     bg: &#x27;bg-green-500&#x27;,  text: &#x27;text-white&#x27;,      ring: &#x27;ring-green-400&#x27; },
+  { valor: &#x27;AZUL&#x27;,     label: &#x27;AZUL — No urgente&#x27;,       tiempo: &#x27;≤ 4 h&#x27;,     bg: &#x27;bg-blue-500&#x27;,   text: &#x27;text-white&#x27;,      ring: &#x27;ring-blue-400&#x27; },
+]</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="CONCIENCIA"></a>
+                    <span class="name">
+                        <span ><b>CONCIENCIA</b></span>
+                        <a href="#CONCIENCIA"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[
+  { valor: &#x27;ALERTA&#x27;,         label: &#x27;A — Alerta&#x27;,              desc: &#x27;Despierto, orientado&#x27; },
+  { valor: &#x27;RESPONDE_VOZ&#x27;,   label: &#x27;V — Responde a voz&#x27;,      desc: &#x27;Abre ojos al hablarle&#x27; },
+  { valor: &#x27;RESPONDE_DOLOR&#x27;, label: &#x27;D — Responde a dolor&#x27;,    desc: &#x27;Sólo responde a estímulo&#x27; },
+  { valor: &#x27;INCONSCIENTE&#x27;,   label: &#x27;I — Inconsciente&#x27;,        desc: &#x27;Sin respuesta&#x27; },
+]</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/environments/environment.prod.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="environment"></a>
+                    <span class="name">
+                        <span ><b>environment</b></span>
+                        <a href="#environment"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank" >object</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+  production: true,
+  apiUrl: &#x27;/api/v1&#x27;,
+  socketUrl: &#x27;&#x27;,
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/environments/environment.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="environment"></a>
+                    <span class="name">
+                        <span ><b>environment</b></span>
+                        <a href="#environment"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank" >object</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+  production: false,
+  apiUrl: &#x27;http://localhost:3000/api/v1&#x27;,
+  socketUrl: &#x27;http://localhost:3000&#x27;,
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/app/core/interceptors/jwt.interceptor.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="jwtInterceptor"></a>
+                    <span class="name">
+                        <span ><b>jwtInterceptor</b></span>
+                        <a href="#jwtInterceptor"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>HttpInterceptorFn</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>(req, next) &#x3D;&gt; {
+  const auth &#x3D; inject(AuthService);
+  const token &#x3D; auth.obtenerToken();
+
+  const reqConToken &#x3D; token
+    ? req.clone({ setHeaders: { Authorization: &#x60;Bearer ${token}&#x60; } })
+    : req;
+
+  return next(reqConToken).pipe(
+    catchError((error: HttpErrorResponse) &#x3D;&gt; {
+      if (error.status &#x3D;&#x3D;&#x3D; 401 &amp;&amp; !req.url.includes(&#x27;auth/&#x27;)) {
+        return auth.renovarToken().pipe(
+          switchMap((res) &#x3D;&gt; {
+            const nuevoReq &#x3D; req.clone({
+              setHeaders: { Authorization: &#x60;Bearer ${res.accessToken}&#x60; },
+            });
+            return next(nuevoReq);
+          }),
+          catchError((err) &#x3D;&gt; {
+            auth.cerrarSesion();
+            return throwError(() &#x3D;&gt; err);
+          }),
+        );
+      }
+      return throwError(() &#x3D;&gt; error);
+    }),
+  );
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/app/core/interceptors/offline.interceptor.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="offlineInterceptor"></a>
+                    <span class="name">
+                        <span ><b>offlineInterceptor</b></span>
+                        <a href="#offlineInterceptor"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>HttpInterceptorFn</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>(req, next) &#x3D;&gt; {
+  const esMutacion &#x3D; [&#x27;POST&#x27;, &#x27;PUT&#x27;, &#x27;PATCH&#x27;].includes(req.method);
+
+  if (esMutacion &amp;&amp; !navigator.onLine) {
+    // Guardar en localStorage como cola de sincronización offline
+    const cola: any[] &#x3D; JSON.parse(localStorage.getItem(&#x27;offline_queue&#x27;) ?? &#x27;[]&#x27;);
+    cola.push({ url: req.urlWithParams, method: req.method, body: req.body, ts: Date.now() });
+    localStorage.setItem(&#x27;offline_queue&#x27;, JSON.stringify(cola));
+
+    return of(
+      new HttpResponse({
+        status: 202,
+        body: { ok: true, data: { offline: true, mensaje: &#x27;Guardado localmente&#x27; } },
+      }),
+    );
+  }
+
+  return next(req);
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/app/core/guards/role.guard.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="roleGuard"></a>
+                    <span class="name">
+                        <span ><b>roleGuard</b></span>
+                        <a href="#roleGuard"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>CanActivateFn</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>(route: ActivatedRouteSnapshot) &#x3D;&gt; {
+  const auth &#x3D; inject(AuthService);
+  const router &#x3D; inject(Router);
+
+  const roles: string[] &#x3D; route.data[&#x27;roles&#x27;] ?? [];
+
+  if (auth.tieneRol(...roles)) return true;
+
+  return router.createUrlTree([&#x27;/dashboard&#x27;]);
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/app/modules/usuarios/usuarios.component.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ROLES"></a>
+                    <span class="name">
+                        <span ><b>ROLES</b></span>
+                        <a href="#ROLES"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[&#x27;ADMIN&#x27;,&#x27;MEDICO&#x27;,&#x27;ENFERMERA&#x27;,&#x27;FARMACEUTICO&#x27;,&#x27;RECEPCIONISTA&#x27;,&#x27;EPIDEMIOLOGO&#x27;, &#x27;ADMIN_ESTABLECIMIENTO&#x27;]</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/app/modules/mantenimiento-establecimientos/mantenimiento-establecimientos.component.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="TIPOS"></a>
+                    <span class="name">
+                        <span ><b>TIPOS</b></span>
+                        <a href="#TIPOS"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[
+  &#x27;HOSPITAL_NACIONAL&#x27;,
+  &#x27;HOSPITAL_REGIONAL&#x27;,
+  &#x27;CENTRO_SALUD&#x27;,
+  &#x27;CLINICA_PERIFERICA&#x27;,
+  &#x27;CESAMO&#x27;,
+  &#x27;CESAR&#x27;
+]</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>src/app/modules/mantenimiento-medicamentos/mantenimiento-medicamentos.component.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="VIAS"></a>
+                    <span class="name">
+                        <span ><b>VIAS</b></span>
+                        <a href="#VIAS"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[&#x27;ORAL&#x27;,&#x27;INYECTABLE&#x27;,&#x27;TOPICA&#x27;,&#x27;INHALATORIA&#x27;,&#x27;SUBLINGUAL&#x27;,&#x27;RECTAL&#x27;,&#x27;OFTALMICA&#x27;,&#x27;OTICA&#x27;]</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'miscellaneous-variables';
+            var COMPODOC_CURRENT_PAGE_URL = 'variables.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>
