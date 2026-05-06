@@ -11,6 +11,7 @@ interface NavItem {
   ruta: string;
   roles: string[];
   modulo?: string;
+  dependencias?: string[]; // Módulos adicionales requeridos
   subItems?: { label: string; ruta: string; modulo?: string; roles?: string[] }[];
 }
 
@@ -72,6 +73,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
           ruta: '/historia-clinica',
           roles: ['ADMIN','MEDICO','ENFERMERA'],
           modulo: 'historia_clinica',
+          dependencias: ['citas', 'pacientes'],
         },
         {
           label: 'Triaje',
@@ -111,6 +113,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
           ruta: '/servicios/recetas-paciente',
           roles: ['ADMIN','FARMACEUTICO','MEDICO','ADMIN_ESTABLECIMIENTO'],
           modulo: 'recetas',
+          dependencias: ['pacientes'],
         },
       ]
     },
@@ -195,7 +198,13 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
         ...section,
         items: section.items
           .filter(item => item.roles.includes(rol))
-          .filter(item => !item.modulo || this.auth.tieneAccesoModulo(item.modulo))
+          .filter(item => {
+            // Verificar módulo principal
+            if (item.modulo && !this.auth.tieneAccesoModulo(item.modulo)) return false;
+            // Verificar dependencias
+            if (item.dependencias && !item.dependencias.every(d => this.auth.tieneAccesoModulo(d))) return false;
+            return true;
+          })
           .map(item => ({
             ...item,
             subItems: item.subItems?.filter(

@@ -60,7 +60,7 @@ export class DispensacionController {
   }
 
   @Get('historial-paciente')
-  @Permissions('farmacia:leer')
+  @Permissions('recetas:leer')
   historialPaciente(
     @Query('identificador') identificador: string,
   ) {
