@@ -144,6 +144,9 @@ export class CreateHistoriaClinicaDto {
   @IsNumber() @IsOptional() plantillaId?: number;
 
   @IsOptional()
+  respuestaFormulario?: any;
+
+  @IsOptional()
   @ValidateNested()
   @Type(() => NotificacionEpidemiologicaDto)
   notificacionEpidemiologica?: NotificacionEpidemiologicaDto;

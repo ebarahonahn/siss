@@ -34,7 +34,6 @@ export class EstablecimientosController {
   }
 
   @Get('lista/simple')
-  @Permissions('establecimientos:leer')
   listarSimplificado() {
     return this.service.listarSimplificado();
   }

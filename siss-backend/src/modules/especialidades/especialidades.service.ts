@@ -16,9 +16,19 @@ export class CreateEspecialidadDto {
 export class EspecialidadesService {
   constructor(private prisma: PrismaService) {}
 
-  async listar() {
+  async listar(establecimientoId?: number) {
+    const where: any = { activa: true };
+    
+    if (establecimientoId) {
+      // Filtrar especialidades que tengan médicos asignados en este establecimiento
+      where.OR = [
+        { usuarios: { some: { establecimientoId, activo: true } } },
+        { asignaciones: { some: { establecimientoId, activo: true } } }
+      ];
+    }
+
     return this.prisma.especialidad.findMany({
-      where: { activa: true },
+      where,
       include: {
         _count: { select: { usuarios: true, plantillas: true } },
       },

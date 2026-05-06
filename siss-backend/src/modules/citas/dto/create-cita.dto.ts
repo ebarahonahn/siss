@@ -40,4 +40,8 @@ export class CreateCitaDto {
   @IsInt()
   @IsOptional()
   duracionMinutos?: number;
+
+  @IsInt()
+  @IsOptional()
+  establecimientoId?: number;
 }

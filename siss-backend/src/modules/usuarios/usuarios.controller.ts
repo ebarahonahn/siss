@@ -47,11 +47,10 @@ export class UsuariosController {
   listarMedicos(
     @CurrentUser() user: any,
     @Query('establecimientoId') establecimientoId?: number,
+    @Query('especialidadId') especialidadId?: number,
   ) {
-    // Si se envía un establecimientoId por query, usamos ese (para admins globales),
-    // de lo contrario usamos el del usuario en sesión.
     const id = establecimientoId ? Number(establecimientoId) : user.establecimientoId;
-    return this.service.listarMedicosPorEstablecimiento(id);
+    return this.service.listarMedicosPorEstablecimiento(id, especialidadId ? Number(especialidadId) : undefined);
   }
 
   @Get(':id')

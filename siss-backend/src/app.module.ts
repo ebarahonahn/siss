@@ -32,6 +32,7 @@ import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { HospitalizacionModule } from './modules/hospitalizacion/hospitalizacion.module';
 import { LoginImagesModule } from './modules/login-images/login-images.module';
 import { ConfiguracionModule } from './modules/configuracion/configuracion.module';
+import { SolicitudesUsuarioModule } from './modules/solicitudes-usuario/solicitudes-usuario.module';
 
 
 @Module({
@@ -69,6 +70,7 @@ import { ConfiguracionModule } from './modules/configuracion/configuracion.modul
     HospitalizacionModule,
     LoginImagesModule,
     ConfiguracionModule,
+    SolicitudesUsuarioModule,
   ],
 })
 export class AppModule {}

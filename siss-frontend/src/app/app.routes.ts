@@ -251,6 +251,15 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'mantenimiento/solicitudes',
+        canActivate: [roleGuard],
+        data: { roles: ['ADMIN', 'ADMIN_ESTABLECIMIENTO'] },
+        loadComponent: () =>
+          import('./modules/mantenimiento-solicitudes/mantenimiento-solicitudes.component').then(
+            (m) => m.MantenimientoSolicitudesComponent,
+          ),
+      },
+      {
         path: 'mantenimiento/formularios/:id/constructor',
         canActivate: [roleGuard],
         data: { roles: ['ADMIN'] },

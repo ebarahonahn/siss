@@ -3,6 +3,7 @@ import {
   NotFoundException,
   ConflictException,
   ForbiddenException,
+  BadRequestException,
 } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreatePacienteDto } from './dto/create-paciente.dto';
@@ -109,39 +110,7 @@ export class PacientesService {
   async obtenerPerfil(id: number) {
     const paciente = await this.prisma.paciente.findUnique({
       where: { id },
-      include: {
-        alergias: true,
-        citas: {
-          take: 5,
-          orderBy: { fechaHora: 'desc' },
-          include: {
-            medico: {
-              select: {
-                nombres: true,
-                apellidos: true,
-                especialidad: { select: { nombre: true } },
-              },
-            },
-          },
-        },
-        historialClinico: {
-          take: 10,
-          orderBy: { fecha: 'desc' },
-          select: {
-            id: true,
-            fecha: true,
-            analisis: true,
-            medico: { select: { nombres: true, apellidos: true } },
-            diagnosticos: {
-              select: { codigoCIE10: true, descripcion: true, tipo: true },
-            },
-          },
-        },
-        medicamentosActivos: {
-          where: { fin: null },
-          include: { paciente: false },
-        },
-      },
+      include: this.getPerfilInclude(),
     });
 
     if (!paciente) {
@@ -149,6 +118,71 @@ export class PacientesService {
     }
 
     return paciente;
+  }
+
+  async obtenerPerfilPorDni(dni: string) {
+    if (!dni) throw new BadRequestException('DNI no proporcionado');
+
+    const paciente = await this.prisma.paciente.findUnique({
+      where: { dni },
+      include: this.getPerfilInclude(),
+    });
+
+    if (!paciente) {
+      throw new NotFoundException(`No se encontró un registro de paciente para el DNI ${dni}`);
+    }
+
+    return paciente;
+  }
+
+  private getPerfilInclude() {
+    return {
+      alergias: true,
+      citas: {
+        take: 5,
+        orderBy: { fechaHora: 'desc' as const },
+        include: {
+          medico: {
+            select: {
+              nombres: true,
+              apellidos: true,
+              especialidad: { select: { nombre: true } },
+            },
+          },
+        },
+      },
+      historialClinico: {
+        take: 20,
+        orderBy: { fecha: 'desc' as const },
+        select: {
+          id: true,
+          fecha: true,
+          analisis: true,
+          medico: { 
+            select: { 
+              nombres: true, 
+              apellidos: true,
+              establecimiento: { select: { nombre: true } },
+            } 
+          },
+          diagnosticos: {
+            select: { codigoCIE10: true, descripcion: true, tipo: true },
+          },
+        },
+      },
+      medicamentosActivos: {
+        where: { fin: null },
+        include: { medicamento: true },
+      },
+      recetas: {
+        take: 10,
+        orderBy: { creadaEn: 'desc' as const },
+        include: {
+          establecimiento: { select: { nombre: true } },
+          detalles: { include: { medicamento: true } },
+        },
+      },
+    };
   }
 
   async actualizar(

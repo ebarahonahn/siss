@@ -148,6 +148,15 @@ async function main() {
         catalogos: ['leer'],
       },
     },
+    {
+      nombre: 'PACIENTE',
+      descripcion: 'Usuario con acceso a servicios personales de salud',
+      permisos: {
+        citas: ['leer', 'crear'],
+        pacientes: ['leer'],
+        notificaciones: ['leer'],
+      },
+    },
   ];
 
   for (const rol of roles) {

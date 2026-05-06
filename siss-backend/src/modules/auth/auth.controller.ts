@@ -32,7 +32,7 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
   logout(@CurrentUser() user: any) {
-    return this.authService.cerrarSesion(user.id);
+    return this.authService.cerrarSesion(user.sub, user.userType);
   }
 
   @Post('recuperar-contrasena')
@@ -48,6 +48,6 @@ export class AuthController {
     @CurrentUser() user: any,
     @Body('nuevaContrasena') nuevaContrasena: string,
   ) {
-    return this.authService.cambiarContrasena(user.id, nuevaContrasena);
+    return this.authService.cambiarContrasena(user.sub, nuevaContrasena, user.userType);
   }
 }

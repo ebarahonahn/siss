@@ -29,9 +29,15 @@ export class AppComponent {
       next: (config) => {
         if (config?.siglasSistema) {
           this.systemSiglas = config.siglasSistema;
-          // Actualizar título actual si ya cargó una ruta
-          const currentTitle = this.titleService.getTitle().split(' | ')[0];
-          this.titleService.setTitle(`${currentTitle} | ${this.systemSiglas}`);
+          // Actualizar título actual evitando duplicados
+          const fullTitle = this.titleService.getTitle();
+          const routeTitle = fullTitle.split(' | ')[0].trim();
+          
+          if (routeTitle === this.systemSiglas || !routeTitle) {
+            this.titleService.setTitle(this.systemSiglas);
+          } else {
+            this.titleService.setTitle(`${routeTitle} | ${this.systemSiglas}`);
+          }
         }
       }
     });
@@ -48,7 +54,14 @@ export class AppComponent {
         return route.snapshot.data['title'] || this.systemSiglas;
       })
     ).subscribe((title: string) => {
-      this.titleService.setTitle(`${title} | ${this.systemSiglas}`);
+      // Limpiar el título por si ya trae las siglas (evitar duplicados)
+      const cleanTitle = title.split(' | ')[0].trim();
+
+      if (cleanTitle === this.systemSiglas || !cleanTitle) {
+        this.titleService.setTitle(this.systemSiglas);
+      } else {
+        this.titleService.setTitle(`${cleanTitle} | ${this.systemSiglas}`);
+      }
     });
   }
 }

@@ -101,10 +101,10 @@ export class ReportePdfService {
       currentY += 5;
     }
 
-    // 5. Formulario de Especialidad (Dynamic Form)
+    // 6. Formulario de Especialidad (Dynamic Form)
     if (h.respuestaFormulario) {
       checkPageBreak(20);
-      this.renderSectionTitle(doc, `VI. ESPECIALIDAD: ${h.respuestaFormulario.plantilla.nombre.toUpperCase()}`, margin, currentY);
+      this.renderSectionTitle(doc, `VII. ESPECIALIDAD: ${h.respuestaFormulario.plantilla.nombre.toUpperCase()}`, margin, currentY);
       currentY += 10;
       doc.setFontSize(8); doc.setTextColor(15, 23, 42);
       for (const sec of h.respuestaFormulario.plantilla.secciones) {
@@ -138,22 +138,6 @@ export class ReportePdfService {
       }
     }
 
-    // 6. Diagnósticos
-    if (h.diagnosticos && h.diagnosticos.length > 0) {
-      checkPageBreak(20);
-      this.renderSectionTitle(doc, 'VII. DIAGNÓSTICOS (CIE-10)', margin, currentY);
-      currentY += 10;
-      doc.setFontSize(9); doc.setTextColor(15, 23, 42);
-      h.diagnosticos.forEach(d => {
-        checkPageBreak(8);
-        doc.setFont('helvetica', 'bold');
-        safeText(d.codigoCIE10, margin, currentY);
-        doc.setFont('helvetica', 'normal');
-        safeText(` - ${d.descripcion}`, margin + 15, currentY);
-        currentY += 7;
-      });
-      currentY += 5;
-    }
 
     // 7. Recetas (Tratamiento)
     if (h.recetas && h.recetas.length > 0) {
@@ -286,9 +270,18 @@ export class ReportePdfService {
           const medNombre = det.medicamento?.nombreGenerico || det.nombreMedicamento || 'MEDICAMENTO';
           doc.setFont('helvetica', 'bold'); doc.setFontSize(9);
           doc.text(String(medNombre).toUpperCase(), 5, y);
+          
           doc.setFontSize(7); doc.setFont('helvetica', 'normal');
-          doc.text(`${det.dosis || ''} - ${det.frecuencia || ''}`, 5, y + 4);
-          y += 10;
+          doc.text(`CANT: ${det.cantidad || '--'} | ${det.dosis || ''} - ${det.frecuencia || ''}`, 5, y + 4);
+          
+          if (det.indicaciones) {
+            doc.setFont('helvetica', 'italic'); doc.setFontSize(7);
+            const lines = doc.splitTextToSize(`Indicaciones: ${det.indicaciones}`, 70);
+            doc.text(lines, 5, y + 8);
+            y += (lines.length * 3.5) + 8;
+          } else {
+            y += 10;
+          }
         });
       });
       this.renderPosFooter(doc, h, y + 5);
@@ -302,12 +295,14 @@ export class ReportePdfService {
           doc.setFont('helvetica', 'bold'); doc.setFontSize(10);
           doc.text(String(det.medicamento?.nombreGenerico || 'MEDICAMENTO').toUpperCase(), margin, y);
           doc.setFont('helvetica', 'normal'); doc.setFontSize(9);
-          doc.text(`CANTIDAD: ${det.cantidad}  |  DOSIS: ${det.dosis}  |  FRECUENCIA: ${det.frecuencia}`, margin, y + 5);
+          doc.text(`CANTIDAD: ${det.cantidad || '--'}  |  DOSIS: ${det.dosis}  |  FRECUENCIA: ${det.frecuencia}`, margin, y + 5);
           if (det.indicaciones) {
-            doc.setFont('helvetica', 'italic'); doc.setFontSize(8);
-            doc.text(`INDICACIONES: ${det.indicaciones}`, margin, y + 10);
-            y += 18;
-          } else { y += 12; }
+            doc.setFont('helvetica', 'italic'); doc.setFontSize(8); doc.setTextColor(71, 85, 105);
+            const lines = doc.splitTextToSize(`INDICACIONES: ${det.indicaciones}`, 170);
+            doc.text(lines, margin, y + 10);
+            doc.setTextColor(0, 0, 0);
+            y += (lines.length * 5) + 12;
+          } else { y += 14; }
         });
       });
       this.renderSignature(doc, h, margin, pageWidth, 250);
@@ -459,7 +454,14 @@ export class ReportePdfService {
     const med = (h.medico as any) || {};
     doc.setFontSize(6); doc.setFont('helvetica', 'bold');
     doc.text('------------------------------------------', 40, y, { align: 'center' });
-    doc.text(`DR. ${med.nombres} ${med.apellidos}`.toUpperCase(), 40, y + 4, { align: 'center' });
+    
+    // Evitar duplicar "DR." si ya viene en el nombre
+    let nombreMedico = `${med.nombres} ${med.apellidos}`.toUpperCase();
+    if (!nombreMedico.startsWith('DR.') && !nombreMedico.startsWith('DRA.')) {
+      nombreMedico = `DR(A). ${nombreMedico}`;
+    }
+    
+    doc.text(nombreMedico, 40, y + 4, { align: 'center' });
     doc.text(`COL: ${med.numeroColegiado || '—'}`, 40, y + 7, { align: 'center' });
     doc.setFont('helvetica', 'italic');
     doc.text('GENERADO POR SISS CLÍNICO', 40, y + 12, { align: 'center' });
@@ -486,7 +488,13 @@ export class ReportePdfService {
     const sX = pageWidth / 2;
     doc.line(sX - 40, y, sX + 40, y);
     doc.setFontSize(10); doc.setFont('helvetica', 'bold');
-    doc.text(`DR. ${med.nombres || ''} ${med.apellidos || ''}`.toUpperCase(), sX, y + 7, { align: 'center' });
+    
+    let nombreMedico = `${med.nombres || ''} ${med.apellidos || ''}`.trim().toUpperCase();
+    if (!nombreMedico.startsWith('DR.') && !nombreMedico.startsWith('DRA.')) {
+      nombreMedico = `DR(A). ${nombreMedico}`;
+    }
+    
+    doc.text(nombreMedico, sX, y + 7, { align: 'center' });
   }
 
   async generarVacunacionPdfUrl(reg: any, pac: any): Promise<string> {

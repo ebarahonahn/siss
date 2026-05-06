@@ -32,6 +32,12 @@ export class InventarioController {
     return this.svc.listar(user.establecimientoId, busqueda);
   }
 
+  @Get('buscar-existencias')
+  @Permissions('inventario:leer')
+  buscarExistencias(@Query('q') busqueda: string) {
+    return this.svc.buscarExistenciasGlobal(busqueda);
+  }
+
   @Get('admin')
   @Permissions('inventario:gestionar')
   listarTodos(

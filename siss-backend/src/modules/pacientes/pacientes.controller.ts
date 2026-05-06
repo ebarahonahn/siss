@@ -44,6 +44,12 @@ export class PacientesController {
     return this.pacientesService.crear(dto, user.id, user.establecimientoId);
   }
 
+  @Get('mi-perfil')
+  @Permissions('pacientes:leer')
+  obtenerMiPerfil(@CurrentUser() user: any) {
+    return this.pacientesService.obtenerPerfilPorDni(user.dni);
+  }
+
   @Get('buscar')
   @Permissions('pacientes:leer')
   buscar(

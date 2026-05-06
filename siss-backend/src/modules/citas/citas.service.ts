@@ -23,6 +23,8 @@ export class CitasService {
     usuarioId: number,
     roles: string[],
   ) {
+    const startMsg = `[START-CREAR] Usuario: ${usuarioId}, Roles: ${JSON.stringify(roles)}, DTO: ${JSON.stringify(dto)}\n`;
+    require('fs').appendFileSync('citas_debug.log', startMsg);
     // 1. Un médico no puede agendar citas para otro médico
     if (roles.includes('MEDICO') && dto.medicoId !== usuarioId) {
       throw new ForbiddenException(
@@ -30,8 +32,63 @@ export class CitasService {
       );
     }
 
-    // Se confía en la configuración de fecha y zona horaria enviada por el cliente
     const fechaSolicitada = new Date(dto.fechaHora);
+    const ahora = DateUtils.getLiteralNow();
+
+    // Reglas específicas para PACIENTES (Autogestión móvil)
+    if (roles.includes('PACIENTE')) {
+      // 1. Solo pueden agendar para el día actual
+      const hoyString = ahora.toISOString().split('T')[0];
+      const solicitadaString = fechaSolicitada.toISOString().split('T')[0];
+      
+      if (hoyString !== solicitadaString) {
+        throw new ConflictException('Solo se pueden agendar citas para el día de hoy mediante la aplicación móvil.');
+      }
+
+      // 2. No se puede agendar para una hora que ya pasó (margen de 5 min)
+      if (fechaSolicitada.getTime() < ahora.getTime() - 300000) {
+        throw new ConflictException('No puede agendar una cita en un horario pasado.');
+      }
+
+      // 3. Validar límite diario de citas por médico (desde parámetros)
+      const paramCitas = await this.prisma.parametroSistema.findUnique({
+        where: { clave: 'MAX_CITAS_PACIENTE_DIA' },
+      });
+      const maxCitas = parseInt(paramCitas?.valor || '3');
+
+      const { inicio, fin } = DateUtils.getLocalDayRange(solicitadaString);
+
+      const citasHoy = await this.prisma.cita.findMany({
+        where: {
+          medicoId: dto.medicoId,
+          fechaHora: { gte: inicio, lte: fin },
+          estado: { notIn: [EstadoCita.CANCELADA] },
+        },
+      });
+
+      const countCitasHoy = citasHoy.length;
+
+      const debugMsg = `[${new Date().toISOString()}] Medico: ${dto.medicoId}, Hoy: ${solicitadaString}, CountTotal: ${countCitasHoy}, Max: ${maxCitas}\n`;
+      require('fs').appendFileSync('citas_debug.log', debugMsg);
+
+      if (countCitasHoy >= maxCitas) {
+        throw new ConflictException(`El médico ya ha alcanzado el límite de ${maxCitas} citas para hoy.`);
+      }
+
+      // 4. Un paciente solo puede tener UNA cita al día en el mismo centro médico
+      const citasPacienteHoy = await this.prisma.cita.count({
+        where: {
+          pacienteId: dto.pacienteId,
+          establecimientoId: establecimientoId,
+          fechaHora: { gte: inicio, lte: fin },
+          estado: { notIn: [EstadoCita.CANCELADA] },
+        },
+      });
+
+      if (citasPacienteHoy > 0) {
+        throw new ConflictException('Usted ya tiene una cita agendada para hoy en este centro médico. Solo se permite una cita por día por paciente.');
+      }
+    }
 
     // 1.5 Validar disponibilidad en la agenda del médico (específico para este establecimiento)
     const disponibilidad = await this.agendasService.verificarDisponibilidad(
@@ -79,7 +136,7 @@ export class CitasService {
         ...dto,
         fechaHora: fechaSolicitada,
         establecimientoId,
-        creadoPorId: usuarioId,
+        creadoPorId: roles.includes('PACIENTE') ? null : usuarioId,
       },
       include: {
         paciente: { select: { nombres: true, apellidos: true, dni: true } },
@@ -90,18 +147,52 @@ export class CitasService {
   }
 
   async listar(
-    establecimientoId: number,
+    establecimientoId: number | null,
     roles: string[],
     usuarioId: number,
     fecha?: string,
+    dni?: string,
   ) {
-    const where: any = {
-      establecimientoId,
-    };
+    const where: any = {};
+
+    if (establecimientoId) {
+      where.establecimientoId = establecimientoId;
+    }
 
     // Si es médico, solo ve sus citas en este establecimiento
     if (roles.includes('MEDICO')) {
       where.medicoId = usuarioId;
+    }
+
+    // Si es paciente, filtramos por su registro de paciente vinculado al DNI
+    if (roles.includes('PACIENTE')) {
+      if (!dni) return []; // Seguridad: Sin DNI no hay citas
+      
+      const paciente = await this.prisma.paciente.findUnique({
+        where: { dni },
+        select: { id: true }
+      });
+
+      if (!paciente) return []; // No tiene registro de paciente aún
+      
+      where.pacienteId = paciente.id;
+
+      // Si no se especifica fecha, filtramos para mostrar solo lo relevante (dashboard)
+      if (!fecha) {
+        // Excluimos explícitamente estados terminales negativos
+        where.estado = { notIn: [EstadoCita.CANCELADA, EstadoCita.NO_ASISTIO] };
+        
+        // Excluimos citas que ya pasaron (hace más de 1 hora) y siguen en estado PROGRAMADA/CONFIRMADA
+        // porque se consideran "perdidas" o "no atendidas a tiempo"
+        const haceUnaHora = DateUtils.getLiteralNow();
+        haceUnaHora.setHours(haceUnaHora.getHours() - 1);
+        
+        where.OR = [
+          { fechaHora: { gte: haceUnaHora } }, // Citas futuras o recientes
+          { estado: EstadoCita.ATENDIDA },     // O citas ya atendidas (historial reciente)
+          { estado: EstadoCita.EN_SALA }       // O pacientes esperando
+        ];
+      }
     }
 
     if (fecha) {
@@ -128,6 +219,7 @@ export class CitasService {
             nombres: true,
             apellidos: true,
             especialidadId: true,
+            especialidad: { select: { nombre: true } }
           },
         },
         establecimiento: { select: { nombre: true } },
@@ -184,7 +276,32 @@ export class CitasService {
     fecha: string,
     establecimientoId: number,
   ) {
+    if (!establecimientoId) {
+      throw new Error('El ID del establecimiento es obligatorio para buscar disponibilidad.');
+    }
+
     const { inicio, fin } = DateUtils.getLocalDayRange(fecha);
+
+    // 1. Obtener la jornada laboral para este día y médico
+    const partes = fecha.includes('-') ? fecha.split('-') : fecha.split('/');
+    const d = new Date(Date.UTC(parseInt(partes[0]), parseInt(partes[1]) - 1, parseInt(partes[2]), 12, 0, 0)); 
+    const diaSemana = d.getUTCDay();
+
+    const jornada = await this.prisma.agendaBase.findFirst({
+      where: { 
+        medicoId: Number(medicoId), 
+        establecimientoId: Number(establecimientoId), 
+        diaSemana, 
+        activo: true 
+      },
+      orderBy: { horaInicio: 'asc' },
+    });
+
+    if (!jornada) {
+      throw new ConflictException(
+        'El médico seleccionado no tiene una jornada laboral programada para este día en este establecimiento.',
+      );
+    }
 
     const ultimaCita = await this.prisma.cita.findFirst({
       where: {
@@ -201,34 +318,30 @@ export class CitasService {
     const minutosEntreConsultas = parseInt(parametro?.valor || '20');
 
     if (!ultimaCita) {
-      console.log(`[Diagnóstico Siguiente] RAW Fecha recibida: "${fecha}"`);
-      // Si no hay citas, sugerir el inicio de la jornada laboral del médico
-      // Manejar diferentes separadores y asegurar que tenemos números válidos
-      const partes = fecha.includes('-') ? fecha.split('-') : fecha.split('/');
-      const year = parseInt(partes[0]);
-      const month = parseInt(partes[1]);
-      const day = parseInt(partes[2]);
-      
-      const d = new Date(Date.UTC(year, month - 1, day, 12, 0, 0)); 
-      const diaSemana = d.getUTCDay();
-
-      console.log(`[Diagnóstico Siguiente] Procesado -> Año: ${year}, Mes: ${month}, Día: ${day}, JS_DíaSemana: ${diaSemana}`);
-
-      console.log(`[Diagnóstico Siguiente] Buscando jornada para Médico: ${medicoId}, Centro: ${establecimientoId}, Día: ${diaSemana}`);
-
-      const jornada = await this.prisma.agendaBase.findFirst({
-        where: { 
-          medicoId: Number(medicoId), 
-          establecimientoId: Number(establecimientoId), 
-          diaSemana, 
-          activo: true 
-        },
-        orderBy: { horaInicio: 'asc' },
-      });
 
       if (jornada) {
         const [h, m] = jornada.horaInicio.split(':');
-        const sugerencia = new Date(`${fecha}T${h}:${m}:00.000Z`);
+        const [hf, mf] = jornada.horaFin.split(':');
+        const inicioJornada = new Date(`${fecha}T${h}:${m}:00.000Z`);
+        const finJornada = new Date(`${fecha}T${hf}:${mf}:00.000Z`);
+        const ahoraLiteral = DateUtils.getLiteralNow();
+        
+        let sugerencia = inicioJornada;
+        if (ahoraLiteral > inicioJornada) {
+          sugerencia = ahoraLiteral;
+          const mins = sugerencia.getMinutes();
+          sugerencia.setMinutes(Math.ceil((mins + 1) / 10) * 10);
+          sugerencia.setSeconds(0);
+          sugerencia.setMilliseconds(0);
+        }
+
+        // VALIDACIÓN CRÍTICA: ¿La hora sugerida está fuera de la jornada?
+        if (sugerencia >= finJornada) {
+          throw new ConflictException(
+            `La jornada laboral del médico para hoy ya ha finalizado (terminó a las ${jornada.horaFin}).`,
+          );
+        }
+
         return { siguienteHoraISO: sugerencia.toISOString() };
       }
 
@@ -238,21 +351,27 @@ export class CitasService {
       );
     }
 
-    const siguienteHora = new Date(
+    let siguienteHora = new Date(
       ultimaCita.fechaHora.getTime() + minutosEntreConsultas * 60000,
     );
 
-    // Validar que la siguiente hora sugerida no se salga de la jornada
-    const disponibilidad = await this.agendasService.verificarDisponibilidad(
-      medicoId,
-      establecimientoId,
-      siguienteHora,
-    );
+    const ahoraLiteral = DateUtils.getLiteralNow();
+    if (ahoraLiteral > siguienteHora) {
+      siguienteHora = ahoraLiteral;
+      const mins = siguienteHora.getMinutes();
+      siguienteHora.setMinutes(Math.ceil((mins + 1) / 10) * 10);
+      siguienteHora.setSeconds(0);
+      siguienteHora.setMilliseconds(0);
+    }
 
-    if (!disponibilidad.disponible) {
-      // Si la siguiente hora calculada se sale de la jornada, buscar si hay otra jornada más tarde el mismo día
-      // o simplemente dejar de sugerir/sugerir el inicio de la siguiente jornada (esto es más complejo, 
-      // por ahora devolvemos la hora calculada pero el frontend/backend bloquearán el guardado)
+    // Validar que la siguiente hora sugerida no se salga de la jornada
+    const [hf, mf] = jornada.horaFin.split(':');
+    const finJornada = new Date(`${fecha}T${hf}:${mf}:00.000Z`);
+
+    if (siguienteHora >= finJornada) {
+      throw new ConflictException(
+        `Ya no hay espacios disponibles para hoy. La jornada del médico terminó a las ${jornada.horaFin}.`,
+      );
     }
 
     return {

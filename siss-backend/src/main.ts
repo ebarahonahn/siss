@@ -22,7 +22,7 @@ async function bootstrap() {
   app.useGlobalInterceptors(new TransformInterceptor());
 
   app.enableCors({
-    origin: process.env.FRONTEND_URL ?? 'http://localhost:4200',
+    origin: true,
     credentials: true,
   });
 
@@ -37,7 +37,8 @@ async function bootstrap() {
   SwaggerModule.setup('api-docs', app, document);
 
   const port = process.env.PORT ?? 3000;
-  await app.listen(port);
-  console.log(`SISS Backend corriendo en http://localhost:${port}/api/v1`);
+  await app.listen(port, '0.0.0.0');
+  console.log(`[SISS] Servidor iniciado y listo en puerto ${port}`);
+  console.log(`[SISS] Modo: ${process.env.NODE_ENV || 'development'}`);
 }
 bootstrap();

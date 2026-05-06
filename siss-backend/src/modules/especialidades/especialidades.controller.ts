@@ -5,6 +5,7 @@ import {
   Put,
   Body,
   Param,
+  Query,
   ParseIntPipe,
   UseGuards,
 } from '@nestjs/common';
@@ -23,9 +24,8 @@ export class EspecialidadesController {
   constructor(private service: EspecialidadesService) {}
 
   @Get()
-  @Permissions('especialidades:leer')
-  listar() {
-    return this.service.listar();
+  listar(@Query('establecimientoId') establecimientoId?: string) {
+    return this.service.listar(establecimientoId ? Number(establecimientoId) : undefined);
   }
 
   @Post()

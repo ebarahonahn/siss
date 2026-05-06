@@ -3130,6 +3130,7 @@ export class NuevaConsultaComponent implements OnInit {
       pacienteId:         Number(f.pacienteId),
       citaId:             f.citaId ? Number(f.citaId) : undefined,
       plantillaId:        cleanNum(f.plantillaId),
+      respuestaFormulario: this.respuestaDinamica,
       subjetivo:          f.subjetivo,
       objetivo:           f.objetivo,
       analisis:           f.analisis,

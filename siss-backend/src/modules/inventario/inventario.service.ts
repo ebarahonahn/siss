@@ -342,4 +342,78 @@ export class InventarioService {
       orderBy: { fecha: 'desc' },
     });
   }
+
+  async buscarExistenciasGlobal(busqueda: string) {
+    if (!busqueda || busqueda.length < 2) return [];
+
+    const items = await this.prisma.inventario.findMany({
+      where: {
+        ...NO_ELIMINADO,
+        activo: true,
+        medicamento: {
+          OR: [
+            { nombreGenerico: { contains: busqueda } },
+            { nombreComercial: { contains: busqueda } },
+            { codigo: { contains: busqueda } },
+          ],
+        },
+      },
+      select: {
+        cantidadActual: true,
+        establecimiento: {
+          select: {
+            id: true,
+            nombre: true,
+            departamento: { select: { nombre: true } },
+          },
+        },
+        medicamento: {
+          select: {
+            id: true,
+            codigo: true,
+            nombreGenerico: true,
+            nombreComercial: true,
+            presentacion: true,
+            concentracion: true,
+          },
+        },
+      },
+      orderBy: { establecimiento: { nombre: 'asc' } },
+    });
+
+    // Agrupar por medicamento y luego por establecimiento para evitar duplicados por lotes
+    const agrupado: any[] = [];
+
+    items.forEach((item) => {
+      let med = agrupado.find((m) => m.medicamentoId === item.medicamento.id);
+      if (!med) {
+        med = {
+          medicamentoId: item.medicamento.id,
+          codigo: item.medicamento.codigo,
+          nombre: item.medicamento.nombreGenerico,
+          comercial: item.medicamento.nombreComercial,
+          presentacion: item.medicamento.presentacion,
+          concentracion: item.medicamento.concentracion,
+          existencias: [],
+        };
+        agrupado.push(med);
+      }
+
+      let est = med.existencias.find(
+        (e: any) => e.id === item.establecimiento.id,
+      );
+      if (!est) {
+        est = {
+          id: item.establecimiento.id,
+          nombre: item.establecimiento.nombre,
+          departamento: item.establecimiento.departamento?.nombre,
+          cantidad: 0,
+        };
+        med.existencias.push(est);
+      }
+      est.cantidad += item.cantidadActual;
+    });
+
+    return agrupado;
+  }
 }

@@ -163,6 +163,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
             { label: 'Establecimientos',     ruta: '/mantenimiento/establecimientos',      roles: ['ADMIN']       },
             { label: 'Roles y Permisos',     ruta: '/mantenimiento/roles',         roles: ['ADMIN']       },
             { label: 'Personalización Login', ruta: '/mantenimiento/login',         roles: ['ADMIN']       },
+            { label: 'Solicitudes Móviles',  ruta: '/mantenimiento/solicitudes',   roles: ['ADMIN', 'ADMIN_ESTABLECIMIENTO'] },
           ],
         },
       ]

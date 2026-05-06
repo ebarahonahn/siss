@@ -234,27 +234,40 @@ export class UsuariosService {
     });
   }
 
-  async listarMedicosPorEstablecimiento(establecimientoId: number) {
-    console.log('Buscando médicos para establecimiento:', establecimientoId);
+  async listarMedicosPorEstablecimiento(establecimientoId: number, especialidadId?: number) {
+    console.log('Buscando médicos para establecimiento:', establecimientoId, 'especialidad:', especialidadId);
     if (!establecimientoId) return [];
 
-    const medicos = await this.prisma.usuario.findMany({
-      where: {
-        OR: [
-          { establecimientoId },
-          {
-            asignaciones: {
-              some: {
-                establecimientoId,
-                rol: { nombre: 'MEDICO' },
-                activo: true,
-              },
+    const where: any = {
+      OR: [
+        { establecimientoId },
+        {
+          asignaciones: {
+            some: {
+              establecimientoId,
+              rol: { nombre: 'MEDICO' },
+              activo: true,
             },
           },
-        ],
-        rol: { nombre: 'MEDICO' },
-        activo: true,
-      },
+        },
+      ],
+      rol: { nombre: 'MEDICO' },
+      activo: true,
+    };
+
+    if (especialidadId) {
+      where.AND = [
+        {
+          OR: [
+            { especialidadId },
+            { asignaciones: { some: { establecimientoId, especialidadId, activo: true } } }
+          ]
+        }
+      ];
+    }
+
+    const medicos = await this.prisma.usuario.findMany({
+      where,
       select: {
         id: true,
         nombres: true,

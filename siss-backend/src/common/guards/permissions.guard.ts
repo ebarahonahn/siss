@@ -18,9 +18,14 @@ export class PermissionsGuard implements CanActivate {
     );
 
     // Si no se requiere permiso específico, permitir acceso (o usar RolesGuard si existe)
-    if (!permisoRequerido) return true;
+    if (!permisoRequerido) {
+      console.log(`[PERMISSIONS] No se requiere permiso para: ${context.getHandler().name}`);
+      return true;
+    }
 
-    const { user } = context.switchToHttp().getRequest();
+    const request = context.switchToHttp().getRequest();
+    const { user } = request;
+    console.log(`[PERMISSIONS] Validando '${permisoRequerido}' para usuario: ${user?.correo} | Permisos: ${user?.permisos}`);
 
     if (!user || !user.permisos) {
       throw new ForbiddenException(

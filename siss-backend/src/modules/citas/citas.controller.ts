@@ -25,7 +25,8 @@ export class CitasController {
   @Permissions('citas:crear')
   crear(@Body() dto: CreateCitaDto, @CurrentUser() user: any) {
     const roles = user.rol ? [user.rol] : [];
-    return this.service.crear(dto, user.establecimientoId, user.id, roles);
+    const establecimientoId = (dto as any).establecimientoId || user.establecimientoId;
+    return this.service.crear(dto, establecimientoId, user.id, roles);
   }
 
   @Get()
@@ -33,7 +34,7 @@ export class CitasController {
   listar(@CurrentUser() user: any, @Query('fecha') fecha?: string) {
     // Pasamos el rol en un array para que el servicio pueda usar .includes()
     const roles = user.rol ? [user.rol] : [];
-    return this.service.listar(user.establecimientoId, roles, user.id, fecha);
+    return this.service.listar(user.establecimientoId, roles, user.id, fecha, user.dni);
   }
 
   @Patch(':id/cancelar')
@@ -53,12 +54,16 @@ export class CitasController {
   obtenerHorarioDisponible(
     @Query('medicoId', ParseIntPipe) medicoId: number,
     @Query('fecha') fecha: string,
-    @CurrentUser() user: any,
+    @Query('establecimientoId') establecimientoIdQuery?: any,
+    @CurrentUser() user?: any,
   ) {
+    const establecimientoId = (establecimientoIdQuery && establecimientoIdQuery !== 'undefined') 
+      ? Number(establecimientoIdQuery) 
+      : user.establecimientoId;
     return this.service.obtenerSiguienteHorarioDisponible(
       medicoId,
       fecha,
-      user.establecimientoId,
+      establecimientoId,
     );
   }
 }

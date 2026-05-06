@@ -22,7 +22,10 @@ export class AuthService {
   ) {}
 
   async login(dto: LoginDto) {
-    const usuario = await this.prisma.usuario.findFirst({
+    let userType: 'INSTITUCIONAL' | 'PACIENTE' = 'INSTITUCIONAL';
+    
+    // 1. Buscar en Usuarios Institucionales
+    let usuario: any = await this.prisma.usuario.findFirst({
       where: {
         OR: [
           { correo: dto.identificador },
@@ -44,35 +47,89 @@ export class AuthService {
       },
     });
 
+    // 2. Si no es institucional, buscar en Usuarios de Pacientes
     if (!usuario) {
+      usuario = await this.prisma.pacienteUsuario.findFirst({
+        where: {
+          OR: [
+            { correo: dto.identificador },
+            { dni: dto.identificador },
+          ],
+        },
+        include: { paciente: true }
+      });
+      if (usuario) userType = 'PACIENTE';
+    }
+
+    if (!usuario || !usuario.activo) {
       throw new UnauthorizedException('Credenciales incorrectas');
     }
 
-    const contrasenaValida = await bcrypt.compare(
-      dto.contrasena,
-      usuario.contrasenaHash,
-    );
+    const contrasenaHash = usuario.contrasenaHash;
+    const contrasenaValida = await bcrypt.compare(dto.contrasena, contrasenaHash);
 
     if (!contrasenaValida) {
-      await this.registrarIntentoFallido(usuario.id);
+      if (userType === 'INSTITUCIONAL') await this.registrarIntentoFallido(usuario.id);
       throw new UnauthorizedException('Credenciales incorrectas');
     }
 
-    // ── Lógica de Multi-Asignación ──────────────────────────────────────────
-    const asignaciones = usuario.asignaciones;
+    // ── Lógica para PACIENTES (Aislada) ──────────────────────────────────────
+    if (userType === 'PACIENTE') {
+      const payload = {
+        sub: usuario.id,
+        userType: 'PACIENTE',
+        correo: usuario.correo,
+        dni: usuario.dni,
+        pacienteId: usuario.pacienteId,
+        rol: 'PACIENTE',
+        permisos: ['citas:leer', 'citas:crear', 'pacientes:leer', 'notificaciones:leer', 'establecimientos:leer', 'especialidades:leer', 'inventario:leer'],
+      };
 
+      const accessToken = this.jwtService.sign(payload, { expiresIn: '1h' });
+      const refreshToken = this.jwtService.sign(payload, {
+        secret: this.config.get('JWT_REFRESH_SECRET'),
+        expiresIn: '7d',
+      });
+
+      await this.prisma.sesionPaciente.create({
+        data: {
+          pacienteUsuarioId: usuario.id,
+          refreshTokenHash: await bcrypt.hash(refreshToken, 10),
+          expiresAt: new Date(DateUtils.getLiteralNow().getTime() + 7 * 24 * 60 * 60 * 1000),
+          ip: dto.ip ?? null,
+          userAgent: dto.userAgent ?? null,
+        },
+      });
+
+      await this.prisma.pacienteUsuario.update({
+        where: { id: usuario.id },
+        data: { ultimoAcceso: DateUtils.getLiteralNow() }
+      });
+
+      return {
+        accessToken,
+        refreshToken,
+        requiereCambioContrasena: usuario.requiereCambioContrasena,
+        usuario: {
+          id: usuario.id,
+          nombres: usuario.paciente?.nombres || 'Usuario',
+          apellidos: usuario.paciente?.apellidos || 'Móvil',
+          correo: usuario.correo,
+          rol: 'PACIENTE',
+          pacienteId: usuario.pacienteId,
+        },
+      };
+    }
+
+    // ── Lógica de Multi-Asignación (Solo para INSTITUCIONAL) ──────────────────
+    const asignaciones = usuario.asignaciones;
     if (asignaciones.length === 0) {
-      throw new UnauthorizedException(
-        'El usuario no tiene asignaciones activas',
-      );
+      throw new UnauthorizedException('El usuario no tiene asignaciones activas');
     }
 
     let asignacionSeleccionada: any = null;
-
     if (dto.asignacionId) {
-      asignacionSeleccionada = asignaciones.find(
-        (a) => a.id == dto.asignacionId,
-      );
+      asignacionSeleccionada = asignaciones.find((a) => a.id == dto.asignacionId);
     } else if (asignaciones.length === 1) {
       asignacionSeleccionada = asignaciones[0];
     }
@@ -100,12 +157,12 @@ export class AuthService {
     }
 
     // ── Bloqueo por Agenda (Médicos con Permiso/Vacaciones) ──────────────────
-    const rolNombre = (asignacionSeleccionada.rol?.nombre || usuario.rol?.nombre || '').toUpperCase();
+    const rolNombre = (asignacionSeleccionada?.rol?.nombre || usuario.rol?.nombre || '').toUpperCase();
     const esMedico = rolNombre.includes('MEDICO');
 
     console.log(`[AUTH] Validando acceso para: ${usuario.correo} | Rol: ${rolNombre} | esMedico: ${esMedico}`);
 
-    if (esMedico) {
+    if (esMedico && asignacionSeleccionada) {
       const ahora = new Date();
       
       // Calculamos el desfase de Honduras (UTC-6) de forma dinámica
@@ -187,21 +244,22 @@ export class AuthService {
 
     const payload = {
       sub: usuario.id,
+      userType: 'INSTITUCIONAL',
       correo: usuario.correo,
-      rol: asignacionSeleccionada.rol?.nombre || usuario.rol?.nombre,
+      rol: asignacionSeleccionada?.rol?.nombre || usuario.rol?.nombre,
       permisos: this.mergePermisos(
-        asignacionSeleccionada.rol?.permisos,
-        asignacionSeleccionada.permisos,
+        asignacionSeleccionada?.rol?.permisos || usuario.rol?.permisos,
+        asignacionSeleccionada?.permisos,
       ),
-      establecimientoId: asignacionSeleccionada.establecimientoId,
-      servicioId: asignacionSeleccionada.servicioId,
-      asignacionId: asignacionSeleccionada.id,
+      establecimientoId: asignacionSeleccionada?.establecimientoId || null,
+      servicioId: asignacionSeleccionada?.servicioId || null,
+      asignacionId: asignacionSeleccionada?.id || null,
       especialidadId:
-        asignacionSeleccionada.especialidadId || usuario.especialidadId,
+        asignacionSeleccionada?.especialidadId || usuario.especialidadId,
     };
 
     const accessToken = this.jwtService.sign(payload, {
-      expiresIn: '1h', // Extendemos un poco el tiempo para desarrollo
+      expiresIn: '1h', 
     });
 
     const refreshToken = this.jwtService.sign(payload, {
@@ -233,16 +291,14 @@ export class AuthService {
         establecimientoId: payload.establecimientoId,
         servicioId: payload.servicioId,
         especialidadId: payload.especialidadId,
-        establecimientoNombre: asignacionSeleccionada.establecimiento.nombre,
-        servicioNombre:
-          asignacionSeleccionada.servicio?.catServicio?.nombre || 'General',
+        establecimientoNombre: asignacionSeleccionada?.establecimiento?.nombre || 'SISS Global',
+        servicioNombre: asignacionSeleccionada?.servicio?.catServicio?.nombre || 'General',
       },
     };
   }
 
   async renovarToken(refreshToken: string) {
     let payload: any;
-
     try {
       payload = this.jwtService.verify(refreshToken, {
         secret: this.config.get('JWT_REFRESH_SECRET'),
@@ -251,52 +307,54 @@ export class AuthService {
       throw new UnauthorizedException('Refresh token inválido o expirado');
     }
 
-    const sesiones = await this.prisma.sesion.findMany({
-      where: {
-        usuarioId: payload.sub,
-        expiresAt: { gt: DateUtils.getLiteralNow() },
-      },
-    });
-
+    const isPatient = payload.userType === 'PACIENTE';
     let sesionValida = false;
-    for (const sesion of sesiones) {
-      const coincide = await bcrypt.compare(
-        refreshToken,
-        sesion.refreshTokenHash,
-      );
-      if (coincide) {
-        sesionValida = true;
-        break;
+
+    if (isPatient) {
+      const sesiones = await this.prisma.sesionPaciente.findMany({
+        where: {
+          pacienteUsuarioId: payload.sub,
+          creadoEn: { gt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) },
+        },
+      });
+      for (const s of sesiones) {
+        if (await bcrypt.compare(refreshToken, s.refreshTokenHash)) {
+          sesionValida = true;
+          break;
+        }
+      }
+    } else {
+      const sesiones = await this.prisma.sesion.findMany({
+        where: {
+          usuarioId: payload.sub,
+          expiresAt: { gt: DateUtils.getLiteralNow() },
+        },
+      });
+      for (const s of sesiones) {
+        if (await bcrypt.compare(refreshToken, s.refreshTokenHash)) {
+          sesionValida = true;
+          break;
+        }
       }
     }
 
     if (!sesionValida) {
-      throw new UnauthorizedException(
-        'Sesión expirada. Inicie sesión nuevamente.',
-      );
+      throw new UnauthorizedException('Sesión expirada. Inicie sesión nuevamente.');
     }
 
-    const nuevoAccessToken = this.jwtService.sign(
-      {
-        sub: payload.sub,
-        correo: payload.correo,
-        rol: payload.rol,
-        permisos: payload.permisos,
-        establecimientoId: payload.establecimientoId,
-        servicioId: payload.servicioId,
-        asignacionId: payload.asignacionId,
-        especialidadId: payload.especialidadId,
-      },
-      { expiresIn: '1h' },
-    );
+    // Generar nuevo access token manteniendo el payload original (excepto iat/exp)
+    const { iat, exp, ...newPayload } = payload;
+    const nuevoAccessToken = this.jwtService.sign(newPayload, { expiresIn: '1h' });
 
     return { accessToken: nuevoAccessToken };
   }
 
-  async cerrarSesion(usuarioId: number) {
-    await this.prisma.sesion.deleteMany({
-      where: { usuarioId },
-    });
+  async cerrarSesion(userId: number, userType: string) {
+    if (userType === 'PACIENTE') {
+      await this.prisma.sesionPaciente.deleteMany({ where: { pacienteUsuarioId: userId } });
+    } else {
+      await this.prisma.sesion.deleteMany({ where: { usuarioId: userId } });
+    }
     return { mensaje: 'Sesión cerrada correctamente' };
   }
 
@@ -314,13 +372,7 @@ export class AuthService {
 
   private mergePermisos(rolPermisos: any, asignacionPermisos: any): string[] {
     let p1: string[] = [];
-
-    // Si rolPermisos es un objeto (formato antiguo: { modulo: [acciones] })
-    if (
-      rolPermisos &&
-      typeof rolPermisos === 'object' &&
-      !Array.isArray(rolPermisos)
-    ) {
+    if (rolPermisos && typeof rolPermisos === 'object' && !Array.isArray(rolPermisos)) {
       if (rolPermisos['all']) p1.push('all');
       for (const modulo in rolPermisos) {
         if (Array.isArray(rolPermisos[modulo])) {
@@ -332,81 +384,82 @@ export class AuthService {
     } else if (Array.isArray(rolPermisos)) {
       p1 = rolPermisos;
     }
-
     const p2 = Array.isArray(asignacionPermisos) ? asignacionPermisos : [];
-
-    // Unir y eliminar duplicados
     return [...new Set([...p1, ...p2])];
   }
 
   async solicitarRecuperacion(identificador: string) {
-    const usuario = await this.prisma.usuario.findFirst({
-      where: {
-        OR: [
-          { correo: identificador },
-          { numeroEmpleado: identificador },
-        ],
-        activo: true,
-      },
+    // 1. Buscar en Usuarios Institucionales
+    let usuario: any = await this.prisma.usuario.findFirst({
+      where: { OR: [{ correo: identificador }, { numeroEmpleado: identificador }], activo: true },
     });
+
+    let userType: 'INSTITUCIONAL' | 'PACIENTE' = 'INSTITUCIONAL';
+
+    // 2. Si no, buscar en Pacientes
+    if (!usuario) {
+      usuario = await this.prisma.pacienteUsuario.findFirst({
+        where: { correo: identificador, activo: true },
+        include: { paciente: true }
+      });
+      if (usuario) userType = 'PACIENTE';
+    }
 
     if (!usuario) {
-      // Por seguridad, no revelamos si el usuario existe o no, 
-      // pero el requerimiento dice que enviemos el correo si existe.
-      // Si no existe, simplemente retornamos un mensaje genérico.
-      return { mensaje: 'Si el usuario existe en nuestro sistema, recibirá un correo con instrucciones.' };
+      return { mensaje: 'Si el usuario existe, recibirá un correo con instrucciones.' };
     }
 
-    if (!usuario.correo) {
-      throw new BadRequestException('El usuario no tiene un correo electrónico asociado.');
+    const claveTemporal = crypto.randomBytes(4).toString('hex');
+    const hash = await bcrypt.hash(claveTemporal, 10);
+
+    if (userType === 'INSTITUCIONAL') {
+      await this.prisma.usuario.update({
+        where: { id: usuario.id },
+        data: { contrasenaHash: hash, requiereCambioContrasena: true },
+      });
+    } else {
+      await this.prisma.pacienteUsuario.update({
+        where: { id: usuario.id },
+        data: { contrasenaHash: hash, requiereCambioContrasena: true },
+      });
     }
 
-    // Generar clave temporal
-    const claveTemporal = crypto.randomBytes(4).toString('hex'); // 8 caracteres
-    const contrasenaHash = await bcrypt.hash(claveTemporal, 10);
+    const nombre = userType === 'INSTITUCIONAL' ? usuario.nombres : (usuario.paciente?.nombres || 'Usuario');
+    await this.enviarCorreoRecuperacion(usuario.correo, nombre, claveTemporal);
 
-    // Actualizar usuario
-    await this.prisma.usuario.update({
-      where: { id: usuario.id },
-      data: { 
-        contrasenaHash,
-        requiereCambioContrasena: true,
-      },
-    });
+    return { mensaje: 'Si el usuario existe, recibirá un correo con instrucciones.' };
+  }
 
-    // Enviar correo
+  private async enviarCorreoRecuperacion(correo: string, nombre: string, clave: string) {
     const subject = 'Recuperación de Contraseña - SISS';
-    const text = `Hola ${usuario.nombres},\n\nSe ha solicitado la recuperación de tu contraseña. Tu nueva clave temporal es: ${claveTemporal}\n\nPor favor, inicia sesión y cámbiala lo antes posible.\n\nSaludos,\nEquipo SISS`;
     const html = `
       <div style="font-family: sans-serif; max-width: 600px; margin: auto; border: 1px solid #e2e8f0; border-radius: 12px; padding: 24px;">
         <h2 style="color: #2563eb;">Recuperación de Contraseña</h2>
-        <p>Hola <strong>${usuario.nombres}</strong>,</p>
-        <p>Se ha solicitado la recuperación de tu contraseña en el Sistema Integral de Servicios de Salud (SISS).</p>
+        <p>Hola <strong>${nombre}</strong>,</p>
+        <p>Se ha solicitado la recuperación de tu contraseña en el SISS.</p>
         <div style="background-color: #f8fafc; padding: 16px; border-radius: 8px; text-align: center; margin: 24px 0;">
-          <p style="margin: 0; font-size: 14px; color: #64748b;">Tu nueva clave temporal es:</p>
-          <p style="margin: 8px 0 0 0; font-size: 24px; font-weight: bold; color: #1e293b; letter-spacing: 2px;">${claveTemporal}</p>
+          <p style="margin: 0; font-size: 14px; color: #64748b;">Tu clave temporal es:</p>
+          <p style="margin: 8px 0 0 0; font-size: 24px; font-weight: bold; color: #1e293b; letter-spacing: 2px;">${clave}</p>
         </div>
-        <p>Por favor, utiliza esta clave para iniciar sesión y cámbiala inmediatamente desde tu perfil por motivos de seguridad.</p>
-        <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 24px 0;">
-        <p style="font-size: 12px; color: #94a3b8; text-align: center;">Este es un mensaje automático, por favor no respondas a este correo.</p>
+        <p>Por favor, cámbiala inmediatamente al iniciar sesión.</p>
       </div>
     `;
-
-    await this.mailService.sendMail(usuario.correo, subject, text, html);
-
-    return { mensaje: 'Si el usuario existe en nuestro sistema, recibirá un correo con instrucciones.' };
+    await this.mailService.sendMail(correo, subject, 'Clave temporal: ' + clave, html);
   }
-  async cambiarContrasena(usuarioId: number, nuevaContrasena: string) {
-    const contrasenaHash = await bcrypt.hash(nuevaContrasena, 10);
 
-    await this.prisma.usuario.update({
-      where: { id: usuarioId },
-      data: {
-        contrasenaHash,
-        requiereCambioContrasena: false,
-      },
-    });
-
+  async cambiarContrasena(userId: number, nuevaContrasena: string, userType: string) {
+    const hash = await bcrypt.hash(nuevaContrasena, 10);
+    if (userType === 'PACIENTE') {
+      await this.prisma.pacienteUsuario.update({
+        where: { id: userId },
+        data: { contrasenaHash: hash, requiereCambioContrasena: false },
+      });
+    } else {
+      await this.prisma.usuario.update({
+        where: { id: userId },
+        data: { contrasenaHash: hash, requiereCambioContrasena: false },
+      });
+    }
     return { mensaje: 'Contraseña actualizada correctamente.' };
   }
 }

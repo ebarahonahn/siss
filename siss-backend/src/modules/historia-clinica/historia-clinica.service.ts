@@ -21,6 +21,7 @@ export class HistoriaClinicaService {
       incapacidades,
       referencias,
       notificacionEpidemiologica,
+      respuestaFormulario,
       ...datos
     } = dto;
 
@@ -162,6 +163,18 @@ export class HistoriaClinicaService {
               urgente: ref.urgente || false,
               estado: 'EMITIDO',
             })),
+          });
+        }
+
+        // Si hay respuesta de formulario dinámico, crearla
+        if (respuestaFormulario && datos.plantillaId) {
+          await tx.respuestaFormulario.create({
+            data: {
+              historiaId: historia.id,
+              plantillaId: datos.plantillaId,
+              respuestas: respuestaFormulario,
+              completado: true,
+            },
           });
         }
 
