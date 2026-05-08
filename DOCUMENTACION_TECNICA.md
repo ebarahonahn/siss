@@ -12,8 +12,10 @@ El SISS sigue una arquitectura de tres capas moderna:
 ### Diagrama de Comunicación
 ```mermaid
 graph LR
-    User((Usuario)) --> Frontend[Angular Frontend]
+    User((Usuario Institucional)) --> Frontend[Angular Frontend]
+    Ciudadano((Paciente)) --> Mobile[Flutter App]
     Frontend -- REST API (JWT) --> Backend[NestJS Backend]
+    Mobile -- REST API (JWT) --> Backend
     Backend -- Prisma ORM --> DB[(MySQL DB)]
     Backend -- Sockets --> Frontend
 ```
@@ -60,9 +62,10 @@ Se ha generado un reporte técnico completo utilizando **Compodoc**.
 ## 4. Seguridad y Autenticación
 
 El sistema implementa un modelo de seguridad robusto:
-1.  **Autenticación**: Basada en **JWT (JSON Web Tokens)** con Refresh Tokens para persistencia de sesión.
+1.  **Autenticación**: Basada en **JWT (JSON Web Tokens)** con Refresh Tokens. Sistema dual de autenticación para Usuarios Institucionales y Pacientes (Tablas Aisladas).
 2.  **Autorización (RBAC)**: Control de acceso basado en roles y permisos granulares por establecimiento y servicio.
-3.  **Auditoría**: Cada acción crítica es registrada en la tabla `AuditLog`, vinculando al usuario, la acción y los datos afectados.
+3.  **Aislamiento de Datos**: Separación estricta entre perfiles administrativos y perfiles ciudadanos para proteger la privacidad del paciente.
+4.  **Auditoría**: Cada acción crítica es registrada en la tabla `AuditLog`, vinculando al usuario, la acción y los datos afectados.
 
 ---
 
@@ -110,6 +113,11 @@ Módulo encargado de la coordinación de recursos humanos y espacios físicos:
 *   **Validación de Cruce de Establecimientos**: El sistema impide programar citas en horarios donde el médico ya tiene asignada una jornada en otro establecimiento del sistema integral.
 *   **Persistencia Temporal**: Utiliza comparaciones de cadenas para horas (`HH:mm`) y fechas UTC para garantizar que las zonas horarias no afecten la programación de citas.
 
+### D. Personalización y Gestión de Medios (Carrusel)
+El sistema permite la administración dinámica de la interfaz de bienvenida:
+*   **Gestión de Activos**: Los administradores pueden subir, activar y desactivar imágenes y avisos institucionales desde el módulo de configuración.
+*   **Visibilidad Segmentada**: Los medios pueden configurarse para aparecer en diferentes momentos del ciclo de vida de la sesión del usuario.
+
 ---
 
-*Documentación generada automáticamente el 29 de abril de 2026.*
+*Documentación actualizada el 7 de mayo de 2026.*

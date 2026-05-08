@@ -197,8 +197,8 @@
             <h1>SISS Overview</h1>
             <div class="subtitle">Sistema Integral de Servicios de Salud</div>
             <div style="margin-top: 1.5rem;">
-                <span class="badge">Versión 1.0</span>
-                <span class="badge">Actualizado: 25 Abril, 2026</span>
+                <span class="badge">Versión 1.1</span>
+                <span class="badge">Actualizado: 7 Mayo, 2026</span>
                 <span class="badge">Honduras (UTC-6)</span>
             </div>
         </header>
@@ -212,9 +212,10 @@
             <h2>2. Arquitectura Tecnológica</h2>
             <ul>
                 <li><strong>Frontend</strong>: Angular con una interfaz de alta densidad de información, optimizada para entornos clínicos.</li>
+                <li><strong>Mobile</strong>: Flutter (Android/iOS) para el acceso ciudadano y servicios preventivos.</li>
                 <li><strong>Backend</strong>: NestJS (Node.js) con arquitectura modular.</li>
-                <li><strong>Base de Datos</strong>: MySQL gestionado a través de <strong>Prisma ORM</strong>.</li>
-                <li><strong>Reportes</strong>: Motor de generación de PDF integrado para recetas, carnets de vacunación y referencias.</li>
+                <li><strong>Base de Datos</strong>: MySQL gestionado a través de <strong>Prisma ORM</strong>, con aislamiento de cuentas de pacientes.</li>
+                <li><strong>Reportes</strong>: Motor avanzado de PDF para recetas clínicas, carnets y reportes epidemiológicos.</li>
                 <li><strong>Estandarización</strong>: Uso estricto de la zona horaria de Honduras (UTC-6) y catálogos internacionales como <strong>CIE-10</strong>.</li>
             </ul>
         </div>
@@ -234,6 +235,7 @@
             <p><strong>Expediente Médico Electrónico</strong>: El núcleo de la atención médica con enfoque en la calidad del dato y la estandarización clínica.</p>
             <ul>
                 <li><strong>Metodología SOAP</strong>: Estructuración de notas médicas (Subjetivo, Objetivo, Análisis, Plan).</li>
+                <li><strong>Formularios Dinámicos</strong>: Captura de datos estructurados adaptable según la especialidad médica.</li>
                 <li><strong>Diagnósticos CIE-10</strong>: Buscador integrado con codificación internacional.</li>
             </ul>
 
@@ -283,13 +285,34 @@
                 <li><strong>Laboratorio</strong>: Solicitudes con valores de referencia y alertas anormales.</li>
                 <li><strong>Radiología</strong>: Rayos X, Tomografía, Ecografía y Resonancia con hallazgos vinculados al PACS.</li>
             </ul>
+
+            <h3>G. SISS Mobile (App Ciudadana)</h3>
+            <p>Extensión del sistema para empoderar al paciente y facilitar el acceso a servicios de salud desde dispositivos móviles.</p>
+            <ul>
+                <li><strong>Autogestión de Citas</strong>: Programación y seguimiento de citas médicas en tiempo real.</li>
+                <li><strong>Historial de Recetas</strong>: Consulta digital de recetas emitidas y sus instrucciones de administración.</li>
+                <li><strong>Buscador de Stock Nacional</strong>: Consulta de disponibilidad de medicamentos en todos los establecimientos de la red.</li>
+                <li><strong>Notificaciones</strong>: Recordatorios de citas y alertas preventivas de salud.</li>
+            </ul>
+
+            <h3>H. Administración y Personalización</h3>
+            <ul>
+                <li><strong>Carrusel de Medios</strong>: Gestión dinámica de imágenes y videos informativos en la pantalla de inicio.</li>
+                <li><strong>Matriz de Permisos (RBAC)</strong>: Control granular de accesos diferenciando roles institucionales y perfiles de pacientes.</li>
+                <li><strong>Parámetros Institucionales</strong>: Configuración global de la identidad y reglas operativas del sistema.</li>
+            </ul>
         </div>
 
         <div class="doc-section">
             <h2>4. Flujo Operativo Integral</h2>
             <div class="mermaid">
                 graph TD
+                    subgraph Ciudadano
+                    M1["App Móvil: Cita/Stock"]
+                    end
+                    
                     A[Paciente llega] --> B[Recepción/Agenda]
+                    M1 -.-> B
                     B --> C[Triaje: Signos Vitales]
                     C --> D[Consulta Médica: SOAP]
                     D --> E{Acciones Clínicas}
@@ -305,6 +328,7 @@
                     I --> L
                     K --> L
                     L --> M[Impresión de Reportes PDF]
+                    M -.-> M2["Disponible en App Móvil"]
             </div>
         </div>
 

@@ -264,12 +264,118 @@
             box-shadow: 0 0 10px #00ff88;
         }
 
+        /* Modal Zoom Styles */
+        .mermaid-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(11, 14, 20, 0.98);
+            backdrop-filter: blur(20px);
+            z-index: 2000;
+            display: none;
+            flex-direction: column;
+            cursor: default;
+        }
+
+        .mermaid-modal.active {
+            display: flex;
+        }
+
+        #modalContent {
+            flex: 1;
+            width: 100%;
+            height: 100%;
+            overflow: auto; /* Permite scroll */
+            display: block; /* Cambiado de flex para mejor comportamiento de scroll */
+            padding: 6rem 4rem;
+            scroll-behavior: smooth;
+        }
+
+        /* Estilo para las barras de scroll */
+        #modalContent::-webkit-scrollbar {
+            width: 12px;
+            height: 12px;
+        }
+        #modalContent::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+        #modalContent::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+            border: 3px solid var(--bg);
+        }
+
+        .mermaid-modal svg {
+            display: block;
+            margin: 0 auto;
+            width: auto !important;
+            height: auto !important;
+            min-width: 1000px; /* Ajustado ligeramente */
+            max-width: 95%; /* Evita que se pegue a los bordes si no es tan grande */
+            filter: drop-shadow(0 0 30px rgba(0, 210, 255, 0.2));
+            background: rgba(255,255,255,0.03);
+            padding: 3rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .close-modal {
+            position: fixed; /* Fixed para que no se mueva al scrolear */
+            top: 2rem;
+            right: 2rem;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            z-index: 2100;
+        }
+
+        .close-modal:hover {
+            background: var(--accent);
+            transform: rotate(90deg);
+        }
+
+        .mermaid-zoom-hint {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 0.7rem;
+            color: var(--primary);
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .mermaid-container {
+            position: relative;
+            cursor: zoom-in;
+            transition: transform 0.3s ease;
+        }
+
+        .mermaid-container:hover {
+            transform: scale(1.02);
+        }
+
     </style>
 </head>
 <body>
 
     <div class="progress-bar" id="progress"></div>
-    <div class="slide-number" id="slideNum">SLIDE 1 / 8</div>
+    <div class="slide-number" id="slideNum">SLIDE 1 / 10</div>
+    
+    <div class="mermaid-modal" id="mermaidModal" onclick="closeZoom()">
+        <div class="close-modal">&times;</div>
+        <div id="modalContent" onclick="event.stopPropagation()"></div>
+    </div>
 
     <div class="presentation-container">
         <!-- Slide 1: Welcome -->
@@ -278,7 +384,7 @@
             <h2>Sistema Integral de Servicios de Salud</h2>
             <p>Estandarización, Eficiencia y Trazabilidad en la Gestión Hospitalaria y Salud Pública.</p>
             <div style="margin-top: 3rem;">
-                <span class="tech-badge">v1.0.0</span>
+                <span class="tech-badge">v1.1.0</span>
                 <span class="tech-badge">Honduras (UTC-6)</span>
             </div>
         </div>
@@ -292,8 +398,8 @@
                     <h3>Frontend</h3>
                     <ul>
                         <li>Angular de alta densidad</li>
+                        <li><strong>Flutter (SISS Mobile)</strong></li>
                         <li>Diseño UI/UX Premium</li>
-                        <li>Interacción Reactiva</li>
                     </ul>
                 </div>
                 <div class="card">
@@ -309,7 +415,7 @@
                     <ul>
                         <li>MySQL + Prisma ORM</li>
                         <li>Reportes PDF Institucionales</li>
-                        <li>Estandarización CIE-10</li>
+                        <li><strong>Aislamiento de Cuentas</strong></li>
                     </ul>
                 </div>
             </div>
@@ -321,11 +427,14 @@
             <div class="content-grid" style="align-items: center;">
                 <div class="card">
                     <h3>Flujo de Atención</h3>
-                    <div class="mermaid" style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 10px;">
-                        graph TD
-                            A[Paciente llega] --> B[Recepción/Agenda]
-                            B --> C[Triaje: Signos Vitales]
-                            C --> D[Consulta Médica]
+                    <div class="mermaid-container" onclick="openZoom(this)">
+                        <div class="mermaid" style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 10px;">
+                            graph TD
+                                A[Paciente llega] --> B[Recepción/Agenda]
+                                B --> C[Triaje: Signos Vitales]
+                                C --> D[Consulta Médica]
+                        </div>
+                        <div class="mermaid-zoom-hint">Click para ampliar</div>
                     </div>
                 </div>
                 <div class="card">
@@ -354,11 +463,20 @@
                     </ul>
                 </div>
                 <div class="card">
+                    <h3>¿Por qué SOAP?</h3>
+                    <ul>
+                        <li><strong>Estandarización</strong>: Comunicación clara entre el equipo de salud.</li>
+                        <li><strong>Orden Clínico</strong>: Separa síntomas (S) de hallazgos médicos (O).</li>
+                        <li><strong>Toma de Decisiones</strong>: Estructura el razonamiento diagnóstico (A).</li>
+                        <li><strong>Trazabilidad</strong>: Plan de acción (P) medible y auditable.</li>
+                    </ul>
+                </div>
+                <div class="card">
                     <h3>Diagnósticos Inteligentes</h3>
                     <ul>
                         <li>Buscador CIE-10 Integrado</li>
-                        <li>Alertas Epidemiológicas</li>
-                        <li>Validación de Comorbilidades</li>
+                        <li><strong>Formularios Dinámicos</strong></li>
+                        <li>Gestión de Adjuntos Clínicos</li>
                     </ul>
                 </div>
             </div>
@@ -370,18 +488,21 @@
             <div class="content-grid" style="align-items: center;">
                 <div class="card">
                     <h3>Trazabilidad de Suministros</h3>
-                    <div class="mermaid" style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 10px;">
-                        graph TD
-                            A[Médico Prescribe] --> B[Receta PENDIENTE]
-                            B --> C[Paciente va a Farmacia]
-                            C --> D{¿Hay Stock?}
-                            D -- Sí --> E[Dispensación Completa]
-                            D -- No --> F{¿Stock Parcial?}
-                            F -- Sí --> G[Dispensación Parcial]
-                            F -- No --> H[Registro Demanda Insatisfecha]
-                            E --> I[Descargo por Lote]
-                            G --> I
-                            I --> J[Receta Cerrada]
+                    <div class="mermaid-container" onclick="openZoom(this)">
+                        <div class="mermaid" style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 10px;">
+                            graph TD
+                                A[Médico Prescribe] --> B[Receta PENDIENTE]
+                                B --> C[Paciente va a Farmacia]
+                                C --> D{¿Hay Stock?}
+                                D -- Sí --> E[Dispensación Completa]
+                                D -- No --> F{¿Stock Parcial?}
+                                F -- Sí --> G[Dispensación Parcial]
+                                F -- No --> H[Registro Demanda Insatisfecha]
+                                E --> I[Descargo por Lote]
+                                G --> I
+                                I --> J[Receta Cerrada]
+                        </div>
+                        <div class="mermaid-zoom-hint">Click para ampliar</div>
                     </div>
                 </div>
                 <div class="card">
@@ -435,7 +556,31 @@
                     <ul>
                         <li>Esquemas Nacionales</li>
                         <li>Carnet Digital Histórico</li>
-                        <li>Control de Cadena de Frío</li>
+                        <li>Cadena de Frío</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: SISS Mobile -->
+        <div class="slide">
+            <h2>SISS Mobile</h2>
+            <p>Empoderando al ciudadano a través de la tecnología móvil.</p>
+            <div class="content-grid">
+                <div class="card">
+                    <h3>Servicios al Paciente</h3>
+                    <ul>
+                        <li>Autogestión de Citas Médicas</li>
+                        <li>Buscador Nacional de Stock</li>
+                        <li>Historial de Recetas Digitales</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Gestión y Medios</h3>
+                    <ul>
+                        <li>Notificaciones Preventivas</li>
+                        <li>Carrusel de Medios Dinámico</li>
+                        <li>Seguridad Biométrica/PIN</li>
                     </ul>
                 </div>
             </div>
@@ -445,24 +590,33 @@
         <div class="slide">
             <h2>Flujo de Atención Integral</h2>
             <div class="card" style="width: 100%; max-width: 1100px;">
-                <div class="mermaid" style="background: rgba(0,0,0,0.1); padding: 1.5rem; border-radius: 10px;">
-                    graph TD
-                        A[Paciente llega] --> B[Recepción/Agenda]
-                        B --> C[Triaje: Signos Vitales]
-                        C --> D[Consulta Médica: SOAP]
-                        D --> E{Acciones Clínicas}
-                        E --> F[Diagnósticos CIE-10]
-                        E --> G[Recetas/Lab/Rayos X]
-                        E --> H[Referencia Externa]
-                        E --> I[Agendar Próxima Cita]
-                        F --> J{¿Es Epidemiólogico?}
-                        J -- Sí --> K[Alerta y Ficha Epidem.]
-                        J -- No --> L[Finalizar]
-                        G --> L
-                        H --> L
-                        I --> L
-                        K --> L
-                        L --> M[Impresión de Reportes PDF]
+                <div class="mermaid-container" onclick="openZoom(this)">
+                    <div class="mermaid" style="background: rgba(0,0,0,0.1); padding: 1.5rem; border-radius: 10px;">
+                        graph TD
+                            subgraph Ciudadano
+                            M1["App Móvil: Cita/Stock"]
+                            end
+                            
+                            A[Paciente llega] --> B[Recepción/Agenda]
+                            M1 -.-> B
+                            B --> C[Triaje: Signos Vitales]
+                            C --> D[Consulta Médica: SOAP]
+                            D --> E{Acciones Clínicas}
+                            E --> F[Diagnósticos CIE-10]
+                            E --> G[Recetas/Lab/Rayos X]
+                            E --> H[Referencia Externa]
+                            E --> I[Agendar Próxima Cita]
+                            F --> J{¿Es Epidemiólogico?}
+                            J -- Sí --> K[Alerta y Ficha Epidem.]
+                            J -- No --> L[Finalizar]
+                            G --> L
+                            H --> L
+                            I --> L
+                            K --> L
+                            L --> M[Impresión de Reportes PDF]
+                            M -.-> M2["Disponible en App Móvil"]
+                    </div>
+                    <div class="mermaid-zoom-hint">Click para ampliar</div>
                 </div>
             </div>
         </div>
@@ -521,7 +675,24 @@
         document.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
             if (e.key === 'ArrowLeft') prevSlide();
+            if (e.key === 'Escape') closeZoom();
         });
+
+        function openZoom(container) {
+            const modal = document.getElementById('mermaidModal');
+            const modalContent = document.getElementById('modalContent');
+            const svg = container.querySelector('svg');
+            
+            if (svg) {
+                modalContent.innerHTML = svg.outerHTML;
+                modal.classList.add('active');
+            }
+        }
+
+        function closeZoom() {
+            const modal = document.getElementById('mermaidModal');
+            modal.classList.remove('active');
+        }
     </script>
 </body>
 </html>

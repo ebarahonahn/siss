@@ -5,10 +5,11 @@ El **SISS** es una plataforma integral de gestión hospitalaria y salud pública
 
 ## 2. Architecura Tecnológica
 *   **Frontend**: Angular con una interfaz de alta densidad de información, optimizada para entornos clínicos.
+*   **Mobile**: Flutter (Android/iOS) para la autogestión ciudadana y consulta de servicios.
 *   **Backend**: NestJS (Node.js) con arquitectura modular.
-*   **Base de Datos**: MySQL gestionado a través de **Prisma ORM**, con una estructura altamente documentada y normalizada.
+*   **Base de Datos**: MySQL gestionado a través de <strong>Prisma ORM</strong>, con aislamiento de cuentas para pacientes.
 *   **Reportes**: Motor de generación de PDF integrado para recetas, carnets de vacunación y referencias.
-*   **Estandarización**: Uso estricto de la zona horaria de Honduras (UTC-6) y catálogos internacionales como **CIE-10**.
+*   **Estandarización**: Uso estricto de la zona horaria de Honduras (UTC-6) y catálogos internacionales como <strong>CIE-10</strong>.
 
 ---
 
@@ -22,6 +23,7 @@ El módulo de agendas es el motor operativo del sistema, permitiendo una planifi
 
 ### B. Historia Clínica Digital (EMR)
 *   **Metodología SOAP**: Estructuración de notas médicas (Subjetivo, Objetivo, Análisis, Plan).
+*   **Formularios Dinámicos**: Capacidad de extender la captura de datos clínicos según la especialidad sin cambios en el código.
 *   **Diagnósticos CIE-10**: Buscador integrado con codificación internacional.
 *   **Prescripción Integrada**: Generación automática de recetas, órdenes de laboratorio y radiología desde el encuentro médico.
 
@@ -59,6 +61,13 @@ Integra la detección clínica con la respuesta de salud pública de manera auto
 *   **Geolocalización (GIS)**: Captura de coordenadas exactas (Latitud/Longitud) del domicilio para el mapeo de brotes y mapas de calor.
 *   **Gestión de Investigación**: Flujo de estados para el equipo de epidemiología (Pendiente -> Notificado -> Gestionado).
 
+### G. SISS Mobile (App Ciudadana)
+Aplicación híbrida que extiende los servicios del hospital al paciente.
+*   **Autogestión de Citas**: Visualización de citas programadas y historial de asistencias.
+*   **Consulta de Recetas**: Acceso seguro a las recetas vigentes y códigos de dispensación.
+*   **Buscador de Stock Nacional**: Consulta de disponibilidad de medicamentos en toda la red hospitalaria (transparencia institucional).
+*   **Perfil de Salud**: Carnet de vacunación digital y datos básicos de salud.
+
 ### F. Apoyo Diagnóstico: Laboratorio y Radiología
 *   **Laboratorio**: Solicitudes con valores de referencia y alertas de resultados anormales.
 *   **Radiología**: Registro de Rayos X, Tomografías, Ecografías y Resonancias con hallazgos y conclusiones vinculadas al PACS. digitales.
@@ -86,10 +95,12 @@ graph TD
 
 ## 5. Detalles Técnicos y Seguridad
 *   **RBAC**: Permisos granulares (ej: Médico prescribe, Farmacéutico dispensa).
+*   **Aislamiento de Pacientes**: Las cuentas de ciudadanos están físicamente aisladas de los usuarios institucionales por seguridad.
+*   **Carrusel de Medios**: Gestión administrativa de imágenes y avisos en la pantalla de inicio del sistema.
 *   **Auditoría**: Trazabilidad total de cada movimiento de inventario y cambio en recetas.
 *   **Eliminación Lógica**: Integridad de datos históricos preservada.
 
 ---
 
 > [!NOTE]
-> Documentación actualizada al 25 de abril de 2026. Los procesos de farmacia cumplen con los estándares de trazabilidad y gestión de suministros de salud pública.
+> Documentación actualizada al 7 de mayo de 2026. Los procesos de farmacia y el ecosistema móvil cumplen con los estándares de trazabilidad y gestión de servicios digitales de salud pública.
