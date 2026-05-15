@@ -8,6 +8,7 @@ import { EstablecimientosService } from '../../core/services/establecimientos.se
 import { NotificationService } from '../../core/services/notification.service';
 import { ReportePdfService } from '../../core/services/reporte-pdf.service';
 import { DateValidators } from '../../core/validators/date.validator';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-inventario-vacunas',
@@ -19,9 +20,17 @@ import { DateValidators } from '../../core/validators/date.validator';
         
         <!-- Header -->
         <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
-          <div>
-            <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">Inventario de Vacunas (PAI)</h1>
-            <p class="text-gray-500 mt-1 font-medium text-sm">Control de entradas, lotes y existencias por establecimiento</p>
+          <div class="flex items-center gap-4">
+            <button (click)="regresar()" 
+                    class="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-gray-400 hover:text-blue-600 hover:shadow-md transition-all border border-gray-100 shadow-sm">
+              <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            <div>
+              <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">Inventario de Vacunas (PAI)</h1>
+              <p class="text-gray-500 mt-1 font-medium text-sm">Control de entradas, lotes y existencias por establecimiento</p>
+            </div>
           </div>
           <div class="bg-white px-5 py-3 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-3" *ngIf="!esAdmin">
             <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center">
@@ -325,6 +334,7 @@ export class InventarioVacunasComponent implements OnInit {
   private estService = inject(EstablecimientosService);
   private ns = inject(NotificationService);
   private pdfSvc = inject(ReportePdfService);
+  private router = inject(Router);
 
   form: FormGroup;
   catalogo: any[] = [];
@@ -536,5 +546,9 @@ export class InventarioVacunasComponent implements OnInit {
     this.pdfSvc.generarMovimientosLotePdfUrl(this.movimientos, this.loteSeleccionado).then(url => {
       window.open(url, '_blank');
     });
+  }
+
+  regresar() {
+    this.router.navigate(['/vacunacion']);
   }
 }

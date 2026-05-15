@@ -339,7 +339,7 @@ import { DateValidators } from '../../core/validators/date.validator';
                 <div *ngFor="let n of notasActuales()" class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm relative">
                   <div class="flex justify-between items-start mb-4">
                     <div class="text-[10px] font-black text-blue-600 uppercase tracking-widest">{{ n.fecha | date:'dd MMM yyyy, HH:mm' }}</div>
-                    <div class="text-[10px] font-bold text-slate-400 uppercase">Dr. {{ n.medico.nombres }} {{ n.medico.apellidos }}</div>
+                    <div class="text-[10px] font-bold text-slate-400 uppercase">{{ n.medico.nombres }} {{ n.medico.apellidos }}</div>
                   </div>
                   <p class="text-sm text-slate-700 leading-relaxed whitespace-pre-line">{{ n.nota }}</p>
                   

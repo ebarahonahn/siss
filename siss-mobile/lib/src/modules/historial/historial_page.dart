@@ -21,22 +21,33 @@ class _HistorialPageState extends State<HistorialPage> {
   }
 
   Future<void> _loadHistorial() async {
-    final messenger = ScaffoldMessenger.of(context);
+    if (!mounted) return;
     setState(() => _isLoading = true);
+    
     try {
+      debugPrint('HISTORIAL: Solicitando historial clínico...');
       final response = await _api.get('/pacientes/mi-perfil');
-      final data = response.data['data'];
-      setState(() {
-        _episodios = data['historialClinico'] ?? [];
-      });
+      
+      if (!mounted) return;
+
+      if (response.data != null && response.data['ok'] == true) {
+        final data = response.data['data'];
+        setState(() {
+          _episodios = data?['historialClinico'] ?? [];
+        });
+        debugPrint('HISTORIAL: Carga exitosa. Episodios: ${_episodios.length}');
+      }
     } catch (e) {
+      debugPrint('HISTORIAL: Error al cargar: $e');
       if (mounted) {
-        messenger.showSnackBar(
-          SnackBar(content: Text('Error al cargar el historial: $e'), backgroundColor: Colors.red),
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error al cargar historial: $e'), backgroundColor: Colors.red),
         );
       }
     } finally {
-      if (mounted) setState(() => _isLoading = false);
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
     }
   }
 
@@ -50,16 +61,19 @@ class _HistorialPageState extends State<HistorialPage> {
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
-          : _episodios.isEmpty
-              ? _buildEmptyState()
-              : ListView.builder(
-                  padding: const EdgeInsets.all(16),
-                  itemCount: _episodios.length,
-                  itemBuilder: (context, index) {
-                    final ep = _episodios[index];
-                    return _buildEpisodeCard(ep);
-                  },
-                ),
+          : RefreshIndicator(
+              onRefresh: _loadHistorial,
+              child: _episodios.isEmpty
+                  ? _buildEmptyState()
+                  : ListView.builder(
+                      padding: const EdgeInsets.all(16),
+                      itemCount: _episodios.length,
+                      itemBuilder: (context, index) {
+                        final ep = _episodios[index];
+                        return _buildEpisodeCard(ep);
+                      },
+                    ),
+            ),
     );
   }
 
@@ -77,16 +91,16 @@ class _HistorialPageState extends State<HistorialPage> {
   }
 
   Widget _buildEpisodeCard(dynamic ep) {
+    // En el historial el campo de fecha es 'fecha'
     final DateTime fecha = DateTime.tryParse(ep['fecha'] ?? '') ?? DateTime.now();
     final String fechaFormateada = DateFormat('dd/MM/yyyy').format(fecha);
     final String horaFormateada = DateFormat('hh:mm a').format(fecha);
-    final String medico = ep['medico'] != null 
-        ? 'Dr. ${ep['medico']['nombres']} ${ep['medico']['apellidos']}'
+    final String rawNombre = ep['medico'] != null 
+        ? '${ep['medico']['nombres']} ${ep['medico']['apellidos']}'
         : 'Médico no especificado';
+    final String medico = rawNombre.startsWith('Dr.') ? rawNombre : 'Dr. $rawNombre';
     
-    // El establecimiento lo agregaremos en el backend en el siguiente paso
     final String establecimiento = ep['medico']?['establecimiento']?['nombre'] ?? 'Centro Médico SISS';
-
     final List<dynamic> diagnosticos = ep['diagnosticos'] ?? [];
 
     return Card(

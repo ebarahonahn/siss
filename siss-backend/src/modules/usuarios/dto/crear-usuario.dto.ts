@@ -65,6 +65,12 @@ export class CrearUsuarioDto {
   @ValidateNested({ each: true })
   @Type(() => AsignacionInputDto)
   asignaciones: AsignacionInputDto[];
+
+  @IsOptional()
+  latitud?: number;
+
+  @IsOptional()
+  longitud?: number;
 }
 
 export class AsignacionInputDto {

@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsOptional, IsString, Length } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional, IsString, Length, IsNumber } from 'class-validator';
 
 export class CreateSolicitudUsuarioDto {
   @IsString()
@@ -25,4 +25,12 @@ export class CreateSolicitudUsuarioDto {
   @IsString()
   @IsOptional()
   justificacion?: string;
+
+  @IsNumber()
+  @IsOptional()
+  latitud?: number;
+
+  @IsNumber()
+  @IsOptional()
+  longitud?: number;
 }

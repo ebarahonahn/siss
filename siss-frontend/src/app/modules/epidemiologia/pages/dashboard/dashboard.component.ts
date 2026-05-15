@@ -162,7 +162,7 @@ Chart.register(...registerables);
                 <h4 class="font-black text-slate-900 uppercase text-sm leading-tight">{{ alerta.paciente.nombres }} {{ alerta.paciente.apellidos }}</h4>
                 <p class="text-red-700 text-xs font-bold mt-1">{{ alerta.diagnosticoCIE10 }}</p>
                 <div class="mt-4 pt-4 border-t border-red-200/50 flex items-center justify-between">
-                  <p class="text-[10px] font-bold text-slate-500">Dr. {{ alerta.historia.medico.nombres }}</p>
+                  <p class="text-[10px] font-bold text-slate-500">{{ alerta.historia.medico.nombres }}</p>
                   <button (click)="abrirGestion(alerta)" class="text-[10px] font-black text-red-600 uppercase tracking-widest hover:underline">Gestionar</button>
                 </div>
               </div>

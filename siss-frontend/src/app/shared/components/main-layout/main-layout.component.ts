@@ -97,6 +97,12 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
           roles: ['ADMIN','MEDICO','ENFERMERA','RECEPCIONISTA','ADMIN_ESTABLECIMIENTO'],
           modulo: 'hospitalizacion',
         },
+        {
+          label: 'Control Prenatal',
+          ruta: '/control-prenatal',
+          roles: ['ADMIN','MEDICO','ENFERMERA'],
+          modulo: 'pacientes', // Temporalmente usando el permiso de pacientes para visibilidad
+        },
       ]
     },
     {

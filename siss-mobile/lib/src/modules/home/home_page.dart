@@ -2,8 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:siss_mobile/src/modules/farmacia/farmacia_page.dart';
 import 'package:siss_mobile/src/modules/home/nueva_cita_page.dart';
 import 'package:siss_mobile/src/modules/historial/historial_page.dart';
+import 'package:siss_mobile/src/modules/carnet/carnet_page.dart';
+import 'package:siss_mobile/src/modules/prenatal/controles_prenatales_page.dart';
 import 'package:siss_mobile/src/modules/inventario/stock_page.dart';
 import 'package:siss_mobile/src/core/auth/auth_service.dart';
+import 'package:dio/dio.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:open_filex/open_filex.dart';
+import 'dart:io';
 import 'package:siss_mobile/src/core/api/api_service.dart';
 import 'package:intl/intl.dart';
 
@@ -17,8 +23,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final ApiService _api = ApiService();
   Map<String, dynamic>? _proximaCita;
+  Map<String, dynamic>? _embarazoActivo;
   final List<Map<String, dynamic>> _medicamentos = [];
   bool _isLoading = true;
+  bool _downloadingPdf = false;
 
   @override
   void initState() {
@@ -40,12 +48,23 @@ class _HomePageState extends State<HomePage> {
         _proximaCita = citas.isNotEmpty ? citas.first : null;
       }
 
-      // 2. Cargar Perfil y Medicamentos
+      // 2. Cargar Perfil y Embarazo
       try {
         final perfilResponse = await _api.get('/pacientes/mi-perfil');
         final Map<String, dynamic> perfilBody = perfilResponse.data;
         if (perfilBody.containsKey('data')) {
           final Map<String, dynamic> perfil = perfilBody['data'];
+          
+          // Buscar embarazo activo
+          try {
+            final embResponse = await _api.get('/control-prenatal/mi-seguimiento/activo');
+            if (embResponse.data != null && embResponse.data['ok'] == true) {
+              _embarazoActivo = embResponse.data['data'];
+            }
+          } catch (e) {
+            debugPrint('Error buscando embarazo activo: $e');
+          }
+
           final List<dynamic> meds = perfil['medicamentosActivos'] ?? [];
           
           _medicamentos.clear();
@@ -62,12 +81,65 @@ class _HomePageState extends State<HomePage> {
       } catch (e) {
         debugPrint('Nota: No se pudo cargar el perfil del paciente: $e');
         _medicamentos.clear();
+        _embarazoActivo = null;
       }
     } catch (e) {
       debugPrint('Error cargando citas: $e');
     } finally {
       if (mounted) {
         setState(() => _isLoading = false);
+      }
+    }
+  }
+
+  Future<void> _downloadPdf() async {
+    if (_embarazoActivo == null) return;
+
+    setState(() => _downloadingPdf = true);
+
+    try {
+      final id = _embarazoActivo!['id'];
+      
+      // Obtener el directorio temporal para guardar el archivo
+      final tempDir = await getTemporaryDirectory();
+      final fullPath = '${tempDir.path}/carnet_prenatal_$id.pdf';
+
+      debugPrint('DEBUG: Iniciando descarga de PDF en $fullPath');
+
+      // Descargar el archivo usando Dio
+      final response = await _api.getDio().get(
+        '/control-prenatal/export/$id/pdf',
+        options: Options(
+          responseType: ResponseType.bytes,
+        ),
+      );
+
+      // Guardar el archivo
+      final file = File(fullPath);
+      await file.writeAsBytes(response.data);
+
+      debugPrint('DEBUG: PDF guardado con éxito. Abriendo...');
+
+      // Abrir el archivo
+      final result = await OpenFilex.open(fullPath);
+      
+      if (result.type != ResultType.done) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('No se pudo abrir el PDF: ${result.message}')),
+          );
+        }
+      }
+    } catch (e) {
+      debugPrint('Error descargando PDF: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Error al descargar el carnet PDF')),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _downloadingPdf = false);
       }
     }
   }
@@ -138,8 +210,28 @@ class _HomePageState extends State<HomePage> {
                 _buildQuickAction(Icons.history, 'Historial', Colors.green, () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => const HistorialPage()));
                 }),
+                if (_embarazoActivo != null)
+                  _buildQuickAction(Icons.pregnant_woman, 'Mi Embarazo', Colors.pink, () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ControlesPrenatalesPage(embarazo: _embarazoActivo!)));
+                  })
+                else
+                  _buildQuickAction(Icons.qr_code_2, 'Mi Carnet', Colors.red, () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const CarnetPage()));
+                  }),
               ],
             ),
+            const SizedBox(height: 24),
+
+            // Sección de Embarazo o Signos Vitales
+            if (_embarazoActivo != null) ...[
+              _buildSectionTitle('Estado de Embarazo'),
+              const SizedBox(height: 8),
+              _buildPregnancySummaryCard(_embarazoActivo!),
+            ] else ...[
+              _buildSectionTitle('Últimos Signos Vitales'),
+              const SizedBox(height: 8),
+              _buildVitalSignsCard(null), // O pasar los datos si se cargan
+            ],
             const SizedBox(height: 24),
 
             // Medicamentos Activos
@@ -247,7 +339,13 @@ class _HomePageState extends State<HomePage> {
               children: [
                 const Icon(Icons.person_outline, color: Colors.white70, size: 20),
                 const SizedBox(width: 8),
-                Expanded(child: Text('Dr. $medico - $especialidad', style: const TextStyle(color: Colors.white), overflow: TextOverflow.ellipsis)),
+                Expanded(
+                  child: Text(
+                    medico.startsWith('Dr.') ? '$medico - $especialidad' : 'Dr. $medico - $especialidad',
+                    style: const TextStyle(color: Colors.white),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 8),
@@ -389,6 +487,175 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildVitalSignsCard(Map<String, dynamic>? signos) {
+    if (signos == null || (signos['presionSistolica'] == null && signos['temperatura'] == null)) {
+      return Card(
+        elevation: 0,
+        color: Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: BorderSide(color: Colors.grey.shade200)),
+        child: const Padding(
+          padding: EdgeInsets.all(20.0),
+          child: Center(
+            child: Text('No hay registros recientes de signos vitales', style: TextStyle(color: Colors.grey)),
+          ),
+        ),
+      );
+    }
+
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                _buildVitalItem(Icons.favorite, 'P.A.', '${signos['presionSistolica']}/${signos['presionDiastolica']}', 'mmHg', Colors.red),
+                _buildVitalItem(Icons.monitor_heart, 'F.C.', '${signos['frecuenciaCardiaca']}', 'bpm', Colors.orange),
+                _buildVitalItem(Icons.thermostat, 'Temp', '${signos['temperatura']}', '°C', Colors.blue),
+              ],
+            ),
+            const Divider(height: 24),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                _buildVitalItem(Icons.line_weight, 'Peso', '${signos['peso']}', 'kg', Colors.green),
+                _buildVitalItem(Icons.height, 'Talla', '${signos['talla']}', 'cm', Colors.purple),
+                _buildVitalItem(Icons.air, 'SatO2', '${signos['saturacionO2']}', '%', Colors.cyan),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Última revisión: ${DateFormat('dd/MM/yyyy').format(DateTime.parse(signos['fecha']))}',
+              style: const TextStyle(fontSize: 10, color: Colors.grey),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildVitalItem(IconData icon, String label, String value, String unit, Color color) {
+    return Column(
+      children: [
+        Icon(icon, color: color, size: 20),
+        const SizedBox(height: 4),
+        Text(label, style: const TextStyle(fontSize: 10, color: Colors.grey, fontWeight: FontWeight.bold)),
+        Text(value != 'null' ? value : '--', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+        Text(unit, style: const TextStyle(fontSize: 10, color: Colors.grey)),
+      ],
+    );
+  }
+
+  Widget _buildPregnancySummaryCard(Map<String, dynamic> embarazo) {
+    final fpp = DateTime.tryParse(embarazo['fpp'] ?? '');
+    final String fppStr = fpp != null ? DateFormat('dd/MM/yyyy').format(fpp) : 'No definida';
+    final String riesgo = embarazo['riesgo'] ?? 'BAJO';
+    
+    final List<dynamic> controles = embarazo['controles'] ?? [];
+    final int numControles = controles.length;
+    final String ultimasSemanas = numControles > 0 
+        ? '${(double.tryParse(controles.first['semanasGestacion']?.toString() ?? '') ?? 0.0).toStringAsFixed(1)}' 
+        : '--';
+
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          gradient: LinearGradient(colors: [Colors.pink.shade400, Colors.pink.shade300]),
+        ),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Semanas actuales', style: TextStyle(color: Colors.white70, fontSize: 12)),
+                    Text('En seguimiento', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+                  ],
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(color: Colors.white24, borderRadius: BorderRadius.circular(20)),
+                  child: Text('Riesgo: $riesgo', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12)),
+                ),
+              ],
+            ),
+            const Divider(color: Colors.white24, height: 32),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                _buildPregnancyStat('Semanas', ultimasSemanas),
+                _buildPregnancyStat('Controles', '$numControles'),
+                _buildPregnancyStat('F.P.P.', fppStr),
+              ],
+            ),
+            const SizedBox(height: 16),
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton.icon(
+                    onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ControlesPrenatalesPage(embarazo: _embarazoActivo!)),
+                    ),
+                    icon: const Icon(Icons.list_alt, size: 18),
+                    label: const Text('Ver Controles'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: const Color(0xFFE91E63),
+                      elevation: 0,
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: ElevatedButton.icon(
+                    onPressed: _downloadingPdf ? null : _downloadPdf,
+                    icon: _downloadingPdf 
+                      ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
+                      : const Icon(Icons.picture_as_pdf, size: 18),
+                    label: Text(_downloadingPdf ? 'Descargando...' : 'Bajar Carnet'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white.withOpacity(0.2),
+                      foregroundColor: Colors.white,
+                      elevation: 0,
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPregnancyStat(String label, String value) {
+    return Column(
+      children: [
+        Text(label, style: const TextStyle(color: Colors.white70, fontSize: 12)),
+        const SizedBox(height: 4),
+        Text(value, style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+      ],
     );
   }
 }

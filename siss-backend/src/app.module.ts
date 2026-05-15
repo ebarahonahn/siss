@@ -33,6 +33,7 @@ import { HospitalizacionModule } from './modules/hospitalizacion/hospitalizacion
 import { LoginImagesModule } from './modules/login-images/login-images.module';
 import { ConfiguracionModule } from './modules/configuracion/configuracion.module';
 import { SolicitudesUsuarioModule } from './modules/solicitudes-usuario/solicitudes-usuario.module';
+import { ControlPrenatalModule } from './modules/control-prenatal/control-prenatal.module';
 
 
 @Module({
@@ -71,6 +72,7 @@ import { SolicitudesUsuarioModule } from './modules/solicitudes-usuario/solicitu
     LoginImagesModule,
     ConfiguracionModule,
     SolicitudesUsuarioModule,
+    ControlPrenatalModule,
   ],
 })
 export class AppModule {}

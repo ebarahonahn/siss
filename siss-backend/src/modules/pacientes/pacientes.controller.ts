@@ -46,8 +46,14 @@ export class PacientesController {
 
   @Get('mi-perfil')
   @Permissions('pacientes:leer')
-  obtenerMiPerfil(@CurrentUser() user: any) {
-    return this.pacientesService.obtenerPerfilPorDni(user.dni);
+  async obtenerMiPerfil(@CurrentUser() user: any) {
+    console.log(`[PACIENTES] Mi perfil solicitado por: ${user?.correo} | DNI: ${user?.dni} | Rol: ${user?.rol}`);
+    if (!user?.dni) {
+      console.error('[PACIENTES] ERROR: El usuario no tiene DNI en el token');
+    }
+    const perfil = await this.pacientesService.obtenerPerfilPorDni(user.dni);
+    console.log(`[PACIENTES] Perfil obtenido para ${user.dni}. Historial: ${perfil?.historialClinico?.length || 0} | Recetas: ${perfil?.recetas?.length || 0}`);
+    return perfil;
   }
 
   @Get('buscar')
@@ -56,6 +62,7 @@ export class PacientesController {
     @Query('q') termino: string,
     @Query('pagina', new DefaultValuePipe(1), ParseIntPipe) pagina: number,
     @Query('limite', new DefaultValuePipe(20), ParseIntPipe) limite: number,
+    @Query('sexoId') sexoId: string, // Add this
     @CurrentUser() user: any,
   ) {
     return this.pacientesService.buscar(
@@ -64,6 +71,7 @@ export class PacientesController {
       limite,
       user.establecimientoId,
       user.rol,
+      sexoId ? parseInt(sexoId) : undefined
     );
   }
 

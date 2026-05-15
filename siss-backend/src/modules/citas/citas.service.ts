@@ -189,7 +189,6 @@ export class CitasService {
         
         where.OR = [
           { fechaHora: { gte: haceUnaHora } }, // Citas futuras o recientes
-          { estado: EstadoCita.ATENDIDA },     // O citas ya atendidas (historial reciente)
           { estado: EstadoCita.EN_SALA }       // O pacientes esperando
         ];
       }
@@ -263,12 +262,17 @@ export class CitasService {
 
   async noAsistio(id: number, usuarioId: number) {
     const cita = await this.prisma.cita.findUnique({ where: { id } });
-    if (!cita) throw new NotFoundException('Cita no encontrada');
+    if (!cita) {
+      throw new NotFoundException('Cita no encontrada');
+    }
 
-    return this.prisma.cita.update({
+    const updated = await this.prisma.cita.update({
       where: { id },
       data: { estado: EstadoCita.NO_ASISTIO },
     });
+
+    require('fs').appendFileSync('citas_debug.log', `[NO-ASISTIO] Cita ${id} actualizada a NO_ASISTIO. Nuevo estado: ${updated.estado}\n`);
+    return updated;
   }
 
   async obtenerSiguienteHorarioDisponible(

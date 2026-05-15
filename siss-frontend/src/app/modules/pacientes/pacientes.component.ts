@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
+import * as L from 'leaflet';
 import { PacientesService } from '../../core/services/pacientes.service';
 import { GeoService } from '../../core/services/geo.service';
 import { CatalogosService } from '../../core/services/catalogos.service';
@@ -63,7 +64,13 @@ import { DateValidators } from '../../core/validators/date.validator';
                   <span class="px-2 py-1 bg-gray-100 text-gray-600 rounded font-mono text-[11px] font-bold uppercase">{{ p.numeroExpediente }}</span>
                 </td>
                 <td class="px-6 py-4">
-                  <div class="font-bold text-gray-900">{{ p.apellidos }}, {{ p.nombres }}</div>
+                  <div class="flex items-center gap-2">
+                    <div class="font-bold text-gray-900">{{ p.apellidos }}, {{ p.nombres }}</div>
+                    <svg *ngIf="p.latitud && p.longitud" class="w-3.5 h-3.5 text-green-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" title="Paciente Georreferenciado">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                  </div>
                   <div class="text-[11px] text-gray-500 font-medium">{{ p.dni }} | {{ p.sexo?.nombre }}</div>
                 </td>
                 <td class="px-6 py-4">
@@ -141,7 +148,7 @@ import { DateValidators } from '../../core/validators/date.validator';
               <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
                 <!-- DNI con Validación RNP -->
                 <div class="md:col-span-4">
-                  <label class="block text-xs font-bold text-gray-500 uppercase mb-2">DNI (13 Dígitos) *</label>
+                  <label class="block text-xs font-bold text-gray-500 uppercase mb-2">DNI (13 Dígitos) <span class="text-red-500">*</span></label>
                   <div class="flex gap-2">
                     <input type="text" formControlName="dni" maxlength="13"
                            class="flex-1 px-4 py-2.5 bg-gray-50 border-transparent focus:bg-white focus:ring-2 focus:ring-blue-500 rounded-xl text-sm transition-all outline-none" placeholder="0000000000000"/>
@@ -153,16 +160,16 @@ import { DateValidators } from '../../core/validators/date.validator';
                 </div>
                 <!-- Nombres y Apellidos -->
                 <div class="md:col-span-4">
-                  <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Nombres *</label>
+                  <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Nombres <span class="text-red-500">*</span></label>
                   <input type="text" formControlName="nombres" class="w-full px-4 py-2.5 bg-gray-50 border-transparent focus:bg-white focus:ring-2 focus:ring-blue-500 rounded-xl text-sm transition-all outline-none uppercase"/>
                 </div>
                 <div class="md:col-span-4">
-                  <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Apellidos *</label>
+                  <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Apellidos <span class="text-red-500">*</span></label>
                   <input type="text" formControlName="apellidos" class="w-full px-4 py-2.5 bg-gray-50 border-transparent focus:bg-white focus:ring-2 focus:ring-blue-500 rounded-xl text-sm transition-all outline-none uppercase"/>
                 </div>
                 <!-- Nacimiento y Sexo -->
                 <div class="md:col-span-4">
-                  <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Fecha de Nacimiento *</label>
+                  <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Fecha de Nacimiento <span class="text-red-500">*</span></label>
                   <input type="date" formControlName="fechaNacimiento" 
                          [class.ring-2]="form.get('fechaNacimiento')?.invalid && form.get('fechaNacimiento')?.touched"
                          [class.ring-red-500]="form.get('fechaNacimiento')?.invalid && form.get('fechaNacimiento')?.touched"
@@ -173,7 +180,7 @@ import { DateValidators } from '../../core/validators/date.validator';
                   </div>
                 </div>
                 <div class="md:col-span-4">
-                  <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Sexo *</label>
+                  <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Sexo <span class="text-red-500">*</span></label>
                   <select formControlName="sexoId" class="w-full px-4 py-2.5 bg-gray-50 border-transparent focus:bg-white focus:ring-2 focus:ring-blue-500 rounded-xl text-sm transition-all outline-none font-medium">
                     <option [ngValue]="null" disabled>Seleccionar...</option>
                     <option *ngFor="let s of catalogos().sexos" [ngValue]="s.id">{{ s.nombre }}</option>
@@ -200,14 +207,14 @@ import { DateValidators } from '../../core/validators/date.validator';
                   <input type="text" formControlName="telefono" class="w-full px-4 py-2.5 bg-gray-50 border-transparent focus:bg-white focus:ring-2 focus:ring-blue-500 rounded-xl text-sm transition-all outline-none"/>
                 </div>
                 <div class="md:col-span-4">
-                  <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Depto. Residencia *</label>
+                  <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Depto. Residencia <span class="text-red-500">*</span></label>
                   <select formControlName="departamentoId" class="w-full px-4 py-2.5 bg-gray-50 border-transparent focus:bg-white focus:ring-2 focus:ring-blue-500 rounded-xl text-sm transition-all outline-none font-medium">
                     <option [ngValue]="null" disabled>Seleccionar depto...</option>
                     <option *ngFor="let d of departamentos()" [ngValue]="d.id">{{ d.nombre }}</option>
                   </select>
                 </div>
                 <div class="md:col-span-4">
-                  <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Municipio *</label>
+                  <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Municipio <span class="text-red-500">*</span></label>
                   <select formControlName="municipioId" class="w-full px-4 py-2.5 bg-gray-50 border-transparent focus:bg-white focus:ring-2 focus:ring-blue-500 rounded-xl text-sm transition-all outline-none font-medium" 
                           [disabled]="!form.get('departamentoId')?.value">
                     <option [ngValue]="null" disabled>Seleccionar muni...</option>
@@ -217,6 +224,30 @@ import { DateValidators } from '../../core/validators/date.validator';
                 <div class="md:col-span-12">
                   <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Dirección Completa</label>
                   <input type="text" formControlName="direccion" class="w-full px-4 py-2.5 bg-gray-50 border-transparent focus:bg-white focus:ring-2 focus:ring-blue-500 rounded-xl text-sm transition-all outline-none"/>
+                </div>
+                
+                <div class="md:col-span-12">
+                  <div class="flex items-center justify-between mb-2">
+                    <label class="text-xs font-bold text-gray-500 uppercase">Georreferenciación (Coordenadas)</label>
+                    <button type="button" (click)="toggleMapa()" 
+                            class="text-[10px] font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1 uppercase">
+                      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                      {{ mostrarMapa() ? 'Ocultar Mapa' : 'Seleccionar en Mapa' }}
+                    </button>
+                  </div>
+
+                  <div class="grid grid-cols-2 gap-4">
+                    <div>
+                      <label class="block text-[10px] font-bold text-gray-400 uppercase mb-1">Latitud <span class="text-red-500">*</span></label>
+                      <input type="number" formControlName="latitud" step="any" 
+                             class="w-full px-4 py-2 bg-gray-50 border-transparent focus:bg-white focus:ring-2 focus:ring-blue-500 rounded-lg text-xs transition-all outline-none"/>
+                    </div>
+                    <div>
+                      <label class="block text-[10px] font-bold text-gray-400 uppercase mb-1">Longitud <span class="text-red-500">*</span></label>
+                      <input type="number" formControlName="longitud" step="any" 
+                             class="w-full px-4 py-2 bg-gray-50 border-transparent focus:bg-white focus:ring-2 focus:ring-blue-500 rounded-lg text-xs transition-all outline-none"/>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -265,6 +296,73 @@ import { DateValidators } from '../../core/validators/date.validator';
 
       </div>
     </div>
+
+    <!-- ═══ MODAL SELECCIONAR UBICACIÓN (MAPA) ════════════════════════════════ -->
+    <div *ngIf="mostrarMapa()" class="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-gray-900/70 backdrop-blur-md">
+      <div class="bg-white w-full max-w-5xl h-[80vh] rounded-[2rem] overflow-hidden shadow-2xl flex flex-col scale-in">
+        
+        <!-- Header -->
+        <div class="px-8 py-4 bg-gray-50 border-b border-gray-100 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-200">
+              <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+              </svg>
+            </div>
+            <div>
+              <h2 class="text-lg font-bold text-gray-800">Georreferenciación de Residencia</h2>
+              <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Haga clic en el mapa o use el buscador</p>
+            </div>
+          </div>
+
+          <!-- Buscador de Direcciones -->
+          <div class="flex-1 max-w-md mx-8">
+            <div class="relative group">
+              <input type="text" #busquedaRef (keyup.enter)="buscarEnMapa(busquedaRef.value)"
+                     placeholder="Ej: Aldea Villa Vieja, Francisco Morazán..."
+                     class="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 focus:ring-2 focus:ring-blue-500 rounded-xl text-sm transition-all outline-none shadow-sm group-hover:border-blue-300"/>
+              <svg class="absolute left-3 top-3 w-4 h-4 text-gray-400 group-hover:text-blue-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+              </svg>
+              <button (click)="buscarEnMapa(busquedaRef.value)" 
+                      class="absolute right-2 top-1.5 px-3 py-1 bg-blue-600 text-white text-[10px] font-bold rounded-lg hover:bg-blue-700 transition-all">
+                BUSCAR
+              </button>
+            </div>
+          </div>
+
+          <button (click)="toggleMapa()" class="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-200 rounded-xl transition-all">
+            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </div>
+
+        <!-- Map Container -->
+        <div class="flex-1 relative">
+          <div id="map-paciente" class="absolute inset-0"></div>
+          
+          <!-- Coordenadas Flotantes -->
+          <div class="absolute bottom-6 left-6 z-[1000] bg-white/90 backdrop-blur-sm px-6 py-4 rounded-2xl shadow-xl border border-gray-100 flex gap-6">
+            <div>
+              <p class="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-1">Latitud</p>
+              <p class="text-sm font-mono font-bold text-blue-600">{{ form.get('latitud')?.value || '0.000000' }}</p>
+            </div>
+            <div class="w-px h-8 bg-gray-200 self-center"></div>
+            <div>
+              <p class="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-1">Longitud</p>
+              <p class="text-sm font-mono font-bold text-blue-600">{{ form.get('longitud')?.value || '0.000000' }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="px-8 py-4 bg-gray-50 border-t border-gray-100 flex justify-end">
+          <button (click)="toggleMapa()" 
+                  class="px-8 py-2.5 bg-slate-900 text-white rounded-xl font-bold hover:bg-black transition-all shadow-lg shadow-slate-200">
+            CONFIRMAR UBICACIÓN
+          </button>
+        </div>
+      </div>
+    </div>
   `,
   styleUrls: []
 })
@@ -282,6 +380,11 @@ export class PacientesComponent {
   pacienteEnEdicion = signal<any>(null);
   enviando = signal(false);
   validandoRNP = signal(false);
+  
+  // Mapa
+  private map?: L.Map;
+  private mapMarker?: L.Marker;
+  mostrarMapa = signal(false);
 
   departamentos = signal<any[]>([]);
   municipios = signal<any[]>([]);
@@ -306,7 +409,9 @@ export class PacientesComponent {
     direccion: [''],
     estadoCivilId: [null as number | null],
     ocupacionId: [null as number | null],
-    escolaridadId: [null as number | null]
+    escolaridadId: [null as number | null],
+    latitud: [null as number | null, Validators.required],
+    longitud: [null as number | null, Validators.required]
   });
 
   private notification = inject(NotificationService);
@@ -315,7 +420,6 @@ export class PacientesComponent {
     this.searchSubject
       .pipe(
         debounceTime(300),
-        distinctUntilChanged(),
         switchMap((q: string) => this.service.buscar(q)),
       )
       .subscribe((res: any) => {
@@ -344,23 +448,116 @@ export class PacientesComponent {
 
   abrirModal() {
     this.pacienteEnEdicion.set(null);
-    this.form.reset({
-      sexoId: null,
-      estadoCivilId: null,
-      escolaridadId: null,
-      tipoSangreId: null
-    });
+    this.form.reset();
     this.showModal.set(true);
+    this.mostrarMapa.set(false);
   }
 
   cerrarModal() {
     this.showModal.set(false);
     this.pacienteEnEdicion.set(null);
+    if (this.map) {
+      this.map.remove();
+      this.map = undefined;
+    }
+  }
+
+  toggleMapa() {
+    this.mostrarMapa.set(!this.mostrarMapa());
+    if (this.mostrarMapa()) {
+      this.inicializarMapa();
+    }
+  }
+
+  private inicializarMapa() {
+    setTimeout(() => {
+      if (this.map) {
+        this.map.remove();
+      }
+
+      // Valores actuales o default (Tegucigalpa, Honduras)
+      const lat = this.form.get('latitud')?.value || 14.0818;
+      const lng = this.form.get('longitud')?.value || -87.2068;
+
+      this.map = L.map('map-paciente').setView([lat, lng], 13);
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+      }).addTo(this.map);
+
+      const icon = L.divIcon({
+        className: 'custom-div-icon',
+        html: `<div style='background-color:#2563eb; width:30px; height:30px; border-radius:50% 50% 50% 0; transform:rotate(-45deg); border:2px solid white; display:flex; align-items:center; justify-content:center; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);'>
+                <div style='width:10px; height:10px; background-color:white; border-radius:50%; transform:rotate(45deg);'></div>
+               </div>`,
+        iconSize: [30, 42],
+        iconAnchor: [15, 42]
+      });
+
+      this.mapMarker = L.marker([lat, lng], { draggable: true, icon })
+        .addTo(this.map)
+        .on('dragend', (e) => {
+          const marker = e.target;
+          const position = marker.getLatLng();
+          this.form.patchValue({
+            latitud: position.lat,
+            longitud: position.lng
+          });
+        });
+
+      this.map.on('click', (e) => {
+        const position = e.latlng;
+        this.mapMarker?.setLatLng(position);
+        this.form.patchValue({
+          latitud: position.lat,
+          longitud: position.lng
+        });
+      });
+
+      // Asegurar que el mapa se renderice correctamente
+      setTimeout(() => {
+        this.map?.invalidateSize();
+      }, 200);
+    }, 100);
+  }
+
+  buscarEnMapa(direccion: string) {
+    if (!direccion || direccion.trim().length < 3) return;
+
+    this.geo.geocodificar(direccion).subscribe({
+      next: (res: any[]) => {
+        if (res && res.length > 0) {
+          const location = res[0];
+          const lat = parseFloat(location.lat);
+          const lng = parseFloat(location.lon);
+
+          if (this.map && this.mapMarker) {
+            const pos = new L.LatLng(lat, lng);
+            this.map.setView(pos, 16);
+            this.mapMarker.setLatLng(pos);
+            
+            this.form.patchValue({
+              latitud: lat,
+              longitud: lng
+            });
+
+            this.notification.success('Ubicación encontrada');
+          }
+        } else {
+          this.notification.warn('No se encontró la ubicación solicitada');
+        }
+      },
+      error: () => this.notification.error('Error al conectar con el servicio de búsqueda')
+    });
   }
 
   editar(paciente: any) {
     this.pacienteEnEdicion.set(paciente);
     
+    // Asegurar que latitud y longitud sean números para el formulario
+    const lat = paciente.latitud ? parseFloat(paciente.latitud.toString()) : null;
+    const lng = paciente.longitud ? parseFloat(paciente.longitud.toString()) : null;
+
     // Si hay depto, cargar municipios primero
     if (paciente.departamentoId) {
       this.geo.listarMunicipios(paciente.departamentoId).subscribe((res: any) => {
@@ -370,12 +567,18 @@ export class PacientesComponent {
         
         this.form.patchValue({
           ...paciente,
-          fechaNacimiento: fecha
+          fechaNacimiento: fecha,
+          latitud: lat,
+          longitud: lng
         });
         this.showModal.set(true);
       });
     } else {
-      this.form.patchValue(paciente);
+      this.form.patchValue({
+        ...paciente,
+        latitud: lat,
+        longitud: lng
+      });
       this.showModal.set(true);
     }
   }

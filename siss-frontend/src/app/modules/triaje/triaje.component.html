@@ -79,7 +79,7 @@
                 DNI: {{ cita.paciente.dni }} &nbsp;·&nbsp;
                 Exp: {{ cita.paciente.numeroExpediente }} &nbsp;·&nbsp;
                 {{ edad(cita.paciente.fechaNacimiento) }} años &nbsp;·&nbsp;
-                Dr. {{ cita.medico.apellidos }}
+                {{ cita.medico.apellidos }}
               </p>
               <p *ngIf="cita.motivo" class="text-xs text-gray-400 mt-0.5 italic truncate max-w-sm">
                 "{{ cita.motivo }}"
@@ -131,7 +131,7 @@
             DNI {{ citaSeleccionada()!.paciente.dni }} &nbsp;·&nbsp;
             Exp {{ citaSeleccionada()!.paciente.numeroExpediente }} &nbsp;·&nbsp;
             {{ edad(citaSeleccionada()!.paciente.fechaNacimiento) }} años &nbsp;·&nbsp;
-            Cita {{ citaSeleccionada()!.fechaHora | date:'h:mm a' }} — Dr. {{ citaSeleccionada()!.medico.apellidos }}
+            Cita {{ citaSeleccionada()!.fechaHora | date:'h:mm a' }} — {{ citaSeleccionada()!.medico.apellidos }}
           </p>
         </div>
       </div>

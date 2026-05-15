@@ -8,11 +8,16 @@ export class PacientesService {
   private http = inject(HttpClient);
   private base = `${environment.apiUrl}/pacientes`;
 
-  buscar(termino: string, pagina = 1, limite = 20): Observable<any> {
-    const params = new HttpParams()
+  buscar(termino: string, pagina = 1, limite = 20, sexoId?: number): Observable<any> {
+    let params = new HttpParams()
       .set('q', termino)
       .set('pagina', pagina)
       .set('limite', limite);
+    
+    if (sexoId) {
+      params = params.set('sexoId', sexoId.toString());
+    }
+
     return this.http.get<any>(`${this.base}/buscar`, { params });
   }
 

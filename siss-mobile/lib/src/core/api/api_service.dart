@@ -5,11 +5,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ApiService {
   static final ApiService _instance = ApiService._internal();
   factory ApiService() => _instance;
+  
+  static const String _baseUrl = 'http://127.0.0.1:3000/api/v1';
 
   final Dio _dio = Dio(
     BaseOptions(
       // Usaremos localhost + adb reverse (el método más estable para emuladores)
-      baseUrl: 'http://localhost:3000/api/v1',
+      baseUrl: _baseUrl,
       connectTimeout: const Duration(seconds: 15),
       receiveTimeout: const Duration(seconds: 13),
       headers: {
@@ -36,6 +38,8 @@ class ApiService {
       },
     ));
   }
+
+  Dio getDio() => _dio;
 
   Future<Response> get(String path, {Map<String, dynamic>? queryParameters}) async {
     try {

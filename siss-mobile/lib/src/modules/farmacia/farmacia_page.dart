@@ -21,22 +21,35 @@ class _FarmaciaPageState extends State<FarmaciaPage> {
   }
 
   Future<void> _loadRecetas() async {
-    final messenger = ScaffoldMessenger.of(context);
+    if (!mounted) return;
     setState(() => _isLoading = true);
+    
     try {
+      debugPrint('FARMACIA: Solicitando perfil y recetas...');
       final response = await _api.get('/pacientes/mi-perfil');
-      final data = response.data['data'];
-      setState(() {
-        _recetas = data['recetas'] ?? [];
-      });
+      
+      if (!mounted) return;
+
+      if (response.data != null && response.data['ok'] == true) {
+        final data = response.data['data'];
+        setState(() {
+          _recetas = data?['recetas'] ?? [];
+        });
+        debugPrint('FARMACIA: Carga exitosa. Recetas: ${_recetas.length}');
+      } else {
+        debugPrint('FARMACIA: La respuesta no tiene el formato esperado');
+      }
     } catch (e) {
+      debugPrint('FARMACIA: Error al cargar: $e');
       if (mounted) {
-        messenger.showSnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Error al cargar recetas: $e'), backgroundColor: Colors.red),
         );
       }
     } finally {
-      if (mounted) setState(() => _isLoading = false);
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
     }
   }
 
@@ -81,7 +94,8 @@ class _FarmaciaPageState extends State<FarmaciaPage> {
   }
 
   Widget _buildRecetaCard(dynamic receta) {
-    final DateTime fecha = DateTime.tryParse(receta['creadaEn'] ?? '') ?? DateTime.now();
+    // Usamos creadoEn que es el campo correcto del backend
+    final DateTime fecha = DateTime.tryParse(receta['creadoEn'] ?? '') ?? DateTime.now();
     final String fechaFormateada = DateFormat('dd/MM/yyyy').format(fecha);
     final String establecimiento = receta['establecimiento']?['nombre'] ?? 'Centro Médico SISS';
     final List<dynamic> detalles = receta['detalles'] ?? [];

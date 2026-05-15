@@ -107,4 +107,10 @@ export class CreatePacienteDto {
   @IsInt()
   @IsOptional()
   estadoCivilId?: number;
+
+  @IsNotEmpty({ message: 'La latitud es obligatoria para georreferenciación' })
+  latitud: number;
+
+  @IsNotEmpty({ message: 'La longitud es obligatoria para georreferenciación' })
+  longitud: number;
 }

@@ -1,0 +1,70 @@
+:host {
+  display: block;
+}
+
+.odontograma-container {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 2.5rem;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+  border: 1px solid #f1f5f9;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .odontograma-container {
+    padding: 2rem;
+  }
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f8fafc;
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #e2e8f0;
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #cbd5e1;
+}
+
+.diente-svg {
+  filter: drop-shadow(0 1px 1px rgb(0 0 0 / 0.05));
+  transition: transform 0.2s ease;
+  user-select: none;
+}
+
+.diente-svg:hover:not(.readonly) {
+  transform: scale(1.05);
+}
+
+.face {
+  stroke-width: 0.5;
+  transition: fill 0.2s ease;
+}
+
+.face:hover:not(.readonly) {
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+.diente-ausente {
+  opacity: 0.4;
+}
+
+.legend-icon-box {
+  width: 14px;
+  height: 14px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

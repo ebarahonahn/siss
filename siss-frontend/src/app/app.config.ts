@@ -2,12 +2,12 @@ import { ApplicationConfig, provideZoneChangeDetection, LOCALE_ID } from '@angul
 import { provideRouter } from '@angular/router';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { registerLocaleData } from '@angular/common';
-import localeEs from '@angular/common/locales/es';
+import localeEsHn from '@angular/common/locales/es-HN';
 import { routes } from './app.routes';
 import { jwtInterceptor } from './core/interceptors/jwt.interceptor';
 import { offlineInterceptor } from './core/interceptors/offline.interceptor';
 
-registerLocaleData(localeEs);
+registerLocaleData(localeEsHn);
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -16,6 +16,6 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(
       withInterceptors([offlineInterceptor, jwtInterceptor]),
     ),
-    { provide: LOCALE_ID, useValue: 'es' },
+    { provide: LOCALE_ID, useValue: 'es-HN' },
   ],
 };

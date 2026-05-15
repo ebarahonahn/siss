@@ -24,10 +24,19 @@ export class HttpExceptionFilter implements ExceptionFilter {
     } else if (exception instanceof Prisma.PrismaClientKnownRequestError) {
       status = HttpStatus.BAD_REQUEST;
       switch (exception.code) {
-        case 'P2002':
-          const fields = (exception.meta?.target as string[]) || [];
-          message = `Ya existe un registro con ese valor: ${fields.join(', ')}`;
+        case 'P2002': {
+          const target = exception.meta?.target;
+          const fields = Array.isArray(target)
+            ? target
+            : typeof target === 'string'
+              ? [target]
+              : [];
+          message =
+            fields.length > 0
+              ? `Ya existe un registro con ese valor: ${fields.join(', ')}`
+              : 'Ya existe un registro con ese valor único';
           break;
+        }
         case 'P2020':
           message = `Valor fuera de rango: ${exception.meta?.details || 'Dato no válido'}`;
           break;

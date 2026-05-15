@@ -18,7 +18,8 @@ class _SolicitudCuentaPageState extends State<SolicitudCuentaPage> {
   final _correoController = TextEditingController();
   final _telefonoController = TextEditingController();
   final _justificacionController = TextEditingController();
-
+  
+  
   bool _isLoading = false;
 
   @override
@@ -31,6 +32,7 @@ class _SolicitudCuentaPageState extends State<SolicitudCuentaPage> {
     _justificacionController.dispose();
     super.dispose();
   }
+
 
   Future<void> _enviarSolicitud() async {
     if (!_formKey.currentState!.validate()) return;
@@ -163,6 +165,7 @@ class _SolicitudCuentaPageState extends State<SolicitudCuentaPage> {
                             maxLines: 3,
                             controller: _justificacionController,
                           ),
+                          const SizedBox(height: 24),
                           const SizedBox(height: 32),
                           SizedBox(
                             width: double.infinity,

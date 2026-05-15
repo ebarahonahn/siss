@@ -13,6 +13,8 @@ export interface SolicitudUsuario {
   correo: string;
   telefono: string | null;
   justificacion: string | null;
+  latitud?: number;
+  longitud?: number;
   estado: EstadoSolicitud;
   observaciones: string | null;
   creadaEn: string;

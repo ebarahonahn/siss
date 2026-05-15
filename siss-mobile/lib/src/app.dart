@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:siss_mobile/src/modules/auth/solicitud_cuenta_page.dart';
 import 'package:siss_mobile/src/modules/auth/change_password_page.dart';
+import 'package:siss_mobile/src/modules/auth/splash_page.dart';
 import 'package:siss_mobile/src/modules/home/home_page.dart';
 import 'package:siss_mobile/src/core/auth/auth_service.dart';
 
@@ -21,7 +22,7 @@ class SissApp extends StatelessWidget {
         useMaterial3: true,
         fontFamily: 'Roboto',
       ),
-      home: const LoginPage(),
+      home: const SplashPage(),
     );
   }
 }

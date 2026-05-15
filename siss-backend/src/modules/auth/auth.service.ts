@@ -82,7 +82,7 @@ export class AuthService {
         dni: usuario.dni,
         pacienteId: usuario.pacienteId,
         rol: 'PACIENTE',
-        permisos: ['citas:leer', 'citas:crear', 'pacientes:leer', 'notificaciones:leer', 'establecimientos:leer', 'especialidades:leer', 'inventario:leer'],
+        permisos: ['citas:leer', 'citas:crear', 'pacientes:leer', 'historia_clinica:leer', 'recetas:leer', 'notificaciones:leer', 'establecimientos:leer', 'especialidades:leer', 'inventario:leer', 'control_prenatal:leer'],
       };
 
       const accessToken = this.jwtService.sign(payload, { expiresIn: '1h' });

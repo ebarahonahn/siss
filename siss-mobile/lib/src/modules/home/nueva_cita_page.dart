@@ -208,9 +208,12 @@ class _NuevaCitaPageState extends State<NuevaCitaPage> {
                 _buildDropdown(
                   label: '3. Seleccione Médico',
                   value: _selectedMedicoId,
-                  items: _medicos.map((m) => {
-                    'id': m['id'],
-                    'nombre': 'Dr. ${m['nombres']} ${m['apellidos']}'
+                  items: _medicos.map((m) {
+                    final String full = '${m['nombres']} ${m['apellidos']}';
+                    return {
+                      'id': m['id'],
+                      'nombre': (full.startsWith('Dr.') || full.startsWith('Dra.')) ? full : 'Dr. $full'
+                    };
                   }).toList(),
                   enabled: _selectedEspecialidadId != null,
                   onChanged: (val) {

@@ -57,6 +57,11 @@ export interface HistoriaClinica {
     tipo: string;
     motivo?: string;
   };
+  controlPrenatal?: {
+    id: number;
+    embarazoId: number;
+    semanasGestacion: number;
+  };
 }
 
 @Injectable({ providedIn: 'root' })

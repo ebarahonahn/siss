@@ -1,4 +1,5 @@
 import { Component, OnInit, signal, inject, ViewChild, ElementRef, AfterViewInit, NgZone, DestroyRef } from '@angular/core';
+import { Router } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { HospitalizacionService } from '../../../../core/services/hospitalizacion.service';
@@ -14,9 +15,16 @@ Chart.register(...registerables);
     <div *ngIf="stats()" class="p-8 bg-slate-50 min-h-screen animate-in">
       <!-- Header -->
       <div class="flex items-center justify-between mb-8">
-        <div>
-          <h1 class="text-3xl font-black text-slate-900 tracking-tight">Indicadores Hospitalarios</h1>
-          <p class="text-slate-500 font-medium">Análisis de eficiencia y ocupación del centro médico</p>
+        <div class="flex items-center gap-4">
+          <button (click)="regresar()" class="group p-2 hover:bg-white hover:shadow-sm rounded-2xl transition-all border border-transparent hover:border-slate-100">
+             <svg class="w-6 h-6 text-slate-400 group-hover:text-slate-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
+             </svg>
+          </button>
+          <div>
+            <h1 class="text-3xl font-black text-slate-900 tracking-tight">Indicadores Hospitalarios</h1>
+            <p class="text-slate-500 font-medium">Análisis de eficiencia y ocupación del centro médico</p>
+          </div>
         </div>
         
         <div class="flex items-center gap-4 bg-white p-2 rounded-2xl shadow-sm border border-slate-100">
@@ -142,6 +150,7 @@ export class EstadisticasHospitalariasComponent implements OnInit, AfterViewInit
   private svc = inject(HospitalizacionService);
   private zone = inject(NgZone);
   private destroyRef = inject(DestroyRef);
+  private router = inject(Router);
   
   stats = signal<any>(null);
   
@@ -161,6 +170,10 @@ export class EstadisticasHospitalariasComponent implements OnInit, AfterViewInit
 
   ngOnInit() {
     this.cargarEstadisticas();
+  }
+
+  regresar() {
+    this.router.navigate(['/hospitalizacion']);
   }
 
   ngAfterViewInit() {

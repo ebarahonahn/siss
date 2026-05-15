@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal, SecurityContext } from '@angular/core';
+import { Component, inject, OnInit, signal, computed, SecurityContext } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import * as L from 'leaflet';
 import { CommonModule } from '@angular/common';
@@ -23,11 +23,13 @@ import { UsuariosService } from '../../../../core/services/usuarios.service';
 import { CitasService } from '../../../../core/services/citas.service';
 import { ParametrosService } from '../../../../core/services/parametros.service';
 import { GeoService } from '../../../../core/services/geo.service';
+import { OdontogramaComponent, DienteEstado } from '../../../../shared/components/odontograma/odontograma.component';
+
 
 @Component({
   selector: 'app-nueva-consulta',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, RouterModule, OdontogramaComponent],
   styles: [`
     .historial-sidebar {
       width: 300px;
@@ -277,11 +279,17 @@ import { GeoService } from '../../../../core/services/geo.service';
                          [class.bg-blue-700]="h.id === detalleAbierto()"></div>
                   </div>
                   <div class="min-w-0 flex-1">
-                    <p class="text-xs font-semibold text-gray-800 group-hover:text-blue-700 transition-colors">
-                      {{ h.fecha | date:'dd/MM/yyyy':'UTC' }}
-                    </p>
+                    <div class="flex items-center gap-2 mb-0.5">
+                      <p class="text-xs font-semibold text-gray-800 group-hover:text-blue-700 transition-colors">
+                        {{ h.fecha | date:'dd/MM/yyyy':'UTC' }}
+                      </p>
+                      <span *ngIf="h.controlPrenatal" 
+                            class="text-[8px] font-black bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded uppercase tracking-tighter shadow-sm border border-emerald-200">
+                        Control Prenatal ({{ h.controlPrenatal.semanasGestacion }} sem)
+                      </span>
+                    </div>
                     <p class="text-[10px] text-gray-400 truncate">
-                      Dr. {{ h.medico.nombres }} {{ h.medico.apellidos }}
+                      {{ h.medico.nombres }} {{ h.medico.apellidos }}
                     </p>
                     <p *ngIf="h.medico.establecimiento" class="text-[9px] text-blue-400 font-medium truncate uppercase tracking-tighter">
                       {{ h.medico.establecimiento.nombre }}
@@ -322,14 +330,21 @@ import { GeoService } from '../../../../core/services/geo.service';
 
           <!-- Encabezado Nueva Consulta -->
           <div class="flex items-center justify-between mb-8 max-w-4xl mx-auto">
-            <div>
-              <h1 class="text-2xl font-bold text-gray-900">Nueva Consulta</h1>
-              <p class="text-sm text-gray-500" *ngIf="paciente()">
-                Paciente: <span class="font-semibold text-gray-700">{{ paciente().apellidos }}, {{ paciente().nombres }}</span>
-                ({{ paciente()?.sexo }} - {{ calcularEdad(paciente()?.fechaNacimiento) }} años)
-              </p>
+            <div class="flex items-center gap-4">
+              <button type="button" (click)="cancelar()" 
+                      class="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-gray-400 hover:text-red-600 hover:shadow-md transition-all border border-gray-100 shadow-sm group">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+              <div>
+                <h1 class="text-2xl font-bold text-gray-900 leading-tight">Nueva Consulta</h1>
+                <p class="text-sm text-gray-500" *ngIf="paciente()">
+                  Paciente: <span class="font-semibold text-gray-700">{{ paciente().apellidos }}, {{ paciente().nombres }}</span>
+                  ({{ paciente()?.sexo?.nombre }} - {{ calcularEdad(paciente()?.fechaNacimiento) }} años)
+                </p>
+              </div>
             </div>
-            <button type="button" (click)="cancelar()" class="text-sm text-gray-400 hover:text-gray-600 font-medium">Cancelar</button>
           </div>
 
           <form [formGroup]="form" (ngSubmit)="guardar()" class="space-y-6 max-w-4xl mx-auto">
@@ -541,6 +556,64 @@ import { GeoService } from '../../../../core/services/geo.service';
                               {{ campo.etiqueta }}<span *ngIf="campo.requerido" class="text-red-500 ml-0.5">*</span>
                             </label>
                           </ng-container>
+                          <!-- Odontograma (Campo Especial) -->
+                          <div *ngIf="campo.tipo === 'ODONTOGRAMA'" class="col-span-full py-4">
+                            <div class="flex items-center justify-between mb-4">
+                              <label class="block text-[10px] font-black text-blue-500 uppercase tracking-[0.2em] text-center flex-1">{{ campo.etiqueta }}</label>
+                              <div *ngIf="registrosProcesados() > 0" class="flex items-center gap-2 px-3 py-1 bg-green-50 text-green-600 rounded-full border border-green-100 shadow-sm animate-pulse">
+                                <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
+                                <span class="text-[9px] font-bold uppercase tracking-widest">Historial Consolidado ({{ registrosProcesados() }} registros)</span>
+                              </div>
+                            </div>
+                            <app-odontograma 
+                              [initialData]="respuestaDinamica[campo.clave] ? JSON.parse(respuestaDinamica[campo.clave]) : []"
+                              (dataChanged)="actualizarDatosOdontograma(campo.clave, $event)">
+                            </app-odontograma>
+
+                            <!-- Historial de Hallazgos Previos (Tabla Detalle) -->
+                            <div *ngIf="hallazgosCompletos().length > 0" class="mt-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                              <div class="flex items-center gap-3 mb-4">
+                                <div class="w-8 h-8 rounded-xl bg-amber-50 flex items-center justify-center border border-amber-100">
+                                  <svg class="w-4 h-4 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                  </svg>
+                                </div>
+                                <h4 class="text-[10px] font-black text-gray-500 uppercase tracking-[0.2em]">Resumen de Hallazgos e Intervenciones</h4>
+                              </div>
+
+                              <div class="bg-gray-50/50 rounded-[2.5rem] border border-gray-100 overflow-hidden">
+                                <div class="overflow-x-auto custom-scrollbar">
+                                  <table class="w-full text-left border-collapse">
+                                    <thead>
+                                      <tr class="border-b border-gray-100">
+                                        <th class="px-6 py-4 text-[9px] font-black text-gray-400 uppercase tracking-widest">Fecha</th>
+                                        <th class="px-6 py-4 text-[9px] font-black text-gray-400 uppercase tracking-widest">Pieza</th>
+                                        <th class="px-6 py-4 text-[9px] font-black text-gray-400 uppercase tracking-widest">Hallazgo / Estado</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-50">
+                                      <tr *ngFor="let h of hallazgosCompletos().slice(0, 15)" class="hover:bg-white transition-colors">
+                                        <td class="px-6 py-3">
+                                          <div class="flex flex-col">
+                                            <span class="text-[11px] font-bold text-gray-500">{{ h.fecha | date:'dd/MM/yyyy':'UTC' }}</span>
+                                            <span *ngIf="h.fecha.toDateString() === hoy.toDateString()" class="text-[8px] font-black text-green-500 uppercase tracking-tighter">Realizado Hoy</span>
+                                          </div>
+                                        </td>
+                                        <td class="px-6 py-3">
+                                          <span [class]="getColorPieza(h.hallazgo).bg + ' ' + getColorPieza(h.hallazgo).text" 
+                                                class="inline-flex items-center justify-center w-6 h-6 rounded-lg text-[10px] font-black transition-transform hover:scale-110">
+                                            {{ h.pieza }}
+                                          </span>
+                                        </td>
+                                        <td class="px-6 py-3 text-[11px] text-gray-700 font-medium">{{ h.hallazgo }}</td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
                           <input *ngIf="campo.tipo === 'TEXTO'"
                                  type="text" [placeholder]="campo.placeholder || ''"
                                  [(ngModel)]="respuestaDinamica[campo.clave]" [ngModelOptions]="{standalone: true}"
@@ -1553,7 +1626,7 @@ import { GeoService } from '../../../../core/services/geo.service';
                       <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
                       </div>
-                      Dr. {{ h.medico.nombres }} {{ h.medico.apellidos }}
+                      {{ h.medico.nombres }} {{ h.medico.apellidos }}
                     </div>
                     <div *ngIf="h.medico.establecimiento" class="flex items-center gap-2">
                       <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
@@ -1681,11 +1754,46 @@ import { GeoService } from '../../../../core/services/geo.service';
                     <div *ngFor="let sec of h.respuestaFormulario.plantilla.secciones" class="space-y-4">
                       <h4 class="text-xs font-black text-gray-400 uppercase tracking-widest border-b border-gray-50 pb-2">{{ sec.nombre }}</h4>
                       <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
-                        <div *ngFor="let campo of sec.campos">
-                          <ng-container *ngIf="campo.tipo !== 'TITULO' && campo.tipo !== 'SEPARADOR' && h.respuestaFormulario.respuestas[campo.clave] !== undefined && h.respuestaFormulario.respuestas[campo.clave] !== ''">
+                        <div *ngFor="let campo of sec.campos" [class.col-span-full]="campo.tipo === 'ODONTOGRAMA'">
+                          <ng-container *ngIf="campo.tipo !== 'TITULO' && campo.tipo !== 'SEPARADOR'">
                             <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">{{ campo.etiqueta }}</p>
-                            <div class="text-sm text-gray-800 leading-relaxed bg-gray-50/50 p-3 rounded-2xl border border-gray-100/50">
-                              {{ h.respuestaFormulario.respuestas[campo.clave] }}
+                            <div [class]="campo.tipo !== 'ODONTOGRAMA' ? 'p-3 bg-gray-50/50 rounded-2xl border' : ''" 
+                                 class="text-sm text-gray-800 leading-relaxed border-gray-100/50">
+                              <ng-container *ngIf="campo.tipo !== 'ODONTOGRAMA'">
+                                {{ formatRespuesta(h.respuestaFormulario.respuestas[campo.clave]) }}
+                              </ng-container>
+                              <app-odontograma *ngIf="campo.tipo === 'ODONTOGRAMA'"
+                                [readonly]="true"
+                                [initialData]="parseOdontoData(extraerMapaOdonto(h.respuestaFormulario.respuestas, campo.clave))">
+                              </app-odontograma>
+
+                               <!-- Tabla de hallazgos para consulta histórica -->
+                               <div *ngIf="campo.tipo === 'ODONTOGRAMA' && calcularHistorialHasta(h).length > 0" class="mt-6 border-t border-gray-100 pt-6">
+                                 <h5 class="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-3">Antecedentes y Hallazgos a esta fecha:</h5>
+                                 <div class="bg-gray-50/50 rounded-3xl border border-gray-100 overflow-hidden">
+                                   <table class="w-full text-left">
+                                     <thead>
+                                       <tr class="bg-gray-100/50 border-b border-gray-100">
+                                         <th class="px-4 py-2 text-[8px] font-black text-gray-400 uppercase tracking-widest">Fecha</th>
+                                         <th class="px-4 py-2 text-[8px] font-black text-gray-400 uppercase tracking-widest">Pieza</th>
+                                         <th class="px-4 py-2 text-[8px] font-black text-gray-400 uppercase tracking-widest">Hallazgo</th>
+                                       </tr>
+                                     </thead>
+                                     <tbody class="divide-y divide-gray-100">
+                                       <tr *ngFor="let hall of calcularHistorialHasta(h).slice(0, 10)" class="text-[10px]">
+                                         <td class="px-4 py-2 text-gray-500 font-bold">{{ hall.fecha | date:'dd/MM/yyyy':'UTC' }}</td>
+                                         <td class="px-4 py-2 text-blue-700 font-black">
+                                           <span [class]="getColorPieza(hall.hallazgo).bg + ' ' + getColorPieza(hall.hallazgo).text" 
+                                                 class="inline-flex items-center justify-center w-6 h-6 rounded-lg text-[10px] font-black">
+                                             {{ hall.pieza }}
+                                           </span>
+                                         </td>
+                                         <td class="px-4 py-2 text-gray-600 font-medium">{{ hall.hallazgo }}</td>
+                                       </tr>
+                                     </tbody>
+                                   </table>
+                                 </div>
+                               </div>
                             </div>
                           </ng-container>
                         </div>
@@ -1803,7 +1911,7 @@ import { GeoService } from '../../../../core/services/geo.service';
                       <!-- Espacio para firma -->
                       <div class="w-48 h-px bg-gray-300"></div>
                     </div>
-                    <p class="text-sm font-black text-gray-900 leading-tight uppercase">Dr. {{ h.medico.nombres }} {{ h.medico.apellidos }}</p>
+                    <p class="text-sm font-black text-gray-900 leading-tight uppercase">{{ h.medico.nombres }} {{ h.medico.apellidos }}</p>
                     <p class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.1em] mt-1">Médico Colegiado: {{ h.medico.numeroColegiado || '—' }}</p>
                   </div>
                 </div>
@@ -1883,9 +1991,15 @@ import { GeoService } from '../../../../core/services/geo.service';
               </div>
             </div>
             
-            <div class="flex items-center gap-2 p-3 bg-amber-50 text-amber-800 rounded-xl border border-amber-100 mb-2">
+            <!-- Alerta dinámica de coordenadas -->
+            <div *ngIf="!paciente()?.latitud" class="flex items-center gap-2 p-3 bg-red-50 text-red-800 rounded-xl border border-red-100 mb-2 animate-pulse">
               <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-              <p class="text-[10px] font-bold uppercase tracking-tight">Importante: Capture las coordenadas de la VIVIENDA del paciente, no las del establecimiento.</p>
+              <p class="text-[10px] font-bold uppercase tracking-tight">Atención: El paciente no cuenta con georreferenciación previa. Debe registrarla usted en este momento.</p>
+            </div>
+            
+            <div *ngIf="paciente()?.latitud" class="flex items-center gap-2 p-3 bg-green-50 text-green-800 rounded-xl border border-green-100 mb-2">
+              <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              <p class="text-[10px] font-bold uppercase tracking-tight">Ubicación cargada automáticamente desde el expediente del paciente.</p>
             </div>
 
             <!-- Mapa Interactivo -->
@@ -2024,7 +2138,7 @@ import { GeoService } from '../../../../core/services/geo.service';
             <select formControlName="medicoId"
                     class="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-bold text-slate-700 focus:bg-white focus:ring-4 focus:ring-indigo-100 focus:border-indigo-400 transition-all outline-none appearance-none disabled:opacity-70 disabled:cursor-not-allowed">
               <option [ngValue]="null">Seleccione médico...</option>
-              <option *ngFor="let med of medicosCentroList()" [ngValue]="med.id">Dr. {{ med.nombres }} {{ med.apellidos }}</option>
+              <option *ngFor="let med of medicosCentroList()" [ngValue]="med.id">{{ med.nombres }} {{ med.apellidos }}</option>
             </select>
           </div>
 
@@ -2074,6 +2188,7 @@ import { GeoService } from '../../../../core/services/geo.service';
           </button>
         </div>
       </div>
+    </div>
 
 
   `
@@ -2100,6 +2215,7 @@ export class NuevaConsultaComponent implements OnInit {
   paciente            = signal<any>(null);
   plantilla             = signal<any>(null);
   respuestaDinamica: Record<string, any> = {};
+  JSON = JSON;
   
   private map?: L.Map;
   private mapMarker?: L.Marker;
@@ -2121,6 +2237,15 @@ export class NuevaConsultaComponent implements OnInit {
   cargandoHistorial = signal(false);
   detalleAbierto    = signal<number | null>(null);
   vistaHistorial    = signal<HistoriaClinica | null>(null);
+  historialHallazgos = signal<{pieza: number, hallazgo: string, fecha: Date}[]>([]);
+  hallazgosHoy = signal<{pieza: number, hallazgo: string, fecha: Date}[]>([]);
+  odontogramaInicial = signal<DienteEstado[]>([]);
+  registrosProcesados = signal<number>(0);
+  hoy = new Date();
+
+  hallazgosCompletos = computed(() => {
+    return [...this.hallazgosHoy(), ...this.historialHallazgos()];
+  });
 
   sugerencias = signal<Record<number, CatDiagnostico[]>>({});
   modalCIE    = signal(false);
@@ -2416,6 +2541,11 @@ export class NuevaConsultaComponent implements OnInit {
           const p = res?.data ?? res;
           this.plantilla.set(p);
           this.form.patchValue({ plantillaId: p.id });
+          // Si el historial ya cargó, pre-llenar y consolidar
+          if (this.historial().length > 0) {
+            this.prellenarDesdeUltimaConsulta(this.historial());
+            this.consolidarOdontograma(this.historial());
+          }
         },
         error: () => {},
       });
@@ -2444,8 +2574,11 @@ export class NuevaConsultaComponent implements OnInit {
     this.cargandoHistorial.set(true);
     this.svc.listarPorPaciente(pid).subscribe({
       next: (res: any) => {
-        this.historial.set(res.data ?? res ?? []);
+        const h = res.data ?? res ?? [];
+        this.historial.set(h);
         this.cargandoHistorial.set(false);
+        this.prellenarDesdeUltimaConsulta(h);
+        this.consolidarOdontograma(h);
       },
       error: () => {
         this.historial.set([]);
@@ -2780,6 +2913,340 @@ export class NuevaConsultaComponent implements OnInit {
     plan: 'Plan (P)',
   };
 
+  actualizarDatosOdontograma(clave: string, data: DienteEstado[]) {
+    this.respuestaDinamica[clave] = JSON.stringify(data);
+    this.respuestaDinamica = { ...this.respuestaDinamica };
+    
+    // Calcular hallazgos realizados HOY comparando con el estado inicial consolidado
+    // Siguiendo la REGLA DE ORO: Guardar hora local como si fuera UTC literal
+    const inicial = this.odontogramaInicial();
+    const hoy: {pieza: number, hallazgo: string, fecha: Date}[] = [];
+    
+    const d = new Date();
+    const pad = (n: number) => n.toString().padStart(2, '0');
+    const base = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+    const fechaHoyLiteral = new Date(base + 'Z');
+
+    if (inicial.length > 0) {
+      data.forEach((d: DienteEstado) => {
+        const dIni = inicial.find(t => t.id === d.id);
+        if (dIni) {
+          // Comparar caras
+          (Object.keys(d.caras) as (keyof DienteEstado['caras'])[]).forEach(cara => {
+            const estAct = d.caras[cara].estado;
+            const estIni = dIni.caras[cara].estado;
+            if (estAct !== estIni && estAct !== 'NORMAL') {
+              const label = estAct === 'CARIES' ? 'Caries' : (estAct === 'OBTURADO' ? 'Obturación' : 'Restauración');
+              hoy.push({ pieza: d.id, hallazgo: `${label} (${cara})`, fecha: fechaHoyLiteral });
+            }
+          });
+          // Comparar estados generales
+          if (d.ausente && !dIni.ausente) hoy.push({ pieza: d.id, hallazgo: 'Pieza Ausente', fecha: fechaHoyLiteral });
+          if (d.corona && !dIni.corona) hoy.push({ pieza: d.id, hallazgo: 'Corona colocada', fecha: fechaHoyLiteral });
+          if (d.implante && !dIni.implante) hoy.push({ pieza: d.id, hallazgo: 'Implante colocado', fecha: fechaHoyLiteral });
+          if (d.brakets && !dIni.brakets) hoy.push({ pieza: d.id, hallazgo: 'Brackets colocados', fecha: fechaHoyLiteral });
+        }
+      });
+    }
+    this.hallazgosHoy.set(hoy);
+  }
+
+  consolidarOdontograma(historial: HistoriaClinica[]) {
+    if (!historial || historial.length === 0) return;
+
+    // 1. Identificar la clave del campo de odontograma en la plantilla actual
+    const p = this.plantilla();
+    let claveOdonto = 'odontograma_map'; // Valor por defecto
+    if (p) {
+      for (const sec of p.secciones) {
+        const campo = sec.campos.find((c: any) => c.tipo === 'ODONTOGRAMA');
+        if (campo) {
+          claveOdonto = campo.clave;
+          break;
+        }
+      }
+    }
+
+    // 2. Ordenar historial por fecha ascendente
+    const ordenado = [...historial].sort((a, b) => new Date(a.fecha).getTime() - new Date(b.fecha).getTime());
+    
+    let odontogramaConsolidado: DienteEstado[] = [];
+    const hallazgos: {pieza: number, hallazgo: string, fecha: Date}[] = [];
+
+    ordenado.forEach(h => {
+      let respuestas = h.respuestaFormulario?.respuestas || {};
+      // Si respuestas es un string (sucede a veces según el ORM), intentar parsear
+      if (typeof respuestas === 'string') {
+        try { respuestas = JSON.parse(respuestas); } catch(e) { respuestas = {}; }
+      }
+
+      const resp = this.extraerMapaOdonto(respuestas, claveOdonto);
+      
+      if (resp) {
+        this.registrosProcesados.update(n => n + 1);
+        try {
+          const dataSesion: DienteEstado[] = typeof resp === 'string' ? JSON.parse(resp) : resp;
+          
+          // Inicializar con un estado base si está vacío
+          if (odontogramaConsolidado.length === 0) {
+            // Creamos un odontograma base de 32 dientes NORMAL
+            const base: DienteEstado[] = [];
+            const ids = [18,17,16,15,14,13,12,11,21,22,23,24,25,26,27,28,48,47,46,45,44,43,42,41,31,32,33,34,35,36,37,38];
+            ids.forEach(id => {
+              base.push({
+                id,
+                caras: {
+                  superior: { estado: 'NORMAL' }, inferior: { estado: 'NORMAL' },
+                  izquierda: { estado: 'NORMAL' }, derecha: { estado: 'NORMAL' }, centro: { estado: 'NORMAL' }
+                },
+                ausente: false, protesis: false, corona: false, implante: false, brakets: false
+              });
+            });
+            odontogramaConsolidado = base;
+          }
+
+          // Consolidar y registrar hallazgos (para todos los registros)
+          dataSesion.forEach(dSesion => {
+            const idx = odontogramaConsolidado.findIndex(d => d.id === dSesion.id);
+            if (idx !== -1) {
+              const dCons = odontogramaConsolidado[idx];
+              
+              // Caras
+              (Object.keys(dSesion.caras) as (keyof DienteEstado['caras'])[]).forEach(cara => {
+                const estSesion = dSesion.caras[cara].estado;
+                const estAnterior = dCons.caras[cara].estado;
+                
+                // Solo registrar si es un hallazgo nuevo o cambio respecto al estado consolidado previo
+                if (estSesion !== 'NORMAL' && estSesion !== estAnterior) {
+                  const label = estSesion === 'CARIES' ? 'Caries' : (estSesion === 'OBTURADO' ? 'Obturación' : 'Restauración');
+                  hallazgos.push({ pieza: dSesion.id, hallazgo: `${label} (${cara})`, fecha: new Date(h.fecha) });
+                }
+                
+                // Actualizar consolidado (siempre el último estado gana)
+                dCons.caras[cara].estado = estSesion;
+              });
+
+              // Estados generales (Solo registrar si cambian de false a true en esta sesión)
+              if (dSesion.ausente && !dCons.ausente) {
+                dCons.ausente = true;
+                hallazgos.push({ pieza: dSesion.id, hallazgo: 'Pieza Ausente', fecha: new Date(h.fecha) });
+              }
+              if (dSesion.corona && !dCons.corona) {
+                dCons.corona = true;
+                hallazgos.push({ pieza: dSesion.id, hallazgo: 'Corona', fecha: new Date(h.fecha) });
+              }
+              if (dSesion.implante && !dCons.implante) {
+                dCons.implante = true;
+                hallazgos.push({ pieza: dSesion.id, hallazgo: 'Implante', fecha: new Date(h.fecha) });
+              }
+              if (dSesion.brakets && !dCons.brakets) {
+                dCons.brakets = true;
+                hallazgos.push({ pieza: dSesion.id, hallazgo: 'Brackets', fecha: new Date(h.fecha) });
+              }
+            }
+          });
+        } catch (e) {
+          console.error('Error parseando odontograma histórico', e);
+        }
+      }
+    });
+
+    if (odontogramaConsolidado.length > 0) {
+      this.respuestaDinamica[claveOdonto] = JSON.stringify(odontogramaConsolidado);
+      // Guardar copia del estado inicial para detectar cambios hoy
+      this.odontogramaInicial.set(JSON.parse(JSON.stringify(odontogramaConsolidado)));
+      
+      // Forzar actualización de la referencia para que Angular detecte el cambio en el input
+      this.respuestaDinamica = { ...this.respuestaDinamica };
+      
+      // Ordenar hallazgos por fecha descendente (más reciente primero) para la tabla
+      this.historialHallazgos.set(hallazgos.sort((a, b) => b.fecha.getTime() - a.fecha.getTime()));
+    } else {
+      // Si no hay historia, el inicial es un odontograma limpio (esto debería venir de una función)
+      // Por ahora, si no hay historia, no hay odontogramaConsolidado
+    }
+  }
+
+  /**
+   * Re-calcula la línea del tiempo dental hasta una consulta específica.
+   * Útil para mostrar el estado histórico en resúmenes pasados.
+   */
+  calcularHistorialHasta(h: HistoriaClinica): {pieza: number, hallazgo: string, fecha: Date}[] {
+    const todos = this.historial();
+    if (!todos || todos.length === 0) return [];
+    
+    // Filtrar consultas iguales o anteriores a la fecha de h
+    const fechaLimite = h.fecha ? new Date(h.fecha).getTime() : 0;
+    const previas = todos.filter(t => t.fecha && new Date(t.fecha).getTime() <= fechaLimite);
+    
+    // Realizar una mini-consolidación para obtener los hallazgos en ese punto del tiempo
+    const ordenado = [...previas].sort((a, b) => new Date(a.fecha).getTime() - new Date(b.fecha).getTime());
+    
+    let odontogramaConsolidado: DienteEstado[] = [];
+    const hallazgos: {pieza: number, hallazgo: string, fecha: Date}[] = [];
+
+    ordenado.forEach(sess => {
+      let respuestas = sess.respuestaFormulario?.respuestas || {};
+      if (typeof respuestas === 'string') { try { respuestas = JSON.parse(respuestas); } catch(e) {} }
+      const resp = this.extraerMapaOdonto(respuestas, 'odontograma_map');
+      if (resp) {
+        try {
+          const dataSesion: DienteEstado[] = typeof resp === 'string' ? JSON.parse(resp) : resp;
+          
+          if (odontogramaConsolidado.length === 0) {
+            // Inicializar con base NORMAL de 32 dientes
+            const ids = [18,17,16,15,14,13,12,11,21,22,23,24,25,26,27,28,48,47,46,45,44,43,42,41,31,32,33,34,35,36,37,38];
+            odontogramaConsolidado = ids.map(id => ({
+              id,
+              caras: { superior: {estado:'NORMAL'}, inferior:{estado:'NORMAL'}, izquierda:{estado:'NORMAL'}, derecha:{estado:'NORMAL'}, centro:{estado:'NORMAL'} },
+              ausente:false, protesis:false, corona:false, implante:false, brakets:false
+            }));
+          }
+
+          dataSesion.forEach(dSesion => {
+            const dCons = odontogramaConsolidado.find(d => d.id === dSesion.id);
+            if (dCons) {
+              (Object.keys(dSesion.caras) as (keyof DienteEstado['caras'])[]).forEach(cara => {
+                const estSesion = dSesion.caras[cara].estado;
+                const estAnterior = dCons.caras[cara].estado;
+                if (estSesion !== 'NORMAL' && estSesion !== estAnterior) {
+                  const label = estSesion === 'CARIES' ? 'Caries' : (estSesion === 'OBTURADO' ? 'Obturación' : 'Restauración');
+                  hallazgos.push({ pieza: dSesion.id, hallazgo: `${label} (${cara})`, fecha: new Date(sess.fecha) });
+                }
+                dCons.caras[cara].estado = estSesion;
+              });
+              if (dSesion.ausente && !dCons.ausente) { dCons.ausente = true; hallazgos.push({ pieza: dSesion.id, hallazgo: 'Pieza Ausente', fecha: new Date(sess.fecha) }); }
+              if (dSesion.corona && !dCons.corona) { dCons.corona = true; hallazgos.push({ pieza: dSesion.id, hallazgo: 'Corona', fecha: new Date(sess.fecha) }); }
+              if (dSesion.implante && !dCons.implante) { dCons.implante = true; hallazgos.push({ pieza: dSesion.id, hallazgo: 'Implante', fecha: new Date(sess.fecha) }); }
+              if (dSesion.brakets && !dCons.brakets) { dCons.brakets = true; hallazgos.push({ pieza: dSesion.id, hallazgo: 'Brackets', fecha: new Date(sess.fecha) }); }
+            }
+          });
+        } catch(e) {}
+      }
+    });
+
+    return hallazgos.sort((a, b) => b.fecha.getTime() - a.fecha.getTime());
+  }
+
+  /**
+   * Extrae los datos del odontograma de un objeto de respuestas,
+   * intentando primero con la clave sugerida y luego buscando patrones conocidos.
+   */
+  extraerMapaOdonto(respuestas: any, claveSugerida: string): any {
+    if (!respuestas) return null;
+    
+    // Si respuestas es un string, parsear primero
+    let obj = respuestas;
+    if (typeof respuestas === 'string') {
+      try { obj = JSON.parse(respuestas); } catch(e) { return null; }
+    }
+    
+    // 1. Intentar con la clave sugerida
+    if (obj[claveSugerida]) return obj[claveSugerida];
+    
+    // 2. Buscar cualquier clave que parezca un odontograma
+    for (const k in obj) {
+      const val = obj[k];
+      if (!val) continue;
+
+      let testVal = val;
+      // Si es string, intentar parsear para ver si es un array de dientes
+      if (typeof val === 'string' && (val.includes('"caras"') || val.includes('"id"'))) {
+        try { testVal = JSON.parse(val); } catch(e) {}
+      }
+      
+      // Si ya es un objeto/array, verificar estructura
+      if (Array.isArray(testVal) && testVal.length > 0) {
+        if (testVal[0].caras || testVal[0].id !== undefined) {
+          return val; // Retornamos el valor original para que el llamador lo procese
+        }
+      }
+    }
+    return null;
+  }
+
+  parseOdontoData(data: any): DienteEstado[] {
+    if (!data) return [];
+    try {
+      return typeof data === 'string' ? JSON.parse(data) : data;
+    } catch (e) {
+      return [];
+    }
+  }
+
+  formatRespuesta(valor: any): string {
+    if (valor === true || valor === 'true') return 'SÍ';
+    if (valor === false || valor === 'false') return 'NO';
+    if (valor === undefined || valor === null || valor === '') return '—';
+    return String(valor);
+  }
+
+  getColorPieza(hallazgo: string): { bg: string, text: string } {
+    const h = hallazgo.toLowerCase();
+    if (h.includes('caries')) return { bg: 'bg-red-100', text: 'text-red-700' };
+    if (h.includes('obturación') || h.includes('restauración')) return { bg: 'bg-emerald-100', text: 'text-emerald-700' };
+    if (h.includes('ausente')) return { bg: 'bg-gray-100', text: 'text-gray-700' };
+    if (h.includes('corona')) return { bg: 'bg-orange-100', text: 'text-orange-700' };
+    if (h.includes('implante')) return { bg: 'bg-slate-200', text: 'text-slate-700' };
+    if (h.includes('brackets')) return { bg: 'bg-indigo-100', text: 'text-indigo-700' };
+    return { bg: 'bg-blue-100', text: 'text-blue-700' };
+  }
+
+  /**
+   * Pre-llena el formulario dinámico con los valores de la última consulta realizada que contenga un formulario.
+   */
+  prellenarDesdeUltimaConsulta(historial: HistoriaClinica[]) {
+    if (!historial || historial.length === 0) return;
+
+    // Buscar la consulta más reciente que TENGA respuestas en su formulario
+    // (Ignoramos consultas que no usaron formularios dinámicos)
+    const ultimaConRespuestas = [...historial]
+      .sort((a, b) => new Date(b.fecha).getTime() - new Date(a.fecha).getTime())
+      .find(h => {
+        const r = h.respuestaFormulario?.respuestas;
+        if (!r) return false;
+        // Si es un string, verificar que no sea un objeto vacío "{}"
+        if (typeof r === 'string') return r.length > 2;
+        // Si es objeto, verificar que tenga claves
+        return Object.keys(r).length > 0;
+      });
+    
+    if (ultimaConRespuestas && ultimaConRespuestas.respuestaFormulario?.respuestas) {
+      let respuestas = ultimaConRespuestas.respuestaFormulario.respuestas;
+      if (typeof respuestas === 'string') {
+        try { respuestas = JSON.parse(respuestas); } catch(e) { respuestas = {}; }
+      }
+
+      console.log('Pre-llenando formulario desde consulta del:', ultimaConRespuestas.fecha);
+
+      // Copiar valores al formulario actual
+      for (const key in respuestas) {
+        const valor = respuestas[key];
+        
+        // Regla: Solo copiamos si el campo actual está vacío para no sobreescribir triaje o cambios manuales
+        // Y evitamos el mapa odontológico que tiene su propia lógica de consolidación
+        if (!this.esMapaOdontograma(valor)) {
+          // Si el valor es 'true' o 'false' como string (común en base de datos), convertir a booleano real
+          let valorLimpio = valor;
+          if (valor === 'true') valorLimpio = true;
+          if (valor === 'false') valorLimpio = false;
+
+          this.respuestaDinamica[key] = valorLimpio;
+        }
+      }
+      this.respuestaDinamica = { ...this.respuestaDinamica };
+    }
+  }
+
+  esMapaOdontograma(valor: any): boolean {
+    if (!valor) return false;
+    let test = valor;
+    if (typeof valor === 'string' && (valor.includes('"caras"') || valor.includes('"id"'))) {
+      try { test = JSON.parse(valor); } catch(e) { return false; }
+    }
+    return Array.isArray(test) && test.length > 0 && (test[0].caras || test[0].id !== undefined);
+  }
+
   constructor() {}
 
   getClasificacionIMC(imcStr: string, fechaNacimiento?: string): { label: string, textColor: string, bgColor: string } | null {
@@ -2803,7 +3270,11 @@ export class NuevaConsultaComponent implements OnInit {
     console.log('Datos de historia para PDF:', h);
     
     try {
-      const url = await this.pdfSvc.generarConsultaPdfUrl(h);
+      // Si es una consulta nueva (sin ID), usamos hallazgosCompletos()
+      // Si es una consulta del historial, calculamos el historial hasta esa fecha
+      const hallazgosParaPdf = (!h.id || h.id === 0) ? this.hallazgosCompletos() : this.calcularHistorialHasta(h);
+      
+      const url = await this.pdfSvc.generarConsultaPdfUrl(h, hallazgosParaPdf);
       this.pdfUrl.set(this.sanitizer.bypassSecurityTrustResourceUrl(url));
       this.vistaModo.set('PDF');
     } catch (error) {
@@ -2912,7 +3383,20 @@ export class NuevaConsultaComponent implements OnInit {
           fechaInicioSintomas: DateUtils.getHoyString(),
           direccionDetallada: p ? `${p.direccion || ''} ${p.comunidad ? '(' + p.comunidad + ')' : ''}`.trim() : ''
         } as any);
-        this.obtenerUbicacion();
+
+        // REQUERIMIENTO: Obtener ubicación del perfil del paciente si existe
+        if (p?.latitud && p?.longitud) {
+          const lat = parseFloat(p.latitud);
+          const lng = parseFloat(p.longitud);
+          this.notificacionEpiGroup.patchValue({
+            latitud: lat,
+            longitud: lng
+          } as any);
+          this.actualizarMapa(lat, lng);
+          this.notification.info('Ubicación cargada automáticamente desde el perfil del paciente');
+        } else {
+          this.notification.warn('El paciente no tiene coordenadas registradas. Por favor, ubique el domicilio en el mapa.');
+        }
       }
       
       this.mostrarFichaEpi.set(true);
@@ -3108,6 +3592,25 @@ export class NuevaConsultaComponent implements OnInit {
       this.notification.error('Complete los campos requeridos del formulario de especialidad.');
       return;
     }
+
+    // Validación específica para Odontología
+    if (this.plantilla()?.especialidad?.codigo === 'ODON') {
+      const odonData = this.respuestaDinamica['odontograma_map'];
+      if (odonData) {
+        try {
+          const parsed = JSON.parse(odonData);
+          const tieneHallazgos = parsed.some((d: any) => 
+            d.ausente || 
+            Object.values(d.caras).some((c: any) => c.estado !== 'NORMAL')
+          );
+          
+          if (!tieneHallazgos) {
+            this.notification.warn('No ha registrado hallazgos en el odontograma. Asegúrese de marcar caries, obturaciones o ausencias si corresponde.');
+          }
+        } catch (e) {}
+      }
+    }
+
     this.confirmarFinalizacion.set(true);
   }
 
@@ -3279,7 +3782,7 @@ export class NuevaConsultaComponent implements OnInit {
           url = await this.pdfSvc.generarRemisionPdfUrl(data, formato);
           break;
         case 'CONSULTA':
-          url = await this.pdfSvc.generarConsultaPdfUrl(data);
+          url = await this.pdfSvc.generarConsultaPdfUrl(data, this.historialHallazgos());
           break;
       }
 

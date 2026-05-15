@@ -9,6 +9,7 @@ import { DateUtils } from '../../core/utils/date-utils';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ReportePdfService } from '../../core/services/reporte-pdf.service';
 import { NotificationService } from '../../core/services/notification.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-historia-clinica',
@@ -51,6 +52,7 @@ export class HistoriaClinicaComponent implements OnInit {
   datosGuardados = signal<any>(null);
 
   ngOnInit() {
+    console.log('[HC] Componente cargado - v-debug-1');
     const pid = history.state?.pacienteId as number | undefined;
     if (pid) {
       this.pacienteId.set(pid);
@@ -209,25 +211,43 @@ export class HistoriaClinicaComponent implements OnInit {
     this.router.navigate(['/historia-clinica']);
   }
 
-  marcarNoAsistio(cita: any) {
-    this.confirmarCitaNoAsistio.set(cita);
-  }
+  marcarNoAsistio(cita: any, event: Event) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
 
-  ejecutarNoAsistio() {
-    const cita = this.confirmarCitaNoAsistio();
-    if (!cita) return;
-
-    this.procesandoNoAsistio.set(true);
-    this.citasSvc.marcarNoAsistio(cita.id).subscribe({
-      next: () => {
-        this.ns.success('Cita marcada como no asistió');
-        this.confirmarCitaNoAsistio.set(null);
-        this.procesandoNoAsistio.set(false);
-        this.cargarAgenda();
-      },
-      error: () => {
-        this.ns.error('Error al actualizar el estado de la cita');
-        this.procesandoNoAsistio.set(false);
+    Swal.fire({
+      title: '¿Confirmar inasistencia?',
+      text: `Se marcará la cita de ${cita.paciente.nombres} como "No Asistió". Esta acción no se puede deshacer.`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#ea580c',
+      cancelButtonColor: '#6b7280',
+      confirmButtonText: 'Sí, marcar como No Asistió',
+      cancelButtonText: 'Cancelar',
+      reverseButtons: true,
+      backdrop: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.procesandoNoAsistio.set(true);
+        this.citasSvc.marcarNoAsistio(cita.id).subscribe({
+          next: () => {
+            Swal.fire({
+              title: '¡Actualizado!',
+              text: 'La cita ha sido marcada como No Asistió.',
+              icon: 'success',
+              timer: 2000,
+              showConfirmButton: false
+            });
+            this.cargarAgenda();
+            this.procesandoNoAsistio.set(false);
+          },
+          error: (err) => {
+            Swal.fire('Error', 'No se pudo actualizar la cita: ' + (err.message || 'Error desconocido'), 'error');
+            this.procesandoNoAsistio.set(false);
+          }
+        });
       }
     });
   }

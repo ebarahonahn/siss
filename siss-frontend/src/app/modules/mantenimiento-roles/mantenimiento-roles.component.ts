@@ -18,6 +18,7 @@ const MODULOS: ModuloPermiso[] = [
   { key: 'historia_clinica', label: 'Historia Clínica',  acciones: ['leer', 'crear', 'editar'] },
   { key: 'vacunacion',       label: 'Vacunación (PAI)',  acciones: ['leer', 'gestionar', 'editar', 'eliminar'] },
   { key: 'agendas',          label: 'Agendas Médicas',   acciones: ['leer', 'gestionar'] },
+  { key: 'control_prenatal', label: 'Control Prenatal',   acciones: ['leer', 'escribir', 'eliminar'] },
   
   // Servicios Clínicos
   { key: 'formularios',      label: 'Formularios',       acciones: ['leer', 'llenar', 'crear', 'editar'] },
@@ -41,7 +42,7 @@ const MODULOS: ModuloPermiso[] = [
 ];
 
 const CATEGORIAS = [
-  { nombre: 'Atención al Paciente',   keys: ['pacientes', 'citas', 'triaje', 'historia_clinica', 'vacunacion', 'agendas'] },
+  { nombre: 'Atención al Paciente',   keys: ['pacientes', 'citas', 'triaje', 'historia_clinica', 'vacunacion', 'agendas', 'control_prenatal'] },
   { nombre: 'Servicios Clínicos',      keys: ['formularios', 'recetas', 'laboratorio', 'radiologia', 'diagnosticos', 'farmacia'] },
   { nombre: 'Gestión Administrativa', keys: ['usuarios', 'inventario', 'medicamentos'] },
   { nombre: 'Configuración y Otros',  keys: ['especialidades', 'establecimientos', 'reportes', 'geo', 'catalogos'] },

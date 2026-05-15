@@ -17,11 +17,17 @@ import { Permissions } from '../../common/decorators/permissions.decorator';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 
 @Controller('citas')
-@UseGuards(JwtAuthGuard, PermissionsGuard)
+@UseGuards(JwtAuthGuard)
 export class CitasController {
   constructor(private readonly service: CitasService) {}
 
+  @Get('ping-status')
+  ping() {
+    return { status: 'online', timestamp: new Date().toISOString() };
+  }
+
   @Post()
+  @UseGuards(PermissionsGuard)
   @Permissions('citas:crear')
   crear(@Body() dto: CreateCitaDto, @CurrentUser() user: any) {
     const roles = user.rol ? [user.rol] : [];
@@ -30,6 +36,7 @@ export class CitasController {
   }
 
   @Get()
+  @UseGuards(PermissionsGuard)
   @Permissions('citas:leer')
   listar(@CurrentUser() user: any, @Query('fecha') fecha?: string) {
     // Pasamos el rol en un array para que el servicio pueda usar .includes()
@@ -38,18 +45,21 @@ export class CitasController {
   }
 
   @Patch(':id/cancelar')
+  @UseGuards(PermissionsGuard)
   @Permissions('citas:cancelar')
   cancelar(@Param('id', ParseIntPipe) id: number, @CurrentUser() user: any) {
     return this.service.cancelar(id, user.id);
   }
 
   @Patch(':id/no-asistio')
-  @Permissions('citas:editar')
+  @UseGuards(PermissionsGuard)
+  @Permissions('citas:cancelar')
   noAsistio(@Param('id', ParseIntPipe) id: number, @CurrentUser() user: any) {
     return this.service.noAsistio(id, user.id);
   }
 
   @Get('horario-disponible')
+  @UseGuards(PermissionsGuard)
   @Permissions('citas:leer')
   obtenerHorarioDisponible(
     @Query('medicoId', ParseIntPipe) medicoId: number,

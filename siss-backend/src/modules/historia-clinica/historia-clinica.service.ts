@@ -227,6 +227,24 @@ export class HistoriaClinicaService {
           },
         },
         diagnosticos: true,
+        controlPrenatal: {
+          select: {
+            id: true,
+            embarazoId: true,
+            semanasGestacion: true
+          }
+        },
+        respuestaFormulario: {
+          include: {
+            plantilla: {
+              include: {
+                secciones: {
+                  include: { campos: true }
+                }
+              }
+            }
+          }
+        }
       },
     });
   }

@@ -28,7 +28,10 @@ export class MantenimientoSolicitudesComponent implements OnInit {
   cargarSolicitudes() {
     this.solicitudesService.listar(this.filtro).subscribe({
       next: (data) => this.solicitudes = data,
-      error: (err) => this.notificationService.error('Error al cargar solicitudes')
+      error: (err) => {
+        const msg = err.error?.message || 'Error al cargar solicitudes';
+        this.notificationService.error(msg);
+      }
     });
   }
 
@@ -55,7 +58,10 @@ export class MantenimientoSolicitudesComponent implements OnInit {
         this.solicitudSeleccionada = null;
         this.cargarSolicitudes();
       },
-      error: (err) => this.notificationService.error('No se pudo procesar la solicitud')
+      error: (err) => {
+        const msg = err.error?.message || 'No se pudo procesar la solicitud';
+        this.notificationService.error(msg);
+      }
     });
   }
 }

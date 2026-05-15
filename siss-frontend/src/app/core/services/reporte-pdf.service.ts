@@ -7,7 +7,7 @@ import { HistoriaClinica } from './historia-clinica.service';
 })
 export class ReportePdfService {
 
-  async generarConsultaPdfUrl(h: HistoriaClinica): Promise<string> {
+  async generarConsultaPdfUrl(h: HistoriaClinica, odontogramaHistory?: any[]): Promise<string> {
     const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
     const margin = 20;
     const pageWidth = doc.internal.pageSize.getWidth();
@@ -119,18 +119,70 @@ export class ReportePdfService {
             // Mostrar siempre los booleanos (aunque sean false) para que salga el "NO"
             // Para otros tipos, solo mostrar si tienen valor
             if (campo.tipo === 'BOOLEANO' || (val !== undefined && val !== null && val !== '')) {
-              checkPageBreak(8);
-              doc.setFont('helvetica', 'bold'); doc.setFontSize(7); doc.setTextColor(100, 116, 139);
-              safeText(campo.etiqueta.toUpperCase(), margin, currentY);
-              doc.setFont('helvetica', 'normal'); doc.setFontSize(8); doc.setTextColor(15, 23, 42);
-              
-              let textoValor = String(val || '—');
-              if (campo.tipo === 'BOOLEANO') {
-                textoValor = val === true ? 'SÍ' : 'NO';
+              if (campo.tipo === 'ODONTOGRAMA') {
+                checkPageBreak(50);
+                doc.setFont('helvetica', 'bold'); doc.setFontSize(7); doc.setTextColor(100, 116, 139);
+                safeText(campo.etiqueta.toUpperCase(), margin, currentY);
+                currentY += 5;
+                try {
+                  const dataOdon = typeof val === 'string' ? JSON.parse(val) : val;
+                  this.renderOdontogramaPdf(doc, dataOdon, margin, currentY);
+                  currentY += 45; // Espacio que ocupa el gráfico
+
+                  // Renderizar historial de hallazgos si existe
+                  const history = odontogramaHistory || (h as any).odontogramaHistory;
+                  if (history && history.length > 0) {
+                    checkPageBreak(25);
+                    doc.setFont('helvetica', 'bold'); doc.setFontSize(8); doc.setTextColor(30, 58, 138);
+                    safeText('ANTECEDENTES Y HALLAZGOS PREVIOS:', margin, currentY);
+                    currentY += 6;
+                    
+                    doc.setFontSize(7); doc.setFont('helvetica', 'bold'); doc.setTextColor(100, 116, 139);
+                    safeText('FECHA', margin + 5, currentY);
+                    safeText('PIEZA', margin + 30, currentY);
+                    safeText('HALLAZGO / ESTADO', margin + 50, currentY);
+                    currentY += 4;
+                    doc.setDrawColor(241, 245, 249); doc.line(margin, currentY, margin + contentWidth, currentY);
+                    currentY += 4;
+
+                    history.slice(0, 15).forEach((hall: any) => {
+                      checkPageBreak(6);
+                      doc.setFont('helvetica', 'normal');
+                      
+                      // Aplicar color según el hallazgo para la pieza
+                      const color = this.getHallazgoColor(hall.hallazgo);
+                      doc.setTextColor(color.r, color.g, color.b);
+                      doc.setFont('helvetica', 'bold');
+                      safeText(String(hall.pieza), margin + 30, currentY);
+                      
+                      // Resto de la fila en gris oscuro normal
+                      doc.setTextColor(15, 23, 42);
+                      doc.setFont('helvetica', 'normal');
+                      safeText(this.formatDate(hall.fecha), margin + 5, currentY);
+                      safeText(hall.hallazgo, margin + 50, currentY);
+                      currentY += 5;
+                    });
+                    currentY += 5;
+                  }
+                } catch (e) {
+                  console.error('Error renderizando odontograma en PDF', e);
+                  safeText('[Error en datos de odontograma]', margin + 55, currentY);
+                  currentY += 6;
+                }
+              } else {
+                checkPageBreak(8);
+                doc.setFont('helvetica', 'bold'); doc.setFontSize(7); doc.setTextColor(100, 116, 139);
+                safeText(campo.etiqueta.toUpperCase(), margin, currentY);
+                doc.setFont('helvetica', 'normal'); doc.setFontSize(8); doc.setTextColor(15, 23, 42);
+                
+                let textoValor = String(val || '—');
+                if (campo.tipo === 'BOOLEANO') {
+                  textoValor = val === true ? 'SÍ' : 'NO';
+                }
+                
+                safeText(textoValor, margin + 55, currentY);
+                currentY += 6;
               }
-              
-              safeText(textoValor, margin + 55, currentY);
-              currentY += 6;
             }
           }
         }
@@ -730,6 +782,108 @@ export class ReportePdfService {
     return URL.createObjectURL(blob);
   }
 
+  private renderOdontogramaPdf(doc: jsPDF, data: any[], startX: number, startY: number) {
+    if (!data || !Array.isArray(data)) return;
+
+    const toothSize = 8;
+    const padding = 2;
+    const quadrantWidth = (toothSize + padding) * 8;
+    
+    const colors = {
+      NORMAL: [243, 244, 246],
+      CARIES: [239, 68, 68],
+      OBTURADO: [59, 130, 246],
+      RESTAURACION: [16, 185, 129]
+    };
+
+    const drawTooth = (id: number, x: number, y: number) => {
+      const d = data.find(t => t.id === id);
+      if (!d) return;
+
+      doc.setFontSize(5); doc.setTextColor(150, 150, 150);
+      doc.text(String(id), x + (toothSize / 2), y - 1, { align: 'center' });
+
+      if (d.ausente) {
+        doc.setDrawColor(239, 68, 68); doc.setLineWidth(0.2);
+        doc.line(x, y, x + toothSize, y + toothSize);
+        doc.line(x + toothSize, y, x, y + toothSize);
+        return;
+      }
+
+      if (d.corona) {
+        doc.setDrawColor(245, 158, 11); doc.setLineWidth(0.3);
+        (doc as any).roundedRect(x - 1, y - 1, toothSize + 2, toothSize + 2, 1, 1, 'S');
+      }
+
+      if (d.implante) {
+        doc.setDrawColor(100, 116, 139); doc.setLineWidth(0.5);
+        doc.line(x + (toothSize / 2), y + toothSize, x + (toothSize / 2), y + toothSize + 2);
+        doc.line(x + (toothSize / 2) - 2, y + toothSize + 2, x + (toothSize / 2) + 2, y + toothSize + 2);
+      }
+
+      if (d.brakets) {
+        doc.setDrawColor(99, 102, 241); doc.setLineWidth(0.2); // Indigo
+        doc.line(x, y + (toothSize / 2), x + toothSize, y + (toothSize / 2));
+        doc.setFillColor(99, 102, 241);
+        doc.rect(x + (toothSize / 2) - 1, y + (toothSize / 2) - 1, 2, 2, 'FD');
+      }
+
+      const drawFace = (face: string, points: number[][]) => {
+        const estado = d.caras[face].estado as keyof typeof colors;
+        const color = colors[estado] || colors.NORMAL;
+        doc.setFillColor(color[0], color[1], color[2]);
+        doc.setDrawColor(200, 200, 200); // Borde más suave
+        
+        if (face === 'centro') {
+          doc.rect(x + points[0][0], y + points[0][1], ts - (2 * c), ts - (2 * c), 'FD');
+        } else {
+          // Un trapecio se dibuja como dos triángulos para máxima compatibilidad
+          // Points: [A, B, C, D]
+          const [A, B, C, D] = points;
+          (doc as any).triangle(x + A[0], y + A[1], x + B[0], y + B[1], x + C[0], y + C[1], 'FD');
+          (doc as any).triangle(x + A[0], y + A[1], x + C[0], y + C[1], x + D[0], y + D[1], 'FD');
+        }
+      };
+
+      const ts = toothSize;
+      const c = ts * 0.25; // centro offset
+
+      // superior
+      drawFace('superior', [[0, 0], [ts, 0], [ts - c, c], [c, c]]);
+      // derecha
+      drawFace('derecha', [[ts, 0], [ts, ts], [ts - c, ts - c], [ts - c, c]]);
+      // inferior
+      drawFace('inferior', [[0, ts], [ts, ts], [ts - c, ts - c], [c, ts - c]]);
+      // izquierda
+      drawFace('izquierda', [[0, 0], [0, ts], [c, ts - c], [c, c]]);
+      // centro
+      drawFace('centro', [[c, c], [ts - c, c], [ts - c, ts - c], [c, ts - c]]);
+    };
+
+    // Cuadrantes FDI
+    const c1 = [18, 17, 16, 15, 14, 13, 12, 11];
+    const c2 = [21, 22, 23, 24, 25, 26, 27, 28];
+    const c3 = [48, 47, 46, 45, 44, 43, 42, 41];
+    const c4 = [31, 32, 33, 34, 35, 36, 37, 38];
+
+    // Maxilar Superior
+    let curX = startX + 5;
+    c1.forEach(id => { drawTooth(id, curX, startY + 5); curX += toothSize + padding; });
+    curX += 5; // espacio central
+    c2.forEach(id => { drawTooth(id, curX, startY + 5); curX += toothSize + padding; });
+
+    // Maxilar Inferior
+    curX = startX + 5;
+    const bottomY = startY + 25;
+    c3.forEach(id => { drawTooth(id, curX, bottomY); curX += toothSize + padding; });
+    curX += 5; // espacio central
+    c4.forEach(id => { drawTooth(id, curX, bottomY); curX += toothSize + padding; });
+    
+    // Leyenda simplificada
+    doc.setFontSize(6); doc.setTextColor(150, 150, 150);
+    doc.text('ROJO: CARIES   AZUL: OBTURADO   VERDE: NUEVO   NARANJA: CORONA   GRIS: IMPLANTE   INDIGO: BRACKETS   X: AUSENTE', startX + 5, bottomY + 15);
+  }
+
   private formatDate(date: any): string {
     if (!date) return '—';
     const d = new Date(date);
@@ -739,5 +893,16 @@ export class ReportePdfService {
   private calcularIMC(peso?: number, talla?: number): string {
     if (!peso || !talla) return '—';
     return (peso / Math.pow(talla / 100, 2)).toFixed(1);
+  }
+
+  private getHallazgoColor(hallazgo: string): { r: number, g: number, b: number } {
+    const h = (hallazgo || '').toLowerCase();
+    if (h.includes('caries')) return { r: 185, g: 28, b: 28 }; // Rojo oscuro para PDF
+    if (h.includes('obturación') || h.includes('restauración')) return { r: 4, g: 120, b: 87 }; // Verde esmeralda
+    if (h.includes('ausente')) return { r: 75, g: 85, b: 99 }; // Gris
+    if (h.includes('corona')) return { r: 194, g: 65, b: 12 }; // Naranja
+    if (h.includes('implante')) return { r: 51, g: 65, b: 85 }; // Slate
+    if (h.includes('brackets')) return { r: 67, g: 56, b: 202 }; // Indigo
+    return { r: 30, g: 58, b: 138 }; // Azul SISS
   }
 }

@@ -1,4 +1,4 @@
-import { Injectable, ConflictException, NotFoundException } from '@nestjs/common';
+import { Injectable, ConflictException, NotFoundException, PreconditionFailedException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreateSolicitudUsuarioDto } from './dto/create-solicitud-usuario.dto';
 import { MailService } from '../../common/services/mail.service';
@@ -36,6 +36,8 @@ export class SolicitudesUsuarioService {
         correo: dto.correo,
         telefono: dto.telefono,
         justificacion: dto.justificacion,
+        latitud: dto.latitud,
+        longitud: dto.longitud,
       },
     });
   }
@@ -86,19 +88,23 @@ export class SolicitudesUsuarioService {
       });
 
       if (estado === 'APROBADA') {
-        claveTemporal = crypto.randomBytes(4).toString('hex');
-        const hash = await bcrypt.hash(claveTemporal, 12);
-
-        // Intentar vincular con un expediente clínico existente
+        // Validar que el paciente existe antes de aprobar (Regla de negocio: debe existir expediente previo)
         const pacienteExistente = await tx.paciente.findUnique({
           where: { dni: solicitud.dni },
           select: { id: true }
         });
 
-        // Crear la cuenta aislada de paciente
+        if (!pacienteExistente) {
+          throw new PreconditionFailedException('No se puede aprobar la solicitud: No existe un expediente clínico registrado para el DNI ' + solicitud.dni);
+        }
+
+        claveTemporal = crypto.randomBytes(4).toString('hex');
+        const hash = await bcrypt.hash(claveTemporal, 12);
+
+        // Crear la cuenta vinculada obligatoriamente al paciente
         await tx.pacienteUsuario.create({
           data: {
-            pacienteId: pacienteExistente?.id || null,
+            pacienteId: pacienteExistente.id,
             dni: solicitud.dni,
             correo: solicitud.correo,
             contrasenaHash: hash,

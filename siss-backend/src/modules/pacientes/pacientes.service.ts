@@ -48,6 +48,7 @@ export class PacientesService {
     limite = 20,
     establecimientoId?: number,
     rol?: string,
+    sexoId?: number,
   ) {
     const skip = (pagina - 1) * limite;
 
@@ -64,6 +65,10 @@ export class PacientesService {
     // Scoping para ADMIN_ESTABLECIMIENTO
     if (rol === 'ADMIN_ESTABLECIMIENTO' && establecimientoId) {
       filtro.establecimientoId = establecimientoId;
+    }
+
+    if (sexoId) {
+      filtro.sexoId = sexoId;
     }
 
     const [total, pacientes] = await Promise.all([
@@ -87,6 +92,8 @@ export class PacientesService {
           ocupacionId: true,
           estadoCivilId: true,
           direccion: true,
+          latitud: true,
+          longitud: true,
           sexo: { select: { nombre: true } },
           tipoSangre: { select: { nombre: true } },
           departamento: { select: { nombre: true } },
@@ -123,21 +130,31 @@ export class PacientesService {
   async obtenerPerfilPorDni(dni: string) {
     if (!dni) throw new BadRequestException('DNI no proporcionado');
 
-    const paciente = await this.prisma.paciente.findUnique({
-      where: { dni },
-      include: this.getPerfilInclude(),
-    });
+    console.log(`[PACIENTES] Buscando perfil para DNI: ${dni}...`);
+    try {
+      const paciente = await this.prisma.paciente.findUnique({
+        where: { dni },
+        include: this.getPerfilInclude(),
+      });
+      console.log(`[PACIENTES] Resultado de búsqueda: ${paciente ? 'Encontrado' : 'No encontrado'}`);
 
-    if (!paciente) {
-      throw new NotFoundException(`No se encontró un registro de paciente para el DNI ${dni}`);
+      if (!paciente) {
+        throw new NotFoundException(`No se encontró un registro de paciente para el DNI ${dni}`);
+      }
+
+      return paciente;
+    } catch (error) {
+      console.error(`[PACIENTES] Error al buscar perfil para DNI ${dni}:`, error);
+      throw error;
     }
-
-    return paciente;
   }
 
   private getPerfilInclude() {
     return {
       alergias: true,
+      sexo: { select: { nombre: true } },
+      tipoSangre: { select: { nombre: true } },
+      establecimiento: { select: { nombre: true } },
       citas: {
         take: 5,
         orderBy: { fechaHora: 'desc' as const },
@@ -168,6 +185,13 @@ export class PacientesService {
           diagnosticos: {
             select: { codigoCIE10: true, descripcion: true, tipo: true },
           },
+          presionSistolica: true,
+          presionDiastolica: true,
+          frecuenciaCardiaca: true,
+          temperatura: true,
+          peso: true,
+          talla: true,
+          saturacionO2: true,
         },
       },
       medicamentosActivos: {

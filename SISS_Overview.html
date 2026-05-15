@@ -197,15 +197,15 @@
             <h1>SISS Overview</h1>
             <div class="subtitle">Sistema Integral de Servicios de Salud</div>
             <div style="margin-top: 1.5rem;">
-                <span class="badge">Versión 1.1</span>
-                <span class="badge">Actualizado: 7 Mayo, 2026</span>
+                <span class="badge">Versión 1.3</span>
+                <span class="badge">Actualizado: 14 Mayo, 2026</span>
                 <span class="badge">Honduras (UTC-6)</span>
             </div>
         </header>
 
         <div class="doc-section">
             <h2>1. Introducción</h2>
-            <p>El <strong>SISS</strong> es una plataforma integral de gestión hospitalaria y salud pública diseñada para estandarizar la atención médica, el control de inventarios de biológicos (PAI) y la vigilancia epidemiológica. El sistema destaca por su arquitectura <strong>multi-establecimiento</strong>, permitiendo que el personal rote entre centros de salud manteniendo un control granular de permisos y auditoría.</p>
+            <p>El <strong>SISS</strong> es una plataforma integral de gestión hospitalaria y salud pública diseñada para estandarizar la atención médica, el control de inventarios de biológicos (PAI) y la vigilancia epidemiológica. El sistema destaca por su arquitectura <strong>multi-establecimiento</strong> y su enfoque en la <strong>consistencia de navegación (UX)</strong>, garantizando que el personal clínico pueda operar de forma fluida entre módulos complejos.</p>
         </div>
 
         <div class="doc-section">
@@ -280,26 +280,40 @@
                 <li><strong>Gestión de Casos</strong>: Flujo de investigación (Pendiente -> Notificado -> Gestionado).</li>
             </ul>
 
-            <h3>F. Apoyo Diagnóstico: Laboratorio y Radiología</h3>
+            <h3>G. Odontología Especializada</h3>
+            <p>Módulo de alta precisión para la documentación de salud bucal y seguimiento de intervenciones dentales.</p>
             <ul>
-                <li><strong>Laboratorio</strong>: Solicitudes con valores de referencia y alertas anormales.</li>
-                <li><strong>Radiología</strong>: Rayos X, Tomografía, Ecografía y Resonancia con hallazgos vinculados al PACS.</li>
+                <li><strong>Odontograma Interactivo</strong>: Mapa dental dinámico que permite registrar hallazgos (caries, obturaciones) y estados complejos (implantes, coronas, brackets).</li>
+                <li><strong>Historial de Intervenciones</strong>: Diferenciación visual entre datos históricos y tratamientos realizados en la sesión actual.</li>
+                <li><strong>Indicadores Visuales</strong>: Codificación por colores y marcadores gráficos profesionales para una lectura clínica rápida.</li>
+                <li><strong>Reportes Especializados</strong>: Generación de informes PDF que incluyen la representación gráfica del odontograma con sus respectivas leyendas.</li>
             </ul>
 
-            <h3>G. SISS Mobile (App Ciudadana)</h3>
+            <h3>H. Control Prenatal y Carnet Perinatal</h3>
+            <p>Módulo especializado para el seguimiento integral del embarazo, garantizando la salud materno-fetal y la documentación legal del nacimiento.</p>
+            <ul>
+                <li><strong>Control Gestacional</strong>: Seguimiento periódico con cálculo automático de semanas por FUM y evaluación de riesgo obstétrico continuo.</li>
+                <li><strong>Buscador Universal de Embarazadas</strong>: Filtro inteligente que permite localizar pacientes en estado activo o histórico (finalizadas) mediante nombre o DNI.</li>
+                <li><strong>Gestión de Desenlace</strong>: Workflow de finalización que captura el resultado clínico (Parto, Aborto u Óbito) con notas de cierre y fechas de terminación obligatorias.</li>
+                <li><strong>Carnet Perinatal Dinámico</strong>: Generación de reportes PDF (HCPB) con codificación por colores: <strong>Azul</strong> para partos exitosos, <strong>Naranja</strong> para abortos y <strong>Rojo</strong> para óbitos.</li>
+            </ul>
+
+            <h3>I. SISS Mobile (App Ciudadana)</h3>
             <p>Extensión del sistema para empoderar al paciente y facilitar el acceso a servicios de salud desde dispositivos móviles.</p>
             <ul>
                 <li><strong>Autogestión de Citas</strong>: Programación y seguimiento de citas médicas en tiempo real.</li>
                 <li><strong>Historial de Recetas</strong>: Consulta digital de recetas emitidas y sus instrucciones de administración.</li>
                 <li><strong>Buscador de Stock Nacional</strong>: Consulta de disponibilidad de medicamentos en todos los establecimientos de la red.</li>
-                <li><strong>Notificaciones</strong>: Recordatorios de citas y alertas preventivas de salud.</li>
+                <li><strong>Splash Screen Personalizado</strong>: Experiencia de inicio branded con spinner animado y verificación de sesión.</li>
+                <li><strong>Seguridad de Registro</strong>: Validación obligatoria contra el expediente clínico previo antes de permitir la creación de cuenta.</li>
             </ul>
 
             <h3>H. Administración y Personalización</h3>
             <ul>
                 <li><strong>Carrusel de Medios</strong>: Gestión dinámica de imágenes y videos informativos en la pantalla de inicio.</li>
                 <li><strong>Matriz de Permisos (RBAC)</strong>: Control granular de accesos diferenciando roles institucionales y perfiles de pacientes.</li>
-                <li><strong>Parámetros Institucionales</strong>: Configuración global de la identidad y reglas operativas del sistema.</li>
+                <li><strong>Feedback Técnico Avanzado</strong>: Sistema de notificaciones detalladas que informa sobre duplicados o errores de validación específicos.</li>
+                <li><strong>Filtro de Excepciones Robusto</strong>: Manejo preventivo de errores de base de datos para garantizar la disponibilidad del servicio.</li>
             </ul>
         </div>
 

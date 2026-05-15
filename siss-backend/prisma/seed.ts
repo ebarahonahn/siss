@@ -255,6 +255,7 @@ async function main() {
     { codigo: 'OFT', nombre: 'Oftalmología', descripcion: 'Salud visual' },
     { codigo: 'PSIQ', nombre: 'Psiquiatría', descripcion: 'Salud mental' },
     { codigo: 'URG', nombre: 'Urgencias', descripcion: 'Atención de emergencias' },
+    { codigo: 'ODON', nombre: 'Odontología', descripcion: 'Salud bucal y dental' },
   ];
 
   for (const esp of especialidades) {
@@ -439,6 +440,7 @@ async function main() {
 
   const espMG = await prisma.especialidad.findUnique({ where: { codigo: 'MG' } });
   const espGIN = await prisma.especialidad.findUnique({ where: { codigo: 'GIN' } });
+  const espODON = await prisma.especialidad.findUnique({ where: { codigo: 'ODON' } });
 
   const medico = await prisma.usuario.upsert({
     where: { correo: 'medico@sesal.hn' },
@@ -959,6 +961,84 @@ async function main() {
               requerido: c.requerido,
               orden: c.orden,
               configuracion: (c as any).configuracion || undefined
+            }))
+          }
+        }
+      });
+    }
+  }
+
+  // ── Plantilla de Odontología ──────────────────────────────────────────────
+  if (espODON) {
+    const plantillaOdon = await prisma.plantillaFormulario.upsert({
+      where: { especialidadId_version: { especialidadId: espODON.id, version: 1 } },
+      update: {
+        nombre: 'Anamnesis Odontológica y Examen Clínico',
+        descripcion: 'Formulario especializado para atención dental y seguimiento de odontograma',
+        activa: true,
+      },
+      create: {
+        especialidadId: espODON.id,
+        version: 1,
+        nombre: 'Anamnesis Odontológica y Examen Clínico',
+        descripcion: 'Formulario especializado para atención dental y seguimiento de odontograma',
+        activa: true,
+        creadoPorId: admin.id,
+      }
+    });
+
+    const seccionesOdon = [
+      {
+        nombre: '1. ANTECEDENTES MÉDICOS (SISTÉMICOS)',
+        orden: 1,
+        campos: [
+          { clave: 'med_diabetes', tipo: 'BOOLEANO', etiqueta: 'Diabetes', requerido: false, orden: 1 },
+          { clave: 'med_hta', tipo: 'BOOLEANO', etiqueta: 'Hipertensión Arterial', requerido: false, orden: 2 },
+          { clave: 'med_cardio', tipo: 'BOOLEANO', etiqueta: 'Problemas Cardíacos', requerido: false, orden: 3 },
+          { clave: 'med_embarazo', tipo: 'BOOLEANO', etiqueta: 'Embarazo', requerido: false, orden: 4 },
+          { clave: 'med_alergia_anes', tipo: 'BOOLEANO', etiqueta: 'Alergia a Anestésicos Locales', requerido: false, orden: 5 },
+          { clave: 'med_alergia_peni', tipo: 'BOOLEANO', etiqueta: 'Alergia a Penicilina', requerido: false, orden: 6 },
+          { clave: 'med_actuales', tipo: 'TEXTAREA', etiqueta: 'Medicamentos Actuales y Dosis', requerido: false, orden: 7 },
+        ]
+      },
+      {
+        nombre: '2. ANTECEDENTES Y HÁBITOS ODONTOLÓGICOS',
+        orden: 2,
+        campos: [
+          { clave: 'odon_hab_higiene', tipo: 'TEXTO', etiqueta: 'Frecuencia de Cepillado', requerido: false, orden: 1 },
+          { clave: 'odon_hab_tabaco', tipo: 'BOOLEANO', etiqueta: 'Hábito de Tabaquismo', requerido: false, orden: 2 },
+          { clave: 'odon_hab_alcohol', tipo: 'BOOLEANO', etiqueta: 'Consumo de Alcohol', requerido: false, orden: 3 },
+          { clave: 'odon_hab_bruxismo', tipo: 'BOOLEANO', etiqueta: 'Bruxismo', requerido: false, orden: 4 },
+          { clave: 'odon_previo', tipo: 'TEXTAREA', etiqueta: 'Experiencias Dentales Previas', requerido: false, orden: 5 },
+        ]
+      },
+      {
+        nombre: '3. EXAMEN CLÍNICO Y ODONTOGRAMA',
+        orden: 3,
+        campos: [
+          { clave: 'blandos_encias', tipo: 'TEXTO', etiqueta: 'Estado de Encías', requerido: false, orden: 1 },
+          { clave: 'blandos_lengua', tipo: 'TEXTO', etiqueta: 'Estado de Lengua', requerido: false, orden: 2 },
+          { clave: 'blandos_paladar', tipo: 'TEXTO', etiqueta: 'Paladar y Mucosas', requerido: false, orden: 3 },
+          { clave: 'odontograma_map', tipo: 'ODONTOGRAMA', etiqueta: 'Mapa Dental (Odontograma)', requerido: false, orden: 4 },
+        ]
+      }
+    ];
+
+    await prisma.seccionFormulario.deleteMany({ where: { plantillaId: plantillaOdon.id } });
+
+    for (const s of seccionesOdon) {
+      await prisma.seccionFormulario.create({
+        data: {
+          plantillaId: plantillaOdon.id,
+          nombre: s.nombre,
+          orden: s.orden,
+          campos: {
+            create: s.campos.map(c => ({
+              clave: c.clave,
+              tipo: c.tipo as any,
+              etiqueta: c.etiqueta,
+              requerido: c.requerido,
+              orden: c.orden
             }))
           }
         }

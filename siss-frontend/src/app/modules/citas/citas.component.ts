@@ -64,7 +64,7 @@ import { DateValidators } from '../../core/validators/date.validator';
                   <div class="text-xs text-gray-400">DNI: {{ cita.paciente.dni }}</div>
                 </td>
                 <td class="px-6 py-4">
-                  <div class="text-sm font-medium text-gray-800">Dr. {{ cita.medico.apellidos }}</div>
+                  <div class="text-sm font-medium text-gray-800">{{ cita.medico.apellidos }}</div>
                   <div class="text-xs text-gray-400 capitalize">{{ cita.tipo.replace('_', ' ') }}</div>
                 </td>
                 <td class="px-6 py-4">

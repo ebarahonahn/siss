@@ -27,7 +27,13 @@ export class CitasService {
   }
 
   marcarNoAsistio(id: number) {
-    return this.http.patch<any>(`${this.apiUrl}/${id}/no-asistio`, {}).pipe(map(res => res.data));
+    if (!id || isNaN(Number(id))) {
+      console.error('[CITAS SERVICE] ID inválido:', id);
+      throw new Error('ID de cita inválido');
+    }
+    const url = `${this.apiUrl}/${id}/no-asistio`;
+    console.log('[CITAS SERVICE] Patch URL:', url);
+    return this.http.patch<any>(url, {}).pipe(map(res => res.data));
   }
 
   // Nuevo método para listar médicos del establecimiento del usuario actual

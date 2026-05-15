@@ -1,0 +1,180 @@
+<div class="min-h-screen bg-gray-50 p-6">
+  <div class="max-w-7xl mx-auto">
+    <!-- Header Section -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-900 tracking-tight">Control Prenatal</h1>
+        <p class="text-gray-500 mt-1">Gestión y seguimiento integral de pacientes obstétricas</p>
+      </div>
+      <button (click)="abrirCaptacion()" 
+              class="flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-xl font-bold shadow-lg shadow-blue-200 hover:bg-blue-700 transition-all hover:scale-105 active:scale-95">
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+        </svg>
+        NUEVA CAPTACIÓN
+      </button>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <!-- Embarazos Activos -->
+      <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-5 transition-all hover:shadow-md">
+        <div class="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-600">
+          <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+          </svg>
+        </div>
+        <div>
+          <span class="block text-3xl font-bold text-gray-900 leading-none">{{totalEmbarazadas}}</span>
+          <span class="text-sm font-medium text-gray-500 uppercase tracking-wider mt-1 block">Embarazos Activos</span>
+        </div>
+      </div>
+
+      <!-- Alto Riesgo -->
+      <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-5 transition-all hover:shadow-md">
+        <div class="w-14 h-14 rounded-2xl bg-rose-50 flex items-center justify-center text-rose-600">
+          <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+          </svg>
+        </div>
+        <div>
+          <span class="block text-3xl font-bold text-gray-900 leading-none">{{altoRiesgo}}</span>
+          <span class="text-sm font-medium text-gray-500 uppercase tracking-wider mt-1 block">Alto Riesgo</span>
+        </div>
+      </div>
+
+      <!-- Controles para Hoy -->
+      <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-5 transition-all hover:shadow-md">
+        <div class="w-14 h-14 rounded-2xl bg-emerald-50 flex items-center justify-center text-emerald-600">
+          <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+          </svg>
+        </div>
+        <div>
+          <span class="block text-3xl font-bold text-gray-900 leading-none">{{controlesHoy}}</span>
+          <span class="text-sm font-medium text-gray-500 uppercase tracking-wider mt-1 block">Controles para Hoy</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Patients List Card -->
+    <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+      <!-- Card Header / Search -->
+      <div class="p-6 border-b border-gray-50 bg-gray-50/30">
+          <div class="flex items-center gap-3">
+            <div class="relative flex-1 max-w-md">
+              <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+                <i class="fas fa-search text-xs"></i>
+              </span>
+              <input type="text" #searchInput (input)="onSearch(searchInput.value)"
+                     class="block w-full pl-10 pr-3 py-2 border border-gray-200 rounded-xl leading-5 bg-gray-50 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-xs transition-all"
+                     placeholder="Buscar por DNI o nombres de la paciente...">
+            </div>
+            
+            <button (click)="toggleFinalizados()" 
+                    [ngClass]="mostrarFinalizados ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-600'"
+                    class="px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 border border-transparent shadow-sm">
+              <i class="fas" [ngClass]="mostrarFinalizados ? 'fa-history' : 'fa-filter'"></i>
+              {{ mostrarFinalizados ? 'OCULTAR HISTORIAL' : 'VER HISTORIAL' }}
+            </button>
+          </div>
+      </div>
+      
+      <!-- Table -->
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="bg-gray-50/50">
+              <th class="px-6 py-4 text-left text-[10px] font-black text-gray-400 uppercase tracking-wider">Paciente</th>
+              <th class="px-6 py-4 text-left text-[10px] font-black text-gray-400 uppercase tracking-wider">Responsable</th>
+              <th class="px-6 py-4 text-left text-[10px] font-black text-gray-400 uppercase tracking-wider text-center">Gestación</th>
+              <th class="px-6 py-4 text-left text-[10px] font-bold text-gray-400 uppercase tracking-widest">Fecha Probable Parto</th>
+              <th class="px-6 py-4 text-left text-[10px] font-bold text-gray-400 uppercase tracking-widest">Riesgo Obstétrico</th>
+              <th class="px-6 py-4 text-left text-[10px] font-bold text-gray-400 uppercase tracking-widest">Último Control</th>
+              <th class="px-6 py-4 text-center text-[10px] font-bold text-gray-400 uppercase tracking-widest">Acciones Clínicas</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100">
+            <tr *ngFor="let emb of embarazosFiltrados" class="hover:bg-blue-50/30 transition-all group">
+              <td class="px-6 py-4">
+                <div class="flex flex-col">
+                  <span class="font-bold text-gray-900 group-hover:text-blue-700 transition-colors">{{emb.paciente.nombres}} {{emb.paciente.apellidos}}</span>
+                  <span class="text-[11px] text-gray-500 font-medium tracking-tight">{{emb.paciente.dni}}</span>
+                </div>
+              </td>
+              <td class="px-6 py-4">
+                <span class="text-[11px] font-bold text-gray-600 uppercase">{{emb.creadoPor?.nombres}} {{emb.creadoPor?.apellidos}}</span>
+              </td>
+              <td class="px-6 py-4 text-center">
+                <div class="flex flex-col items-center">
+                  <span class="text-lg font-bold text-gray-900 leading-none">{{emb.semanasActuales | number:'1.1-1'}}</span>
+                  <span class="text-[9px] font-black text-gray-400 uppercase mt-1">Semanas</span>
+                </div>
+              </td>
+              <td class="px-6 py-4 font-medium text-gray-700">
+                {{emb.fpp | date:'dd/MM/yyyy'}}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="flex flex-col gap-1">
+                  <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest"
+                        [ngClass]="emb.riesgo === 'ALTO' ? 'bg-rose-50 text-rose-600 border border-rose-100' : 'bg-emerald-50 text-emerald-600 border border-emerald-100'">
+                    <span class="w-1.5 h-1.5 rounded-full mr-1.5" [ngClass]="emb.riesgo === 'ALTO' ? 'bg-rose-600 animate-pulse' : 'bg-emerald-600'"></span>
+                    RIESGO {{emb.riesgo}}
+                  </span>
+                  <span *ngIf="emb.estado !== 'ACTIVO'" 
+                        class="bg-gray-100 text-gray-600 px-3 py-1 border border-gray-200 rounded-full text-[10px] font-black uppercase inline-flex items-center w-fit">
+                    <i class="fas fa-archive mr-1.5 opacity-50"></i>
+                    {{emb.estado.replace('FINALIZADO_', '')}}
+                  </span>
+                </div>
+              </td>
+              <td class="px-6 py-4 text-gray-500">
+                {{emb.ultimoControl ? (emb.ultimoControl | date:'dd/MM/yyyy') : 'No registrado'}}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                <div class="flex items-center justify-end gap-2">
+                  <button (click)="verFicha(emb)" 
+                          class="p-2 text-blue-600 hover:bg-blue-100 rounded-xl transition-all" 
+                          title="Ver Ficha Perinatal">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                    </svg>
+                  </button>
+                  <button *ngIf="emb.estado === 'ACTIVO'"
+                          (click)="nuevoControl(emb)" 
+                          class="p-2 text-emerald-600 hover:bg-emerald-100 rounded-xl transition-all" 
+                          title="Registrar Nuevo Control">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                  </button>
+                  <button (click)="verCarnet(emb)" 
+                          class="p-2 text-amber-500 hover:bg-amber-100 rounded-xl transition-all" 
+                          title="Generar Carnet Perinatal (PDF)">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/>
+                    </svg>
+                  </button>
+                  <button *ngIf="emb.estado === 'ACTIVO'"
+                          (click)="confirmarFinalizacion(emb)" 
+                          class="p-2 text-rose-500 hover:bg-rose-100 rounded-xl transition-all" 
+                          title="Finalizar Embarazo (Parto/Aborto)">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9"/>
+                    </svg>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr *ngIf="embarazosFiltrados.length === 0">
+              <td colspan="7" class="px-6 py-12 text-center text-gray-400 font-medium">
+                No se encontraron registros de embarazadas con los criterios de búsqueda.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

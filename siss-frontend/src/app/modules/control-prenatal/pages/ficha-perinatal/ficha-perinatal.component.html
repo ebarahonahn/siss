@@ -1,0 +1,173 @@
+<div class="ficha-container" *ngIf="embarazo">
+    <div class="ficha-header">
+        <div class="header-info">
+            <h2>Historia Clínica Perinatal Básica</h2>
+            <p>Expediente: {{embarazo.paciente?.numeroExpediente || 'S/N'}}</p>
+        </div>
+        <div class="status-badge" [ngClass]="'status-active'">
+            {{embarazo.estado || 'ACTIVO'}}
+        </div>
+        <button class="btn-print-header" (click)='imprimir()' title="Imprimir Carnet / Ficha PDF">
+            <i class="fas fa-print"></i> IMPRIMIR CARNET
+        </button>
+    </div>
+
+    <div class="ficha-body">
+        <!-- SECCIÓN 1: DATOS PERSONALES -->
+        <div class="section-title">
+            <i class="fas fa-user"></i> Identificación de la Paciente
+        </div>
+        <div class="form-grid">
+            <div class="form-group">
+                <label>Nombres y Apellidos</label>
+                <input type="text" class="form-control" [value]="(embarazo.paciente?.nombres || '') + ' ' + (embarazo.paciente?.apellidos || '')" readonly>
+            </div>
+            <div class="form-group">
+                <label>DNI</label>
+                <input type="text" class="form-control" [value]="embarazo.paciente?.dni || '---'" readonly>
+            </div>
+            <div class="form-group">
+                <label>Edad</label>
+                <input type="text" class="form-control" [value]="embarazo.paciente ? calcularEdad(embarazo.paciente.fechaNacimiento) : '...'" readonly>
+            </div>
+            <div class="form-group">
+                <label>Estado Civil</label>
+                <input type="text" class="form-control" [value]="embarazo.paciente?.estadoCivil?.nombre || 'No registrado'" readonly>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 2: ANTECEDENTES OBSTÉTRICOS -->
+        <div class="section-title">
+            <i class="fas fa-history"></i> Antecedentes Obstétricos
+        </div>
+        <div class="form-grid">
+            <div class="form-group">
+                <label>Gestas (G)</label>
+                <input type="number" class="form-control" [value]="embarazo.antecedentes?.gravidez" readonly>
+            </div>
+            <div class="form-group">
+                <label>Partos (P)</label>
+                <input type="number" class="form-control" [value]="embarazo.antecedentes?.partos" readonly>
+            </div>
+            <div class="form-group">
+                <label>Abortos (A)</label>
+                <input type="number" class="form-control" [value]="embarazo.antecedentes?.abortos" readonly>
+            </div>
+            <div class="form-group">
+                <label>Cesáreas (C)</label>
+                <input type="number" class="form-control" [value]="embarazo.antecedentes?.cesareas" readonly>
+            </div>
+            <div class="form-group">
+                <label>Óbitos (Fetales)</label>
+                <input type="number" class="form-control" [value]="embarazo.antecedentes?.obitos" readonly>
+            </div>
+            <div class="form-group">
+                <label>Año último embarazo</label>
+                <input type="number" class="form-control" [value]="embarazo.antecedentes?.ultimoEmbarazoPrevio" readonly>
+            </div>
+        </div>
+        <div class="form-group full-width" style="margin-top: 1rem;">
+            <label>Complicaciones en Embarazos Previos</label>
+            <div class="complicaciones-box">
+                {{embarazo.antecedentes?.complicacionesPrevias || 'Sin complicaciones reportadas'}}
+            </div>
+        </div>
+
+        <!-- SECCIÓN 3: EMBARAZO ACTUAL -->
+        <div class="section-title">
+            <i class="fas fa-baby"></i> Embarazo Actual
+        </div>
+        <div class="form-grid">
+            <div class="form-group">
+                <label>FUM (Fecha Última Menstruación)</label>
+                <input type="text" class="form-control" [value]="embarazo.fum | date:'dd/MM/yyyy'" readonly>
+            </div>
+            <div class="form-group">
+                <label>FPP (Fecha Probable Parto)</label>
+                <input type="text" class="form-control" [value]="embarazo.fpp | date:'dd/MM/yyyy'" readonly>
+            </div>
+            <div class="form-group">
+                <label>Semanas actuales</label>
+                <input type="text" class="form-control" [value]="semanasGestacion | number:'1.1-1'" readonly>
+            </div>
+            <div class="form-group">
+                <label>Riesgo Obstétrico</label>
+                <input type="text" class="form-control" [value]="embarazo.riesgo + ' RIESGO'" [ngClass]="embarazo.riesgo === 'ALTO' ? 'text-rose-600 font-bold' : 'text-emerald-600'" readonly>
+            </div>
+        </div>
+
+        <div class="risk-alert" *ngIf="embarazo.riesgo === 'ALTO'">
+            <i class="fas fa-exclamation-circle risk-icon"></i>
+            <div>
+                <strong>Alerta de Alto Riesgo:</strong> Esta paciente requiere seguimiento quincenal o semanal inmediato y posible referencia a especialista.
+                <ul style="margin: 0.5rem 0 0 0; padding-left: 1.2rem; font-size: 0.8rem;">
+                    <li *ngFor="let motivo of obtenerMotivosRiesgo()">{{motivo}}</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 4: SEGUIMIENTO DE CONTROLES -->
+        <div class="flex justify-between items-center mb-4">
+            <div class="section-title !mb-0">
+                <i class="fas fa-notes-medical"></i> Seguimiento de Controles
+            </div>
+            <button (click)="abrirModalControl()" 
+                    class="px-4 py-2 bg-emerald-600 text-white rounded-lg text-xs font-bold shadow-sm hover:bg-emerald-700 transition-all flex items-center gap-2">
+                <i class="fas fa-plus"></i> REGISTRAR NUEVO CONTROL
+            </button>
+        </div>
+
+        <!-- GRÁFICAS CLAP -->
+        <app-prenatal-charts [controles]="embarazo.controles" 
+                            [imcInicial]="embarazo.imc"
+                            [pesoInicialEmbarazo]="embarazo.pesoInicial"></app-prenatal-charts>
+
+        <div class="table-responsive">
+            <table class="controles-table">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Semanas</th>
+                        <th>Peso Mat. (kg)</th>
+                        <th>Presión Art. (mmHg)</th>
+                        <th>Alt. Uterina (cm)</th>
+                        <th>Freq. Card. Fetal (LPM)</th>
+                        <th>Mov. Fetales</th>
+                        <th>Prot.</th>
+                        <th>Edema</th>
+                        <th>Médico</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let ctrl of embarazo.controles">
+                        <td>{{ctrl.fechaControl | date:'dd/MM/yyyy'}}</td>
+                        <td class="font-bold text-blue-600">{{ctrl.semanasGestacion | number:'1.1-1'}}</td>
+                        <td>{{ctrl.peso | number:'1.1-2'}}</td>
+                        <td>{{ctrl.taSistolica}}/{{ctrl.taDiastolica}}</td>
+                        <td>{{ctrl.alturaUterina || '-'}}</td>
+                        <td>{{ctrl.fcf || '-'}}</td>
+                        <td>{{ctrl.movimientosFetales ? 'SÍ' : 'NO'}}</td>
+                        <td>{{ctrl.proteinuria ? 'SÍ' : 'NO'}}</td>
+                        <td>{{ctrl.edema ? 'SÍ' : 'NO'}}</td>
+                        <td class="text-xs text-slate-500">{{ctrl.creadoPor?.nombres}} {{ctrl.creadoPor?.apellidos}}</td>
+                        <td>
+                            <button class="action-btn"><i class="fas fa-eye"></i></button>
+                        </td>
+                    </tr>
+                    <tr *ngIf="!embarazo.controles?.length">
+                        <td colspan="11" style="text-align: center; padding: 2rem; color: #94a3b8;">
+                            No se han registrado controles para este embarazo.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="button-group">
+            <button class="btn-cancel" (click)='regresar()'>
+                <i class="fas fa-arrow-left"></i> Regresar al Listado
+            </button>
+        </div>
+    </div>
+</div>
