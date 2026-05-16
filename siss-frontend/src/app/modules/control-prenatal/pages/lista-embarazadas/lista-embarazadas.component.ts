@@ -341,6 +341,22 @@ export class ListaEmbarazadasComponent implements OnInit, OnDestroy {
               <input id="swal-o" type="number" class="swal2-input !m-0 !w-full border-rose-200" value="0">
             </div>
           </div>
+
+          <div class="mt-4 p-3 bg-rose-50 border border-rose-100 rounded-xl">
+            <div class="flex items-center justify-between">
+              <label class="flex items-center gap-3 cursor-pointer">
+                <input type="checkbox" id="swal-multiple" class="w-5 h-5 text-rose-600 rounded" onchange="document.getElementById('feto-count-container').classList.toggle('hidden')">
+                <div class="flex flex-col">
+                  <span class="text-sm font-bold text-rose-700">Embarazo Múltiple</span>
+                  <span class="text-[10px] text-rose-500 uppercase font-black">Gemelar / Trillizos</span>
+                </div>
+              </label>
+              <div id="feto-count-container" class="hidden flex items-center gap-2">
+                <label class="text-[10px] font-black text-rose-400 uppercase">Cantidad:</label>
+                <input id="swal-feto-count" type="number" class="w-16 p-1 text-center border border-rose-200 rounded font-bold text-rose-700" value="2" min="2" max="5">
+              </div>
+            </div>
+          </div>
         </div>
       `,
       showCancelButton: true,
@@ -421,7 +437,11 @@ export class ListaEmbarazadasComponent implements OnInit, OnDestroy {
           partos: parseInt((document.getElementById('swal-p') as HTMLInputElement).value || '0'),
           cesareas: parseInt((document.getElementById('swal-c') as HTMLInputElement).value || '0'),
           abortos: parseInt((document.getElementById('swal-a') as HTMLInputElement).value || '0'),
-          obitos: parseInt((document.getElementById('swal-o') as HTMLInputElement).value || '0')
+          obitos: parseInt((document.getElementById('swal-o') as HTMLInputElement).value || '0'),
+          esMultiple: (document.getElementById('swal-multiple') as HTMLInputElement).checked,
+          cantidadFetos: (document.getElementById('swal-multiple') as HTMLInputElement).checked 
+            ? parseInt((document.getElementById('swal-feto-count') as HTMLInputElement).value || '2') 
+            : 1
         }
       }
     });

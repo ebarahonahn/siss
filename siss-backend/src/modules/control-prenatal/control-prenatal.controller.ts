@@ -1,9 +1,10 @@
-import { Controller, Post, Body, Get, Param, Query, ParseIntPipe, UseGuards, NotFoundException } from '@nestjs/common';
+import { Controller, Post, Patch, Body, Get, Param, Query, ParseIntPipe, UseGuards, NotFoundException } from '@nestjs/common';
 import { ControlPrenatalService } from './control-prenatal.service';
 import { ControlPrenatalExportService } from './control-prenatal-export.service';
 import { CaptacionEmbarazoDto } from './dto/captacion-embarazo.dto';
 import { RegistrarControlDto } from './dto/registrar-control.dto';
 import { FinalizarEmbarazoDto } from './dto/finalizar-embarazo.dto';
+import { ActualizarEmbarazoDto } from './dto/actualizar-embarazo.dto';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { PermissionsGuard } from '../../common/guards/permissions.guard';
@@ -121,5 +122,12 @@ export class ControlPrenatalController {
   @Permissions('control_prenatal:leer')
   async getEmbarazoById(@Param('id', ParseIntPipe) id: number) {
     return this.controlService.getEmbarazoById(id);
+  }
+
+  @Patch(':id/gestacion')
+  @ApiOperation({ summary: 'Actualizar datos de gestación (cantidad de fetos)' })
+  @Permissions('control_prenatal:escribir')
+  async actualizarGestacion(@Param('id', ParseIntPipe) id: number, @Body() dto: ActualizarEmbarazoDto, @CurrentUser() user: any) {
+    return this.controlService.actualizarEmbarazo(id, dto, user.id);
   }
 }

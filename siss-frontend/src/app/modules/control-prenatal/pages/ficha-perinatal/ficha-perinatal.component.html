@@ -94,6 +94,26 @@
                 <label>Riesgo Obstétrico</label>
                 <input type="text" class="form-control" [value]="embarazo.riesgo + ' RIESGO'" [ngClass]="embarazo.riesgo === 'ALTO' ? 'text-rose-600 font-bold' : 'text-emerald-600'" readonly>
             </div>
+            <div class="form-group" *ngIf="embarazo.esMultiple">
+                <label>Tipo de Embarazo</label>
+                <div class="flex items-center gap-3">
+                    <div class="multiple-badge">
+                        <i class="fas fa-twins"></i> EMBARAZO MÚLTIPLE ({{embarazo.cantidadFetos}} fetos)
+                    </div>
+                    <button class="btn-edit-gestacion" (click)="abrirModalEdicionGestacion()">
+                        <i class="fas fa-edit"></i> Corregir
+                    </button>
+                </div>
+            </div>
+            <div class="form-group" *ngIf="!embarazo.esMultiple">
+                <label>Tipo de Embarazo</label>
+                <div class="flex items-center gap-3">
+                    <span class="text-sm font-bold text-slate-600 uppercase tracking-wider">Único</span>
+                    <button class="btn-edit-gestacion !text-blue-600 !bg-blue-50" (click)="abrirModalEdicionGestacion()">
+                        <i class="fas fa-plus-circle"></i> ¿Es Múltiple?
+                    </button>
+                </div>
+            </div>
         </div>
 
         <div class="risk-alert" *ngIf="embarazo.riesgo === 'ALTO'">
@@ -131,8 +151,8 @@
                         <th>Peso Mat. (kg)</th>
                         <th>Presión Art. (mmHg)</th>
                         <th>Alt. Uterina (cm)</th>
-                        <th>Freq. Card. Fetal (LPM)</th>
-                        <th>Mov. Fetales</th>
+                        <th>FCF (LPM) por feto</th>
+                        <th>Mov. Fetales por feto</th>
                         <th>Prot.</th>
                         <th>Edema</th>
                         <th>Médico</th>
@@ -146,8 +166,16 @@
                         <td>{{ctrl.peso | number:'1.1-2'}}</td>
                         <td>{{ctrl.taSistolica}}/{{ctrl.taDiastolica}}</td>
                         <td>{{ctrl.alturaUterina || '-'}}</td>
-                        <td>{{ctrl.fcf || '-'}}</td>
-                        <td>{{ctrl.movimientosFetales ? 'SÍ' : 'NO'}}</td>
+                        <td>
+                            <span [ngClass]="{'text-blue-600 font-bold': embarazo.esMultiple}">
+                                {{formatearFcfMultiple(ctrl)}}
+                            </span>
+                        </td>
+                        <td>
+                            <span [ngClass]="{'text-blue-600 font-bold': embarazo.esMultiple}">
+                                {{formatearMovimientosMultiple(ctrl)}}
+                            </span>
+                        </td>
                         <td>{{ctrl.proteinuria ? 'SÍ' : 'NO'}}</td>
                         <td>{{ctrl.edema ? 'SÍ' : 'NO'}}</td>
                         <td class="text-xs text-slate-500">{{ctrl.creadoPor?.nombres}} {{ctrl.creadoPor?.apellidos}}</td>

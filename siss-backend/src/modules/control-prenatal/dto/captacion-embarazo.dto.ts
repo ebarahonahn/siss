@@ -1,4 +1,4 @@
-import { IsDateString, IsNotEmpty, IsOptional, IsString, IsInt } from 'class-validator';
+import { IsDateString, IsNotEmpty, IsOptional, IsString, IsInt, IsBoolean } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CaptacionEmbarazoDto {
@@ -56,4 +56,14 @@ export class CaptacionEmbarazoDto {
   @IsString()
   @IsOptional()
   complicacionesPrevias?: string;
+
+  @ApiProperty({ description: 'Indica si es un embarazo múltiple', required: false })
+  @IsBoolean()
+  @IsOptional()
+  esMultiple?: boolean = false;
+
+  @ApiProperty({ description: 'Cantidad de fetos identificados', required: false })
+  @IsInt()
+  @IsOptional()
+  cantidadFetos?: number = 1;
 }

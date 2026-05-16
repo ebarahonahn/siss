@@ -135,6 +135,7 @@ export class FichaPerinatalComponent implements OnInit {
     const edad = this.calcularEdad(this.embarazo.paciente.fechaNacimiento);
     if (edad < 18) motivos.push('Edad menor a 18 años (Embarazo adolescente)');
     if (edad > 35) motivos.push('Edad mayor a 35 años (Riesgo obstétrico incrementado)');
+    if (this.embarazo.esMultiple) motivos.push('Embarazo múltiple (Riesgo obstétrico incrementado)');
 
     const ant = this.embarazo.antecedentes;
     if (ant.abortos >= 2) motivos.push('Antecedentes de 2 o más abortos');
@@ -201,6 +202,8 @@ export class FichaPerinatalComponent implements OnInit {
             </div>
           </div>
 
+          ${this.embarazo.esMultiple ? this.generarHtmlCamposFetos() : ''}
+
           <div class="mb-4">
             <label class="block text-[10px] font-black text-gray-400 uppercase mb-1">Hallazgos / Observaciones</label>
             <div class="flex flex-wrap items-center gap-x-6 gap-y-2 mb-2">
@@ -233,6 +236,7 @@ export class FichaPerinatalComponent implements OnInit {
           alturaUterina: parseInt((document.getElementById('swal-au') as HTMLInputElement).value),
           fcf: parseInt((document.getElementById('swal-fcf') as HTMLInputElement).value),
           movimientosFetales: (document.getElementById('swal-mov') as HTMLInputElement).checked,
+          datosFetos: this.embarazo.esMultiple ? this.obtenerDatosFetosExtra() : [],
           edema: (document.getElementById('swal-edema') as HTMLInputElement).checked,
           proteinuria: (document.getElementById('swal-prot') as HTMLInputElement).checked,
           observaciones: (document.getElementById('swal-obs') as HTMLTextAreaElement).value
@@ -253,5 +257,118 @@ export class FichaPerinatalComponent implements OnInit {
 
   regresar() {
     this.router.navigate(['/control-prenatal']);
+  }
+
+  async abrirModalEdicionGestacion() {
+    const { value: formValues } = await Swal.fire({
+      title: 'Actualizar Datos de Gestación',
+      html: `
+        <div class="text-left">
+          <p class="text-xs text-gray-500 mb-4 font-medium uppercase tracking-wider">Modificar hallazgos de multiplicidad fetal</p>
+          
+          <div class="mb-4">
+            <label class="flex items-center gap-3 cursor-pointer">
+              <input type="checkbox" id="edit-multiple" class="w-5 h-5 text-rose-600 rounded" ${this.embarazo.esMultiple ? 'checked' : ''} onchange="document.getElementById('edit-feto-count-container').classList.toggle('hidden')">
+              <div class="flex flex-col">
+                <span class="text-sm font-bold text-rose-700">Embarazo Múltiple</span>
+                <span class="text-[10px] text-rose-500 uppercase font-black">Gemelar / Trillizos</span>
+              </div>
+            </label>
+          </div>
+
+          <div id="edit-feto-count-container" class="${this.embarazo.esMultiple ? '' : 'hidden'} mb-4">
+            <label class="block text-[10px] font-black text-gray-400 uppercase mb-1">Cantidad de Fetos</label>
+            <input id="edit-feto-count" type="number" class="swal2-input !m-0 !w-full" value="${this.embarazo.cantidadFetos || 1}" min="1" max="5">
+          </div>
+
+          <div class="mb-2">
+            <label class="block text-[10px] font-black text-gray-400 uppercase mb-1">Justificación del Cambio</label>
+            <textarea id="edit-obs" class="swal2-textarea !m-0 !w-full" placeholder="Ej: Hallazgo de segundo saco gestacional en ultrasonido de control..."></textarea>
+          </div>
+        </div>
+      `,
+      showCancelButton: true,
+      confirmButtonText: 'Guardar Cambios',
+      cancelButtonText: 'Cancelar',
+      preConfirm: () => {
+        const esMultiple = (document.getElementById('edit-multiple') as HTMLInputElement).checked;
+        const cantidad = parseInt((document.getElementById('edit-feto-count') as HTMLInputElement).value);
+        const observaciones = (document.getElementById('edit-obs') as HTMLTextAreaElement).value;
+
+        if (!observaciones) {
+          Swal.showValidationMessage('Debe ingresar una justificación para este cambio clínico');
+          return false;
+        }
+
+        return {
+          esMultiple,
+          cantidadFetos: esMultiple ? cantidad : 1,
+          observaciones
+        }
+      }
+    });
+
+    if (formValues) {
+      this.controlService.actualizarGestacion(this.embarazo.id, formValues).subscribe({
+        next: () => {
+          Swal.fire('¡Actualizado!', 'Los datos de la gestación han sido actualizados.', 'success');
+          this.cargarDatos();
+        },
+        error: (err) => Swal.fire('Error', 'No se pudo actualizar la gestación', 'error')
+      });
+    }
+  }
+
+  private generarHtmlCamposFetos(): string {
+    let html = '';
+    const cantidad = this.embarazo.cantidadFetos || 2;
+    for (let i = 2; i <= cantidad; i++) {
+        html += `
+          <div class="grid grid-cols-2 gap-4 mb-3 bg-blue-50 p-3 rounded-xl border border-blue-100">
+            <div>
+              <label class="block text-[10px] font-black text-blue-500 uppercase mb-1">FCF Feto ${i} (LPM)</label>
+              <input id="swal-fcf-${i}" type="number" class="swal2-input !m-0 !w-full" placeholder="140">
+            </div>
+            <div class="flex items-center pt-4">
+              <label class="flex items-center gap-2 text-sm cursor-pointer font-bold text-blue-600">
+                <input type="checkbox" id="swal-mov-${i}" class="w-4 h-4 text-blue-600 rounded"> Mov. Fetales ${i} (+)
+              </label>
+            </div>
+          </div>
+        `;
+    }
+    return html;
+  }
+
+  private obtenerDatosFetosExtra(): any[] {
+    const datos = [];
+    const cantidad = this.embarazo.cantidadFetos || 2;
+    for (let i = 2; i <= cantidad; i++) {
+        datos.push({
+            fcf: parseInt((document.getElementById(`swal-fcf-${i}`) as HTMLInputElement).value),
+            movimientos: (document.getElementById(`swal-mov-${i}`) as HTMLInputElement).checked
+        });
+    }
+    return datos;
+  }
+
+  formatearFcfMultiple(ctrl: any): string {
+    let base = ctrl.fcf || '-';
+    if (ctrl.datosFetos && Array.isArray(ctrl.datosFetos)) {
+      ctrl.datosFetos.forEach((f: any) => {
+        base += ` / ${f.fcf || '-'}`;
+      });
+    }
+    return base;
+  }
+
+  formatearMovimientosMultiple(ctrl: any): string {
+    let base = ctrl.movimientosFetales ? 'SÍ' : 'NO';
+    if (ctrl.datosFetos && Array.isArray(ctrl.datosFetos)) {
+      ctrl.datosFetos.forEach((f: any) => {
+        base += ` / ${f.movimientos ? 'SÍ' : 'NO'}`;
+      });
+    }
+    return base;
   }
 }

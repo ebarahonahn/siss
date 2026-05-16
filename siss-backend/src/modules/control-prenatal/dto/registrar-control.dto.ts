@@ -66,4 +66,8 @@ export class RegistrarControlDto {
   @IsString()
   @IsOptional()
   observaciones?: string;
+
+  @ApiProperty({ description: 'Datos de los fetos en embarazos múltiples', required: false })
+  @IsOptional()
+  datosFetos?: any[];
 }

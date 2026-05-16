@@ -2042,6 +2042,10 @@ model Embarazo {
   eliminadoPorId Int?
   /// Fecha en que finalizó el embarazo (Parto, Aborto, etc.)
   fechaTerminacion DateTime?
+  /// Indica si es un embarazo de gemelos, trillizos, etc.
+  esMultiple      Boolean                  @default(false)
+  /// Cantidad de fetos identificados
+  cantidadFetos   Int                      @default(1)
   
   paciente       Paciente                 @relation(fields: [pacienteId], references: [id])
   antecedentes   AntecedentesObstetricos?
@@ -2103,6 +2107,9 @@ model ControlPrenatal {
   fcf                Int?
   /// Presencia de movimientos fetales
   movimientosFetales Boolean?
+  /// Datos adicionales para embarazos múltiples (arreglo de fetos)
+  /// Estructura: [{ fcf: number, movimientos: boolean }]
+  datosFetos         Json?
   /// Presencia de edema
   edema              Boolean          @default(false)
   /// Presencia de proteinuria (Prueba rápida)

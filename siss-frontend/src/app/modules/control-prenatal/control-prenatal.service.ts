@@ -50,4 +50,8 @@ export class ControlPrenatalService {
   finalizarEmbarazo(dto: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/finalizar`, dto);
   }
+
+  actualizarGestacion(id: number, dto: any): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/${id}/gestacion`, dto);
+  }
 }

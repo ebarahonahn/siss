@@ -229,6 +229,37 @@ export class PdfService {
       semanasActuales = weeks.toFixed(1);
     }
 
+    console.log(`[PDF] Generando ficha para embarazo ID: ${embarazo.id}. Múltiple: ${embarazo.esMultiple}, Fetos: ${embarazo.cantidadFetos}`);
+
+    const formatearFcf = (c: any) => {
+      let base = (c.fcf || '--').toString();
+      let datosFetos = c.datosFetos;
+      
+      // Blindaje contra JSON como string
+      if (typeof datosFetos === 'string') {
+        try { datosFetos = JSON.parse(datosFetos); } catch(e) { datosFetos = null; }
+      }
+
+      if (datosFetos && Array.isArray(datosFetos)) {
+        datosFetos.forEach((f: any) => { base += ` / ${f.fcf || '--'}`; });
+      }
+      return base;
+    };
+
+    const formatearMov = (c: any) => {
+      let base = c.movimientosFetales ? 'SÍ' : 'NO';
+      let datosFetos = c.datosFetos;
+
+      if (typeof datosFetos === 'string') {
+        try { datosFetos = JSON.parse(datosFetos); } catch(e) { datosFetos = null; }
+      }
+
+      if (datosFetos && Array.isArray(datosFetos)) {
+        datosFetos.forEach((f: any) => { base += ` / ${f.movimientos ? 'SÍ' : 'NO'}`; });
+      }
+      return base;
+    };
+
     const docDefinition: any = {
       pageSize: 'LETTER',
       pageMargins: [40, 30, 40, 40],
@@ -327,8 +358,13 @@ export class PdfService {
               [
                 embarazo.fum ? new Date(embarazo.fum).toLocaleDateString() : '---',
                 embarazo.fpp ? new Date(embarazo.fpp).toLocaleDateString() : '---',
-                { text: `${semanasActuales} sem`, bold: true, fontSize: 11, background: '#fef08a' }, // Marcado para verificar
-                { text: `${embarazo.riesgo || 'BAJO'} RIESGO`, color: embarazo.riesgo === 'ALTO' ? '#b91c1c' : '#059669', bold: true }
+                { text: `${semanasActuales} sem`, bold: true, fontSize: 11, background: '#fef08a' },
+                { 
+                  stack: [
+                    { text: `${embarazo.riesgo || 'BAJO'} RIESGO`, color: embarazo.riesgo === 'ALTO' ? '#b91c1c' : '#059669', bold: true },
+                    ...( (embarazo.esMultiple || (embarazo.cantidadFetos > 1)) ? [{ text: `EMBARAZO MÚLTIPLE (${embarazo.cantidadFetos || 2} fetos)`, fontSize: 7, bold: true, color: '#1d4ed8', margin: [0, 2, 0, 0] }] : [])
+                  ]
+                }
               ]
             ]
           },
@@ -376,8 +412,8 @@ export class PdfService {
                 `${c.peso || '--'}`,
                 `${c.taSistolica || '0'}/${c.taDiastolica || '0'}`,
                 c.alturaUterina || '--',
-                c.fcf || '--',
-                c.movimientosFetales ? 'SÍ' : 'NO',
+                { text: formatearFcf(c), color: embarazo.esMultiple ? '#1d4ed8' : '#000000', bold: embarazo.esMultiple },
+                { text: formatearMov(c), color: embarazo.esMultiple ? '#1d4ed8' : '#000000', bold: embarazo.esMultiple },
                 c.proteinuria ? 'SÍ' : 'NO',
                 c.edema ? 'SÍ' : 'NO',
                 { text: `${c.creadoPor?.nombres || ''} ${c.creadoPor?.apellidos || ''}`.trim() || '---', fontSize: 7 },

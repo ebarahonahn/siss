@@ -237,3 +237,51 @@
     border-bottom: 1px solid #f1f5f9;
     font-size: 0.875rem;
 }
+
+.multiple-badge {
+    background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(225, 29, 72, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+    animation: pulse-soft 2s infinite;
+    width: fit-content;
+}
+
+@keyframes pulse-soft {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+    100% { transform: scale(1); }
+}
+
+.btn-edit-gestacion {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    color: #64748b;
+    padding: 0.4rem 0.8rem;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+}
+
+.btn-edit-gestacion:hover {
+    background: #f1f5f9;
+    color: #1e293b;
+    border-color: #cbd5e1;
+    transform: translateY(-1px);
+}
