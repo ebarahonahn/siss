@@ -39,6 +39,10 @@ export class ControlPrenatalService {
     return this.http.get(`${this.apiUrl}/export/${embarazoId}/pdf`, { responseType: 'blob' });
   }
 
+  exportarControlPdf(controlId: number): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/control/${controlId}/pdf`, { responseType: 'blob' });
+  }
+
   getEmbarazosActivos(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/lista/activos`);
   }

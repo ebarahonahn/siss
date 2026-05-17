@@ -94,20 +94,61 @@ export class ControlPrenatalController {
   @ApiOperation({ summary: 'Generar el PDF oficial de la Ficha Perinatal (HCPB)' })
   @Permissions('control_prenatal:leer')
   async exportarPdf(@Param('embarazoId', ParseIntPipe) embarazoId: number, @Res() res: any) {
-    const embarazo = await this.controlService.getEmbarazoById(embarazoId);
-    
-    if (!embarazo) {
-      return res.status(404).json({ message: 'Embarazo no encontrado' });
+    try {
+      const embarazo = await this.controlService.getEmbarazoById(embarazoId);
+      
+      if (!embarazo) {
+        return res.status(404).json({ message: 'Embarazo no encontrado' });
+      }
+
+      console.log('[PDF-DEBUG] Embarazo data:', JSON.stringify(embarazo, null, 2));
+
+      const stream = await this.pdf.generarFichaPerinatal(embarazo);
+
+      res.set({
+        'Content-Type': 'application/pdf',
+        'Content-Disposition': `attachment; filename=HCPB_${embarazo.paciente?.dni || 'sin_dni'}.pdf`,
+      });
+
+      stream.pipe(res);
+    } catch (err) {
+      console.error('[PDF-ERROR] Error al generar PDF:', err?.message || err);
+      console.error('[PDF-ERROR] Stack:', err?.stack);
+      return res.status(500).json({ message: 'Error al generar PDF', detail: err?.message });
     }
+  }
 
-    const stream = await this.pdf.generarFichaPerinatal(embarazo);
+  @Get('control/:controlId/pdf')
+  @ApiOperation({ summary: 'Generar el PDF de una consulta/control prenatal individual' })
+  @Permissions('control_prenatal:leer')
+  async exportarControlPdf(@Param('controlId', ParseIntPipe) controlId: number, @Res() res: any) {
+    try {
+      const control = await this.controlService.getControlDetalle(controlId);
+      if (!control) {
+        return res.status(404).json({ message: 'Control prenatal no encontrado' });
+      }
 
-    res.set({
-      'Content-Type': 'application/pdf',
-      'Content-Disposition': `attachment; filename=HCPB_${embarazo.paciente?.dni || 'sin_dni'}.pdf`,
-    });
+      if (!control.historiaClinicaId) {
+        return res.status(404).json({ message: 'El control prenatal no tiene una nota clínica asociada' });
+      }
 
-    stream.pipe(res);
+      const historia = await this.controlService.getHistoriaDetalleParaControl(control.historiaClinicaId);
+      if (!historia) {
+        return res.status(404).json({ message: 'Nota de historia clínica no encontrada' });
+      }
+
+      const stream = await this.pdf.generarNotaControlPrenatal(control.embarazo, control, historia);
+
+      res.set({
+        'Content-Type': 'application/pdf',
+        'Content-Disposition': `attachment; filename=ControlPrenatal_${controlId}.pdf`,
+      });
+
+      stream.pipe(res);
+    } catch (err) {
+      console.error('[PDF-ERROR] Error al generar PDF de control prenatal:', err?.message || err);
+      return res.status(500).json({ message: 'Error al generar PDF de control prenatal', detail: err?.message });
+    }
   }
   
   @Post('finalizar')

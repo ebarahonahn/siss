@@ -167,60 +167,157 @@ export class ControlPrenatalService {
       ? new Date(dto.fechaControl) 
       : new Date(Date.now() - (new Date().getTimezoneOffset() * 60000));
 
-    // 1. Crear automáticamente la entrada en Historia Clínica (Nota SOAP)
-    const historia = await this.prisma.historiaClinica.create({
-      data: {
-        pacienteId: embarazo.pacienteId,
-        medicoId: usuarioId,
-        fecha: fechaControl,
-        subjetivo: `Control Prenatal Periódico. Semanas: ${semanas?.toFixed(1) || '--'}. ${embarazo.esMultiple ? `EMBARAZO MÚLTIPLE (${embarazo.cantidadFetos} fetos).` : ''}`,
-        objetivo: `Peso Materno: ${dto.peso}kg, PA: ${dto.taSistolica}/${dto.taDiastolica}mmHg, AU: ${dto.alturaUterina || '--'}cm, FCF 1: ${dto.fcf || '--'}LPM, Mov.Fetales 1: ${dto.movimientosFetales ? 'SI' : 'NO'}${this.formatearDatosFetos(dto.datosFetos)}, Proteinuria: ${dto.proteinuria ? 'POSITIVA' : 'NEGATIVA'}, Edema: ${dto.edema ? 'SI' : 'NO'}.`,
-        analisis: `Control evolutivo de embarazo de ${embarazo.riesgo} riesgo. ${dto.proteinuria ? 'ALERTA: Proteinuria positiva detectada.' : ''} ${dto.observaciones || 'Sin hallazgos patológicos adicionales.'}`,
-        plan: `Continuar control prenatal según cronograma. Próxima cita sugerida en ${embarazo.riesgo === RiesgoObstetrico.ALTO ? '1-2 semanas' : '4 semanas'}.`,
-        diagnosticos: {
-          create: {
-            codigoCIE10: embarazo.riesgo === RiesgoObstetrico.ALTO ? 'Z35.9' : 'Z34.9',
-            descripcion: embarazo.riesgo === RiesgoObstetrico.ALTO ? 'Supervisión de embarazo de alto riesgo' : 'Supervisión de embarazo normal',
-            tipo: 'PRINCIPAL'
-          }
+    return this.prisma.$transaction(async (tx) => {
+      // 1. Crear automáticamente la entrada en Historia Clínica (Nota SOAP)
+      const historia = await tx.historiaClinica.create({
+        data: {
+          pacienteId: embarazo.pacienteId,
+          medicoId: usuarioId,
+          fecha: fechaControl,
+          subjetivo: `Control Prenatal Periódico. Semanas: ${semanas?.toFixed(1) || '--'}. ${embarazo.esMultiple ? `EMBARAZO MÚLTIPLE (${embarazo.cantidadFetos} fetos).` : ''}`,
+          objetivo: `Peso Materno: ${dto.peso}kg, PA: ${dto.taSistolica}/${dto.taDiastolica}mmHg, AU: ${dto.alturaUterina || '--'}cm, FCF 1: ${dto.fcf || '--'}LPM, Mov.Fetales 1: ${dto.movimientosFetales ? 'SI' : 'NO'}${this.formatearDatosFetos(dto.datosFetos)}, Proteinuria: ${dto.proteinuria ? 'POSITIVA' : 'NEGATIVA'}, Edema: ${dto.edema ? 'SI' : 'NO'}.`,
+          analisis: `Control evolutivo de embarazo de ${embarazo.riesgo} riesgo. ${dto.proteinuria ? 'ALERTA: Proteinuria positiva detectada.' : ''} ${dto.observaciones || 'Sin hallazgos patológicos adicionales.'}`,
+          plan: `Continuar control prenatal según cronograma. Próxima cita sugerida en ${embarazo.riesgo === RiesgoObstetrico.ALTO ? '1-2 semanas' : '4 semanas'}.`,
+          diagnosticos: {
+            create: {
+              codigoCIE10: embarazo.riesgo === RiesgoObstetrico.ALTO ? 'Z35.9' : 'Z34.9',
+              descripcion: embarazo.riesgo === RiesgoObstetrico.ALTO ? 'Supervisión de embarazo de alto riesgo' : 'Supervisión de embarazo normal',
+              tipo: 'PRINCIPAL'
+            }
+          },
+          // Crear recetas si vienen en el DTO
+          recetas: dto.recetas && dto.recetas.length > 0 ? {
+            create: {
+              pacienteId: embarazo.pacienteId,
+              establecimientoId: embarazo.paciente.establecimientoId || 1,
+              detalles: {
+                create: dto.recetas.map(r => ({
+                  medicamentoId: Number(r.medicamentoId),
+                  dosis: r.dosis,
+                  frecuencia: r.frecuencia,
+                  duracion: String(r.duracion),
+                  cantidad: Number(r.cantidad),
+                  indicaciones: r.indicaciones
+                }))
+              }
+            }
+          } : undefined,
+
+          // Solicitudes de Laboratorio
+          solicitudesLab: dto.laboratorios && dto.laboratorios.length > 0 ? {
+            create: {
+              pacienteId: embarazo.pacienteId,
+              establecimientoId: embarazo.paciente.establecimientoId || 1,
+              detalles: {
+                create: dto.laboratorios.map(l => ({
+                  examenId: Number(l.examenId),
+                  observaciones: l.indicaciones || ''
+                }))
+              }
+            }
+          } : undefined,
+
+          // Solicitudes de Radiología
+          solicitudesRad: dto.radiologias && dto.radiologias.length > 0 ? {
+            create: {
+              pacienteId: embarazo.pacienteId,
+              establecimientoId: embarazo.paciente.establecimientoId || 1,
+              detalles: {
+                create: dto.radiologias.map(r => ({
+                  estudioId: Number(r.estudioId),
+                  observaciones: r.indicaciones || ''
+                }))
+              }
+            }
+          } : undefined,
+
+          // Referencias / Remisiones
+          referidos: dto.referencias && dto.referencias.length > 0 ? {
+            create: dto.referencias.map(ref => ({
+              establecimientoOrigenId: embarazo.paciente.establecimientoId || 1,
+              establecimientoDestinoId: Number(ref.establecimientoDestinoId),
+              especialidadDestino: ref.especialidadDestino || 'OBSTETRICIA',
+              motivo: ref.motivo,
+              urgente: ref.urgente || false,
+              estado: 'EMITIDO'
+            }))
+          } : undefined,
+
+          // Incapacidades
+          incapacidades: dto.incapacidades && dto.incapacidades.length > 0 ? {
+            create: dto.incapacidades.map(inc => ({
+              fechaInicio: new Date(inc.fechaInicio),
+              fechaFin: new Date(inc.fechaFin),
+              dias: Number(inc.dias),
+              tipo: inc.tipo || 'LABORAL',
+              motivo: inc.motivo
+            }))
+          } : undefined
         }
-      }
-    });
-
-    // 2. Crear el Control Prenatal vinculado a la Historia Clínica creada
-    // 2. Crear el Control Prenatal vinculado a la Historia Clínica creada
-    const controlData: any = {
-      embarazoId: dto.embarazoId,
-      historiaClinicaId: historia.id,
-      fechaControl: fechaControl,
-      semanasGestacion: semanas || 0,
-      peso: dto.peso,
-      taSistolica: dto.taSistolica,
-      taDiastolica: dto.taDiastolica,
-      alturaUterina: dto.alturaUterina,
-      fcf: dto.fcf,
-      movimientosFetales: dto.movimientosFetales,
-      datosFetos: dto.datosFetos,
-      edema: dto.edema,
-      proteinuria: dto.proteinuria,
-      observaciones: dto.observaciones,
-      creadoPorId: usuarioId
-    };
-
-    const control = await this.prisma.controlPrenatal.create({
-      data: controlData
-    });
-
-    // 3. Re-evaluar riesgo basado en signos vitales actuales
-    if (dto.taSistolica >= 140 || dto.taDiastolica >= 90 || dto.proteinuria) {
-      await this.prisma.embarazo.update({
-        where: { id: dto.embarazoId },
-        data: { riesgo: RiesgoObstetrico.ALTO }
       });
-    }
 
-    return control;
+      // Crear próxima cita si se proporcionó y vincularla
+      if (dto.proximaCita) {
+        const medCita = await tx.usuario.findUnique({
+          where: { id: dto.proximaCita.medicoId },
+        });
+
+        const nuevaCita = await tx.cita.create({
+          data: {
+            pacienteId: embarazo.pacienteId,
+            medicoId: dto.proximaCita.medicoId,
+            especialidadId: dto.proximaCita.especialidadId,
+            fechaHora: new Date(dto.proximaCita.fecha + 'T' + dto.proximaCita.hora + ':00Z'),
+            tipo: dto.proximaCita.tipo || 'CONSULTA',
+            motivo: dto.proximaCita.motivo || 'Control Prenatal',
+            duracionMinutos: dto.proximaCita.duracionMinutos || 20,
+            establecimientoId: medCita?.establecimientoId || 1,
+            creadoPorId: usuarioId
+          }
+        });
+
+        // Vincular a la historia
+        await tx.historiaClinica.update({
+          where: { id: historia.id },
+          data: { proximaCitaId: nuevaCita.id },
+        });
+      }
+
+      // 2. Crear el Control Prenatal vinculado a la Historia Clínica creada
+      const controlData: any = {
+        embarazoId: dto.embarazoId,
+        historiaClinicaId: historia.id,
+        fechaControl: fechaControl,
+        semanasGestacion: semanas || 0,
+        peso: dto.peso,
+        taSistolica: dto.taSistolica,
+        taDiastolica: dto.taDiastolica,
+        alturaUterina: dto.alturaUterina,
+        fcf: dto.fcf,
+        movimientosFetales: dto.movimientosFetales,
+        datosFetos: dto.datosFetos,
+        edema: dto.edema,
+        proteinuria: dto.proteinuria,
+        observaciones: dto.observaciones,
+        creadoPorId: usuarioId
+      };
+
+      const control = await tx.controlPrenatal.create({
+        data: controlData
+      });
+
+      // 3. Re-evaluar riesgo basado en signos vitales actuales o proteinuria
+      if (dto.taSistolica >= 140 || dto.taDiastolica >= 90 || dto.proteinuria) {
+        await tx.embarazo.update({
+          where: { id: dto.embarazoId },
+          data: { riesgo: RiesgoObstetrico.ALTO }
+        });
+      }
+
+      return control;
+    });
   }
+
 
   async getEmbarazoById(id: number) {
     return this.prisma.embarazo.findUnique({
@@ -382,6 +479,63 @@ export class ControlPrenatalService {
   async getPacienteByDni(dni: string) {
     return this.prisma.paciente.findUnique({
       where: { dni }
+    });
+  }
+
+  async getControlDetalle(id: number) {
+    return this.prisma.controlPrenatal.findUnique({
+      where: { id },
+      include: {
+        embarazo: {
+          include: {
+            paciente: {
+              include: {
+                establecimiento: true
+              }
+            }
+          }
+        }
+      }
+    });
+  }
+
+  async getHistoriaDetalleParaControl(id: number) {
+    return this.prisma.historiaClinica.findUnique({
+      where: { id },
+      include: {
+        paciente: true,
+        medico: {
+          select: {
+            nombres: true,
+            apellidos: true,
+            numeroColegiado: true,
+            establecimiento: { select: { nombre: true } },
+          },
+        },
+        diagnosticos: true,
+        recetas: {
+          include: {
+            detalles: { include: { medicamento: true } },
+          },
+        },
+        solicitudesLab: {
+          include: {
+            detalles: { include: { examen: true } },
+          },
+        },
+        solicitudesRad: {
+          include: {
+            detalles: { include: { estudio: true } },
+          },
+        },
+        incapacidades: true,
+        referidos: {
+          include: {
+            destino: { select: { nombre: true } },
+          },
+        },
+        proximaCita: true,
+      },
     });
   }
 

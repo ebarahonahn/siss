@@ -70,4 +70,29 @@ export class RegistrarControlDto {
   @ApiProperty({ description: 'Datos de los fetos en embarazos múltiples', required: false })
   @IsOptional()
   datosFetos?: any[];
+
+  @ApiProperty({ description: 'Lista de medicamentos prescritos', required: false })
+  @IsOptional()
+  recetas?: any[];
+
+  @ApiProperty({ description: 'Lista de laboratorios ordenados', required: false })
+  @IsOptional()
+  laboratorios?: any[];
+
+  @ApiProperty({ description: 'Lista de radiologías ordenadas', required: false })
+  @IsOptional()
+  radiologias?: any[];
+
+  @ApiProperty({ description: 'Lista de remisiones / referencias', required: false })
+  @IsOptional()
+  referencias?: any[];
+
+  @ApiProperty({ description: 'Lista de incapacidades emitidas', required: false })
+  @IsOptional()
+  incapacidades?: any[];
+
+  @ApiProperty({ description: 'Próxima cita programada', required: false })
+  @IsOptional()
+  proximaCita?: any;
 }
+

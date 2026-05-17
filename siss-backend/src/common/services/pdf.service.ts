@@ -88,14 +88,14 @@ export class PdfService {
 
     const points: any[] = [];
     const validControles = (controles || [])
-      .map(c => ({ sem: parseFloat(c.semanasGestacion), au: parseFloat(c.alturaUterina) }))
+      .map(c => ({ sem: parseFloat(String(c.semanasGestacion)), au: parseFloat(String(c.alturaUterina)) }))
       .filter(c => !isNaN(c.sem) && !isNaN(c.au) && c.sem >= 13 && c.sem <= 40)
       .sort((a, b) => a.sem - b.sem);
 
     validControles.forEach(c => {
-      const px = ((c.sem - 13) * width) / (40 - 13);
-      const py = height - ((c.au - 10) * height) / (40 - 10);
-      canvas.push({ type: 'rect', x: px - 1.25, y: py - 1.25, w: 2.5, h: 2.5, color: '#10b981' });
+      const px = Math.max(0, Math.min(width, ((c.sem - 13) * width) / (40 - 13)));
+      const py = Math.max(0, Math.min(height, height - ((c.au - 10) * height) / (40 - 10)));
+      canvas.push({ type: 'ellipse', x: px, y: py, r1: 3, r2: 3, color: '#10b981', lineColor: '#ffffff', lineWidth: 1 });
       points.push({ x: px, y: py });
     });
     for (let i = 0; i < points.length - 1; i++) {
@@ -106,23 +106,33 @@ export class PdfService {
       stack: [
         { text: 'Altura Uterina (cm)', style: 'chartTitle' },
         {
-          columns: [
-            { width: 15, stack: [40, 35, 30, 25, 20, 15, 10].map((v, idx) => ({ text: v.toString(), fontSize: 5, margin: [0, idx === 0 ? 0 : 11.5, 0, 0] })) },
-            {
-              stack: [
-                { canvas: canvas },
-                { columns: xLabels, columnGap: 12, margin: [0, 2, 0, 0] },
-                { text: 'Semanas', fontSize: 6, alignment: 'center', margin: [0, 2, 0, 0] }
-              ]
-            }
-          ],
-          columnGap: 5
+          table: {
+            widths: [12, 180],
+            body: [[
+              {
+                stack: [40, 35, 30, 25, 20, 15, 10].map((v, idx) => ({ text: v.toString(), fontSize: 5, margin: [0, idx === 0 ? 0 : 11.5, 0, 0] })),
+                border: [false, false, false, false]
+              },
+              {
+                stack: [
+                  { canvas: canvas },
+                  { text: '13  16  19  22  25  28  31  34  37  40', fontSize: 5, margin: [0, 2, 0, 0] },
+                  { text: 'Semanas', fontSize: 6, alignment: 'center', margin: [0, 1, 0, 0] }
+                ],
+                border: [false, false, false, false]
+              }
+            ]]
+          },
+          layout: {
+            paddingLeft: () => 0, paddingRight: () => 0,
+            paddingTop: () => 0, paddingBottom: () => 0
+          }
         },
-        { 
+        {
           columns: [
-            { width: 'auto', canvas: [{ type: 'rect', x: 0, y: 2, w: 10, h: 2, color: '#fca5a5' }] },
+            { width: 12, canvas: [{ type: 'rect', x: 0, y: 2, w: 10, h: 2, color: '#fca5a5' }] },
             { text: 'Percentiles', fontSize: 6, margin: [2, 0, 10, 0] },
-            { width: 'auto', canvas: [{ type: 'rect', x: 0, y: 2, w: 10, h: 2, color: '#10b981' }] },
+            { width: 12, canvas: [{ type: 'rect', x: 0, y: 2, w: 10, h: 2, color: '#10b981' }] },
             { text: 'Paciente', fontSize: 6, margin: [2, 0, 0, 0] }
           ],
           alignment: 'center', margin: [0, 5, 0, 0]
@@ -170,16 +180,16 @@ export class PdfService {
 
     const points: any[] = [];
     const validControles = (controles || [])
-      .map(c => ({ sem: parseFloat(c.semanasGestacion), p: parseFloat(c.p || c.pesoMat || c.peso) }))
+      .map(c => ({ sem: parseFloat(String(c.semanasGestacion)), p: parseFloat(String(c.p || c.pesoMat || c.peso)) }))
       .filter(c => !isNaN(c.sem) && !isNaN(c.p) && c.sem >= 5 && c.sem <= 40)
       .sort((a, b) => a.sem - b.sem);
 
     const pesoBase = validControles.length > 0 ? validControles[0].p : 0;
     validControles.forEach(c => {
       const ganancia = c.p - pesoBase;
-      const px = ((c.sem - 5) * width) / (40 - 5);
-      const py = height - (ganancia * height) / 20;
-      canvas.push({ type: 'rect', x: px - 1.25, y: py - 1.25, w: 2.5, h: 2.5, color: '#3b82f6' });
+      const px = Math.max(0, Math.min(width, ((c.sem - 5) * width) / (40 - 5)));
+      const py = Math.max(0, Math.min(height, height - (ganancia * height) / 20));
+      canvas.push({ type: 'ellipse', x: px, y: py, r1: 3, r2: 3, color: '#3b82f6', lineColor: '#ffffff', lineWidth: 1 });
       points.push({ x: px, y: py });
     });
     for (let i = 0; i < points.length - 1; i++) {
@@ -190,23 +200,33 @@ export class PdfService {
       stack: [
         { text: 'Ganancia de Peso (kg)', style: 'chartTitle' },
         {
-          columns: [
-            { width: 15, stack: [20, 18, 16, 14, 12, 10, 8, 6, 4, 2, 0].map((v, idx) => ({ text: v.toString(), fontSize: 5, margin: [0, idx === 0 ? 0 : 5.4, 0, 0] })) },
-            {
-              stack: [
-                { canvas: canvas },
-                { columns: xLabels, columnGap: 18.5, margin: [0, 2, 0, 0] },
-                { text: 'Semanas', fontSize: 6, alignment: 'center', margin: [0, 2, 0, 0] }
-              ]
-            }
-          ],
-          columnGap: 5
+          table: {
+            widths: [12, 180],
+            body: [[
+              {
+                stack: [20, 18, 16, 14, 12, 10, 8, 6, 4, 2, 0].map((v, idx) => ({ text: v.toString(), fontSize: 5, margin: [0, idx === 0 ? 0 : 5.4, 0, 0] })),
+                border: [false, false, false, false]
+              },
+              {
+                stack: [
+                  { canvas: canvas },
+                  { text: '5   10   15   20   25   30   35   40', fontSize: 5, margin: [0, 2, 0, 0] },
+                  { text: 'Semanas', fontSize: 6, alignment: 'center', margin: [0, 1, 0, 0] }
+                ],
+                border: [false, false, false, false]
+              }
+            ]]
+          },
+          layout: {
+            paddingLeft: () => 0, paddingRight: () => 0,
+            paddingTop: () => 0, paddingBottom: () => 0
+          }
         },
         { 
           columns: [
-            { width: 'auto', canvas: [{ type: 'rect', x: 0, y: 2, w: 10, h: 2, color: '#fca5a5', dash: { length: 2 } }] },
+            { width: 12, canvas: [{ type: 'rect', x: 0, y: 2, w: 10, h: 2, color: '#fca5a5', dash: { length: 2 } }] },
             { text: 'Percentiles', fontSize: 6, margin: [2, 0, 10, 0] },
-            { width: 'auto', canvas: [{ type: 'rect', x: 0, y: 2, w: 10, h: 2, color: '#3b82f6' }] },
+            { width: 12, canvas: [{ type: 'rect', x: 0, y: 2, w: 10, h: 2, color: '#3b82f6' }] },
             { text: 'Paciente', fontSize: 6, margin: [2, 0, 0, 0] }
           ],
           alignment: 'center', margin: [0, 5, 0, 0]
@@ -358,7 +378,7 @@ export class PdfService {
               [
                 embarazo.fum ? new Date(embarazo.fum).toLocaleDateString() : '---',
                 embarazo.fpp ? new Date(embarazo.fpp).toLocaleDateString() : '---',
-                { text: `${semanasActuales} sem`, bold: true, fontSize: 11, background: '#fef08a' },
+                { text: `${semanasActuales} sem`, bold: true, fontSize: 11, fillColor: '#fef08a' },
                 { 
                   stack: [
                     { text: `${embarazo.riesgo || 'BAJO'} RIESGO`, color: embarazo.riesgo === 'ALTO' ? '#b91c1c' : '#059669', bold: true },
@@ -377,8 +397,8 @@ export class PdfService {
         { text: 'EVOLUCIÓN CLÍNICA', style: 'sectionTitle', margin: [0, 15, 0, 10] },
         {
           columns: [
-            this.dibujarGraficaPeso(embarazo.controles || []),
-            this.dibujarGraficaAlturaUterina(embarazo.controles || [])
+            { width: 220, ...this.dibujarGraficaPeso(embarazo.controles || []) },
+            { width: 220, ...this.dibujarGraficaAlturaUterina(embarazo.controles || []) }
           ],
           columnGap: 20
         },
@@ -408,10 +428,10 @@ export class PdfService {
               [{ text: 'Fecha', style: 'tableHeader' }, { text: 'Sem', style: 'tableHeader' }, { text: 'Peso (kg)', style: 'tableHeader' }, { text: 'P.A. (mmHg)', style: 'tableHeader' }, { text: 'A.U. (cm)', style: 'tableHeader' }, { text: 'FCF (LPM)', style: 'tableHeader' }, { text: 'Mov.', style: 'tableHeader' }, { text: 'Prot.', style: 'tableHeader' }, { text: 'Edema', style: 'tableHeader' }, { text: 'Médico / Responsable', style: 'tableHeader' }, { text: 'Observaciones', style: 'tableHeader' }],
               ...(embarazo.controles || []).map(c => [
                 new Date(c.fechaControl).toLocaleDateString(),
-                Number(c.semanasGestacion).toFixed(1),
-                `${c.peso || '--'}`,
+                isNaN(parseFloat(String(c.semanasGestacion))) ? '--' : parseFloat(String(c.semanasGestacion)).toFixed(1),
+                `${c.peso != null ? c.peso : '--'}`,
                 `${c.taSistolica || '0'}/${c.taDiastolica || '0'}`,
-                c.alturaUterina || '--',
+                c.alturaUterina != null ? String(c.alturaUterina) : '--',
                 { text: formatearFcf(c), color: embarazo.esMultiple ? '#1d4ed8' : '#000000', bold: embarazo.esMultiple },
                 { text: formatearMov(c), color: embarazo.esMultiple ? '#1d4ed8' : '#000000', bold: embarazo.esMultiple },
                 c.proteinuria ? 'SÍ' : 'NO',
@@ -433,11 +453,45 @@ export class PdfService {
         chartTitle: { fontSize: 10, bold: true, alignment: 'center', color: '#334155', margin: [0, 0, 0, 5] }
       },
       footer: (currentPage: number, pageCount: number) => {
-        return { text: `Página ${currentPage} de ${pageCount}`, alignment: 'right', fontSize: 7, margin: [40, 10] };
+        return { text: `Página ${currentPage} de ${pageCount}`, alignment: 'right', fontSize: 7, margin: [40, 10, 40, 10] };
       },
     };
 
-    const doc = pdfmake.createPdf(docDefinition);
+    // Encontrar e imprimir todas las elipses del docDefinition para depurar
+    const buscarElipses = (obj: any, path = 'root') => {
+      if (Array.isArray(obj)) {
+        obj.forEach((item, i) => buscarElipses(item, `${path}[${i}]`));
+      } else if (obj !== null && typeof obj === 'object') {
+        if (obj.type === 'ellipse') {
+          console.log(`[ELIPSE-DEBUG] Encontrada elipse en ${path}:`, JSON.stringify(obj));
+        }
+        for (const key of Object.keys(obj)) {
+          buscarElipses(obj[key], `${path}.${key}`);
+        }
+      }
+    };
+    buscarElipses(docDefinition);
+
+    // Sanitizador: reemplaza NaN numérico en el doc definition y lo reporta
+    const sanitizeNaN = (obj: any, path = 'root'): any => {
+      if (Array.isArray(obj)) return obj.map((v, i) => sanitizeNaN(v, `${path}[${i}]`));
+      if (obj !== null && typeof obj === 'object') {
+        const r: any = {};
+        for (const k of Object.keys(obj)) r[k] = sanitizeNaN(obj[k], `${path}.${k}`);
+        return r;
+      }
+      if (typeof obj === 'number' && isNaN(obj)) {
+        console.error(`[PDF-NaN] NaN detectado en path: ${path}`);
+        return 0;
+      }
+      if (typeof obj === 'string' && (obj === 'NaN' || obj === 'undefined' || obj === 'null')) {
+        console.error(`[PDF-NaN] String '${obj}' detectado en path: ${path}`);
+        return 0;
+      }
+      return obj;
+    };
+
+    const doc = pdfmake.createPdf(sanitizeNaN(docDefinition));
     const stream = await doc.getStream();
     stream.end();
     return stream;
@@ -522,34 +576,46 @@ export class PdfService {
     validControles.forEach(c => {
       const px = (c.x * width) / maxMonths;
       const py = height - (c.y * height) / maxY;
-      canvas.push({ type: 'rect', x: px - 1.25, y: py - 1.25, w: 2.5, h: 2.5, color: '#3b82f6' });
+      canvas.push({ type: 'ellipse', x: px, y: py, r1: 3, r2: 3, color: '#3b82f6', lineColor: '#ffffff', lineWidth: 1 });
       points.push({ x: px, y: py });
     });
     for (let i = 0; i < points.length - 1; i++) {
       canvas.push({ type: 'line', x1: points[i].x, y1: points[i].y, x2: points[i + 1].x, y2: points[i + 1].y, lineWidth: 1, lineColor: '#3b82f6' });
     }
 
+    const axisText = maxMonths === 60 ? '0       10       20       30       40       50       60' : '0       20       40       60       80       100       120';
+
     return {
       stack: [
         { text: 'Peso para la Edad (kg)', style: 'chartTitle' },
         {
-          columns: [
-            { width: 15, stack: yLabels.map((v, idx) => ({ text: v.toString(), fontSize: 5, margin: [0, idx === 0 ? 0 : 14.5, 0, 0] })) },
-            {
-              stack: [
-                { canvas: canvas },
-                { columns: xLabels, columnGap: 24, margin: [0, 2, 0, 0] },
-                { text: 'Edad (Meses)', fontSize: 6, alignment: 'center', margin: [0, 2, 0, 0] }
-              ]
-            }
-          ],
-          columnGap: 5
+          table: {
+            widths: [12, 180],
+            body: [[
+              {
+                stack: yLabels.map((v, idx) => ({ text: v.toString(), fontSize: 5, margin: [0, idx === 0 ? 0 : 14.5, 0, 0] })),
+                border: [false, false, false, false]
+              },
+              {
+                stack: [
+                  { canvas: canvas },
+                  { text: axisText, fontSize: 5, margin: [0, 2, 0, 0] },
+                  { text: 'Edad (Meses)', fontSize: 6, alignment: 'center', margin: [0, 1, 0, 0] }
+                ],
+                border: [false, false, false, false]
+              }
+            ]]
+          },
+          layout: {
+            paddingLeft: () => 0, paddingRight: () => 0,
+            paddingTop: () => 0, paddingBottom: () => 0
+          }
         },
         { 
           columns: [
-            { width: 'auto', canvas: [{ type: 'rect', x: 0, y: 2, w: 10, h: 2, color: '#cbd5e1' }] },
+            { width: 12, canvas: [{ type: 'rect', x: 0, y: 2, w: 10, h: 2, color: '#cbd5e1' }] },
             { text: 'P50 (Promedio)', fontSize: 6, margin: [2, 0, 10, 0] },
-            { width: 'auto', canvas: [{ type: 'rect', x: 0, y: 2, w: 10, h: 2, color: '#3b82f6' }] },
+            { width: 12, canvas: [{ type: 'rect', x: 0, y: 2, w: 10, h: 2, color: '#3b82f6' }] },
             { text: 'Paciente', fontSize: 6, margin: [2, 0, 0, 0] }
           ],
           alignment: 'center', margin: [0, 5, 0, 0]
@@ -641,34 +707,46 @@ export class PdfService {
     validControles.forEach(c => {
       const px = (c.x * width) / maxMonths;
       const py = height - ((c.y - minY) * height) / rangeY;
-      canvas.push({ type: 'rect', x: px - 1.25, y: py - 1.25, w: 2.5, h: 2.5, color: '#10b981' });
+      canvas.push({ type: 'ellipse', x: px, y: py, r1: 3, r2: 3, color: '#10b981', lineColor: '#ffffff', lineWidth: 1 });
       points.push({ x: px, y: py });
     });
     for (let i = 0; i < points.length - 1; i++) {
       canvas.push({ type: 'line', x1: points[i].x, y1: points[i].y, x2: points[i + 1].x, y2: points[i + 1].y, lineWidth: 1, lineColor: '#10b981' });
     }
 
+    const axisText = maxMonths === 60 ? '0       10       20       30       40       50       60' : '0       20       40       60       80       100       120';
+
     return {
       stack: [
         { text: 'Talla para la Edad (cm)', style: 'chartTitle' },
         {
-          columns: [
-            { width: 15, stack: yLabels.map((v, idx) => ({ text: v.toString(), fontSize: 5, margin: [0, idx === 0 ? 0 : 8.2, 0, 0] })) },
-            {
-              stack: [
-                { canvas: canvas },
-                { columns: xLabels, columnGap: 24, margin: [0, 2, 0, 0] },
-                { text: 'Edad (Meses)', fontSize: 6, alignment: 'center', margin: [0, 2, 0, 0] }
-              ]
-            }
-          ],
-          columnGap: 5
+          table: {
+            widths: [12, 180],
+            body: [[
+              {
+                stack: yLabels.map((v, idx) => ({ text: v.toString(), fontSize: 5, margin: [0, idx === 0 ? 0 : 8.2, 0, 0] })),
+                border: [false, false, false, false]
+              },
+              {
+                stack: [
+                  { canvas: canvas },
+                  { text: axisText, fontSize: 5, margin: [0, 2, 0, 0] },
+                  { text: 'Edad (Meses)', fontSize: 6, alignment: 'center', margin: [0, 1, 0, 0] }
+                ],
+                border: [false, false, false, false]
+              }
+            ]]
+          },
+          layout: {
+            paddingLeft: () => 0, paddingRight: () => 0,
+            paddingTop: () => 0, paddingBottom: () => 0
+          }
         },
         { 
           columns: [
-            { width: 'auto', canvas: [{ type: 'rect', x: 0, y: 2, w: 10, h: 2, color: '#cbd5e1' }] },
+            { width: 12, canvas: [{ type: 'rect', x: 0, y: 2, w: 10, h: 2, color: '#cbd5e1' }] },
             { text: 'P50 (Promedio)', fontSize: 6, margin: [2, 0, 10, 0] },
-            { width: 'auto', canvas: [{ type: 'rect', x: 0, y: 2, w: 10, h: 2, color: '#10b981' }] },
+            { width: 12, canvas: [{ type: 'rect', x: 0, y: 2, w: 10, h: 2, color: '#10b981' }] },
             { text: 'Paciente', fontSize: 6, margin: [2, 0, 0, 0] }
           ],
           alignment: 'center', margin: [0, 5, 0, 0]
@@ -1272,6 +1350,304 @@ export class PdfService {
       },
       footer: (currentPage: number, pageCount: number) => {
         return { text: `Reporte de Consulta Individual • Página ${currentPage} de ${pageCount}`, alignment: 'center', fontSize: 7, margin: [40, 10] };
+      },
+    };
+
+    const doc = pdfmake.createPdf(docDefinition);
+    const stream = await doc.getStream();
+    stream.end();
+    return stream;
+  }
+
+  async generarNotaControlPrenatal(embarazo: any, control: any, historia: any) {
+    const pdfmake = this.getPrinter();
+    const paciente = embarazo.paciente || {};
+    const medico = historia.medico || {};
+    
+    // Parsear datos fetos
+    let datosFetos = control.datosFetos || [];
+    if (typeof datosFetos === 'string') {
+      try { datosFetos = JSON.parse(datosFetos); } catch(e) { datosFetos = []; }
+    }
+
+    const formatearFcf = () => {
+      let base = (control.fcf || '--').toString();
+      if (datosFetos && Array.isArray(datosFetos)) {
+        datosFetos.forEach((f: any) => { base += ` / ${f.fcf || '--'}`; });
+      }
+      return base;
+    };
+
+    const formatearMov = () => {
+      let base = control.movimientosFetales ? 'SÍ' : 'NO';
+      if (datosFetos && Array.isArray(datosFetos)) {
+        datosFetos.forEach((f: any) => { base += ` / ${f.movimientos ? 'SÍ' : 'NO'}`; });
+      }
+      return base;
+    };
+
+    // Secciones opcionales: Recetas, Laboratorios, Radiología, Referencias, Cita
+    const ordenesStack: any[] = [];
+
+    // Recetas
+    if (historia.recetas && historia.recetas.length > 0) {
+      ordenesStack.push({ text: 'MEDICAMENTOS RECETADOS', style: 'sectionTitle', margin: [0, 8, 0, 4] });
+      const bodyRec: any[] = [[
+        { text: 'Medicamento', style: 'tableHeader' },
+        { text: 'Dosis', style: 'tableHeader' },
+        { text: 'Frecuencia', style: 'tableHeader' },
+        { text: 'Duración', style: 'tableHeader' },
+        { text: 'Cantidad', style: 'tableHeader' },
+        { text: 'Indicaciones', style: 'tableHeader' }
+      ]];
+      historia.recetas.forEach((rec: any) => {
+        (rec.detalles || []).forEach((det: any) => {
+          bodyRec.push([
+            { text: det.medicamento?.nombreGenerico || '---', bold: true, fontSize: 8 },
+            { text: det.dosis || '---', fontSize: 8 },
+            { text: det.frecuencia || '---', fontSize: 8 },
+            { text: `${det.duracion || '---'} días`, fontSize: 8 },
+            { text: det.cantidad || '0', fontSize: 8 },
+            { text: det.indicaciones || '---', fontSize: 7, color: '#475569' }
+          ]);
+        });
+      });
+      if (bodyRec.length > 1) {
+        ordenesStack.push({
+          table: { headerRows: 1, widths: ['*', 'auto', 'auto', 'auto', 'auto', '*'], body: bodyRec },
+          layout: 'lightHorizontalLines'
+        });
+      }
+    }
+
+    // Laboratorios
+    if (historia.solicitudesLab && historia.solicitudesLab.length > 0) {
+      ordenesStack.push({ text: 'SOLICITUDES DE LABORATORIO', style: 'sectionTitle', margin: [0, 8, 0, 4] });
+      const bodyLab: any[] = [[
+        { text: 'Examen', style: 'tableHeader' },
+        { text: 'Indicaciones', style: 'tableHeader' }
+      ]];
+      historia.solicitudesLab.forEach((s: any) => {
+        (s.detalles || []).forEach((det: any) => {
+          bodyLab.push([
+            { text: det.examen?.nombre || '---', bold: true, fontSize: 8 },
+            { text: det.observaciones || '---', fontSize: 8, color: '#475569' }
+          ]);
+        });
+      });
+      if (bodyLab.length > 1) {
+        ordenesStack.push({
+          table: { headerRows: 1, widths: ['30%', '*'], body: bodyLab },
+          layout: 'lightHorizontalLines'
+        });
+      }
+    }
+
+    // Radiología
+    if (historia.solicitudesRad && historia.solicitudesRad.length > 0) {
+      ordenesStack.push({ text: 'SOLICITUDES DE RADIOLOGÍA (Rx / Ultrasonido)', style: 'sectionTitle', margin: [0, 8, 0, 4] });
+      const bodyRad: any[] = [[
+        { text: 'Estudio', style: 'tableHeader' },
+        { text: 'Indicaciones', style: 'tableHeader' }
+      ]];
+      historia.solicitudesRad.forEach((s: any) => {
+        (s.detalles || []).forEach((det: any) => {
+          bodyRad.push([
+            { text: det.estudio?.nombre || '---', bold: true, fontSize: 8 },
+            { text: det.observaciones || '---', fontSize: 8, color: '#475569' }
+          ]);
+        });
+      });
+      if (bodyRad.length > 1) {
+        ordenesStack.push({
+          table: { headerRows: 1, widths: ['30%', '*'], body: bodyRad },
+          layout: 'lightHorizontalLines'
+        });
+      }
+    }
+
+    // Referencias
+    if (historia.referidos && historia.referidos.length > 0) {
+      ordenesStack.push({ text: 'REFERENCIAS MÉDICAS EMITIDAS', style: 'sectionTitle', margin: [0, 8, 0, 4] });
+      const bodyRef: any[] = [[
+        { text: 'Establecimiento Destino', style: 'tableHeader' },
+        { text: 'Especialidad', style: 'tableHeader' },
+        { text: 'Motivo', style: 'tableHeader' },
+        { text: 'Prioridad', style: 'tableHeader' }
+      ]];
+      historia.referidos.forEach((ref: any) => {
+        bodyRef.push([
+          { text: ref.destino?.nombre || '---', bold: true, fontSize: 8 },
+          { text: ref.especialidadDestino || '---', fontSize: 8 },
+          { text: ref.motivo || '---', fontSize: 8, color: '#475569' },
+          { text: ref.urgente ? 'URGENTE' : 'NORMAL', color: ref.urgente ? '#b91c1c' : '#475569', bold: ref.urgente, fontSize: 8 }
+        ]);
+      });
+      ordenesStack.push({
+        table: { headerRows: 1, widths: ['*', 'auto', '*', 'auto'], body: bodyRef },
+        layout: 'lightHorizontalLines'
+      });
+    }
+
+    // Incapacidades
+    if (historia.incapacidades && historia.incapacidades.length > 0) {
+      ordenesStack.push({ text: 'INCAPACIDADES MÉDICAS', style: 'sectionTitle', margin: [0, 8, 0, 4] });
+      const bodyInc: any[] = [[
+        { text: 'Período', style: 'tableHeader' },
+        { text: 'Días', style: 'tableHeader' },
+        { text: 'Tipo de Incapacidad', style: 'tableHeader' },
+        { text: 'Diagnóstico / Justificación', style: 'tableHeader' }
+      ]];
+      
+      const formatFechaUTC = (dStr: string) => {
+        try {
+          const d = new Date(dStr);
+          return `${String(d.getUTCDate()).padStart(2, '0')}/${String(d.getUTCMonth() + 1).padStart(2, '0')}/${d.getUTCFullYear()}`;
+        } catch(e) {
+          return dStr;
+        }
+      };
+
+      historia.incapacidades.forEach((inc: any) => {
+        bodyInc.push([
+          { text: `${formatFechaUTC(inc.fechaInicio)} al ${formatFechaUTC(inc.fechaFin)}`, bold: true, fontSize: 8 },
+          { text: `${inc.dias} días`, fontSize: 8 },
+          { text: inc.tipo || '---', fontSize: 8 },
+          { text: inc.motivo || '---', fontSize: 8, color: '#475569', italic: true }
+        ]);
+      });
+      ordenesStack.push({
+        table: { headerRows: 1, widths: ['auto', 'auto', 'auto', '*'], body: bodyInc },
+        layout: 'lightHorizontalLines'
+      });
+    }
+
+    // Cita
+    if (historia.proximaCita) {
+      ordenesStack.push({ text: 'PRÓXIMA CITA DE CONTROL', style: 'sectionTitle', margin: [0, 8, 0, 4] });
+      ordenesStack.push({
+        table: {
+          widths: ['auto', '*'],
+          body: [
+            [{ text: 'Fecha y Hora', style: 'tableHeader' }, { text: 'Motivo / Indicaciones', style: 'tableHeader' }],
+            [
+              { text: new Date(historia.proximaCita.fechaHora).toLocaleString(), fontSize: 8, bold: true },
+              { text: historia.proximaCita.motivo || '---', fontSize: 8, color: '#475569' }
+            ]
+          ]
+        },
+        layout: 'lightHorizontalLines'
+      });
+    }
+
+    const docDefinition: any = {
+      pageSize: 'LETTER',
+      pageMargins: [40, 30, 40, 40],
+      content: [
+        {
+          columns: [
+            { 
+              stack: [
+                { text: 'SISTEMA INTEGRAL DE SALUD (SISS)', style: 'header' },
+                { text: (paciente.establecimiento?.nombre || 'ESTABLECIMIENTO DE SALUD').toUpperCase(), fontSize: 8, bold: true, color: '#475569', margin: [0, 2, 0, 0] }
+              ]
+            },
+            { text: `Fecha Emisión: ${new Date().toLocaleDateString()}`, alignment: 'right', style: 'subheader' },
+          ],
+        },
+        { text: 'RESUMEN DE CONSULTA PRENATAL', style: 'title', alignment: 'center', margin: [0, 15, 0, 15] },
+        
+        { text: 'INFORMACIÓN DE IDENTIFICACIÓN', style: 'sectionTitle' },
+        {
+          table: {
+            widths: ['*', 'auto', 'auto', 'auto'],
+            body: [
+              [
+                { text: 'Nombre Completo', style: 'tableHeader' }, 
+                { text: 'DNI / Identificación', style: 'tableHeader' }, 
+                { text: 'No. Expediente', style: 'tableHeader' }, 
+                { text: 'Edad Gestacional', style: 'tableHeader' }
+              ],
+              [
+                `${paciente.nombres} ${paciente.apellidos}`, 
+                paciente.dni || '---', 
+                paciente.numeroExpediente || '---', 
+                { text: `${control.semanasGestacion} semanas`, bold: true }
+              ],
+            ],
+          },
+          layout: 'lightHorizontalLines',
+        },
+
+        { text: 'DETALLE DE LA EVALUACIÓN PRENATAL', style: 'sectionTitle', margin: [0, 12, 0, 6] },
+        {
+          table: {
+            widths: ['auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', '*'],
+            body: [
+              [
+                { text: 'Fecha', style: 'tableHeader' }, 
+                { text: 'Peso', style: 'tableHeader' }, 
+                { text: 'P.A.', style: 'tableHeader' }, 
+                { text: 'A.U. (cm)', style: 'tableHeader' }, 
+                { text: 'FCF (lpm)', style: 'tableHeader' }, 
+                { text: 'Mov. Fetales', style: 'tableHeader' },
+                { text: 'Edema / Prot.', style: 'tableHeader' },
+                { text: 'Médico Evaluador', style: 'tableHeader' }
+              ],
+              [
+                new Date(control.fechaControl).toLocaleDateString(),
+                `${control.peso || '--'} kg`,
+                `${control.taSistolica || '0'}/${control.taDiastolica || '0'}`,
+                `${control.alturaUterina || '--'}`,
+                formatearFcf(),
+                formatearMov(),
+                `${control.edema ? 'Edema' : 'No'} / ${control.proteinuria ? 'Prot.' : 'No'}`,
+                { text: `${medico.nombres || ''} ${medico.apellidos || ''}`.trim() || '---', bold: true }
+              ]
+            ]
+          },
+          layout: 'lightHorizontalLines'
+        },
+
+        { text: 'DIAGNÓSTICOS ASOCIADOS', style: 'sectionTitle', margin: [0, 10, 0, 4] },
+        {
+          table: {
+            widths: ['auto', '*'],
+            body: [
+              [{ text: 'Código CIE-10', style: 'tableHeader' }, { text: 'Descripción del Diagnóstico', style: 'tableHeader' }],
+              ...(historia.diagnosticos && historia.diagnosticos.length > 0 
+                ? historia.diagnosticos.map((d: any) => [{ text: d.codigoCIE10, bold: true, fontSize: 8 }, { text: d.descripcion, fontSize: 8 }])
+                : [[{ text: 'Z34.9', bold: true, fontSize: 8 }, { text: 'Supervisión de embarazo normal no especificado', fontSize: 8 }]]
+              )
+            ]
+          },
+          layout: 'lightHorizontalLines'
+        },
+
+        { text: 'OBSERVACIONES Y NOTAS CLÍNICAS', style: 'sectionTitle', margin: [0, 10, 0, 4] },
+        {
+          table: {
+            widths: ['*'],
+            body: [
+              [
+                { text: control.observaciones || 'Sin observaciones adicionales registradas en esta consulta.', fontSize: 8.5, italic: !control.observaciones, color: control.observaciones ? '#1e293b' : '#64748b' }
+              ]
+            ]
+          },
+          layout: 'lightHorizontalLines'
+        },
+
+        ...ordenesStack,
+      ],
+      styles: {
+        header: { fontSize: 10, bold: true, color: '#1d4ed8' },
+        subheader: { fontSize: 8, color: '#64748b' },
+        title: { fontSize: 13, bold: true, color: '#1e293b' },
+        sectionTitle: { fontSize: 9, bold: true, color: '#1d4ed8', margin: [0, 10, 0, 4] },
+        tableHeader: { bold: true, fontSize: 8.5, color: '#1e3a8a' },
+      },
+      footer: (currentPage: number, pageCount: number) => {
+        return { text: `Reporte de Consulta Prenatal • Página ${currentPage} de ${pageCount}`, alignment: 'center', fontSize: 7, margin: [40, 10] };
       },
     };
 

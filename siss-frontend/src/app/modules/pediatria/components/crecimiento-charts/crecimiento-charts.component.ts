@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges, AfterViewInit } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
 
 Chart.register(...registerables);
@@ -9,13 +9,14 @@ Chart.register(...registerables);
   templateUrl: './crecimiento-charts.component.html',
   styleUrls: ['./crecimiento-charts.component.css']
 })
-
-
 export class CrecimientoChartsComponent implements OnChanges, AfterViewInit {
   @Input() pacienteId!: number;
   @Input() fechaNacimiento!: string;
   @Input() controles: any[] = [];
 
+  @ViewChild('pesoEdadChart') pesoEdadChartRef!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('tallaEdadChart') tallaEdadChartRef!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('imcChart') imcChartRef!: ElementRef<HTMLCanvasElement>;
 
   charts: any = {};
 
@@ -32,9 +33,9 @@ export class CrecimientoChartsComponent implements OnChanges, AfterViewInit {
   }
 
   initCharts() {
-    this.createChart('pesoEdadChart', 'Peso (kg)', 'rgba(59, 130, 246, 1)');
-    this.createChart('tallaEdadChart', 'Talla (cm)', 'rgba(34, 197, 94, 1)');
-    this.createChart('imcChart', 'IMC', 'rgba(168, 85, 247, 1)');
+    this.createChart(this.pesoEdadChartRef.nativeElement, 'pesoEdadChart', 'Peso (kg)', 'rgba(59, 130, 246, 1)');
+    this.createChart(this.tallaEdadChartRef.nativeElement, 'tallaEdadChart', 'Talla (cm)', 'rgba(34, 197, 94, 1)');
+    this.createChart(this.imcChartRef.nativeElement, 'imcChart', 'IMC', 'rgba(168, 85, 247, 1)');
     
     // Si ya tenemos controles al inicializar, actualizar los gráficos de inmediato
     if (this.controles && this.controles.length > 0) {
@@ -42,9 +43,9 @@ export class CrecimientoChartsComponent implements OnChanges, AfterViewInit {
     }
   }
 
-
-  createChart(id: string, label: string, color: string) {
-    const ctx = document.getElementById(id) as HTMLCanvasElement;
+  createChart(canvasEl: HTMLCanvasElement, id: string, label: string, color: string) {
+    if (!canvasEl) return;
+    const ctx = canvasEl.getContext('2d');
     if (!ctx) return;
 
     this.charts[id] = new Chart(ctx, {
@@ -81,12 +82,17 @@ export class CrecimientoChartsComponent implements OnChanges, AfterViewInit {
             label: `Paciente: ${label}`,
             data: [],
             borderColor: color,
-            backgroundColor: color.replace('1)', '0.1)'),
+            backgroundColor: color,
             borderWidth: 3,
             pointRadius: 6,
+            pointHoverRadius: 8,
+            pointHitRadius: 30,
             pointBackgroundColor: color,
+            pointBorderColor: '#ffffff',
+            pointBorderWidth: 1.5,
             fill: false,
-            tension: 0.3
+            tension: 0.3,
+            showLine: true
           }
         ]
       },
@@ -121,10 +127,16 @@ export class CrecimientoChartsComponent implements OnChanges, AfterViewInit {
 
     const maxMes = Math.max(120, ...dataPaciente.map(d => d.x + 12));
 
+    // Actualizar dinámicamente el límite del eje X para que no se recorten los puntos
+    ['pesoEdadChart', 'tallaEdadChart', 'imcChart'].forEach(id => {
+      if (this.charts[id]) {
+        this.charts[id].options.scales.x.max = maxMes;
+      }
+    });
+
     // Generar Curvas de Referencia (Puntos cada 6 meses para suavidad)
     const refMeses: number[] = [];
     for(let m=0; m<=maxMes; m+=6) refMeses.push(m);
-
 
     const generateRef = (type: 'peso' | 'talla' | 'imc') => {
       return refMeses.map(m => {
@@ -163,6 +175,4 @@ export class CrecimientoChartsComponent implements OnChanges, AfterViewInit {
     chart.data.datasets[3].data = dataP;
     chart.update();
   }
-
-
 }
