@@ -34,6 +34,8 @@ import { LoginImagesModule } from './modules/login-images/login-images.module';
 import { ConfiguracionModule } from './modules/configuracion/configuracion.module';
 import { SolicitudesUsuarioModule } from './modules/solicitudes-usuario/solicitudes-usuario.module';
 import { ControlPrenatalModule } from './modules/control-prenatal/control-prenatal.module';
+import { PediatriaModule } from './modules/pediatria/pediatria.module';
+
 
 
 @Module({
@@ -73,6 +75,8 @@ import { ControlPrenatalModule } from './modules/control-prenatal/control-prenat
     ConfiguracionModule,
     SolicitudesUsuarioModule,
     ControlPrenatalModule,
+    PediatriaModule,
   ],
+
 })
 export class AppModule {}

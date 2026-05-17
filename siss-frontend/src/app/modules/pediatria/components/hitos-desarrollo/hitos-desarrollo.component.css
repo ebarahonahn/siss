@@ -1,0 +1,11 @@
+:host {
+  display: block;
+}
+
+input[type="checkbox"] {
+  cursor: pointer;
+}
+
+.group:hover {
+  transform: translateX(4px);
+}

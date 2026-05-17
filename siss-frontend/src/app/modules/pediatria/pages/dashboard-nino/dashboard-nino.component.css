@@ -1,0 +1,19 @@
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+:host {
+  display: block;
+}
+
+.chart-container {
+  transition: transform 0.3s ease;
+}
+
+.chart-container:hover {
+  transform: translateY(-5px);
+}

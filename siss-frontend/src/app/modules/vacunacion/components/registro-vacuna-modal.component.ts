@@ -21,8 +21,12 @@ import { NotificationService } from '../../../core/services/notification.service
               <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
             </div>
             <div>
-              <h2 class="text-xl font-bold uppercase tracking-tight leading-none">Registrar Aplicación PAI</h2>
-              <p class="text-blue-100 text-[10px] font-bold uppercase tracking-widest mt-1">Ingreso de inmunización oficial</p>
+              <h2 class="text-xl font-bold uppercase tracking-tight leading-none">
+                {{ mode === 'add' ? 'Prescribir Inmunización (Receta)' : 'Registrar Aplicación PAI' }}
+              </h2>
+              <p class="text-blue-100 text-[10px] font-bold uppercase tracking-widest mt-1">
+                {{ mode === 'add' ? 'Nueva indicación de vacuna para enfermería' : 'Ingreso de inmunización oficial' }}
+              </p>
             </div>
           </div>
           <button (click)="cerrar.emit()" class="p-2 hover:bg-blue-700 rounded-xl transition-all">
@@ -64,27 +68,29 @@ import { NotificationService } from '../../../core/services/notification.service
               </select>
             </div>
 
-            <div class="space-y-1">
-              <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Lote Disponible *</label>
-              <select class="w-full px-4 py-3 bg-gray-50 border-transparent focus:bg-white focus:ring-2 focus:ring-blue-500 rounded-xl text-sm transition-all outline-none font-semibold" 
-                      formControlName="loteId">
-                <option [value]="null">Seleccione lote...</option>
-                <option *ngFor="let l of lotes" [value]="l.id">{{ l.codigoLote }} (Stock: {{ l.cantidadActual }})</option>
-              </select>
-              <p *ngIf="lotes.length === 0 && form.get('vacunaId')?.value" class="text-[10px] text-red-500 font-bold mt-1 ml-1 uppercase">Sin stock en este establecimiento</p>
-            </div>
+            <ng-container *ngIf="mode !== 'add'">
+              <div class="space-y-1">
+                <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Lote Disponible *</label>
+                <select class="w-full px-4 py-3 bg-gray-50 border-transparent focus:bg-white focus:ring-2 focus:ring-blue-500 rounded-xl text-sm transition-all outline-none font-semibold" 
+                        formControlName="loteId">
+                  <option [value]="null">Seleccione lote...</option>
+                  <option *ngFor="let l of lotes" [value]="l.id">{{ l.codigoLote }} (Stock: {{ l.cantidadActual }})</option>
+                </select>
+                <p *ngIf="lotes.length === 0 && form.get('vacunaId')?.value" class="text-[10px] text-red-500 font-bold mt-1 ml-1 uppercase">Sin stock en este establecimiento</p>
+              </div>
 
-            <div class="space-y-1">
-              <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Fecha de Aplicación *</label>
-              <input type="datetime-local" class="w-full px-4 py-3 bg-gray-50 border-transparent focus:bg-white focus:ring-2 focus:ring-blue-500 rounded-xl text-sm transition-all outline-none font-semibold" 
-                     formControlName="fechaAplicacion">
-            </div>
+              <div class="space-y-1">
+                <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Fecha de Aplicación *</label>
+                <input type="datetime-local" class="w-full px-4 py-3 bg-gray-50 border-transparent focus:bg-white focus:ring-2 focus:ring-blue-500 rounded-xl text-sm transition-all outline-none font-semibold" 
+                       formControlName="fechaAplicacion">
+              </div>
+            </ng-container>
           </div>
 
           <div class="space-y-1">
-            <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Observaciones</label>
+            <label class="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Observaciones / Indicaciones Especiales</label>
             <textarea class="w-full px-4 py-3 bg-gray-50 border-transparent focus:bg-white focus:ring-2 focus:ring-blue-500 rounded-xl text-sm transition-all outline-none font-semibold" 
-                      formControlName="observaciones" rows="2" placeholder="Notas adicionales..."></textarea>
+                      formControlName="observaciones" rows="2" placeholder="Indicaciones para el Centro de Vacunación (ej: aplicar tras vigilar temperatura)..."></textarea>
           </div>
 
           <!-- Footer -->
@@ -93,10 +99,10 @@ import { NotificationService } from '../../../core/services/notification.service
                     class="flex-1 py-4 bg-gray-100 text-gray-500 rounded-2xl font-bold hover:bg-gray-200 transition-all uppercase text-xs tracking-widest">
               Cancelar
             </button>
-            <button type="submit" [disabled]="form.invalid || loading || lotes.length === 0"
+            <button type="submit" [disabled]="form.invalid || loading || (mode !== 'add' && lotes.length === 0)"
                     class="flex-[2] py-4 bg-blue-600 text-white rounded-2xl font-bold shadow-lg shadow-blue-200 hover:bg-blue-700 transition-all disabled:opacity-50 flex items-center justify-center gap-2 uppercase text-xs tracking-widest">
               <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              {{ loading ? 'Registrando...' : 'Confirmar Aplicación' }}
+              {{ loading ? 'Guardando...' : (mode === 'add' ? 'Agregar a Receta' : 'Confirmar Aplicación') }}
             </button>
           </div>
         </form>
@@ -110,8 +116,12 @@ import { NotificationService } from '../../../core/services/notification.service
 })
 export class RegistroVacunaModalComponent implements OnInit {
   @Input() paciente: any;
+  @Input() preselectedVacunaId?: number;
+  @Input() preselectedEsquemaId?: number;
+  @Input() mode: 'direct' | 'add' = 'direct';
   @Output() cerrar = new EventEmitter<void>();
   @Output() recargar = new EventEmitter<void>();
+  @Output() onAdd = new EventEmitter<any>();
 
   private fb = inject(FormBuilder);
   private vacService = inject(VacunacionService);
@@ -149,12 +159,25 @@ export class RegistroVacunaModalComponent implements OnInit {
     if (this.paciente) {
       this.form.patchValue({ pacienteId: this.paciente.id });
     }
+    if (this.mode === 'add') {
+      this.form.get('loteId')?.clearValidators();
+      this.form.get('loteId')?.updateValueAndValidity();
+      this.form.get('fechaAplicacion')?.clearValidators();
+      this.form.get('fechaAplicacion')?.updateValueAndValidity();
+    }
     this.cargarCatalogo();
   }
 
   cargarCatalogo() {
     this.vacService.obtenerCatalogo().subscribe((res: any) => {
       this.catalogo = res.data || res;
+      if (this.preselectedVacunaId) {
+        this.form.patchValue({ vacunaId: this.preselectedVacunaId });
+        this.onVacunaChange();
+        if (this.preselectedEsquemaId) {
+          this.form.patchValue({ esquemaId: this.preselectedEsquemaId });
+        }
+      }
     });
   }
 
@@ -182,20 +205,33 @@ export class RegistroVacunaModalComponent implements OnInit {
 
   guardar() {
     if (this.form.invalid) return;
-    this.loading = true;
     
-    // Convertir IDs a números para cumplir con el DTO del backend
     const rawData = this.form.value;
-    const payload = {
-      ...rawData,
+    const payload: any = {
       vacunaId: Number(rawData.vacunaId),
       esquemaId: rawData.esquemaId ? Number(rawData.esquemaId) : null,
-      loteId: Number(rawData.loteId),
       pacienteId: Number(rawData.pacienteId),
       establecimientoId: Number(rawData.establecimientoId),
-      fechaAplicacion: new Date(rawData.fechaAplicacion).toISOString()
+      observaciones: rawData.observaciones
     };
 
+    if (this.mode === 'add') {
+      const vacuna = this.catalogo.find(v => v.id == payload.vacunaId);
+      const esquema = this.esquemasFiltrados.find(e => e.id == payload.esquemaId);
+      
+      this.onAdd.emit({
+        ...payload,
+        vacunaNombre: vacuna?.nombre || 'Vacuna',
+        esquemaDescripcion: esquema?.descripcion || 'Dosis Única'
+      });
+      this.cerrar.emit();
+      return;
+    }
+
+    payload.loteId = Number(rawData.loteId);
+    payload.fechaAplicacion = new Date(rawData.fechaAplicacion).toISOString();
+
+    this.loading = true;
     this.vacService.registrarAplicacion(payload).subscribe({
       next: () => {
         this.recargar.emit();

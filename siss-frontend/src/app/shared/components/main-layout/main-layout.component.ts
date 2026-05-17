@@ -103,6 +103,13 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
           roles: ['ADMIN','MEDICO','ENFERMERA'],
           modulo: 'pacientes', // Temporalmente usando el permiso de pacientes para visibilidad
         },
+        {
+          label: 'Pediatría',
+          ruta: '/pediatria',
+          roles: ['ADMIN','MEDICO','ENFERMERA'],
+          modulo: 'pacientes', // Usando pacientes para visibilidad inicial
+        },
+
       ]
     },
     {

@@ -14,7 +14,7 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideHttpClient(
-      withInterceptors([offlineInterceptor, jwtInterceptor]),
+      withInterceptors([jwtInterceptor]),
     ),
     { provide: LOCALE_ID, useValue: 'es-HN' },
   ],

@@ -74,6 +74,14 @@ export const routes: Routes = [
           import('./modules/control-prenatal/control-prenatal.module').then((m) => m.ControlPrenatalModule),
       },
       {
+        path: 'pediatria',
+        canActivate: [roleGuard],
+        data: { title: 'Pediatría', roles: ['MEDICO', 'ENFERMERA', 'ADMIN'] },
+        loadChildren: () =>
+          import('./modules/pediatria/pediatria.module').then((m) => m.PediatriaModule),
+      },
+
+      {
         path: 'vacunacion/inventario',
         canActivate: [roleGuard],
         data: { roles: ['ENFERMERA', 'ADMIN', 'MEDICO', 'ADMIN_ESTABLECIMIENTO'] },

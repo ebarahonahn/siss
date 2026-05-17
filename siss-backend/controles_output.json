@@ -1,0 +1,847 @@
+[
+  {
+    "id": 17,
+    "pacienteId": 35,
+    "historiaId": 77,
+    "peso": "24",
+    "talla": "122",
+    "perimetroCefalico": "54.5",
+    "imc": "16.12",
+    "estadoNutricional": "Normal",
+    "desarrolloJson": null,
+    "alertaDesarrollo": "NORMAL",
+    "lactanciaMaterna": false,
+    "alimentacionComp": true,
+    "vitaminaA": true,
+    "hierro": true,
+    "desparasitacion": true,
+    "observaciones": "prueba devacunacion",
+    "activo": true,
+    "creadoEn": "2027-02-17T00:00:00.000Z",
+    "actualizadoEn": "2026-05-17T11:18:13.651Z",
+    "eliminadoEn": null,
+    "creadoPorId": 2,
+    "actualizadoPorId": null,
+    "eliminadoPorId": null,
+    "historia": {
+      "id": 77,
+      "pacienteId": 35,
+      "medicoId": 2,
+      "citaId": null,
+      "plantillaId": null,
+      "fecha": "2027-02-17T00:00:00.000Z",
+      "subjetivo": "Control de Niño Sano. Evaluación de crecimiento y desarrollo.",
+      "objetivo": "Peso: 24kg, Talla: 122cm, PC: 54.5cm, IMC: 16.12. Nutrición: No reportada.",
+      "analisis": "Crecimiento adecuado para la edad. Riesgo de desarrollo: NORMAL. Estado Nutricional: Normal.",
+      "plan": "Observaciones: prueba devacunacion. Próximo control según esquema.",
+      "presionSistolica": null,
+      "presionDiastolica": null,
+      "frecuenciaCardiaca": null,
+      "temperatura": null,
+      "peso": "24",
+      "talla": "122",
+      "saturacionO2": null,
+      "semanaEpidemiologica": 7,
+      "actualizadoEn": null,
+      "eliminadoEn": null,
+      "actualizadoPorId": null,
+      "eliminadoPorId": null,
+      "proximaCitaId": null,
+      "medico": {
+        "nombres": "Dr. Ricardo",
+        "apellidos": "Soto"
+      },
+      "recetas": [],
+      "solicitudesLab": [],
+      "solicitudesRad": [],
+      "incapacidades": [],
+      "referidos": [],
+      "proximaCita": null
+    },
+    "vacunas": [
+      {
+        "id": 5,
+        "pacienteId": 35,
+        "vacunaId": 1,
+        "esquemaId": 1,
+        "loteId": 3,
+        "fechaAplicacion": "2027-02-17T00:00:00.000Z",
+        "sitioAplicacion": "Brazo Izquierdo",
+        "viaAplicacion": "Intramuscular",
+        "observaciones": "Aplicada durante control pediátrico",
+        "establecimientoId": 1,
+        "aplicadoPorId": 2,
+        "vacuna": {
+          "id": 1,
+          "nombre": "BCG",
+          "descripcion": "Vacuna contra la Tuberculosis (Formas graves)",
+          "tipo": "BACTERIANA_ATENUADA",
+          "poblacionMeta": "Recién nacidos",
+          "activo": true,
+          "creadoEn": "2026-04-26T15:40:42.394Z"
+        },
+        "esquema": {
+          "id": 1,
+          "vacunaId": 1,
+          "numeroDosis": 1,
+          "edadRecomendadaMeses": 0,
+          "intervaloMinimoDias": null,
+          "descripcion": "Dosis Única"
+        },
+        "lote": {
+          "id": 3,
+          "vacunaId": 1,
+          "codigoLote": "LOT-001-2026",
+          "fabricante": "Pfizer",
+          "fechaVencimiento": "2027-12-31T00:00:00.000Z",
+          "cantidadInicial": 300000,
+          "cantidadActual": 299999,
+          "establecimientoId": 1,
+          "activo": true,
+          "creadoEn": "2026-05-17T05:01:52.635Z"
+        }
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "pacienteId": 35,
+    "historiaId": 74,
+    "peso": "23",
+    "talla": "121",
+    "perimetroCefalico": "54",
+    "imc": "15.71",
+    "estadoNutricional": "Normal",
+    "desarrolloJson": null,
+    "alertaDesarrollo": "NORMAL",
+    "lactanciaMaterna": false,
+    "alimentacionComp": true,
+    "vitaminaA": true,
+    "hierro": true,
+    "desparasitacion": true,
+    "observaciones": "otra prueba",
+    "activo": true,
+    "creadoEn": "2026-12-17T00:00:00.000Z",
+    "actualizadoEn": "2026-05-17T10:47:59.538Z",
+    "eliminadoEn": null,
+    "creadoPorId": 2,
+    "actualizadoPorId": null,
+    "eliminadoPorId": null,
+    "historia": {
+      "id": 74,
+      "pacienteId": 35,
+      "medicoId": 2,
+      "citaId": null,
+      "plantillaId": null,
+      "fecha": "2026-12-17T00:00:00.000Z",
+      "subjetivo": "Control de Niño Sano. Evaluación de crecimiento y desarrollo.",
+      "objetivo": "Peso: 23kg, Talla: 121cm, PC: 54cm, IMC: 15.71. Nutrición: No reportada.",
+      "analisis": "Crecimiento adecuado para la edad. Riesgo de desarrollo: NORMAL. Estado Nutricional: Normal.",
+      "plan": "Observaciones: otra prueba. Próximo control según esquema.",
+      "presionSistolica": null,
+      "presionDiastolica": null,
+      "frecuenciaCardiaca": null,
+      "temperatura": null,
+      "peso": "23",
+      "talla": "121",
+      "saturacionO2": null,
+      "semanaEpidemiologica": 50,
+      "actualizadoEn": null,
+      "eliminadoEn": null,
+      "actualizadoPorId": null,
+      "eliminadoPorId": null,
+      "proximaCitaId": null,
+      "medico": {
+        "nombres": "Dr. Ricardo",
+        "apellidos": "Soto"
+      },
+      "recetas": [],
+      "solicitudesLab": [],
+      "solicitudesRad": [],
+      "incapacidades": [],
+      "referidos": [
+        {
+          "id": 1,
+          "historiaId": 74,
+          "establecimientoOrigenId": 1,
+          "establecimientoDestinoId": 2,
+          "especialidadDestino": "PEDIATRÍA",
+          "motivo": "p´rueba",
+          "urgente": false,
+          "estado": "EMITIDO",
+          "creadoEn": "2026-05-17T10:47:59.516Z",
+          "destino": {
+            "nombre": "Centro de Salud San Juan"
+          }
+        }
+      ],
+      "proximaCita": null
+    },
+    "vacunas": []
+  },
+  {
+    "id": 13,
+    "pacienteId": 35,
+    "historiaId": 73,
+    "peso": "22",
+    "talla": "120",
+    "perimetroCefalico": "53.6",
+    "imc": "15.28",
+    "estadoNutricional": "Normal",
+    "desarrolloJson": [
+      {
+        "hitos": [
+          {
+            "nombre": "Sostiene la cabeza",
+            "cumplido": false,
+            "descripcion": "Mantiene la cabeza erguida al estar boca abajo."
+          },
+          {
+            "nombre": "Sigue objetos",
+            "cumplido": false,
+            "descripcion": "Sigue con la mirada objetos en movimiento."
+          },
+          {
+            "nombre": "Sonrisa social",
+            "cumplido": false,
+            "descripcion": "Sonríe en respuesta a estímulos."
+          }
+        ],
+        "rango": "0 - 2 Meses"
+      },
+      {
+        "hitos": [
+          {
+            "nombre": "Se sienta solo",
+            "cumplido": false,
+            "descripcion": "Mantiene el equilibrio al estar sentado."
+          },
+          {
+            "nombre": "Balbuceo",
+            "cumplido": false,
+            "descripcion": "Produce sonidos como \"da-da\" o \"ma-ma\"."
+          },
+          {
+            "nombre": "Agarra objetos",
+            "cumplido": false,
+            "descripcion": "Usa toda la mano para tomar juguetes."
+          }
+        ],
+        "rango": "6 Meses"
+      },
+      {
+        "hitos": [
+          {
+            "nombre": "Camina con apoyo",
+            "cumplido": false,
+            "descripcion": "Se desplaza sujetándose de muebles."
+          },
+          {
+            "nombre": "Primeras palabras",
+            "cumplido": false,
+            "descripcion": "Dice al menos una palabra con significado."
+          },
+          {
+            "nombre": "Pinza fina",
+            "cumplido": false,
+            "descripcion": "Usa el pulgar e índice para tomar objetos pequeños."
+          }
+        ],
+        "rango": "12 Meses (1 Año)"
+      },
+      {
+        "hitos": [
+          {
+            "nombre": "Frases cortas",
+            "cumplido": true,
+            "descripcion": "Une dos o más palabras (\"quiero agua\")."
+          },
+          {
+            "nombre": "Sube escalones",
+            "cumplido": true,
+            "descripcion": "Sube escalones con ayuda."
+          },
+          {
+            "nombre": "Juego simbólico",
+            "cumplido": true,
+            "descripcion": "Imita acciones cotidianas (ej: peinarse)."
+          }
+        ],
+        "rango": "24 Meses (2 Años)"
+      }
+    ],
+    "alertaDesarrollo": "NORMAL",
+    "lactanciaMaterna": false,
+    "alimentacionComp": true,
+    "vitaminaA": true,
+    "hierro": true,
+    "desparasitacion": true,
+    "observaciones": "otra prueba",
+    "activo": true,
+    "creadoEn": "2026-10-17T00:00:00.000Z",
+    "actualizadoEn": "2026-05-17T10:45:25.209Z",
+    "eliminadoEn": null,
+    "creadoPorId": 2,
+    "actualizadoPorId": null,
+    "eliminadoPorId": null,
+    "historia": {
+      "id": 73,
+      "pacienteId": 35,
+      "medicoId": 2,
+      "citaId": null,
+      "plantillaId": null,
+      "fecha": "2026-10-17T00:00:00.000Z",
+      "subjetivo": "Control de Niño Sano. Evaluación de crecimiento y desarrollo.",
+      "objetivo": "Peso: 22kg, Talla: 120cm, PC: 53.6cm, IMC: 15.28. Nutrición: No reportada.",
+      "analisis": "Crecimiento adecuado para la edad. Riesgo de desarrollo: NORMAL. Estado Nutricional: Normal.",
+      "plan": "Observaciones: otra prueba. Próximo control según esquema.",
+      "presionSistolica": null,
+      "presionDiastolica": null,
+      "frecuenciaCardiaca": null,
+      "temperatura": null,
+      "peso": "22",
+      "talla": "120",
+      "saturacionO2": null,
+      "semanaEpidemiologica": 41,
+      "actualizadoEn": null,
+      "eliminadoEn": null,
+      "actualizadoPorId": null,
+      "eliminadoPorId": null,
+      "proximaCitaId": null,
+      "medico": {
+        "nombres": "Dr. Ricardo",
+        "apellidos": "Soto"
+      },
+      "recetas": [],
+      "solicitudesLab": [
+        {
+          "id": 1,
+          "historiaId": 73,
+          "pacienteId": 35,
+          "establecimientoId": 1,
+          "estado": "SOLICITADO",
+          "urgente": false,
+          "observaciones": null,
+          "creadaEn": "2026-05-17T10:45:25.133Z",
+          "detalles": [
+            {
+              "id": 1,
+              "solicitudId": 1,
+              "examenId": 42,
+              "observaciones": "Ayuno de 8 a 12 horas.",
+              "examen": {
+                "id": 42,
+                "codigo": "LAB-021",
+                "nombre": "Bilirrubinas (Total y Diferenciada)",
+                "categoria": "Bioquímica",
+                "indicaciones": "Ayuno de 8 a 12 horas.",
+                "activo": true
+              }
+            }
+          ]
+        }
+      ],
+      "solicitudesRad": [
+        {
+          "id": 1,
+          "historiaId": 73,
+          "pacienteId": 35,
+          "establecimientoId": 1,
+          "estado": "SOLICITADO",
+          "urgente": false,
+          "observaciones": null,
+          "creadaEn": "2026-05-17T10:45:25.133Z",
+          "detalles": [
+            {
+              "id": 1,
+              "solicitudId": 1,
+              "estudioId": 3,
+              "observaciones": "Técnica: AP, Lateral.",
+              "estudio": {
+                "id": 3,
+                "codigo": "RX-C01",
+                "nombre": "RX Columna Cervical",
+                "categoria": "Radiografía",
+                "indicaciones": "Técnica: AP, Lateral.",
+                "activo": true
+              }
+            }
+          ]
+        }
+      ],
+      "incapacidades": [],
+      "referidos": [],
+      "proximaCita": null
+    },
+    "vacunas": []
+  },
+  {
+    "id": 12,
+    "pacienteId": 35,
+    "historiaId": 72,
+    "peso": "21",
+    "talla": "118",
+    "perimetroCefalico": "52.9",
+    "imc": "15.08",
+    "estadoNutricional": "Normal",
+    "desarrolloJson": [
+      {
+        "hitos": [
+          {
+            "nombre": "Sostiene la cabeza",
+            "cumplido": false,
+            "descripcion": "Mantiene la cabeza erguida al estar boca abajo."
+          },
+          {
+            "nombre": "Sigue objetos",
+            "cumplido": false,
+            "descripcion": "Sigue con la mirada objetos en movimiento."
+          },
+          {
+            "nombre": "Sonrisa social",
+            "cumplido": false,
+            "descripcion": "Sonríe en respuesta a estímulos."
+          }
+        ],
+        "rango": "0 - 2 Meses"
+      },
+      {
+        "hitos": [
+          {
+            "nombre": "Se sienta solo",
+            "cumplido": false,
+            "descripcion": "Mantiene el equilibrio al estar sentado."
+          },
+          {
+            "nombre": "Balbuceo",
+            "cumplido": false,
+            "descripcion": "Produce sonidos como \"da-da\" o \"ma-ma\"."
+          },
+          {
+            "nombre": "Agarra objetos",
+            "cumplido": false,
+            "descripcion": "Usa toda la mano para tomar juguetes."
+          }
+        ],
+        "rango": "6 Meses"
+      },
+      {
+        "hitos": [
+          {
+            "nombre": "Camina con apoyo",
+            "cumplido": true,
+            "descripcion": "Se desplaza sujetándose de muebles."
+          },
+          {
+            "nombre": "Primeras palabras",
+            "cumplido": true,
+            "descripcion": "Dice al menos una palabra con significado."
+          },
+          {
+            "nombre": "Pinza fina",
+            "cumplido": true,
+            "descripcion": "Usa el pulgar e índice para tomar objetos pequeños."
+          }
+        ],
+        "rango": "12 Meses (1 Año)"
+      },
+      {
+        "hitos": [
+          {
+            "nombre": "Frases cortas",
+            "cumplido": false,
+            "descripcion": "Une dos o más palabras (\"quiero agua\")."
+          },
+          {
+            "nombre": "Sube escalones",
+            "cumplido": false,
+            "descripcion": "Sube escalones con ayuda."
+          },
+          {
+            "nombre": "Juego simbólico",
+            "cumplido": false,
+            "descripcion": "Imita acciones cotidianas (ej: peinarse)."
+          }
+        ],
+        "rango": "24 Meses (2 Años)"
+      }
+    ],
+    "alertaDesarrollo": "NORMAL",
+    "lactanciaMaterna": false,
+    "alimentacionComp": true,
+    "vitaminaA": true,
+    "hierro": true,
+    "desparasitacion": false,
+    "observaciones": "otra prueba",
+    "activo": true,
+    "creadoEn": "2026-08-17T00:00:00.000Z",
+    "actualizadoEn": "2026-05-17T10:37:46.361Z",
+    "eliminadoEn": null,
+    "creadoPorId": 2,
+    "actualizadoPorId": null,
+    "eliminadoPorId": null,
+    "historia": {
+      "id": 72,
+      "pacienteId": 35,
+      "medicoId": 2,
+      "citaId": null,
+      "plantillaId": null,
+      "fecha": "2026-08-17T00:00:00.000Z",
+      "subjetivo": "Control de Niño Sano. Evaluación de crecimiento y desarrollo.",
+      "objetivo": "Peso: 21kg, Talla: 118cm, PC: 52.9cm, IMC: 15.08. Nutrición: No reportada.",
+      "analisis": "Crecimiento adecuado para la edad. Riesgo de desarrollo: NORMAL. Estado Nutricional: Normal.",
+      "plan": "Observaciones: otra prueba. Próximo control según esquema.",
+      "presionSistolica": null,
+      "presionDiastolica": null,
+      "frecuenciaCardiaca": null,
+      "temperatura": null,
+      "peso": "21",
+      "talla": "118",
+      "saturacionO2": null,
+      "semanaEpidemiologica": 33,
+      "actualizadoEn": null,
+      "eliminadoEn": null,
+      "actualizadoPorId": null,
+      "eliminadoPorId": null,
+      "proximaCitaId": null,
+      "medico": {
+        "nombres": "Dr. Ricardo",
+        "apellidos": "Soto"
+      },
+      "recetas": [],
+      "solicitudesLab": [],
+      "solicitudesRad": [],
+      "incapacidades": [],
+      "referidos": [],
+      "proximaCita": null
+    },
+    "vacunas": []
+  },
+  {
+    "id": 11,
+    "pacienteId": 35,
+    "historiaId": 71,
+    "peso": "20.5",
+    "talla": "116",
+    "perimetroCefalico": "52.1",
+    "imc": "15.23",
+    "estadoNutricional": "Normal",
+    "desarrolloJson": [
+      {
+        "hitos": [
+          {
+            "nombre": "Sostiene la cabeza",
+            "cumplido": false,
+            "descripcion": "Mantiene la cabeza erguida al estar boca abajo."
+          },
+          {
+            "nombre": "Sigue objetos",
+            "cumplido": false,
+            "descripcion": "Sigue con la mirada objetos en movimiento."
+          },
+          {
+            "nombre": "Sonrisa social",
+            "cumplido": false,
+            "descripcion": "Sonríe en respuesta a estímulos."
+          }
+        ],
+        "rango": "0 - 2 Meses"
+      },
+      {
+        "hitos": [
+          {
+            "nombre": "Se sienta solo",
+            "cumplido": true,
+            "descripcion": "Mantiene el equilibrio al estar sentado."
+          },
+          {
+            "nombre": "Balbuceo",
+            "cumplido": true,
+            "descripcion": "Produce sonidos como \"da-da\" o \"ma-ma\"."
+          },
+          {
+            "nombre": "Agarra objetos",
+            "cumplido": true,
+            "descripcion": "Usa toda la mano para tomar juguetes."
+          }
+        ],
+        "rango": "6 Meses"
+      },
+      {
+        "hitos": [
+          {
+            "nombre": "Camina con apoyo",
+            "cumplido": false,
+            "descripcion": "Se desplaza sujetándose de muebles."
+          },
+          {
+            "nombre": "Primeras palabras",
+            "cumplido": false,
+            "descripcion": "Dice al menos una palabra con significado."
+          },
+          {
+            "nombre": "Pinza fina",
+            "cumplido": false,
+            "descripcion": "Usa el pulgar e índice para tomar objetos pequeños."
+          }
+        ],
+        "rango": "12 Meses (1 Año)"
+      },
+      {
+        "hitos": [
+          {
+            "nombre": "Frases cortas",
+            "cumplido": false,
+            "descripcion": "Une dos o más palabras (\"quiero agua\")."
+          },
+          {
+            "nombre": "Sube escalones",
+            "cumplido": false,
+            "descripcion": "Sube escalones con ayuda."
+          },
+          {
+            "nombre": "Juego simbólico",
+            "cumplido": false,
+            "descripcion": "Imita acciones cotidianas (ej: peinarse)."
+          }
+        ],
+        "rango": "24 Meses (2 Años)"
+      }
+    ],
+    "alertaDesarrollo": "NORMAL",
+    "lactanciaMaterna": false,
+    "alimentacionComp": true,
+    "vitaminaA": false,
+    "hierro": false,
+    "desparasitacion": false,
+    "observaciones": "prueba",
+    "activo": true,
+    "creadoEn": "2026-05-17T00:00:00.000Z",
+    "actualizadoEn": "2026-05-17T10:34:38.508Z",
+    "eliminadoEn": null,
+    "creadoPorId": 2,
+    "actualizadoPorId": null,
+    "eliminadoPorId": null,
+    "historia": {
+      "id": 71,
+      "pacienteId": 35,
+      "medicoId": 2,
+      "citaId": null,
+      "plantillaId": null,
+      "fecha": "2026-02-17T00:00:00.000Z",
+      "subjetivo": "Control de Niño Sano. Evaluación de crecimiento y desarrollo.",
+      "objetivo": "Peso: 20.5kg, Talla: 116cm, PC: 52.1cm, IMC: 15.23. Nutrición: No reportada.",
+      "analisis": "Crecimiento adecuado para la edad. Riesgo de desarrollo: NORMAL. Estado Nutricional: Normal.",
+      "plan": "Observaciones: prueba. Próximo control según esquema.",
+      "presionSistolica": null,
+      "presionDiastolica": null,
+      "frecuenciaCardiaca": null,
+      "temperatura": null,
+      "peso": "20.5",
+      "talla": "116",
+      "saturacionO2": null,
+      "semanaEpidemiologica": 7,
+      "actualizadoEn": null,
+      "eliminadoEn": null,
+      "actualizadoPorId": null,
+      "eliminadoPorId": null,
+      "proximaCitaId": null,
+      "medico": {
+        "nombres": "Dr. Ricardo",
+        "apellidos": "Soto"
+      },
+      "recetas": [],
+      "solicitudesLab": [],
+      "solicitudesRad": [],
+      "incapacidades": [],
+      "referidos": [],
+      "proximaCita": null
+    },
+    "vacunas": []
+  },
+  {
+    "id": 9,
+    "pacienteId": 35,
+    "historiaId": 69,
+    "peso": "20",
+    "talla": "115",
+    "perimetroCefalico": "51.9",
+    "imc": "15.12",
+    "estadoNutricional": "Normal",
+    "desarrolloJson": [
+      {
+        "hitos": [
+          {
+            "nombre": "Sostiene la cabeza",
+            "cumplido": true,
+            "descripcion": "Mantiene la cabeza erguida al estar boca abajo."
+          },
+          {
+            "nombre": "Sigue objetos",
+            "cumplido": true,
+            "descripcion": "Sigue con la mirada objetos en movimiento."
+          },
+          {
+            "nombre": "Sonrisa social",
+            "cumplido": true,
+            "descripcion": "Sonríe en respuesta a estímulos."
+          }
+        ],
+        "rango": "0 - 2 Meses"
+      },
+      {
+        "hitos": [
+          {
+            "nombre": "Se sienta solo",
+            "cumplido": false,
+            "descripcion": "Mantiene el equilibrio al estar sentado."
+          },
+          {
+            "nombre": "Balbuceo",
+            "cumplido": false,
+            "descripcion": "Produce sonidos como \"da-da\" o \"ma-ma\"."
+          },
+          {
+            "nombre": "Agarra objetos",
+            "cumplido": false,
+            "descripcion": "Usa toda la mano para tomar juguetes."
+          }
+        ],
+        "rango": "6 Meses"
+      },
+      {
+        "hitos": [
+          {
+            "nombre": "Camina con apoyo",
+            "cumplido": false,
+            "descripcion": "Se desplaza sujetándose de muebles."
+          },
+          {
+            "nombre": "Primeras palabras",
+            "cumplido": false,
+            "descripcion": "Dice al menos una palabra con significado."
+          },
+          {
+            "nombre": "Pinza fina",
+            "cumplido": false,
+            "descripcion": "Usa el pulgar e índice para tomar objetos pequeños."
+          }
+        ],
+        "rango": "12 Meses (1 Año)"
+      },
+      {
+        "hitos": [
+          {
+            "nombre": "Frases cortas",
+            "cumplido": false,
+            "descripcion": "Une dos o más palabras (\"quiero agua\")."
+          },
+          {
+            "nombre": "Sube escalones",
+            "cumplido": false,
+            "descripcion": "Sube escalones con ayuda."
+          },
+          {
+            "nombre": "Juego simbólico",
+            "cumplido": false,
+            "descripcion": "Imita acciones cotidianas (ej: peinarse)."
+          }
+        ],
+        "rango": "24 Meses (2 Años)"
+      }
+    ],
+    "alertaDesarrollo": "NORMAL",
+    "lactanciaMaterna": false,
+    "alimentacionComp": true,
+    "vitaminaA": true,
+    "hierro": true,
+    "desparasitacion": true,
+    "observaciones": "prueba",
+    "activo": true,
+    "creadoEn": "2026-01-17T00:00:00.000Z",
+    "actualizadoEn": "2026-05-17T10:22:23.363Z",
+    "eliminadoEn": null,
+    "creadoPorId": 2,
+    "actualizadoPorId": null,
+    "eliminadoPorId": null,
+    "historia": {
+      "id": 69,
+      "pacienteId": 35,
+      "medicoId": 2,
+      "citaId": null,
+      "plantillaId": null,
+      "fecha": "2026-01-17T00:00:00.000Z",
+      "subjetivo": "Control de Niño Sano. Evaluación de crecimiento y desarrollo.",
+      "objetivo": "Peso: 20kg, Talla: 115cm, PC: 51.9cm, IMC: 15.12. Nutrición: No reportada.",
+      "analisis": "Crecimiento adecuado para la edad. Riesgo de desarrollo: NORMAL. Estado Nutricional: Normal.",
+      "plan": "Observaciones: prueba. Próximo control según esquema.",
+      "presionSistolica": null,
+      "presionDiastolica": null,
+      "frecuenciaCardiaca": null,
+      "temperatura": null,
+      "peso": "20",
+      "talla": "115",
+      "saturacionO2": null,
+      "semanaEpidemiologica": 2,
+      "actualizadoEn": null,
+      "eliminadoEn": null,
+      "actualizadoPorId": null,
+      "eliminadoPorId": null,
+      "proximaCitaId": null,
+      "medico": {
+        "nombres": "Dr. Ricardo",
+        "apellidos": "Soto"
+      },
+      "recetas": [
+        {
+          "id": 6,
+          "historiaId": 69,
+          "pacienteId": 35,
+          "establecimientoId": 1,
+          "estado": "PENDIENTE",
+          "creadaEn": "2026-05-17T10:22:23.340Z",
+          "dispensadaEn": null,
+          "detalles": [
+            {
+              "id": 7,
+              "recetaId": 6,
+              "medicamentoId": 1,
+              "dosis": "500mg",
+              "frecuencia": "Cada 12 horas",
+              "duracion": "5",
+              "cantidad": 10,
+              "cantidadEntregada": 0,
+              "ultimaDispensacion": null,
+              "indicaciones": "",
+              "medicamento": {
+                "id": 1,
+                "codigo": "MED-001",
+                "nombreGenerico": "Paracetamol",
+                "nombreComercial": "Panadol",
+                "presentacion": "Tableta 500mg",
+                "concentracion": "500mg",
+                "via": "ORAL",
+                "grupoTerapeutico": "Analgésico/Antipirético",
+                "requiereReceta": false,
+                "esControlado": false,
+                "activo": true,
+                "creadoEn": "2026-04-26T16:03:02.589Z",
+                "actualizadoEn": "2026-04-26T16:03:02.589Z",
+                "eliminadoEn": null,
+                "creadoPorId": null,
+                "actualizadoPorId": null,
+                "eliminadoPorId": null
+              }
+            }
+          ]
+        }
+      ],
+      "solicitudesLab": [],
+      "solicitudesRad": [],
+      "incapacidades": [],
+      "referidos": [],
+      "proximaCita": null
+    },
+    "vacunas": []
+  }
+]

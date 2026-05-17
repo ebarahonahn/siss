@@ -1,0 +1,38 @@
+<div class="space-y-8">
+  <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+    <div class="flex items-center justify-between mb-8">
+      <div>
+        <h2 class="text-2xl font-bold text-gray-800">Evaluación del Desarrollo Infantil</h2>
+        <p class="text-gray-500">Marque los hitos alcanzados por el niño según su rango de edad.</p>
+      </div>
+      <div class="text-right">
+        <span class="px-4 py-2 bg-green-100 text-green-700 rounded-full font-bold text-sm">DESARROLLO NORMAL</span>
+      </div>
+    </div>
+
+    <div class="space-y-10">
+      <div *ngFor="let grupo of hitosPorEdad" class="relative pl-8 border-l-2 border-blue-100">
+        <div class="absolute -left-2.5 top-0 w-5 h-5 bg-blue-600 rounded-full border-4 border-white shadow-sm"></div>
+        <h3 class="text-lg font-bold text-blue-700 mb-4">{{ grupo.rango }}</h3>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div *ngFor="let hito of grupo.hitos" class="flex items-center gap-3 p-4 bg-gray-50 rounded-xl hover:bg-blue-50 transition-all cursor-pointer group">
+            <input type="checkbox" [(ngModel)]="hito.cumplido" (change)="evaluar()" class="w-5 h-5 rounded text-blue-600 border-gray-300 focus:ring-blue-500">
+            <div>
+              <p class="text-sm font-semibold text-gray-800 group-hover:text-blue-700 transition-colors">{{ hito.nombre }}</p>
+              <p class="text-xs text-gray-500">{{ hito.descripcion }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-10 p-6 bg-yellow-50 rounded-2xl border border-yellow-100 flex items-start gap-4">
+      <div class="text-2xl">💡</div>
+      <div>
+        <h4 class="font-bold text-yellow-800">Nota para el Médico</h4>
+        <p class="text-sm text-yellow-700">Si el niño no cumple con más de 2 hitos para su rango de edad actual, considere referir a estimulación temprana o neurología pediátrica.</p>
+      </div>
+    </div>
+  </div>
+</div>

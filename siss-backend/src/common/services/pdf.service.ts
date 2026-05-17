@@ -442,4 +442,843 @@ export class PdfService {
     stream.end();
     return stream;
   }
+
+  private dibujarGraficaPesoEdadPediatrico(paciente: any, controles: any[]) {
+    const width = 180;
+    const height = 100;
+    const canvas: any[] = [{ type: 'rect', x: 0, y: 0, w: width, h: height, color: '#ffffff', lineWidth: 0.5, lineColor: '#e2e8f0' }];
+    const xLabels: any[] = [];
+
+    // Calcular edad máxima en meses para adaptar la escala
+    const nac = new Date(paciente.fechaNacimiento);
+    let maxMonths = 60;
+    (controles || []).forEach(c => {
+      const fechaC = new Date(c.creadoEn);
+      const x = (fechaC.getFullYear() - nac.getFullYear()) * 12 + (fechaC.getMonth() - nac.getMonth());
+      if (!isNaN(x) && x > maxMonths) {
+        maxMonths = x;
+      }
+    });
+
+    // Si la edad máxima supera los 60 meses, escalamos a 120 meses
+    if (maxMonths > 60) {
+      maxMonths = 120;
+    } else {
+      maxMonths = 60;
+    }
+
+    const stepX = maxMonths === 60 ? 10 : 20;
+    const maxY = maxMonths === 60 ? 25 : 50;
+    const stepY = maxMonths === 60 ? 5 : 10;
+    const yLabels = maxMonths === 60 ? [25, 20, 15, 10, 5, 0] : [50, 40, 30, 20, 10, 0];
+
+    // Eje X
+    for (let s = 0; s <= maxMonths; s += stepX) {
+      const x = (s * width) / maxMonths;
+      canvas.push({ type: 'line', x1: x, y1: height, x2: x, y2: 0, lineWidth: 0.2, lineColor: '#cbd5e1' });
+      xLabels.push({ text: s.toString(), fontSize: 5, width: 'auto' });
+    }
+    // Eje Y
+    for (let v = 0; v <= maxY; v += stepY) {
+      const y = height - (v * height) / maxY;
+      canvas.push({ type: 'line', x1: 0, y1: y, x2: width, y2: y, lineWidth: 0.2, lineColor: '#cbd5e1' });
+    }
+
+    const drawCurve = (p: number[][], color: string, isDashed: boolean = false) => {
+      for (let i = 0; i < p.length - 1; i++) {
+        const x1 = (p[i][0] * width) / maxMonths;
+        const y1 = height - (p[i][1] * height) / maxY;
+        const x2 = (p[i+1][0] * width) / maxMonths;
+        const y2 = height - (p[i+1][1] * height) / maxY;
+        const line: any = { type: 'line', x1, y1, x2, y2, lineWidth: 1, lineColor: color };
+        if (isDashed) line.dash = { length: 2 };
+        canvas.push(line);
+      }
+    };
+
+    // Generar percentiles dinámicamente hasta maxMonths
+    const mValues: number[] = [];
+    for (let m = 0; m <= maxMonths; m += (maxMonths / 10)) {
+      mValues.push(m);
+    }
+    const p95_peso = mValues.map(m => [m, 3.5 + Math.sqrt(m) * 2.2]);
+    const p50_peso = mValues.map(m => [m, 3.2 + Math.sqrt(m) * 1.8]);
+    const p5_peso  = mValues.map(m => [m, 2.5 + Math.sqrt(m) * 1.4]);
+
+    drawCurve(p95_peso, '#fca5a5', true); // P95
+    drawCurve(p50_peso, '#cbd5e1', false); // P50
+    drawCurve(p5_peso, '#fca5a5', true); // P5
+
+    const points: any[] = [];
+    const validControles = (controles || [])
+      .map(c => {
+        const fechaC = new Date(c.creadoEn);
+        const x = (fechaC.getFullYear() - nac.getFullYear()) * 12 + (fechaC.getMonth() - nac.getMonth());
+        return { x, y: parseFloat(c.peso) };
+      })
+      .filter(c => !isNaN(c.x) && !isNaN(c.y) && c.x >= 0 && c.x <= maxMonths)
+      .sort((a, b) => a.x - b.x);
+
+    validControles.forEach(c => {
+      const px = (c.x * width) / maxMonths;
+      const py = height - (c.y * height) / maxY;
+      canvas.push({ type: 'rect', x: px - 1.25, y: py - 1.25, w: 2.5, h: 2.5, color: '#3b82f6' });
+      points.push({ x: px, y: py });
+    });
+    for (let i = 0; i < points.length - 1; i++) {
+      canvas.push({ type: 'line', x1: points[i].x, y1: points[i].y, x2: points[i + 1].x, y2: points[i + 1].y, lineWidth: 1, lineColor: '#3b82f6' });
+    }
+
+    return {
+      stack: [
+        { text: 'Peso para la Edad (kg)', style: 'chartTitle' },
+        {
+          columns: [
+            { width: 15, stack: yLabels.map((v, idx) => ({ text: v.toString(), fontSize: 5, margin: [0, idx === 0 ? 0 : 14.5, 0, 0] })) },
+            {
+              stack: [
+                { canvas: canvas },
+                { columns: xLabels, columnGap: 24, margin: [0, 2, 0, 0] },
+                { text: 'Edad (Meses)', fontSize: 6, alignment: 'center', margin: [0, 2, 0, 0] }
+              ]
+            }
+          ],
+          columnGap: 5
+        },
+        { 
+          columns: [
+            { width: 'auto', canvas: [{ type: 'rect', x: 0, y: 2, w: 10, h: 2, color: '#cbd5e1' }] },
+            { text: 'P50 (Promedio)', fontSize: 6, margin: [2, 0, 10, 0] },
+            { width: 'auto', canvas: [{ type: 'rect', x: 0, y: 2, w: 10, h: 2, color: '#3b82f6' }] },
+            { text: 'Paciente', fontSize: 6, margin: [2, 0, 0, 0] }
+          ],
+          alignment: 'center', margin: [0, 5, 0, 0]
+        }
+      ]
+    };
+  }
+
+  private dibujarGraficaTallaEdadPediatrico(paciente: any, controles: any[]) {
+    const width = 180;
+    const height = 100;
+    const canvas: any[] = [{ type: 'rect', x: 0, y: 0, w: width, h: height, color: '#ffffff', lineWidth: 0.5, lineColor: '#e2e8f0' }];
+    const xLabels: any[] = [];
+
+    // Calcular edad máxima en meses para adaptar la escala
+    const nac = new Date(paciente.fechaNacimiento);
+    let maxMonths = 60;
+    (controles || []).forEach(c => {
+      const fechaC = new Date(c.creadoEn);
+      const x = (fechaC.getFullYear() - nac.getFullYear()) * 12 + (fechaC.getMonth() - nac.getMonth());
+      if (!isNaN(x) && x > maxMonths) {
+        maxMonths = x;
+      }
+    });
+
+    // Si la edad máxima supera los 60 meses, escalamos a 120 meses
+    if (maxMonths > 60) {
+      maxMonths = 120;
+    } else {
+      maxMonths = 60;
+    }
+
+    const stepX = maxMonths === 60 ? 10 : 20;
+    const minY = 40;
+    const maxY = maxMonths === 60 ? 120 : 160;
+    const rangeY = maxY - minY;
+    const stepY = maxMonths === 60 ? 10 : 15;
+    const yLabels = maxMonths === 60 
+      ? [120, 110, 100, 90, 80, 70, 60, 50, 40] 
+      : [160, 145, 130, 115, 100, 85, 70, 55, 40];
+
+    // Eje X
+    for (let s = 0; s <= maxMonths; s += stepX) {
+      const x = (s * width) / maxMonths;
+      canvas.push({ type: 'line', x1: x, y1: height, x2: x, y2: 0, lineWidth: 0.2, lineColor: '#cbd5e1' });
+      xLabels.push({ text: s.toString(), fontSize: 5, width: 'auto' });
+    }
+    // Eje Y
+    for (let v = minY; v <= maxY; v += stepY) {
+      const y = height - ((v - minY) * height) / rangeY;
+      canvas.push({ type: 'line', x1: 0, y1: y, x2: width, y2: y, lineWidth: 0.2, lineColor: '#cbd5e1' });
+    }
+
+    const drawCurve = (p: number[][], color: string, isDashed: boolean = false) => {
+      for (let i = 0; i < p.length - 1; i++) {
+        const x1 = (p[i][0] * width) / maxMonths;
+        const y1 = height - ((p[i][1] - minY) * height) / rangeY;
+        const x2 = (p[i+1][0] * width) / maxMonths;
+        const y2 = height - ((p[i+1][1] - minY) * height) / rangeY;
+        const line: any = { type: 'line', x1, y1, x2, y2, lineWidth: 1, lineColor: color };
+        if (isDashed) line.dash = { length: 2 };
+        canvas.push(line);
+      }
+    };
+
+    // Generar percentiles dinámicamente hasta maxMonths
+    const mValues: number[] = [];
+    for (let m = 0; m <= maxMonths; m += (maxMonths / 10)) {
+      mValues.push(m);
+    }
+    const p95_talla = mValues.map(m => [m, 50 + Math.sqrt(m) * 9]);
+    const p50_talla = mValues.map(m => [m, 49 + Math.sqrt(m) * 8]);
+    const p5_talla  = mValues.map(m => [m, 46 + Math.sqrt(m) * 7]);
+
+    drawCurve(p95_talla, '#fca5a5', true); // P95
+    drawCurve(p50_talla, '#cbd5e1', false); // P50
+    drawCurve(p5_talla, '#fca5a5', true); // P5
+
+    const points: any[] = [];
+    const validControles = (controles || [])
+      .map(c => {
+        const fechaC = new Date(c.creadoEn);
+        const x = (fechaC.getFullYear() - nac.getFullYear()) * 12 + (fechaC.getMonth() - nac.getMonth());
+        return { x, y: parseFloat(c.talla) };
+      })
+      .filter(c => !isNaN(c.x) && !isNaN(c.y) && c.x >= 0 && c.x <= maxMonths)
+      .sort((a, b) => a.x - b.x);
+
+    validControles.forEach(c => {
+      const px = (c.x * width) / maxMonths;
+      const py = height - ((c.y - minY) * height) / rangeY;
+      canvas.push({ type: 'rect', x: px - 1.25, y: py - 1.25, w: 2.5, h: 2.5, color: '#10b981' });
+      points.push({ x: px, y: py });
+    });
+    for (let i = 0; i < points.length - 1; i++) {
+      canvas.push({ type: 'line', x1: points[i].x, y1: points[i].y, x2: points[i + 1].x, y2: points[i + 1].y, lineWidth: 1, lineColor: '#10b981' });
+    }
+
+    return {
+      stack: [
+        { text: 'Talla para la Edad (cm)', style: 'chartTitle' },
+        {
+          columns: [
+            { width: 15, stack: yLabels.map((v, idx) => ({ text: v.toString(), fontSize: 5, margin: [0, idx === 0 ? 0 : 8.2, 0, 0] })) },
+            {
+              stack: [
+                { canvas: canvas },
+                { columns: xLabels, columnGap: 24, margin: [0, 2, 0, 0] },
+                { text: 'Edad (Meses)', fontSize: 6, alignment: 'center', margin: [0, 2, 0, 0] }
+              ]
+            }
+          ],
+          columnGap: 5
+        },
+        { 
+          columns: [
+            { width: 'auto', canvas: [{ type: 'rect', x: 0, y: 2, w: 10, h: 2, color: '#cbd5e1' }] },
+            { text: 'P50 (Promedio)', fontSize: 6, margin: [2, 0, 10, 0] },
+            { width: 'auto', canvas: [{ type: 'rect', x: 0, y: 2, w: 10, h: 2, color: '#10b981' }] },
+            { text: 'Paciente', fontSize: 6, margin: [2, 0, 0, 0] }
+          ],
+          alignment: 'center', margin: [0, 5, 0, 0]
+        }
+      ]
+    };
+  }
+
+  async generarCarnetPediatrico(paciente: any, controles: any[], roadmap: any[]) {
+    const pdfmake = this.getPrinter();
+
+    const calcularEdadExacta = (fechaNac: any) => {
+      if (!fechaNac) return '---';
+      const nac = new Date(fechaNac);
+      const hoy = new Date();
+      let anos = hoy.getFullYear() - nac.getFullYear();
+      let meses = hoy.getMonth() - nac.getMonth();
+      let dias = hoy.getDate() - nac.getDate();
+
+      if (dias < 0) {
+        meses--;
+        dias += new Date(hoy.getFullYear(), hoy.getMonth(), 0).getDate();
+      }
+      if (meses < 0) {
+        anos--;
+        meses += 12;
+      }
+      if (anos > 0) {
+        return `${anos} ${anos === 1 ? 'año' : 'años'}, ${meses} ${meses === 1 ? 'mes' : 'meses'}`;
+      } else {
+        return `${meses} ${meses === 1 ? 'mes' : 'meses'}, ${dias} ${dias === 1 ? 'día' : 'días'}`;
+      }
+    };
+    
+    const docDefinition: any = {
+      pageSize: 'LETTER',
+      pageMargins: [40, 30, 40, 40],
+      content: [
+        {
+          columns: [
+            { 
+              stack: [
+                { text: 'SISTEMA INTEGRAL DE SALUD (SISS)', style: 'header' },
+                { text: (paciente.establecimiento?.nombre || 'ESTABLECIMIENTO DE SALUD').toUpperCase(), fontSize: 8, bold: true, color: '#475569', margin: [0, 2, 0, 0] }
+              ]
+            },
+            { text: `Generado: ${new Date().toLocaleDateString()}`, alignment: 'right', style: 'subheader' },
+          ],
+        },
+        { text: 'HISTORIAL CLÍNICO DE CRECIMIENTO Y DESARROLLO INFANTIL', style: 'title', alignment: 'center', margin: [0, 10, 0, 20] },
+        
+        { text: 'DATOS DE IDENTIFICACIÓN DEL PACIENTE', style: 'sectionTitle' },
+        {
+          table: {
+            widths: ['*', 'auto', 'auto', 'auto', 'auto'],
+            body: [
+              [
+                { text: 'Nombre Completo', style: 'tableHeader' }, 
+                { text: 'DNI / Identificación', style: 'tableHeader' }, 
+                { text: 'No. Expediente', style: 'tableHeader' }, 
+                { text: 'Sexo', style: 'tableHeader' },
+                { text: 'Edad Actual', style: 'tableHeader' }
+              ],
+              [
+                `${paciente.nombres} ${paciente.apellidos}`, 
+                paciente.dni || '---', 
+                paciente.numeroExpediente || '---', 
+                paciente.sexo?.nombre || '---',
+                { text: calcularEdadExacta(paciente.fechaNacimiento), bold: true }
+              ],
+            ],
+          },
+          layout: 'lightHorizontalLines',
+        },
+
+        { text: 'EVOLUCIÓN DE CRECIMIENTO', style: 'sectionTitle', margin: [0, 15, 0, 10] },
+        {
+          columns: [
+            this.dibujarGraficaPesoEdadPediatrico(paciente, controles),
+            this.dibujarGraficaTallaEdadPediatrico(paciente, controles)
+          ],
+          columnGap: 20
+        },
+
+        { text: 'HISTORIAL DE CONTROLES DE CRECIMIENTO Y DESARROLLO', style: 'sectionTitle', margin: [0, 15, 0, 5] },
+        {
+          table: {
+            headerRows: 1,
+            widths: ['auto', 'auto', 'auto', 'auto', 'auto', 'auto', '*'],
+            body: [
+              [
+                { text: 'Fecha', style: 'tableHeader' }, 
+                { text: 'Edad', style: 'tableHeader' }, 
+                { text: 'Antropometría', style: 'tableHeader' }, 
+                { text: 'Nutrición / IMC', style: 'tableHeader' }, 
+                { text: 'Alimentación / Supl.', style: 'tableHeader' }, 
+                { text: 'Desarrollo', style: 'tableHeader' }, 
+                { text: 'Responsable / Observaciones', style: 'tableHeader' }
+              ],
+              ...(controles || []).map(c => {
+                const fechaC = new Date(c.creadoEn);
+                const nac = new Date(paciente.fechaNacimiento);
+                const diffYears = fechaC.getFullYear() - nac.getFullYear();
+                const diffMonths = fechaC.getMonth() - nac.getMonth();
+                const diffDays = fechaC.getDate() - nac.getDate();
+                let m = diffYears * 12 + diffMonths;
+                if (diffDays < 0) m -= 1;
+                const edadControlMeses = Math.max(0, m);
+
+                const sups: string[] = [];
+                if (c.vitaminaA) sups.push('Vit.A');
+                if (c.hierro) sups.push('Hierro');
+                if (c.desparasitacion) sups.push('Desp.');
+                const supsStr = sups.length > 0 ? sups.join(', ') : 'Ninguno';
+
+                return [
+                  new Date(c.creadoEn).toLocaleDateString(),
+                  `${edadControlMeses} m`,
+                  {
+                    stack: [
+                      { text: `Peso: ${c.peso} kg`, fontSize: 8 },
+                      { text: `Talla: ${c.talla} cm`, fontSize: 8 },
+                      c.perimetroCefalico ? { text: `P.Céf.: ${c.perimetroCefalico} cm`, fontSize: 8 } : null
+                    ].filter(Boolean)
+                  },
+                  {
+                    stack: [
+                      { text: `IMC: ${c.imc || '--'}`, fontSize: 8 },
+                      { text: c.estadoNutricional || '--', bold: true, color: c.estadoNutricional === 'Normal' ? '#059669' : '#b91c1c', fontSize: 8 }
+                    ]
+                  },
+                  {
+                    stack: [
+                      { text: `Lactancia: ${c.lactanciaMaterna ? 'EXCLUSIVA' : (c.alimentacionComp ? 'MIXTA' : 'NO')}`, fontSize: 7 },
+                      { text: `Supl.: ${supsStr}`, fontSize: 7, color: '#475569' }
+                    ]
+                  },
+                  { 
+                    text: c.alertaDesarrollo || 'NORMAL', 
+                    bold: true, 
+                    color: c.alertaDesarrollo === 'ALERTA' ? '#b91c1c' : '#059669', 
+                    fontSize: 8 
+                  },
+                  {
+                    stack: [
+                      { text: `${c.creadoPor?.nombres || ''} ${c.creadoPor?.apellidos || ''}`.trim() || '---', fontSize: 7, bold: true },
+                      { text: c.observaciones || '', fontSize: 7, color: '#475569', margin: [0, 2, 0, 0] }
+                    ]
+                  }
+                ];
+              })
+            ],
+          },
+          layout: 'headerLineOnly',
+        },
+
+        { text: 'ESQUEMA DE INMUNIZACIONES (PAI)', style: 'sectionTitle', margin: [0, 20, 0, 10] },
+        {
+          table: {
+            headerRows: 1,
+            widths: ['auto', 'auto', 'auto', 'auto', '*'],
+            body: [
+              [
+                { text: 'Vacuna', style: 'tableHeader' }, 
+                { text: 'Dosis Recomendada', style: 'tableHeader' }, 
+                { text: 'Estado', style: 'tableHeader' },
+                { text: 'Fecha Aplicación', style: 'tableHeader' },
+                { text: 'Establecimiento y Aplicador', style: 'tableHeader' }
+              ],
+              ...roadmap.flatMap(v => v.dosis.map((d: any) => [
+                { text: v.nombre, bold: true, fontSize: 8 },
+                { text: `Dosis ${d.numeroDosis} (${d.edadRecomendadaMeses} meses)`, fontSize: 8 },
+                { 
+                  text: d.aplicada ? 'APLICADA' : 'PENDIENTE', 
+                  color: d.aplicada ? '#059669' : '#d97706', 
+                  bold: true,
+                  fontSize: 8
+                },
+                { text: d.fechaAplicacion ? new Date(d.fechaAplicacion).toLocaleDateString() : '---', fontSize: 8 },
+                { 
+                  text: d.aplicada 
+                    ? `${d.establecimientoNombre || ''} ${d.aplicadorNombre ? ' / ' + d.aplicadorNombre : ''}`.trim() || '---'
+                    : '---', 
+                  fontSize: 7 
+                }
+              ]))
+            ],
+          },
+          layout: 'lightHorizontalLines',
+        },
+      ],
+      styles: {
+        header: { fontSize: 10, bold: true, color: '#1d4ed8' },
+        subheader: { fontSize: 8, color: '#64748b' },
+        title: { fontSize: 14, bold: true, color: '#1e293b' },
+        sectionTitle: { fontSize: 10, bold: true, color: '#1d4ed8', margin: [0, 10, 0, 5] },
+        tableHeader: { bold: true, fontSize: 9, color: '#1e3a8a' },
+        chartTitle: { fontSize: 10, bold: true, alignment: 'center', color: '#334155', margin: [0, 0, 0, 5] }
+      },
+      footer: (currentPage: number, pageCount: number) => {
+        return { text: `Página ${currentPage} de ${pageCount}`, alignment: 'right', fontSize: 7, margin: [40, 10] };
+      },
+    };
+
+    const doc = pdfmake.createPdf(docDefinition);
+    const stream = await doc.getStream();
+    stream.end();
+    return stream;
+  }
+
+  async generarNotaControlPediatrico(paciente: any, control: any) {
+    const pdfmake = this.getPrinter();
+
+    const calcularEdadEnControl = (fechaNac: any, fechaC: any) => {
+      if (!fechaNac || !fechaC) return '---';
+      const nac = new Date(fechaNac);
+      const ctrl = new Date(fechaC);
+      let anos = ctrl.getFullYear() - nac.getFullYear();
+      let meses = ctrl.getMonth() - nac.getMonth();
+      let dias = ctrl.getDate() - nac.getDate();
+
+      if (dias < 0) {
+        meses--;
+        dias += new Date(ctrl.getFullYear(), ctrl.getMonth(), 0).getDate();
+      }
+      if (meses < 0) {
+        anos--;
+        meses += 12;
+      }
+      if (anos > 0) {
+        return `${anos} ${anos === 1 ? 'año' : 'años'}, ${meses} ${meses === 1 ? 'mes' : 'meses'}`;
+      } else {
+        return `${meses} ${meses === 1 ? 'mes' : 'meses'}, ${dias} ${dias === 1 ? 'día' : 'días'}`;
+      }
+    };
+
+    const historia = control.historia || {};
+    const medico = historia.medico || {};
+    const sups: string[] = [];
+    if (control.vitaminaA) sups.push('Vitamina A');
+    if (control.hierro) sups.push('Hierro');
+    if (control.desparasitacion) sups.push('Desparasitación');
+    const supsStr = sups.length > 0 ? sups.join(', ') : 'Ninguno';
+
+    // Secciones opcionales
+    const ordenesStack: any[] = [];
+
+    // Recetas
+    if (historia.recetas && historia.recetas.length > 0) {
+      ordenesStack.push({ text: 'MEDICAMENTOS RECETADOS', style: 'sectionTitle', margin: [0, 8, 0, 4] });
+      const bodyRec: any[] = [[
+        { text: 'Medicamento', style: 'tableHeader' },
+        { text: 'Dosis', style: 'tableHeader' },
+        { text: 'Frecuencia', style: 'tableHeader' },
+        { text: 'Duración', style: 'tableHeader' },
+        { text: 'Cantidad', style: 'tableHeader' },
+        { text: 'Indicaciones', style: 'tableHeader' }
+      ]];
+      historia.recetas.forEach((rec: any) => {
+        (rec.detalles || []).forEach((det: any) => {
+          bodyRec.push([
+            { text: det.medicamento?.nombreGenerico || '---', bold: true, fontSize: 8 },
+            { text: det.dosis || '---', fontSize: 8 },
+            { text: det.frecuencia || '---', fontSize: 8 },
+            { text: `${det.duracion || '---'} días`, fontSize: 8 },
+            { text: det.cantidad || '0', fontSize: 8 },
+            { text: det.indicaciones || '---', fontSize: 7, color: '#475569' }
+          ]);
+        });
+      });
+      if (bodyRec.length > 1) {
+        ordenesStack.push({
+          table: { headerRows: 1, widths: ['*', 'auto', 'auto', 'auto', 'auto', '*'], body: bodyRec },
+          layout: 'lightHorizontalLines'
+        });
+      }
+    }
+
+    // Vacunas Recetadas PAI
+    const vacunasRecetadas = control.vacunasRecetadasJson || control.vacunasRecetadas || [];
+    if (vacunasRecetadas.length > 0) {
+      ordenesStack.push({ text: 'INMUNIZACIONES INDICADAS (PAI)', style: 'sectionTitle', margin: [0, 8, 0, 4] });
+      const bodyVac: any[] = [[
+        { text: 'Vacuna', style: 'tableHeader' },
+        { text: 'Dosis / Esquema', style: 'tableHeader' },
+        { text: 'Observaciones / Indicaciones', style: 'tableHeader' }
+      ]];
+      vacunasRecetadas.forEach((vr: any) => {
+        bodyVac.push([
+          { text: vr.vacunaNombre || '---', bold: true, fontSize: 8 },
+          { text: vr.esquemaDescripcion || '---', fontSize: 8 },
+          { text: vr.observaciones || '---', fontSize: 7, color: '#475569' }
+        ]);
+      });
+      ordenesStack.push({
+        table: { headerRows: 1, widths: ['auto', 'auto', '*'], body: bodyVac },
+        layout: 'lightHorizontalLines'
+      });
+    }
+
+    // Laboratorios
+    if (historia.solicitudesLab && historia.solicitudesLab.length > 0) {
+      ordenesStack.push({ text: 'SOLICITUDES DE LABORATORIO', style: 'sectionTitle', margin: [0, 8, 0, 4] });
+      const bodyLab: any[] = [[
+        { text: 'Examen', style: 'tableHeader' },
+        { text: 'Indicaciones', style: 'tableHeader' }
+      ]];
+      historia.solicitudesLab.forEach((s: any) => {
+        (s.detalles || []).forEach((det: any) => {
+          bodyLab.push([
+            { text: det.examen?.nombre || '---', bold: true, fontSize: 8 },
+            { text: det.observaciones || '---', fontSize: 8, color: '#475569' }
+          ]);
+        });
+      });
+      if (bodyLab.length > 1) {
+        ordenesStack.push({
+          table: { headerRows: 1, widths: ['30%', '*'], body: bodyLab },
+          layout: 'lightHorizontalLines'
+        });
+      }
+    }
+
+    // Radiología
+    if (historia.solicitudesRad && historia.solicitudesRad.length > 0) {
+      ordenesStack.push({ text: 'SOLICITUDES DE RADIOLOGÍA', style: 'sectionTitle', margin: [0, 8, 0, 4] });
+      const bodyRad: any[] = [[
+        { text: 'Estudio', style: 'tableHeader' },
+        { text: 'Indicaciones', style: 'tableHeader' }
+      ]];
+      historia.solicitudesRad.forEach((s: any) => {
+        (s.detalles || []).forEach((det: any) => {
+          bodyRad.push([
+            { text: det.estudio?.nombre || '---', bold: true, fontSize: 8 },
+            { text: det.observaciones || '---', fontSize: 8, color: '#475569' }
+          ]);
+        });
+      });
+      if (bodyRad.length > 1) {
+        ordenesStack.push({
+          table: { headerRows: 1, widths: ['30%', '*'], body: bodyRad },
+          layout: 'lightHorizontalLines'
+        });
+      }
+    }
+
+    // Remisiones / Referencias
+    if (historia.referidos && historia.referidos.length > 0) {
+      ordenesStack.push({ text: 'REFERENCIAS MÉDICAS EMITIDAS', style: 'sectionTitle', margin: [0, 8, 0, 4] });
+      const bodyRef: any[] = [[
+        { text: 'Establecimiento Destino', style: 'tableHeader' },
+        { text: 'Especialidad', style: 'tableHeader' },
+        { text: 'Motivo', style: 'tableHeader' },
+        { text: 'Prioridad', style: 'tableHeader' }
+      ]];
+      historia.referidos.forEach((ref: any) => {
+        bodyRef.push([
+          { text: ref.destino?.nombre || '---', bold: true, fontSize: 8 },
+          { text: ref.especialidadDestino || '---', fontSize: 8 },
+          { text: ref.motivo || '---', fontSize: 8, color: '#475569' },
+          { text: ref.urgente ? 'URGENTE' : 'NORMAL', color: ref.urgente ? '#b91c1c' : '#475569', bold: ref.urgente, fontSize: 8 }
+        ]);
+      });
+      ordenesStack.push({
+        table: { headerRows: 1, widths: ['*', 'auto', '*', 'auto'], body: bodyRef },
+        layout: 'lightHorizontalLines'
+      });
+    }
+
+    // Incapacidades
+    if (historia.incapacidades && historia.incapacidades.length > 0) {
+      ordenesStack.push({ text: 'INCAPACIDADES / REPOSOS EMITIDOS', style: 'sectionTitle', margin: [0, 8, 0, 4] });
+      const bodyInc: any[] = [[
+        { text: 'Tipo', style: 'tableHeader' },
+        { text: 'Días', style: 'tableHeader' },
+        { text: 'Vigencia', style: 'tableHeader' },
+        { text: 'Motivo', style: 'tableHeader' }
+      ]];
+      historia.incapacidades.forEach((inc: any) => {
+        bodyInc.push([
+          { text: inc.tipo || '---', bold: true, fontSize: 8 },
+          { text: inc.dias || '0', fontSize: 8 },
+          { text: `Del ${new Date(inc.fechaInicio).toLocaleDateString()} al ${new Date(inc.fechaFin).toLocaleDateString()}`, fontSize: 8 },
+          { text: inc.motivo || '---', fontSize: 8, color: '#475569' }
+        ]);
+      });
+      ordenesStack.push({
+        table: { headerRows: 1, widths: ['auto', 'auto', '*', '*'], body: bodyInc },
+        layout: 'lightHorizontalLines'
+      });
+    }
+
+    // Próxima Cita
+    if (historia.proximaCita) {
+      ordenesStack.push({ text: 'PRÓXIMA CITA', style: 'sectionTitle', margin: [0, 8, 0, 4] });
+      ordenesStack.push({
+        table: {
+          widths: ['auto', '*'],
+          body: [
+            [{ text: 'Fecha y Hora', style: 'tableHeader' }, { text: 'Motivo / Indicaciones', style: 'tableHeader' }],
+            [
+              { text: new Date(historia.proximaCita.fechaHora).toLocaleString(), fontSize: 8, bold: true },
+              { text: historia.proximaCita.motivo || '---', fontSize: 8, color: '#475569' }
+            ]
+          ]
+        },
+        layout: 'lightHorizontalLines'
+      });
+    }
+
+    // Hitos de Desarrollo
+    const hitosStack: any[] = [];
+    const desarrollo = control.desarrolloJson || [];
+    if (desarrollo.length > 0) {
+      hitosStack.push({ text: 'HITOS DE DESARROLLO EVALUADOS', style: 'sectionTitle', margin: [0, 10, 0, 5] });
+      
+      const hitosColumns: any[] = [];
+      let currentColumn: any[] = [];
+
+      desarrollo.forEach((grupo: any, idx: number) => {
+        if (grupo.hitos && grupo.hitos.length > 0) {
+          const grupoStack: any[] = [
+            { text: grupo.rango, fontSize: 8, bold: true, color: '#1d4ed8', margin: [0, 3, 0, 2] }
+          ];
+          grupo.hitos.forEach((h: any) => {
+            grupoStack.push({
+              text: `[${h.cumplido ? '✓' : ' '}]  ${h.nombre}`,
+              fontSize: 7.5,
+              color: h.cumplido ? '#059669' : '#64748b',
+              margin: [0, 1]
+            });
+          });
+
+          currentColumn.push({ stack: grupoStack, margin: [0, 0, 0, 8] });
+
+          // Distribuir en 2 columnas
+          if (currentColumn.length >= 2 || idx === desarrollo.length - 1) {
+            hitosColumns.push({ stack: [...currentColumn], width: '*' });
+            currentColumn = [];
+          }
+        }
+      });
+
+      if (hitosColumns.length > 0) {
+        hitosStack.push({
+          columns: hitosColumns,
+          columnGap: 20
+        });
+      }
+    }
+
+    const docDefinition: any = {
+      pageSize: 'LETTER',
+      pageMargins: [40, 30, 40, 40],
+      content: [
+        {
+          columns: [
+            { 
+              stack: [
+                { text: 'SISTEMA INTEGRAL DE SALUD (SISS)', style: 'header' },
+                { text: (paciente.establecimiento?.nombre || 'ESTABLECIMIENTO DE SALUD').toUpperCase(), fontSize: 8, bold: true, color: '#475569', margin: [0, 2, 0, 0] }
+              ]
+            },
+            { text: `Fecha Emisión: ${new Date().toLocaleDateString()}`, alignment: 'right', style: 'subheader' },
+          ],
+        },
+        { text: 'RESUMEN DE CONSULTA PEDIÁTRICA', style: 'title', alignment: 'center', margin: [0, 15, 0, 15] },
+        
+        { text: 'INFORMACIÓN DE IDENTIFICACIÓN', style: 'sectionTitle' },
+        {
+          table: {
+            widths: ['*', 'auto', 'auto', 'auto', 'auto'],
+            body: [
+              [
+                { text: 'Nombre Completo', style: 'tableHeader' }, 
+                { text: 'DNI / Identificación', style: 'tableHeader' }, 
+                { text: 'No. Expediente', style: 'tableHeader' }, 
+                { text: 'Sexo', style: 'tableHeader' },
+                { text: 'Edad en Consulta', style: 'tableHeader' }
+              ],
+              [
+                `${paciente.nombres} ${paciente.apellidos}`, 
+                paciente.dni || '---', 
+                paciente.numeroExpediente || '---', 
+                paciente.sexo?.nombre || '---',
+                { text: calcularEdadEnControl(paciente.fechaNacimiento, control.creadoEn), bold: true }
+              ],
+            ],
+          },
+          layout: 'lightHorizontalLines',
+        },
+
+        { text: 'DETALLE DE LA EVALUACIÓN CLÍNICA', style: 'sectionTitle', margin: [0, 12, 0, 6] },
+        {
+          table: {
+            widths: ['auto', 'auto', 'auto', 'auto', 'auto', '*'],
+            body: [
+              [
+                { text: 'Fecha Control', style: 'tableHeader' }, 
+                { text: 'Peso', style: 'tableHeader' }, 
+                { text: 'Talla', style: 'tableHeader' }, 
+                { text: 'IMC / Nutrición', style: 'tableHeader' },
+                { text: 'P. Cefálico', style: 'tableHeader' },
+                { text: 'Médico Evaluador', style: 'tableHeader' }
+              ],
+              [
+                new Date(control.creadoEn).toLocaleDateString(),
+                `${control.peso} kg`,
+                `${control.talla} cm`,
+                {
+                  stack: [
+                    { text: `IMC: ${control.imc || '--'}`, fontSize: 8 },
+                    { text: control.estadoNutricional || '--', bold: true, color: control.estadoNutricional === 'Normal' ? '#059669' : '#b91c1c', fontSize: 8 }
+                  ]
+                },
+                `${control.perimetroCefalico || '--'} cm`,
+                { text: `${medico.nombres || ''} ${medico.apellidos || ''}`.trim() || '---', bold: true }
+              ]
+            ]
+          },
+          layout: 'lightHorizontalLines'
+        },
+
+        {
+          columns: [
+            {
+              width: '45%',
+              stack: [
+                { text: 'SUPLEMENTOS Y NUTRICIÓN', style: 'sectionTitle', margin: [0, 10, 0, 4] },
+                {
+                  ul: [
+                    { text: `Lactancia Materna: ${control.lactanciaMaterna ? 'EXCLUSIVA' : 'NO'}`, fontSize: 8 },
+                    { text: `Alimentación Complementaria: ${control.alimentacionComp ? 'SÍ' : 'NO'}`, fontSize: 8 },
+                    { text: `Suplementos Entregados: ${supsStr}`, fontSize: 8, bold: true, color: '#0f766e' }
+                  ],
+                  margin: [5, 2, 0, 0]
+                }
+              ]
+            },
+            {
+              width: '10%',
+              text: ''
+            },
+            {
+              width: '45%',
+              stack: [
+                { text: 'EVALUACIÓN DE DESARROLLO', style: 'sectionTitle', margin: [0, 10, 0, 4] },
+                {
+                  stack: [
+                    { text: `Estado de Desarrollo: ${control.alertaDesarrollo || 'NORMAL'}`, fontSize: 8, bold: true, color: control.alertaDesarrollo === 'ALERTA' ? '#b91c1c' : '#059669' },
+                    { text: 'Hitos evaluados según su rango de edad correspondientes para el control.', fontSize: 7, color: '#64748b', margin: [0, 3] }
+                  ]
+                }
+              ]
+            }
+          ],
+          margin: [0, 5, 0, 10]
+        },
+
+        // Hitos de desarrollo si existen
+        ...hitosStack,
+
+        { text: 'OBSERVACIONES Y NOTAS CLÍNICAS', style: 'sectionTitle', margin: [0, 10, 0, 4] },
+        {
+          table: {
+            widths: ['*'],
+            body: [
+              [
+                { text: control.observaciones || 'Sin observaciones adicionales registradas en esta consulta.', fontSize: 8.5, italic: !control.observaciones, color: control.observaciones ? '#1e293b' : '#64748b' }
+              ]
+            ]
+          },
+          layout: 'lightHorizontalLines'
+        },
+
+        // Diagnósticos CIE-10
+        { text: 'DIAGNÓSTICOS ASOCIADOS', style: 'sectionTitle', margin: [0, 10, 0, 4] },
+        {
+          table: {
+            widths: ['auto', '*'],
+            body: [
+              [{ text: 'Código CIE-10', style: 'tableHeader' }, { text: 'Descripción del Diagnóstico', style: 'tableHeader' }],
+              ...(historia.diagnosticos && historia.diagnosticos.length > 0 
+                ? historia.diagnosticos.map((d: any) => [{ text: d.codigoCIE10, bold: true, fontSize: 8 }, { text: d.descripcion, fontSize: 8 }])
+                : [[{ text: 'Z00.1', bold: true, fontSize: 8 }, { text: 'Control de salud de rutina del niño (Niño Sano)', fontSize: 8 }]]
+              )
+            ]
+          },
+          layout: 'lightHorizontalLines'
+        },
+
+        // Órdenes y prescripciones adicionales
+        ...ordenesStack,
+      ],
+      styles: {
+        header: { fontSize: 10, bold: true, color: '#1d4ed8' },
+        subheader: { fontSize: 8, color: '#64748b' },
+        title: { fontSize: 13, bold: true, color: '#1e293b' },
+        sectionTitle: { fontSize: 9, bold: true, color: '#1d4ed8', margin: [0, 10, 0, 4] },
+        tableHeader: { bold: true, fontSize: 8.5, color: '#1e3a8a' },
+      },
+      footer: (currentPage: number, pageCount: number) => {
+        return { text: `Reporte de Consulta Individual • Página ${currentPage} de ${pageCount}`, alignment: 'center', fontSize: 7, margin: [40, 10] };
+      },
+    };
+
+    const doc = pdfmake.createPdf(docDefinition);
+    const stream = await doc.getStream();
+    stream.end();
+    return stream;
+  }
 }
+

@@ -1,0 +1,94 @@
+<div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+  <div class="flex items-center justify-between mb-8">
+    <div>
+      <h2 class="text-2xl font-bold text-gray-800">Carnet de Vacunación Digital</h2>
+      <p class="text-gray-500">Esquema Nacional de Inmunizaciones (Honduras)</p>
+    </div>
+    <div class="flex gap-2">
+      <div class="flex items-center gap-2 text-xs font-bold">
+        <span class="w-3 h-3 bg-green-500 rounded-full"></span> Aplicada
+      </div>
+      <div class="flex items-center gap-2 text-xs font-bold">
+        <span class="w-3 h-3 bg-yellow-400 rounded-full"></span> Pendiente
+      </div>
+      <div class="flex items-center gap-2 text-xs font-bold">
+        <span class="w-3 h-3 bg-red-500 rounded-full"></span> Atrasada
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div *ngFor="let v of roadmap" class="bg-gray-50 rounded-2xl p-6 border border-gray-100 hover:shadow-md transition-all">
+      <h3 class="font-bold text-blue-800 border-b border-blue-100 pb-2 mb-4 flex items-center justify-between">
+        {{ v.nombre }}
+        <i class="fas fa-syringe opacity-30"></i>
+      </h3>
+      
+      <div class="space-y-4">
+        <div *ngFor="let d of v.dosis" class="p-3.5 rounded-xl bg-white border border-gray-100/90 shadow-sm flex flex-col gap-2.5 transition-all hover:border-blue-100">
+          <!-- Línea Principal -->
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-[10px] font-black text-gray-400 uppercase tracking-wider">Dosis {{ d.numeroDosis }}</p>
+              <p class="text-sm font-bold text-gray-800">{{ getEtiquetaEdad(d.edadRecomendadaMeses) }}</p>
+            </div>
+            
+            <div class="flex items-center gap-2">
+              <!-- Indicador de Oportunidad (A tiempo / Fuera de tiempo) -->
+              <span *ngIf="d.aplicada && d.estadoTiempo" 
+                    [ngClass]="{
+                      'bg-emerald-50 text-emerald-700 border-emerald-100': d.estadoTiempo === 'A tiempo',
+                      'bg-rose-50 text-rose-700 border-rose-100': d.estadoTiempo === 'Fuera de tiempo'
+                    }" 
+                    class="text-[9px] font-black uppercase px-2 py-0.5 rounded border tracking-wider">
+                {{ d.estadoTiempo }}
+              </span>
+
+              <!-- Badge de Estado de Inmunización -->
+              <div [ngClass]="{
+                'bg-emerald-500 text-white': d.aplicada,
+                'bg-amber-100 text-amber-700': !d.aplicada && !esAtrasada(d.edadRecomendadaMeses),
+                'bg-rose-100 text-rose-700': !d.aplicada && esAtrasada(d.edadRecomendadaMeses)
+              }" class="px-2.5 py-1 rounded-lg flex items-center gap-1.5 shadow-sm border border-transparent">
+                <svg *ngIf="d.aplicada" class="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+                </svg>
+                <svg *ngIf="!d.aplicada" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <span class="text-[9px] font-black uppercase tracking-widest">
+                  {{ d.aplicada ? 'LISTO' : (esAtrasada(d.edadRecomendadaMeses) ? 'ATRASO' : 'PEND.') }}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Panel de Detalles de Aplicación (Centro, Fecha, Aplicador) -->
+          <div *ngIf="d.aplicada" class="pt-2 border-t border-dashed border-gray-100 text-[11px] text-gray-500 space-y-1 bg-slate-50/50 p-2 rounded-lg">
+            <div class="flex items-center justify-between">
+              <span class="font-semibold text-gray-400">Fecha Aplicación:</span>
+              <span class="font-bold text-gray-700">{{ d.fechaAplicacion | date:'dd/MM/yyyy' }}</span>
+            </div>
+            <div class="flex items-center justify-between" *ngIf="d.establecimientoNombre">
+              <span class="font-semibold text-gray-400">Establecimiento:</span>
+              <span class="font-bold text-gray-700 max-w-[140px] truncate" [title]="d.establecimientoNombre">{{ d.establecimientoNombre }}</span>
+            </div>
+            <div class="flex items-center justify-between" *ngIf="d.aplicadorNombre">
+              <span class="font-semibold text-gray-400">Aplicado por:</span>
+              <span class="font-semibold text-gray-650 italic">{{ d.aplicadorNombre }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div *ngIf="v.dosis.length === 0" class="text-center py-4 text-gray-400 text-xs italic">
+        No hay dosis definidas para esta vacuna.
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="roadmap.length === 0" class="py-20 text-center text-gray-400">
+    <i class="fas fa-spinner fa-spin text-3xl mb-4"></i>
+    <p>Cargando esquema de vacunación...</p>
+  </div>
+</div>

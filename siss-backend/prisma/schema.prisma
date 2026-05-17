@@ -101,6 +101,13 @@ model Usuario {
   sesiones                     Sesion[]
   solicitudesProcesadas        SolicitudUsuario[]           @relation("SolicitudesProcesadas")
   triajes                      Triaje[]                     @relation("TriajeEnfermera")
+  controlesPediatricosCreados  ControlNiñoSano[]            @relation("ControlPediatricoCreadoPor")
+  controlesPediatricosAct      ControlNiñoSano[]            @relation("ControlPediatricoActualizadoPor")
+  controlesPediatricosElim     ControlNiñoSano[]            @relation("ControlPediatricoEliminadoPor")
+  hitosCreados                 HitoDesarrolloPaciente[]     @relation("HitoCreadoPor")
+  hitosActualizados            HitoDesarrolloPaciente[]     @relation("HitoActualizadoPor")
+  hitosEliminados              HitoDesarrolloPaciente[]     @relation("HitoEliminadoPor")
+
   especialidad                 Especialidad?                @relation(fields: [especialidadId], references: [id])
   establecimiento              Establecimiento?             @relation(fields: [establecimientoId], references: [id])
   rol                          Rol?                         @relation(fields: [rolId], references: [id])
@@ -532,6 +539,10 @@ model Paciente {
   solicitudesLab                SolicitudLaboratorio[]
   solicitudesRad                SolicitudRadiologia[]
   triajes                       Triaje[]
+  controlesNiñoSano             ControlNiñoSano[]
+  hitosDesarrollo               HitoDesarrolloPaciente[]
+
+
 
   @@index([departamentoId], map: "pacientes_departamentoId_fkey")
   @@index([eliminadoPorId], map: "pacientes_eliminadoPorId_fkey")
@@ -717,6 +728,8 @@ model HistoriaClinica {
   proximaCitaId              Int?                        @unique
   diagnosticos               Diagnostico[]
   controlPrenatal            ControlPrenatal?
+  controlNiñoSano            ControlNiñoSano?
+
   actualizadoPor             Usuario?                    @relation("HistoriaActualizadaPor", fields: [actualizadoPorId], references: [id])
   cita                       Cita?                       @relation(fields: [citaId], references: [id])
   eliminadoPor               Usuario?                    @relation("HistoriaEliminadaPor", fields: [eliminadoPorId], references: [id])
@@ -2130,6 +2143,91 @@ model ControlPrenatal {
   @@index([embarazoId], map: "embarazos_controles_embarazoId_fkey")
   @@map("embarazos_controles")
 }
+
+/// Registro de Control de Niño Sano (Pediatría)
+model ControlNiñoSano {
+  id                Int      @id @default(autoincrement())
+  pacienteId        Int
+  historiaId        Int      @unique
+  
+  // Antropometría
+  peso              Decimal  @db.Decimal(5, 2) // kg
+  talla             Decimal  @db.Decimal(4, 1) // cm
+  perimetroCefalico Decimal? @db.Decimal(4, 1) // cm
+  imc               Decimal? @db.Decimal(4, 2)
+  estadoNutricional String?  @db.VarChar(50)
+  
+  // Desarrollo Infantil
+  desarrolloJson    Json?
+  alertaDesarrollo  RiesgoDesarrollo @default(NORMAL)
+  
+  // Receta de Vacunas (Prescripciones de Inmunizaciones)
+  vacunasRecetadasJson Json?
+  
+  // Nutrición y Suplementos
+  lactanciaMaterna  Boolean  @default(true)
+  alimentacionComp  Boolean  @default(false)
+  vitaminaA         Boolean  @default(false)
+  hierro            Boolean  @default(false)
+  desparasitacion   Boolean  @default(false)
+  observaciones     String?  @db.Text
+  
+  // Auditoría
+  activo            Boolean  @default(true)
+  creadoEn          DateTime @default(now())
+  actualizadoEn     DateTime @updatedAt
+  eliminadoEn       DateTime?
+  
+  creadoPorId       Int?
+  actualizadoPorId  Int?
+  eliminadoPorId    Int?
+  
+  paciente          Paciente        @relation(fields: [pacienteId], references: [id])
+  historia          HistoriaClinica @relation(fields: [historiaId], references: [id])
+  creadoPor         Usuario?        @relation("ControlPediatricoCreadoPor", fields: [creadoPorId], references: [id])
+  actualizadoPor    Usuario?        @relation("ControlPediatricoActualizadoPor", fields: [actualizadoPorId], references: [id])
+  eliminadoPor      Usuario?        @relation("ControlPediatricoEliminadoPor", fields: [eliminadoPorId], references: [id])
+  
+  @@index([pacienteId])
+  @@map("pediatria_control_nino_sano")
+}
+
+/// Registro de hitos de desarrollo alcanzados por el paciente
+model HitoDesarrolloPaciente {
+  id            Int      @id @default(autoincrement())
+  pacienteId    Int
+  hitoKey       String   @db.VarChar(100) // ej: "sostiene_cabeza"
+  alcanzado     Boolean  @default(true)
+  fechaRegistro DateTime @default(now())
+  observaciones String?  @db.Text
+
+  // Auditoría
+  activo            Boolean  @default(true)
+  actualizadoEn     DateTime @updatedAt
+  eliminadoEn       DateTime?
+  
+  creadoPorId       Int?
+  actualizadoPorId  Int?
+  eliminadoPorId    Int?
+
+  paciente          Paciente @relation(fields: [pacienteId], references: [id])
+  creadoPor         Usuario? @relation("HitoCreadoPor", fields: [creadoPorId], references: [id])
+  actualizadoPor    Usuario? @relation("HitoActualizadoPor", fields: [actualizadoPorId], references: [id])
+  eliminadoPor      Usuario? @relation("HitoEliminadoPor", fields: [eliminadoPorId], references: [id])
+
+
+  @@index([pacienteId])
+  @@map("pediatria_hitos_desarrollo")
+}
+
+
+
+enum RiesgoDesarrollo {
+  NORMAL
+  ALERTA
+  RETRASO
+}
+
 
 enum EstadoSolicitud {
   PENDIENTE
