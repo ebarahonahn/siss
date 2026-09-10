@@ -5,6 +5,40 @@ import { PrismaService } from '../../prisma/prisma.service';
 export class DashboardService {
   constructor(private prisma: PrismaService) {}
 
+  private getFiltroCitasMedico(user: any) {
+    if (user.rol !== 'MEDICO') return {};
+
+    const filtro: any = {
+      medicoId: user.id,
+      establecimientoId: user.establecimientoId,
+    };
+
+    if (user.asignacionId) {
+      const historicasCompatibles = user.especialidadId
+        ? {
+            asignacionId: null,
+            especialidadId: user.especialidadId,
+          }
+        : user.servicioId
+          ? {
+              asignacionId: null,
+              servicioId: user.servicioId,
+            }
+          : {
+              asignacionId: null,
+              servicioId: null,
+              especialidadId: null,
+            };
+
+      filtro.OR = [
+        { asignacionId: user.asignacionId },
+        historicasCompatibles,
+      ];
+    }
+
+    return filtro;
+  }
+
   async getStats(user: any) {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -21,13 +55,14 @@ export class DashboardService {
 
     // Filtros comunes
     const whereEstablecimiento = user.rol === 'ADMIN' ? {} : { establecimientoId: user.establecimientoId };
+    const whereCitasMedico = this.getFiltroCitasMedico(user);
 
     // 1. Citas de Hoy
     stats.citasHoy = await this.prisma.cita.count({
       where: {
         ...whereEstablecimiento,
+        ...whereCitasMedico,
         fechaHora: { gte: today, lt: tomorrow },
-        medicoId: user.rol === 'MEDICO' ? user.id : undefined,
         estado: { not: 'CANCELADA' },
       },
     });
@@ -36,6 +71,7 @@ export class DashboardService {
     stats.pacientesEsperando = await this.prisma.cita.count({
       where: {
         ...whereEstablecimiento,
+        ...whereCitasMedico,
         estado: 'EN_SALA',
         fechaHora: { gte: today, lt: tomorrow },
       },
@@ -46,7 +82,7 @@ export class DashboardService {
     if (user.rol === 'MEDICO') {
       stats.historiasPendientes = await this.prisma.cita.count({
         where: {
-          medicoId: user.id,
+          ...whereCitasMedico,
           fechaHora: { gte: today, lt: tomorrow },
           estado: { in: ['PROGRAMADA', 'CONFIRMADA', 'EN_SALA'] },
           historia: { is: null },
@@ -73,7 +109,7 @@ export class DashboardService {
     return stats;
   }
 
-  async getAgendaHoy(medicoId: number) {
+  async getAgendaHoy(user: any) {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const tomorrow = new Date(today);
@@ -81,7 +117,7 @@ export class DashboardService {
 
     return this.prisma.cita.findMany({
       where: {
-        medicoId,
+        ...this.getFiltroCitasMedico(user),
         fechaHora: { gte: today, lt: tomorrow },
         estado: { not: 'CANCELADA' },
       },

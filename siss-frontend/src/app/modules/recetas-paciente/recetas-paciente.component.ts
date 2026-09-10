@@ -230,11 +230,11 @@ interface RecetaHistorial {
                 <div class="flex items-center gap-2">
                   <div class="w-6 h-6 bg-green-200 rounded-full flex items-center justify-center">
                     <span class="text-green-800 text-[9px] font-bold">
-                      {{ disp.usuario?.nombres?.charAt(0) }}{{ disp.usuario?.apellidos?.charAt(0) }}
+                      {{ disp.usuario.nombres.charAt(0) }}{{ disp.usuario.apellidos.charAt(0) }}
                     </span>
                   </div>
                   <span class="font-medium text-green-800">
-                    {{ disp.usuario?.nombres }} {{ disp.usuario?.apellidos }}
+                    {{ disp.usuario.nombres }} {{ disp.usuario.apellidos }}
                   </span>
                 </div>
                 <span class="text-green-600 font-semibold">{{ formatFecha(disp.fecha) }}</span>

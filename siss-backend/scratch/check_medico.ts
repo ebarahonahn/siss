@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 
 async function main() {
   const user = await prisma.usuario.findFirst({
-    where: { correo: 'medico@sesal.hn' },
+    where: { correo: 'medico@siss.hn' },
     include: {
       rol: true,
       asignaciones: {

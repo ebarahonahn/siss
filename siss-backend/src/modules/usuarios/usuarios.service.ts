@@ -127,6 +127,23 @@ export class UsuariosService {
     const hash = await bcrypt.hash(dto.contrasena, 12);
 
     const esMedico = dto.rol === 'MEDICO';
+    const esOdontologo = dto.rol === 'ODONTOLOGIA';
+
+    // Para Odontología, precargar los servicios de odontología de cada establecimiento
+    const odontologiaServiciosMap = new Map<number, number>();
+    if (esOdontologo) {
+      const estIds = dto.asignaciones.map((a) => a.establecimientoId);
+      const serviciosOdonto = await this.prisma.servicio.findMany({
+        where: {
+          establecimientoId: { in: estIds },
+          catServicioId: 6, // ODONTOLOGIA
+          activo: true,
+        },
+      });
+      serviciosOdonto.forEach((s) => {
+        odontologiaServiciosMap.set(s.establecimientoId, s.id);
+      });
+    }
 
     const usuario = await this.prisma.usuario.create({
       data: {
@@ -139,16 +156,22 @@ export class UsuariosService {
         rolId: rol.id,
         establecimientoId:
           creatorEstablecimientoId ?? dto.asignaciones[0].establecimientoId,
-        especialidadId: esMedico ? (dto.especialidadId ?? null) : null,
-        numeroColegiado: esMedico ? (dto.numeroColegiado ?? null) : null,
+        especialidadId: esMedico ? (dto.especialidadId ?? null) : (esOdontologo ? 11 : null),
+        numeroColegiado: (esMedico || esOdontologo) ? (dto.numeroColegiado ?? null) : null,
         asignaciones: {
-          create: dto.asignaciones.map((a) => ({
-            establecimientoId: a.establecimientoId,
-            servicioId: esMedico ? a.servicioId || null : null,
-            especialidadId: esMedico ? a.especialidadId || null : null,
-            rolId: a.rolId || rol.id,
-            activo: true,
-          })),
+          create: dto.asignaciones.map((a) => {
+            return {
+              establecimientoId: a.establecimientoId,
+              servicioId: esMedico
+                ? a.servicioId || null
+                : (esOdontologo ? (odontologiaServiciosMap.get(a.establecimientoId) || null) : null),
+              especialidadId: esMedico
+                ? a.especialidadId || null
+                : (esOdontologo ? 11 : null),
+              rolId: a.rolId || rol.id,
+              activo: true,
+            };
+          }),
         },
       },
       select: SELECT_USUARIO,
@@ -159,10 +182,9 @@ export class UsuariosService {
 
   async agregarAsignacion(
     usuarioId: number,
-    data: { establecimientoId: number; servicioId?: number; rolId?: number },
+    data: { establecimientoId: number; servicioId?: number; rolId?: number; especialidadId?: number },
   ) {
     let rolId = data.rolId;
-    let esMedico = false;
 
     const user = await this.prisma.usuario.findUnique({
       where: { id: usuarioId },
@@ -173,16 +195,17 @@ export class UsuariosService {
       rolId = user?.rolId || 1;
     }
 
-    if (user?.rol?.nombre === 'MEDICO') {
-      esMedico = true;
-    }
+    // Roles clínicos que pueden tener servicio/especialidad asignada
+    const ROL_CON_SERVICIO = ['MEDICO', 'ENFERMERA', 'ODONTOLOGO', 'ODONTOLOGIA', 'FARMACEUTICO', 'EPIDEMIOLOGO'];
+    const rolNombre = (user?.rol?.nombre || '').toUpperCase();
+    const tieneServicio = ROL_CON_SERVICIO.some(r => rolNombre.includes(r));
 
     return this.prisma.asignacionUsuario.create({
       data: {
         usuarioId,
         establecimientoId: data.establecimientoId,
-        servicioId: esMedico ? data.servicioId : null,
-        especialidadId: esMedico ? (data as any).especialidadId : null,
+        servicioId:     tieneServicio ? (data.servicioId ?? null)     : null,
+        especialidadId: tieneServicio ? (data.especialidadId ?? null) : null,
         rolId: rolId,
         activo: true,
       },
@@ -204,12 +227,77 @@ export class UsuariosService {
 
   async actualizar(id: number, dto: ActualizarUsuarioDto) {
     const usuario = await this.obtener(id);
-    const esMedico = usuario.rol?.nombre === 'MEDICO';
 
     const data: any = { ...dto };
     delete data.contrasena;
 
-    if (!esMedico) {
+    const currentRol = dto.rol || usuario.rol?.nombre;
+    const esMedico = currentRol === 'MEDICO';
+    const esOdontologo = currentRol === 'ODONTOLOGIA';
+
+    if (dto.rol) {
+      const rol = await this.prisma.rol.findFirst({ where: { nombre: dto.rol } });
+      if (!rol) throw new NotFoundException('Rol no encontrado');
+      data.rolId = rol.id;
+      delete data.rol;
+
+      // Update all active assignments' rolId to match the new role
+      if (rol.nombre === 'ODONTOLOGIA') {
+        const activeAsigs = await this.prisma.asignacionUsuario.findMany({
+          where: { usuarioId: id, activo: true }
+        });
+        const estIds = activeAsigs.map(a => a.establecimientoId);
+        const serviciosOdonto = await this.prisma.servicio.findMany({
+          where: {
+            establecimientoId: { in: estIds },
+            catServicioId: 6, // ODONTOLOGIA
+            activo: true
+          }
+        });
+        for (const asig of activeAsigs) {
+          const service = serviciosOdonto.find(s => s.establecimientoId === asig.establecimientoId);
+          await this.prisma.asignacionUsuario.update({
+            where: { id: asig.id },
+            data: {
+              rolId: rol.id,
+              especialidadId: 11, // Odontología
+              servicioId: service ? service.id : null
+            }
+          });
+        }
+      } else if (rol.nombre !== 'MEDICO') {
+        // Roles no clínicos (admin, recepcionista, etc.): limpiar servicio/especialidad
+        const ROL_CLINICO = ['ENFERMERA', 'ODONTOLOGO', 'FARMACEUTICO', 'EPIDEMIOLOGO'];
+        const esRolClinico = ROL_CLINICO.some(r => rol.nombre.toUpperCase().includes(r));
+
+        if (!esRolClinico) {
+          // Solo limpiar si realmente no es un rol clínico
+          await this.prisma.asignacionUsuario.updateMany({
+            where: { usuarioId: id, activo: true },
+            data: {
+              rolId: rol.id,
+              servicioId: null,
+              especialidadId: null,
+            }
+          });
+        } else {
+          // Rol clínico (ej. ENFERMERA): solo actualizar rolId, conservar servicio/especialidad
+          await this.prisma.asignacionUsuario.updateMany({
+            where: { usuarioId: id, activo: true },
+            data: { rolId: rol.id }
+          });
+        }
+      } else {
+        await this.prisma.asignacionUsuario.updateMany({
+          where: { usuarioId: id, activo: true },
+          data: { rolId: rol.id }
+        });
+      }
+    }
+
+    if (esOdontologo) {
+      data.especialidadId = 11; // Odontología
+    } else if (!esMedico) {
       data.especialidadId = null;
       data.numeroColegiado = null;
     }
@@ -245,13 +333,13 @@ export class UsuariosService {
           asignaciones: {
             some: {
               establecimientoId,
-              rol: { nombre: 'MEDICO' },
+              rol: { nombre: { in: ['MEDICO', 'ODONTOLOGIA', 'MEDICO_PEDIATRA'] } },
               activo: true,
             },
           },
         },
       ],
-      rol: { nombre: 'MEDICO' },
+      rol: { nombre: { in: ['MEDICO', 'ODONTOLOGIA', 'MEDICO_PEDIATRA'] } },
       activo: true,
     };
 
@@ -278,9 +366,14 @@ export class UsuariosService {
           where: {
             establecimientoId,
             activo: true,
-            especialidadId: { not: null },
           },
           select: {
+            id: true,
+            servicioId: true,
+            especialidadId: true,
+            servicio: {
+              select: { catServicio: { select: { nombre: true } } },
+            },
             especialidad: { select: { id: true, nombre: true } },
           },
         },
@@ -305,6 +398,13 @@ export class UsuariosService {
         apellidos: m.apellidos,
         numeroColegiado: m.numeroColegiado,
         especialidad: m.especialidad, // especialidad principal
+        asignacionesDisponibles: m.asignaciones.map((a) => ({
+          id: a.id,
+          servicioId: a.servicioId,
+          especialidadId: a.especialidadId,
+          servicio: a.servicio?.catServicio?.nombre || 'General',
+          especialidad: a.especialidad?.nombre || 'Sin especialidad',
+        })),
         especialidades: Array.from(todas.values()), // todas las especialidades que atiende aquí
       };
     });

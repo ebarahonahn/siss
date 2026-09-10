@@ -34,6 +34,12 @@ export class HistoriaClinicaController {
     return this.service.crear(dto, req.user.id, req.user.establecimientoId);
   }
 
+  @Get('paciente/:pacienteId/historial-unificado')
+  @Permissions('historial_unificado:leer,historia_clinica:leer,pacientes:leer')
+  obtenerHistorialUnificado(@Param('pacienteId', ParseIntPipe) pacienteId: number) {
+    return this.service.obtenerHistorialUnificado(pacienteId);
+  }
+
   @Get('paciente/:pacienteId')
   @Permissions('historia_clinica:leer')
   listarPorPaciente(@Param('pacienteId', ParseIntPipe) pacienteId: number) {

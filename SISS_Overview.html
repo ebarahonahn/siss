@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SISS - Documentación de Sistema</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap"
+        rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
     <script>
-        mermaid.initialize({ 
-            startOnLoad: true, 
+        mermaid.initialize({
+            startOnLoad: true,
             theme: 'dark',
             themeVariables: {
                 primaryColor: '#00d2ff',
@@ -86,7 +89,7 @@
             border-radius: 16px;
             padding: 2.5rem;
             margin-bottom: 2rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
 
         h2 {
@@ -183,13 +186,32 @@
 
         /* Print optimization */
         @media print {
-            body { background: white; color: black; }
-            .doc-section { box-shadow: none; border: 1px solid #ccc; background: white; }
-            h1, h2, h3, strong { color: black !important; -webkit-text-fill-color: black !important; }
-            .mermaid { border: 1px solid #ccc; }
+            body {
+                background: white;
+                color: black;
+            }
+
+            .doc-section {
+                box-shadow: none;
+                border: 1px solid #ccc;
+                background: white;
+            }
+
+            h1,
+            h2,
+            h3,
+            strong {
+                color: black !important;
+                -webkit-text-fill-color: black !important;
+            }
+
+            .mermaid {
+                border: 1px solid #ccc;
+            }
         }
     </style>
 </head>
+
 <body>
 
     <div class="container">
@@ -197,45 +219,59 @@
             <h1>SISS Overview</h1>
             <div class="subtitle">Sistema Integral de Servicios de Salud</div>
             <div style="margin-top: 1.5rem;">
-                <span class="badge">Versión 1.3</span>
-                <span class="badge">Actualizado: 14 Mayo, 2026</span>
+                <span class="badge">Versión 1.4</span>
+                <span class="badge">Actualizado: 17 Mayo, 2026</span>
                 <span class="badge">Honduras (UTC-6)</span>
             </div>
         </header>
 
         <div class="doc-section">
             <h2>1. Introducción</h2>
-            <p>El <strong>SISS</strong> es una plataforma integral de gestión hospitalaria y salud pública diseñada para estandarizar la atención médica, el control de inventarios de biológicos (PAI) y la vigilancia epidemiológica. El sistema destaca por su arquitectura <strong>multi-establecimiento</strong> y su enfoque en la <strong>consistencia de navegación (UX)</strong>, garantizando que el personal clínico pueda operar de forma fluida entre módulos complejos.</p>
+            <p>El <strong>SISS</strong> es una plataforma integral de gestión hospitalaria y salud diseñada para
+                estandarizar la atención médica, el control de inventarios de biológicos (PAI) y la vigilancia
+                epidemiológica. El sistema destaca por su arquitectura <strong>multi-establecimiento</strong> y su
+                enfoque en la <strong>consistencia de navegación (UX)</strong>, garantizando que el personal clínico
+                pueda operar de forma fluida entre módulos complejos.</p>
         </div>
 
         <div class="doc-section">
             <h2>2. Arquitectura Tecnológica</h2>
             <ul>
-                <li><strong>Frontend</strong>: Angular con una interfaz de alta densidad de información, optimizada para entornos clínicos.</li>
-                <li><strong>Mobile</strong>: Flutter (Android/iOS) para el acceso ciudadano y servicios preventivos.</li>
+                <li><strong>Frontend</strong>: Angular con una interfaz de alta densidad de información, optimizada para
+                    entornos clínicos.</li>
+                <li><strong>Mobile</strong>: Flutter (Android/iOS) para el acceso ciudadano y servicios preventivos.
+                </li>
                 <li><strong>Backend</strong>: NestJS (Node.js) con arquitectura modular.</li>
-                <li><strong>Base de Datos</strong>: MySQL gestionado a través de <strong>Prisma ORM</strong>, con aislamiento de cuentas de pacientes.</li>
-                <li><strong>Reportes</strong>: Motor avanzado de PDF para recetas clínicas, carnets y reportes epidemiológicos.</li>
-                <li><strong>Estandarización</strong>: Uso estricto de la zona horaria de Honduras (UTC-6) y catálogos internacionales como <strong>CIE-10</strong>.</li>
+                <li><strong>Base de Datos</strong>: MySQL gestionado a través de <strong>Prisma ORM</strong>, con
+                    aislamiento de cuentas de pacientes.</li>
+                <li><strong>Reportes</strong>: Motor avanzado de PDF para recetas clínicas, carnets y reportes
+                    epidemiológicos.</li>
+                <li><strong>Estandarización</strong>: Uso estricto de la zona horaria de Honduras (UTC-6) y catálogos
+                    internacionales como <strong>CIE-10</strong>.</li>
             </ul>
         </div>
 
         <div class="doc-section">
             <h2>3. Módulos Principales</h2>
-            
+
             <h3>A. Gestión de Agendas y Citas</h3>
-            <p>El módulo de agendas es el motor operativo del sistema, permitiendo una planificación precisa de los recursos humanos.</p>
+            <p>El módulo de agendas es el motor operativo del sistema, permitiendo una planificación precisa de los
+                recursos humanos.</p>
             <ul>
-                <li><strong>Agenda Base</strong>: Define la jornada laboral y duración estimada por cita (slots) por médico y establecimiento.</li>
+                <li><strong>Agenda Base</strong>: Define la jornada laboral y duración estimada por cita (slots) por
+                    médico y establecimiento.</li>
                 <li><strong>Excepciones</strong>: Gestión de ausencias (Vacaciones, Incapacidades, Congresos).</li>
                 <li><strong>Flujo de la Cita</strong>: Programada → En Sala → Triaje → Atendida.</li>
             </ul>
 
             <h3>B. Historia Clínica Digital (EMR)</h3>
-            <p><strong>Expediente Médico Electrónico</strong>: El núcleo de la atención médica con enfoque en la calidad del dato y la estandarización clínica.</p>
+            <p><strong>Expediente Médico Electrónico</strong>: El núcleo de la atención médica con enfoque en la calidad
+                del dato y la estandarización clínica.</p>
             <ul>
-                <li><strong>Metodología SOAP</strong>: Estructuración de notas médicas (Subjetivo, Objetivo, Análisis, Plan).</li>
-                <li><strong>Formularios Dinámicos</strong>: Captura de datos estructurados adaptable según la especialidad médica.</li>
+                <li><strong>Metodología SOAP</strong>: Estructuración de notas médicas (Subjetivo, Objetivo, Análisis,
+                    Plan).</li>
+                <li><strong>Formularios Dinámicos</strong>: Captura de datos estructurados adaptable según la
+                    especialidad médica.</li>
                 <li><strong>Diagnósticos CIE-10</strong>: Buscador integrado con codificación internacional.</li>
             </ul>
 
@@ -243,77 +279,130 @@
             <p>Este módulo garantiza el uso racional de medicamentos y el control estricto de los insumos estatales.</p>
             <ul>
                 <li><strong>Gestión por Lotes</strong>: Control granular por número de lote y fecha de vencimiento.</li>
-                <li><strong>Alertas de Stock</strong>: Notificaciones visuales cuando las existencias caen por debajo del nivel mínimo.</li>
+                <li><strong>Alertas de Stock</strong>: Notificaciones visuales cuando las existencias caen por debajo
+                    del nivel mínimo.</li>
                 <li><strong>Trazabilidad FEFO</strong>: Descargo automático priorizando lotes próximos a vencer.</li>
-                <li><strong>Demanda Insatisfecha</strong>: Registro crítico de medicamentos solicitados no entregados.</li>
+                <li><strong>Demanda Insatisfecha</strong>: Registro crítico de medicamentos solicitados no entregados.
+                </li>
             </ul>
 
             <div class="mermaid">
                 graph TD
-                    A[Médico Prescribe] --> B[Receta PENDIENTE]
-                    B --> C[Paciente va a Farmacia]
-                    C --> D{¿Hay Stock?}
-                    D -- Sí --> E[Dispensación Completa]
-                    D -- No --> F{¿Stock Parcial?}
-                    F -- Sí --> G[Dispensación Parcial]
-                    F -- No --> H[Registro Demanda Insatisfecha]
-                    E --> I[Descargo por Lote]
-                    G --> I
-                    I --> J[Receta Cerrada]
+                A[Médico Prescribe] --> B[Receta PENDIENTE]
+                B --> C[Paciente va a Farmacia]
+                C --> D{¿Hay Stock?}
+                D -- Sí --> E[Dispensación Completa]
+                D -- No --> F{¿Stock Parcial?}
+                F -- Sí --> G[Dispensación Parcial]
+                F -- No --> H[Registro Demanda Insatisfecha]
+                E --> I[Descargo por Lote]
+                G --> I
+                I --> J[Receta Cerrada]
             </div>
 
             <h3>D. Programa Ampliado de Inmunizaciones (PAI)</h3>
             <p>Este módulo gestiona el esquema nacional de vacunación y el inventario crítico de biológicos.</p>
             <ul>
-                <li><strong>Inmunización Segura</strong>: Control estricto de dosis aplicadas según la edad del paciente y esquema vigente.</li>
-                <li><strong>Gestión de Biológicos</strong>: Control de lotes físicos, fabricantes y fechas de vencimiento.</li>
+                <li><strong>Inmunización Segura</strong>: Control estricto de dosis aplicadas según la edad del paciente
+                    y esquema vigente.</li>
+                <li><strong>Gestión de Biológicos</strong>: Control de lotes físicos, fabricantes y fechas de
+                    vencimiento.</li>
                 <li><strong>Cadena de Frío</strong>: Trazabilidad térmica de los biológicos y registro de pérdidas.</li>
-                <li><strong>Carnet Digital</strong>: Historial completo de inmunizaciones con generación de carnets.</li>
+                <li><strong>Carnet Digital</strong>: Historial completo de inmunizaciones con generación de carnets.
+                </li>
             </ul>
 
             <h3>E. Vigilancia Epidemiológica y Alertas</h3>
-            <p>Integra la detección clínica con la respuesta de salud pública de manera automática.</p>
+            <p>Integra la detección clínica con la respuesta de salud de manera automática.</p>
             <ul>
-                <li><strong>Disparo por Diagnóstico</strong>: Alerta inmediata al médico basada en códigos CIE-10 críticos.</li>
-                <li><strong>Ficha Epidemiológica</strong>: Captura obligatoria de síntomas, viajes y contactos de riesgo.</li>
-                <li><strong>Geolocalización (GIS)</strong>: Registro de coordenadas (Latitud/Longitud) para mapas de calor.</li>
-                <li><strong>Gestión de Casos</strong>: Flujo de investigación (Pendiente -> Notificado -> Gestionado).</li>
+                <li><strong>Disparo por Diagnóstico</strong>: Alerta inmediata al médico basada en códigos CIE-10
+                    críticos.</li>
+                <li><strong>Ficha Epidemiológica</strong>: Captura obligatoria de síntomas, viajes y contactos de
+                    riesgo.</li>
+                <li><strong>Geolocalización (GIS)</strong>: Registro de coordenadas (Latitud/Longitud) para mapas de
+                    calor.</li>
+                <li><strong>Gestión de Casos</strong>: Flujo de investigación (Pendiente -> Notificado -> Gestionado).
+                </li>
             </ul>
 
             <h3>G. Odontología Especializada</h3>
-            <p>Módulo de alta precisión para la documentación de salud bucal y seguimiento de intervenciones dentales.</p>
+            <p>Módulo de alta precisión para la documentación de salud bucal y seguimiento de intervenciones dentales.
+            </p>
             <ul>
-                <li><strong>Odontograma Interactivo</strong>: Mapa dental dinámico que permite registrar hallazgos (caries, obturaciones) y estados complejos (implantes, coronas, brackets).</li>
-                <li><strong>Historial de Intervenciones</strong>: Diferenciación visual entre datos históricos y tratamientos realizados en la sesión actual.</li>
-                <li><strong>Indicadores Visuales</strong>: Codificación por colores y marcadores gráficos profesionales para una lectura clínica rápida.</li>
-                <li><strong>Reportes Especializados</strong>: Generación de informes PDF que incluyen la representación gráfica del odontograma con sus respectivas leyendas.</li>
+                <li><strong>Odontograma Interactivo</strong>: Mapa dental dinámico que permite registrar hallazgos
+                    (caries, obturaciones) y estados complejos (implantes, coronas, brackets).</li>
+                <li><strong>Historial de Intervenciones</strong>: Diferenciación visual entre datos históricos y
+                    tratamientos realizados en la sesión actual.</li>
+                <li><strong>Indicadores Visuales</strong>: Codificación por colores y marcadores gráficos profesionales
+                    para una lectura clínica rápida.</li>
+                <li><strong>Reportes Especializados</strong>: Generación de informes PDF que incluyen la representación
+                    gráfica del odontograma con sus respectivas leyendas.</li>
             </ul>
 
             <h3>H. Control Prenatal y Carnet Perinatal</h3>
-            <p>Módulo especializado para el seguimiento integral del embarazo, garantizando la salud materno-fetal y la documentación legal del nacimiento.</p>
+            <p>Módulo especializado para el seguimiento integral del embarazo, garantizando la salud materno-fetal y la
+                documentación legal del nacimiento.</p>
             <ul>
-                <li><strong>Control Gestacional</strong>: Seguimiento periódico con cálculo automático de semanas por FUM y evaluación de riesgo obstétrico continuo.</li>
-                <li><strong>Buscador Universal de Embarazadas</strong>: Filtro inteligente que permite localizar pacientes en estado activo o histórico (finalizadas) mediante nombre o DNI.</li>
-                <li><strong>Gestión de Desenlace</strong>: Workflow de finalización que captura el resultado clínico (Parto, Aborto u Óbito) con notas de cierre y fechas de terminación obligatorias.</li>
-                <li><strong>Carnet Perinatal Dinámico</strong>: Generación de reportes PDF (HCPB) con codificación por colores: <strong>Azul</strong> para partos exitosos, <strong>Naranja</strong> para abortos y <strong>Rojo</strong> para óbitos.</li>
+                <li><strong>Control Gestacional y Multi-Fetal</strong>: Seguimiento periódico con cálculo automático de
+                    semanas por FUM. Soporte de **gestaciones múltiples** con almacenamiento dinámico JSON para el
+                    monitoreo individualizado por feto (FCF y movimientos fetales) y clasificación de riesgo automática.
+                </li>
+                <li><strong>Buscador Universal de Embarazadas</strong>: Filtro inteligente que permite localizar
+                    pacientes en estado activo o histórico (finalizadas) mediante nombre o DNI.</li>
+                <li><strong>Gestión de Desenlace</strong>: Workflow de finalización que captura el resultado clínico
+                    (Parto, Aborto u Óbito) con notas de cierre y fechas de terminación obligatorias.</li>
+                <li><strong>Carnet Perinatal Dinámico</strong>: Generación de reportes PDF (HCPB) con codificación por
+                    colores: <strong>Azul</strong> para partos exitosos, <strong>Naranja</strong> para abortos y
+                    <strong>Rojo</strong> para óbitos.</li>
+                <li><strong>Impresión de Consulta Individual</strong>: Reporte en PDF de la nota SOAP del control,
+                    incluyendo diagnósticos CIE-10, recetas médicas detalladas, órdenes de laboratorio y
+                    radiología/ultrasonidos, citas de control y **registro completo de incapacidades médicas**
+                    (períodos, tipo y justificación con fechas seguras UTC).</li>
             </ul>
 
-            <h3>I. SISS Mobile (App Ciudadana)</h3>
-            <p>Extensión del sistema para empoderar al paciente y facilitar el acceso a servicios de salud desde dispositivos móviles.</p>
+            <h3>I. Pediatría y Control del Niño Sano</h3>
+            <p>Módulo especializado en el monitoreo del desarrollo infantil, lactancia, hitos madurativos y la
+                inmunización de la población pediátrica.</p>
             <ul>
-                <li><strong>Autogestión de Citas</strong>: Programación y seguimiento de citas médicas en tiempo real.</li>
-                <li><strong>Historial de Recetas</strong>: Consulta digital de recetas emitidas y sus instrucciones de administración.</li>
-                <li><strong>Buscador de Stock Nacional</strong>: Consulta de disponibilidad de medicamentos en todos los establecimientos de la red.</li>
-                <li><strong>Splash Screen Personalizado</strong>: Experiencia de inicio branded con spinner animado y verificación de sesión.</li>
-                <li><strong>Seguridad de Registro</strong>: Validación obligatoria contra el expediente clínico previo antes de permitir la creación de cuenta.</li>
+                <li><strong>Consulta del Niño Sano</strong>: Monitoreo periódico de peso, talla, IMC, perímetro cefálico
+                    y estado nutricional automatizado.</li>
+                <li><strong>Desarrollo Infantil</strong>: Evaluación de hitos de desarrollo psicomotor adaptados al
+                    rango de edad del niño (Hitos de desarrollo motriz, cognitivo y del lenguaje).</li>
+                <li><strong>Trazabilidad de Suplementos y Nutrición</strong>: Registro detallado de la alimentación
+                    complementaria, lactancia materna exclusiva y entrega de suplementos.</li>
+                <li><strong>Robustez y Persistencia</strong>: Flujos de transacciones clínicas síncronas que garantizan
+                    el correcto guardado de controles infantiles y su integración inmediata con el expediente clínico
+                    global.</li>
+                <li><strong>Reportes PDF de Crecimiento</strong>: Impresión del Carnet de Vacunación Pediátrico y
+                    resúmenes de consultas de Niño Sano oficiales.</li>
             </ul>
 
-            <h3>H. Administración y Personalización</h3>
+            <h3>J. SISS Mobile (App Ciudadana)</h3>
+            <p>Extensión del sistema para empoderar al paciente y facilitar el acceso a servicios de salud desde
+                dispositivos móviles.</p>
             <ul>
-                <li><strong>Carrusel de Medios</strong>: Gestión dinámica de imágenes y videos informativos en la pantalla de inicio.</li>
-                <li><strong>Matriz de Permisos (RBAC)</strong>: Control granular de accesos diferenciando roles institucionales y perfiles de pacientes.</li>
-                <li><strong>Feedback Técnico Avanzado</strong>: Sistema de notificaciones detalladas que informa sobre duplicados o errores de validación específicos.</li>
-                <li><strong>Filtro de Excepciones Robusto</strong>: Manejo preventivo de errores de base de datos para garantizar la disponibilidad del servicio.</li>
+                <li><strong>Autogestión de Citas</strong>: Programación y seguimiento de citas médicas en tiempo real.
+                </li>
+                <li><strong>Historial de Recetas</strong>: Consulta digital de recetas emitidas y sus instrucciones de
+                    administración.</li>
+                <li><strong>Buscador de Stock Nacional</strong>: Consulta de disponibilidad de medicamentos en todos los
+                    establecimientos de la red.</li>
+                <li><strong>Splash Screen Personalizado</strong>: Experiencia de inicio branded con spinner animado y
+                    verificación de sesión.</li>
+                <li><strong>Seguridad de Registro</strong>: Validación obligatoria contra el expediente clínico previo
+                    antes de permitir la creación de cuenta.</li>
+            </ul>
+
+            <h3>K. Administración y Personalización</h3>
+            <ul>
+                <li><strong>Carrusel de Medios</strong>: Gestión dinámica de imágenes y videos informativos en la
+                    pantalla de inicio.</li>
+                <li><strong>Matriz de Permisos (RBAC)</strong>: Control granular de accesos diferenciando roles
+                    institucionales y perfiles de pacientes.</li>
+                <li><strong>Feedback Técnico Avanzado</strong>: Sistema de notificaciones detalladas que informa sobre
+                    duplicados o errores de validación específicos.</li>
+                <li><strong>Filtro de Excepciones Robusto</strong>: Manejo preventivo de errores de base de datos para
+                    garantizar la disponibilidad del servicio.</li>
             </ul>
         </div>
 
@@ -321,33 +410,34 @@
             <h2>4. Flujo Operativo Integral</h2>
             <div class="mermaid">
                 graph TD
-                    subgraph Ciudadano
-                    M1["App Móvil: Cita/Stock"]
-                    end
-                    
-                    A[Paciente llega] --> B[Recepción/Agenda]
-                    M1 -.-> B
-                    B --> C[Triaje: Signos Vitales]
-                    C --> D[Consulta Médica: SOAP]
-                    D --> E{Acciones Clínicas}
-                    E --> F[Diagnósticos CIE-10]
-                    E --> G[Recetas/Lab/Rayos X]
-                    E --> H[Referencia Externa]
-                    E --> I[Agendar Próxima Cita]
-                    F --> J{¿Es Epidemiólogico?}
-                    J -- Sí --> K[Alerta y Ficha Epidem.]
-                    J -- No --> L[Finalizar]
-                    G --> L
-                    H --> L
-                    I --> L
-                    K --> L
-                    L --> M[Impresión de Reportes PDF]
-                    M -.-> M2["Disponible en App Móvil"]
+                subgraph Ciudadano
+                M1["App Móvil: Cita/Stock"]
+                end
+
+                A[Paciente llega] --> B[Recepción/Agenda]
+                M1 -.-> B
+                B --> C[Triaje: Signos Vitales]
+                C --> D[Consulta Médica: SOAP]
+                D --> E{Acciones Clínicas}
+                E --> F[Diagnósticos CIE-10]
+                E --> G[Recetas/Lab/Rayos X]
+                E --> H[Referencia Externa]
+                E --> I[Agendar Próxima Cita]
+                F --> J{¿Es Epidemiólogico?}
+                J -- Sí --> K[Alerta y Ficha Epidem.]
+                J -- No --> L[Finalizar]
+                G --> L
+                H --> L
+                I --> L
+                K --> L
+                L --> M[Impresión de Reportes PDF]
+                M -.-> M2["Disponible en App Móvil"]
             </div>
         </div>
 
         <div class="note">
-            <strong>Nota:</strong> Documentación técnica oficial generada para el equipo de desarrollo y administración del SISS.
+            <strong>Nota:</strong> Documentación técnica oficial generada para el equipo de desarrollo y administración
+            del SISS.
         </div>
 
         <footer>
@@ -356,4 +446,5 @@
     </div>
 
 </body>
+
 </html>

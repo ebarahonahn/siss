@@ -62,6 +62,7 @@ export interface ActualizarUsuarioPayload {
   numeroColegiado?: string;
   activo?: boolean;
   contrasena?: string;
+  rol?: string;
 }
 
 @Injectable({ providedIn: 'root' })

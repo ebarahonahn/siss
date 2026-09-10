@@ -7,40 +7,39 @@ import {
   Query,
   ParseIntPipe,
   UseGuards,
-  DefaultValuePipe,
 } from '@nestjs/common';
 import { TriajeService } from './triaje.service';
 import { CrearTriajeDto } from './dto/crear-triaje.dto';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
-import { RolesGuard } from '../../common/guards/roles.guard';
-import { Roles } from '../../common/decorators/roles.decorator';
+import { PermissionsGuard } from '../../common/guards/permissions.guard';
+import { Permissions } from '../../common/decorators/permissions.decorator';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 
 @Controller('triaje')
-@UseGuards(JwtAuthGuard, RolesGuard)
+@UseGuards(JwtAuthGuard, PermissionsGuard)
 export class TriajeController {
   constructor(private service: TriajeService) {}
 
   @Get('citas-pendientes')
-  @Roles('ENFERMERA', 'ADMIN', 'MEDICO')
+  @Permissions('triaje:leer')
   citasPendientes(@CurrentUser() user: any, @Query('fecha') fecha?: string) {
-    return this.service.citasPendientes(user.establecimientoId, fecha);
+    return this.service.citasPendientes(user, fecha);
   }
 
   @Post()
-  @Roles('ENFERMERA', 'ADMIN')
+  @Permissions('triaje:crear')
   crear(@Body() dto: CrearTriajeDto, @CurrentUser() user: any) {
     return this.service.crear(dto, user.id);
   }
 
   @Get('cita/:citaId')
-  @Roles('ENFERMERA', 'ADMIN', 'MEDICO')
+  @Permissions('triaje:leer,historia_clinica:leer,historia_clinica:crear')
   obtenerPorCita(@Param('citaId', ParseIntPipe) citaId: number) {
     return this.service.obtenerPorCita(citaId);
   }
 
   @Get(':id')
-  @Roles('ENFERMERA', 'ADMIN', 'MEDICO')
+  @Permissions('triaje:leer,historia_clinica:leer,historia_clinica:crear')
   obtener(@Param('id', ParseIntPipe) id: number) {
     return this.service.obtener(id);
   }

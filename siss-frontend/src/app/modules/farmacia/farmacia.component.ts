@@ -1,4 +1,5 @@
-import { Component, OnInit, signal, inject } from '@angular/core';
+import { Component, OnDestroy, signal, inject } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { DispensacionService } from '../../core/services/dispensacion.service';
@@ -11,7 +12,7 @@ import { NotificationService } from '../../core/services/notification.service';
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './farmacia.component.html',
 })
-export class FarmaciaComponent implements OnInit {
+export class FarmaciaComponent implements OnDestroy {
   private fb = inject(FormBuilder);
   private service = inject(DispensacionService);
   private auth = inject(AuthService);
@@ -20,6 +21,9 @@ export class FarmaciaComponent implements OnInit {
   recetas = signal<any[]>([]);
   cargando = signal(false);
   error = signal('');
+  errorBusqueda = signal('');
+  busquedaRealizada = signal(false);
+  private busqueda?: Subscription;
   
   recetaSeleccionada = signal<any | null>(null);
   form: FormGroup;
@@ -31,25 +35,35 @@ export class FarmaciaComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnDestroy() {
+    this.busqueda?.unsubscribe();
+  }
 
   buscar(event: any) {
-    const term = event.target.value;
+    const term = event.target.value.trim();
+    this.busqueda?.unsubscribe();
+    this.errorBusqueda.set('');
+    this.busquedaRealizada.set(false);
+    this.recetas.set([]);
+    this.cargando.set(false);
     if (term.length < 3) {
       this.recetas.set([]);
       return;
     }
 
     this.cargando.set(true);
-    this.service.buscarRecetasPendientes(term).subscribe({
+    this.busqueda = this.service.buscarRecetasPendientes(term).subscribe({
       next: (res: any) => {
         // El backend envuelve la respuesta en { ok: true, data: [...] }
         const lista = res.data || (Array.isArray(res) ? res : []);
         this.recetas.set(lista);
+        this.busquedaRealizada.set(true);
         this.cargando.set(false);
       },
-      error: () => {
-        this.notification.error('Error al buscar recetas');
+      error: (err) => {
+        this.errorBusqueda.set(err.status === 403
+          ? 'No tiene permiso para consultar recetas en farmacia.'
+          : 'No se pudieron consultar las recetas. Verifique la conexión e intente de nuevo.');
         this.cargando.set(false);
       }
     });

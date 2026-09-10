@@ -102,6 +102,7 @@ export class TriajeComponent implements OnInit {
     if (cita.triaje) {
       // Cargar datos existentes y abrir en modo solo lectura
       this.soloLectura.set(true);
+      this.form.disable();
       this.svc.obtenerPorCita(cita.id).subscribe({
         next: (t: any) => {
           this.triajeCargado.set(t);
@@ -142,10 +143,12 @@ export class TriajeComponent implements OnInit {
   }
 
   seleccionarCategoria(valor: string) {
+    if (this.soloLectura()) return;
     this.form.patchValue({ categoria: valor });
   }
 
   guardar() {
+    if (this.soloLectura()) return;
     if (this.form.invalid) { 
       this.form.markAllAsTouched(); 
       this.notification.warnForm(this.form, this.labels);

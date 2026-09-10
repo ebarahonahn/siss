@@ -57,7 +57,7 @@ export class PacientesController {
   }
 
   @Get('buscar')
-  @Permissions('pacientes:leer')
+  @Permissions('pacientes:leer,historia_clinica:leer,historial_unificado:leer,pediatria:leer,control_prenatal:leer,triaje:leer,hospitalizacion:leer,vacunacion:leer,citas:leer')
   buscar(
     @Query('q') termino: string,
     @Query('pagina', new DefaultValuePipe(1), ParseIntPipe) pagina: number,
@@ -76,7 +76,7 @@ export class PacientesController {
   }
 
   @Get(':id')
-  @Permissions('pacientes:leer')
+  @Permissions('pacientes:leer,historia_clinica:leer,historial_unificado:leer,pediatria:leer,control_prenatal:leer,triaje:leer,hospitalizacion:leer,vacunacion:leer,citas:leer')
   obtenerPerfil(@Param('id', ParseIntPipe) id: number) {
     return this.pacientesService.obtenerPerfil(id);
   }

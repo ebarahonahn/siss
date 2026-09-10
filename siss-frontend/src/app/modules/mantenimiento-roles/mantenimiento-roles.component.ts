@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { RolesService, Rol } from '../../core/services/roles.service';
 import { NotificationService } from '../../core/services/notification.service';
 
@@ -17,8 +17,12 @@ const MODULOS: ModuloPermiso[] = [
   { key: 'triaje',           label: 'Triaje',            acciones: ['leer', 'crear'] },
   { key: 'historia_clinica', label: 'Historia Clínica',  acciones: ['leer', 'crear', 'editar'] },
   { key: 'vacunacion',       label: 'Vacunación (PAI)',  acciones: ['leer', 'gestionar', 'editar', 'eliminar'] },
+  { key: 'inventario_vacunas', label: 'Inventario PAI (Vacunas)', acciones: ['leer', 'gestionar'] },
   { key: 'agendas',          label: 'Agendas Médicas',   acciones: ['leer', 'gestionar'] },
   { key: 'control_prenatal', label: 'Control Prenatal',   acciones: ['leer', 'escribir', 'eliminar'] },
+  { key: 'pediatria',        label: 'Pediatría',         acciones: ['leer', 'crear'] },
+  { key: 'hospitalizacion',  label: 'Hospitalización',   acciones: ['leer', 'gestionar'] },
+  { key: 'historial_unificado', label: 'Historial Clínico Unificado', acciones: ['leer', 'exportar'] },
   
   // Servicios Clínicos
   { key: 'formularios',      label: 'Formularios',       acciones: ['leer', 'llenar', 'crear', 'editar'] },
@@ -27,25 +31,27 @@ const MODULOS: ModuloPermiso[] = [
   { key: 'radiologia',       label: 'Radiología e Imagen', acciones: ['leer', 'gestionar', 'solicitar'] },
   { key: 'diagnosticos',     label: 'Diagnósticos CIE-10', acciones: ['leer', 'crear'] },
   { key: 'farmacia',         label: 'Farmacia (Dispensación)', acciones: ['leer', 'crear'] },
+  { key: 'epidemiologia',    label: 'Control Epidemiológico',  acciones: ['leer', 'notificar', 'gestionar'] },
   
   // Gestión Administrativa
   { key: 'usuarios',         label: 'Usuarios',          acciones: ['leer', 'gestionar'] },
-  { key: 'inventario',       label: 'Inventario',        acciones: ['leer', 'gestionar'] },
+  { key: 'inventario',       label: 'Inventario General', acciones: ['leer', 'gestionar'] },
   { key: 'medicamentos',     label: 'Medicamentos',         acciones: ['leer', 'gestionar'] },
   
   // Configuración
   { key: 'especialidades',   label: 'Especialidades',    acciones: ['leer', 'crear', 'editar'] },
   { key: 'establecimientos', label: 'Establecimientos',  acciones: ['leer', 'crear', 'editar'] },
-  { key: 'reportes',         label: 'Reportes',          acciones: ['generar'] },
+  { key: 'reportes',         label: 'Reportes (Visualización)', acciones: ['generar'] },
+  { key: 'gestion_reportes', label: 'Gestión de Reportes', acciones: ['leer', 'gestionar'] },
   { key: 'geo',              label: 'Geografía',         acciones: ['leer'] },
   { key: 'catalogos',        label: 'Catálogos',         acciones: ['leer'] },
 ];
 
 const CATEGORIAS = [
-  { nombre: 'Atención al Paciente',   keys: ['pacientes', 'citas', 'triaje', 'historia_clinica', 'vacunacion', 'agendas', 'control_prenatal'] },
-  { nombre: 'Servicios Clínicos',      keys: ['formularios', 'recetas', 'laboratorio', 'radiologia', 'diagnosticos', 'farmacia'] },
+  { nombre: 'Atención al Paciente',   keys: ['pacientes', 'citas', 'triaje', 'historia_clinica', 'historial_unificado', 'vacunacion', 'inventario_vacunas', 'agendas', 'control_prenatal', 'pediatria', 'hospitalizacion'] },
+  { nombre: 'Servicios Clínicos',      keys: ['formularios', 'recetas', 'laboratorio', 'radiologia', 'diagnosticos', 'farmacia', 'epidemiologia'] },
   { nombre: 'Gestión Administrativa', keys: ['usuarios', 'inventario', 'medicamentos'] },
-  { nombre: 'Configuración y Otros',  keys: ['especialidades', 'establecimientos', 'reportes', 'geo', 'catalogos'] },
+  { nombre: 'Configuración y Otros',  keys: ['especialidades', 'establecimientos', 'reportes', 'gestion_reportes', 'geo', 'catalogos'] },
 ];
 
 const ROL_COLOR: Record<string, string> = {
@@ -88,6 +94,43 @@ export class MantenimientoRolesComponent implements OnInit {
   form = this.fb.group({
     descripcion: [''],
   });
+
+  mostrarModalCrear = signal(false);
+  guardandoNuevoRol = signal(false);
+
+  crearRolForm = this.fb.group({
+    nombre: ['', [Validators.required, Validators.pattern(/^[A-Z0-9_]+$/)]],
+    descripcion: [''],
+  });
+
+  abrirModalCrear() {
+    this.crearRolForm.reset();
+    this.mostrarModalCrear.set(true);
+  }
+
+  cerrarModalCrear() {
+    this.mostrarModalCrear.set(false);
+  }
+
+  crearRol() {
+    if (this.crearRolForm.invalid) return;
+    this.guardandoNuevoRol.set(true);
+    const { nombre, descripcion } = this.crearRolForm.value;
+
+    this.svc.crear({ nombre: nombre!.toUpperCase().trim(), descripcion: descripcion ?? '' }).subscribe({
+      next: (nuevoRol) => {
+        this.guardandoNuevoRol.set(false);
+        this.cerrarModalCrear();
+        this.notification.success(`Rol ${nuevoRol.nombre} creado exitosamente`);
+        this.roles.update(list => [...list, nuevoRol]);
+        this.seleccionarRol(nuevoRol);
+      },
+      error: (err: any) => {
+        this.guardandoNuevoRol.set(false);
+        this.notification.error(err?.error?.message ?? 'Error al crear el rol');
+      }
+    });
+  }
 
   ngOnInit() { this.cargar(); }
 

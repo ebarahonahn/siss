@@ -2,6 +2,7 @@ import { Component, inject, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { UsuariosService, UsuarioResumen } from '../../core/services/usuarios.service';
+import { RolesService } from '../../core/services/roles.service';
 
 const ROLES = ['ADMIN','MEDICO','ENFERMERA','FARMACEUTICO','RECEPCIONISTA','EPIDEMIOLOGO', 'ADMIN_ESTABLECIMIENTO'];
 
@@ -14,6 +15,7 @@ const ROLES = ['ADMIN','MEDICO','ENFERMERA','FARMACEUTICO','RECEPCIONISTA','EPID
 export class UsuariosComponent implements OnInit {
   private svc = inject(UsuariosService);
   private fb  = inject(FormBuilder);
+  private rolesSvc = inject(RolesService);
 
   usuarios   = signal<UsuarioResumen[]>([]);
   total      = signal(0);
@@ -34,7 +36,7 @@ export class UsuariosComponent implements OnInit {
   servicios        = signal<any[]>([]);
   asignaciones     = signal<any[]>([]);
 
-  readonly roles = ROLES;
+  roles = signal<string[]>(ROLES);
 
   totalPaginas = computed(() => Math.ceil(this.total() / this.limite()) || 1);
 
@@ -62,6 +64,12 @@ export class UsuariosComponent implements OnInit {
     return (rol || this.form.get('rol')?.value) === 'MEDICO';
   }
 
+  /** Roles clínicos que pueden tener servicio y especialidad asignados */
+  esRolConServicio(rol?: string | null): boolean {
+    const r = (rol || this.form.get('rol')?.value || '').toUpperCase();
+    return ['MEDICO', 'ENFERMERA', 'ODONTOLOGO', 'FARMACEUTICO', 'EPIDEMIOLOGO'].some(x => r.includes(x));
+  }
+
   esRolAdmin(rol?: string | null): boolean {
     return (rol || this.form.get('rol')?.value) === 'ADMIN';
   }
@@ -79,6 +87,9 @@ export class UsuariosComponent implements OnInit {
   cargarCatalogos() {
     this.svc.listarEstablecimientos().subscribe(res => this.establecimientos.set(res));
     this.svc.listarEspecialidades().subscribe(res => this.especialidades.set(res));
+    this.rolesSvc.listar().subscribe(res => {
+      this.roles.set(res.map(r => r.nombre));
+    });
   }
 
   onEstablecimientoChange(id: number) {
@@ -156,18 +167,7 @@ export class UsuariosComponent implements OnInit {
 
   agregarAsig() {
     const rolSeleccionado = this.asigForm.get('rol')?.value;
-    const esMedico = rolSeleccionado === 'MEDICO';
-    
-    // Si no es médico, no obligar a servicio ni especialidad
-    if (!esMedico) {
-      this.asigForm.get('servicioId')?.clearValidators();
-      this.asigForm.get('especialidadId')?.clearValidators();
-    } else {
-      // Para médicos, el servicio suele ser importante (ej. CONSULTA EXTERNA)
-      // Pero no lo haremos obligatorio aquí por si el usuario prefiere no asignarlo aún
-    }
-    this.asigForm.get('servicioId')?.updateValueAndValidity();
-    this.asigForm.get('especialidadId')?.updateValueAndValidity();
+    const conServicio = this.esRolConServicio(rolSeleccionado);
 
     if (this.asigForm.invalid) return;
     const v = this.asigForm.value;
@@ -177,8 +177,8 @@ export class UsuariosComponent implements OnInit {
       this.svc.agregarAsignacion({
         usuarioId: userId,
         establecimientoId: Number(v.establecimientoId),
-        servicioId: esMedico ? (v.servicioId ? Number(v.servicioId) : undefined) : undefined,
-        especialidadId: esMedico ? (v.especialidadId ? Number(v.especialidadId) : undefined) : undefined,
+        servicioId:     conServicio ? (v.servicioId ? Number(v.servicioId) : undefined) : undefined,
+        especialidadId: conServicio ? (v.especialidadId ? Number(v.especialidadId) : undefined) : undefined,
       }).subscribe({
         next: () => {
           this.svc.obtener(userId).subscribe(u => this.asignaciones.set(u.asignaciones));
@@ -189,16 +189,16 @@ export class UsuariosComponent implements OnInit {
       const est = this.establecimientos().find(e => e.id == v.establecimientoId);
       const ser = this.servicios().find(s => s.id == v.servicioId);
       const esp = this.especialidades().find(e => e.id == v.especialidadId);
-      
+
       const nueva = {
         id: Date.now(),
         establecimiento: { id: est.id, nombre: est.nombre },
-        servicio: (esMedico && ser) ? { id: ser.id, catServicio: { nombre: ser.catServicio?.nombre } } : null,
-        especialidad: (esMedico && esp) ? { id: esp.id, nombre: esp.nombre } : null,
-        rol: { id: 0, nombre: v.rol || 'MEDICO' },
+        servicio:     (conServicio && ser) ? { id: ser.id, catServicio: { nombre: ser.catServicio?.nombre } } : null,
+        especialidad: (conServicio && esp) ? { id: esp.id, nombre: esp.nombre } : null,
+        rol: { id: 0, nombre: v.rol || rolSeleccionado },
         establecimientoId: est.id,
-        servicioId: esMedico ? (ser?.id || null) : null,
-        especialidadId: esMedico ? (esp?.id || null) : null
+        servicioId:     conServicio ? (ser?.id || null) : null,
+        especialidadId: conServicio ? (esp?.id || null) : null
       };
       this.asignaciones.update(list => [...list, nueva]);
       this.asigForm.reset({ rol: this.form.get('rol')?.value });
@@ -251,6 +251,7 @@ export class UsuariosComponent implements OnInit {
           numeroColegiado: v.numeroColegiado || undefined,
           activo: v.activo!,
           contrasena: v.contrasena || undefined,
+          rol: v.rol!,
         })
       : this.svc.crear({
           numeroEmpleado: v.numeroEmpleado!,

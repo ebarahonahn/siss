@@ -43,6 +43,7 @@ export interface AsignarDto {
 }
 
 export interface ActualizarDto {
+  motivoAjuste?: string;
   cantidadActual?: number;
   cantidadMinima?: number;
   lote?: string;
@@ -91,9 +92,20 @@ export class InventarioService {
   obtenerMovimientos(id: number): Observable<MovimientoInventario[]> {
     return this.http.get<any>(`${this.base}/${id}/movimientos`).pipe(map(r => r.data ?? r));
   }
+
+  productosConHistorial(): Observable<ProductoInventario[]> {
+    return this.http.get<any>(`${this.base}/productos-historial`).pipe(map(r => r.data ?? r));
+  }
+
+  movimientosPorProducto(id: number): Observable<MovimientoInventario[]> {
+    return this.http.get<any>(`${this.base}/productos/${id}/movimientos`).pipe(map(r => r.data ?? r));
+  }
 }
 
+export type ProductoInventario = Pick<InventarioItem, 'medicamentoId' | 'medicamento' | 'cantidadActual'>;
+
 export interface MovimientoInventario {
+  inventario?: { lote: string | null };
   id: number;
   inventarioId: number;
   tipo: 'ENTRADA' | 'SALIDA' | 'AJUSTE' | 'CONSUMO';

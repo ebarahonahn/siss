@@ -31,12 +31,53 @@ const INCLUDE_TRIAJE = {
 export class TriajeService {
   constructor(private prisma: PrismaService) {}
 
-  /** Citas del día pendientes de triaje para el establecimiento */
-  async citasPendientes(establecimientoId: number, fecha?: string) {
+  /** Citas del día pendientes de triaje para el establecimiento, filtradas por rol */
+  async citasPendientes(user: any, fecha?: string) {
+    const establecimientoId: number = user.establecimientoId;
+
     // Si no viene fecha, usamos hoy (Local)
     const fechaString = fecha || DateUtils.getHoyLocalString();
 
     const { inicio, fin } = DateUtils.getLocalDayRange(fechaString);
+
+    // ── Determinar el filtro adicional según el rol del usuario ──────────────
+    const rolNombre: string = (user.rol || '').toUpperCase();
+
+    // Roles que pueden ver todas las citas del establecimiento (sin filtro extra)
+    const ROL_ADMIN = ['ADMINISTRADOR', 'RECEPCIONISTA', 'DIRECTOR', 'COORDINADOR', 'SUPERADMIN'];
+    const esAdmin = ROL_ADMIN.some((r) => rolNombre.includes(r));
+
+    // Filtro extra por médico: si el usuario tiene citas asignadas a él
+    const esMedico =
+      rolNombre.includes('MEDICO') ||
+      rolNombre.includes('ODONTOLOGO') ||
+      rolNombre.includes('ODONTOLOGÍA') ||
+      rolNombre.includes('ODONTOLOGIA') ||
+      rolNombre.includes('DOCTOR');
+
+    const filtroExtra: Record<string, any> = {};
+
+    if (!esAdmin) {
+      if (esMedico) {
+        // El médico/odontólogo solo ve sus propias citas
+        filtroExtra.medicoId = Number(user.sub);
+      } else if (user.especialidadId) {
+        // Enfermera/auxiliar asignada a una especialidad: ver citas de esa especialidad
+        filtroExtra.especialidadId = Number(user.especialidadId);
+      } else if (user.servicioId) {
+        // Asignada a un servicio específico
+        filtroExtra.medico = {
+          asignaciones: {
+            some: {
+              establecimientoId,
+              servicioId: Number(user.servicioId),
+              activo: true,
+            },
+          },
+        };
+      }
+      // Si no es admin pero tampoco tiene especialidad/servicio → puede ver todas (enfermera general)
+    }
 
     const citas = await this.prisma.cita.findMany({
       where: {
@@ -49,6 +90,7 @@ export class TriajeService {
             EstadoCita.EN_SALA,
           ],
         },
+        ...filtroExtra,
       },
       include: {
         paciente: {
@@ -62,6 +104,7 @@ export class TriajeService {
           },
         },
         medico: { select: { id: true, nombres: true, apellidos: true } },
+        especialidad: { select: { id: true, nombre: true } },
         triaje: { select: { id: true, categoria: true, creadoEn: true } },
       },
       orderBy: { fechaHora: 'asc' },

@@ -44,4 +44,8 @@ export class ActualizarUsuarioDto {
     message: 'La contraseña debe tener al menos una mayúscula y un número',
   })
   contrasena?: string;
+
+  @IsOptional()
+  @IsString()
+  rol?: string;
 }

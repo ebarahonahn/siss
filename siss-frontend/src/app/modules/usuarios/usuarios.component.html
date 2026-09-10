@@ -164,9 +164,8 @@
         <div>
           <label class="block text-xs font-medium text-gray-700 mb-1">Rol <span class="text-red-500">*</span></label>
           <select formControlName="rol"
-                  [attr.disabled]="editandoId() ? true : null"
                   class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-            <option *ngFor="let r of roles" [value]="r">{{ r }}</option>
+            <option *ngFor="let r of roles()" [value]="r">{{ r }}</option>
           </select>
         </div>
 
@@ -302,7 +301,7 @@
                 <option *ngFor="let est of establecimientos()" [value]="est.id">{{ est.nombre }}</option>
               </select>
             </div>
-            <div *ngIf="esRolMedico(asigForm.get('rol')?.value)">
+            <div *ngIf="esRolConServicio(asigForm.get('rol')?.value)">
               <label class="block text-[10px] font-medium text-gray-500 mb-1">Servicio</label>
               <select formControlName="servicioId"
                       class="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none">
@@ -310,11 +309,11 @@
                 <option *ngFor="let serv of servicios()" [value]="serv.id">{{ serv.catServicio?.nombre }}</option>
               </select>
             </div>
-            <div class="col-span-2" *ngIf="esRolMedico(asigForm.get('rol')?.value)">
+            <div class="col-span-2" *ngIf="esRolConServicio(asigForm.get('rol')?.value)">
               <label class="block text-[10px] font-medium text-gray-500 mb-1">Especialidad en este centro</label>
               <select formControlName="especialidadId"
                       class="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                <option [ngValue]="null">Mismo del perfil / Medicina General</option>
+                <option [ngValue]="null">Mismo del perfil / General</option>
                 <option *ngFor="let esp of especialidades()" [value]="esp.id">{{ esp.nombre }}</option>
               </select>
             </div>

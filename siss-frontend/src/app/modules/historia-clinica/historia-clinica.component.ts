@@ -1,4 +1,5 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { abrirPdfEnVisor } from '../../shared/utils/pdf-viewer';
+import { Component, inject, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
@@ -28,14 +29,85 @@ export class HistoriaClinicaComponent implements OnInit {
   private ns        = inject(NotificationService);
 
   // Vista agenda
-  citas        = signal<any[]>([]);
+  citas         = signal<any[]>([]);
   cargandoCitas = signal(false);
-  fechaFiltro  = DateUtils.getHoyString();
+  fechaFiltro   = DateUtils.getHoyString();
+  tipoDeVista   = signal<'LISTA' | 'SEMANAL'>('LISTA');
+  citasSemana   = signal<any[]>([]);
+  cargandoSemana = signal(false);
+  citaDetalleModal = signal<any | null>(null);
 
   // Vista paciente
   pacienteId   = signal<number | null>(null);
   paciente     = signal<any>(null);
   consultas    = signal<HistoriaClinica[]>([]);
+
+  // Filtros y Paginación Vista Paciente
+  filtroTexto        = signal('');
+  filtroTipo         = signal<'TODAS' | 'PRENATAL' | 'ANIO_ACTUAL'>('TODAS');
+  paginaActual       = signal(1);
+  elementosPorPagina = signal(5);
+
+  consultasFiltradas = computed(() => {
+    const text = this.filtroTexto().toLowerCase().trim();
+    const tipo = this.filtroTipo();
+    const currentYear = new Date().getFullYear();
+
+    return this.consultas().filter(c => {
+      if (tipo === 'PRENATAL' && !c.controlPrenatal) return false;
+      if (tipo === 'ANIO_ACTUAL') {
+        const fechaAño = new Date(c.fecha).getUTCFullYear();
+        if (fechaAño !== currentYear) return false;
+      }
+
+      if (text) {
+        const enMedico = `${c.medico?.nombres} ${c.medico?.apellidos}`.toLowerCase().includes(text);
+        const enLugar  = c.medico?.establecimiento?.nombre?.toLowerCase().includes(text) || false;
+        const enDiags  = c.diagnosticos?.some(d => 
+          d.codigoCIE10?.toLowerCase().includes(text) || d.descripcion?.toLowerCase().includes(text)
+        ) || false;
+        const enSubjetivo = c.subjetivo?.toLowerCase().includes(text) || false;
+
+        let enFecha = false;
+        if (c.fecha) {
+          const d = new Date(c.fecha);
+          if (!isNaN(d.getTime())) {
+            const day   = String(d.getUTCDate()).padStart(2, '0');
+            const month = String(d.getUTCMonth() + 1).padStart(2, '0');
+            const year  = String(d.getUTCFullYear());
+            const meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+            const mesNom = meses[d.getUTCMonth()];
+
+            enFecha = `${day}/${month}/${year}`.includes(text) || 
+                      `${year}-${month}-${day}`.includes(text) || 
+                      `${day}-${month}-${year}`.includes(text) || 
+                      `${day} ${mesNom} ${year}`.includes(text);
+          }
+        }
+
+        return enMedico || enLugar || enDiags || enSubjetivo || enFecha;
+      }
+
+      return true;
+    });
+  });
+
+  totalPaginas = computed(() => {
+    const total = Math.ceil(this.consultasFiltradas().length / this.elementosPorPagina());
+    return total > 0 ? total : 1;
+  });
+
+  consultasPaginadas = computed(() => {
+    const pag = Math.min(this.paginaActual(), this.totalPaginas());
+    const inicio = (pag - 1) * this.elementosPorPagina();
+    return this.consultasFiltradas().slice(inicio, inicio + this.elementosPorPagina());
+  });
+
+  cambiarPagina(nuevaPagina: number) {
+    if (nuevaPagina >= 1 && nuevaPagina <= this.totalPaginas()) {
+      this.paginaActual.set(nuevaPagina);
+    }
+  }
 
   // Vista Resumen (Modal)
   vistaHistorial = signal<HistoriaClinica | null>(null);
@@ -63,15 +135,100 @@ export class HistoriaClinicaComponent implements OnInit {
     }
   }
 
+  cambiarTipoVista(modo: 'LISTA' | 'SEMANAL') {
+    this.tipoDeVista.set(modo);
+    if (modo === 'SEMANAL' && this.citasSemana().length === 0) {
+      this.cargarSemana();
+    }
+  }
+
+  get diasDeLaSemana(): { nombre: string; num: number; fechaStr: string; esHoy: boolean }[] {
+    const f = DateUtils.esFechaValida(this.fechaFiltro) ? new Date(this.fechaFiltro + 'T00:00:00') : new Date();
+    const dayOfWeek = f.getDay(); // 0: Dom, 1: Lun...
+    const diffToMon = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+    const lunes = new Date(f);
+    lunes.setDate(f.getDate() + diffToMon);
+
+    const nombres = ['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab', 'Dom'];
+    const hoyStr = DateUtils.getHoyString();
+    const result = [];
+
+    for (let i = 0; i < 7; i++) {
+      const d = new Date(lunes);
+      d.setDate(lunes.getDate() + i);
+      const iso = DateUtils.getFechaISO(d);
+      result.push({
+        nombre: nombres[i],
+        num: d.getDate(),
+        fechaStr: iso,
+        esHoy: iso === hoyStr
+      });
+    }
+    return result;
+  }
+
+  horasSemana = ['07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00'];
+
+  cargarSemana() {
+    this.cargandoSemana.set(true);
+    const dias = this.diasDeLaSemana;
+    if (dias.length === 0) return;
+    const inicio = dias[0].fechaStr;
+    const fin = dias[6].fechaStr;
+
+    this.citasSvc.listar().subscribe({
+      next: (data: any[]) => {
+        const list = Array.isArray(data) ? data : [];
+        const filtradas = list.filter(c => {
+          const iso = DateUtils.getFechaISO(c.fechaHora);
+          return iso >= inicio && iso <= fin;
+        });
+        this.citasSemana.set(filtradas);
+        this.cargandoSemana.set(false);
+      },
+      error: () => {
+        this.citasSemana.set([]);
+        this.cargandoSemana.set(false);
+      }
+    });
+  }
+
+  getCitasSlot(fechaStr: string, horaStr: string): any[] {
+    const list = this.tipoDeVista() === 'SEMANAL' ? this.citasSemana() : this.citas();
+    return list.filter(c => {
+      const iso = DateUtils.getFechaISO(c.fechaHora);
+      if (iso !== fechaStr) return false;
+      const d = new Date(c.fechaHora);
+      const hh = String(d.getUTCHours()).padStart(2, '0');
+      return `${hh}:00` === horaStr;
+    });
+  }
+
+  getCitaBgClass(estado: string): string {
+    switch (estado) {
+      case 'CONFIRMADA': return 'bg-emerald-500 text-white hover:bg-emerald-600';
+      case 'EN_SALA':
+      case 'PROGRAMADA':
+      case 'PENDIENTE':  return 'bg-amber-500 text-white hover:bg-amber-600';
+      case 'REAGENDADA': return 'bg-purple-500 text-white hover:bg-purple-600';
+      case 'CANCELADA':  return 'bg-rose-500 text-white hover:bg-rose-600';
+      case 'NO_ASISTIO': return 'bg-slate-500 text-white hover:bg-slate-600';
+      case 'ATENDIDA':   return 'bg-blue-600 text-white hover:bg-blue-700';
+      default:          return 'bg-indigo-500 text-white hover:bg-indigo-600';
+    }
+  }
+
   cargarAgenda() {
     if (!DateUtils.esFechaValida(this.fechaFiltro)) {
       return;
     }
     this.cargandoCitas.set(true);
+    if (this.tipoDeVista() === 'SEMANAL') {
+      this.cargarSemana();
+    }
     this.citasSvc.listar(this.fechaFiltro).subscribe({
       next: data => {
         const raw = Array.isArray(data) ? data : [];
-        // Ordenar: ATENDIDA al final, de lo contrario por hora
         const sorted = raw.sort((a, b) => {
           if (a.estado === 'ATENDIDA' && b.estado !== 'ATENDIDA') return 1;
           if (a.estado !== 'ATENDIDA' && b.estado === 'ATENDIDA') return -1;
@@ -122,14 +279,12 @@ export class HistoriaClinicaComponent implements OnInit {
       // Ya no cambiamos a modo PDF, nos quedamos en RESUMEN
       console.log('Generando PDF para historia (Apertura Directa):', h.id);
       const url = await this.pdfSvc.generarConsultaPdfUrl(h);
-      console.log('[Componente] PDF generado con éxito, abriendo en nueva pestaña...');
+      console.log('[Componente] PDF generado con éxito');
       
-      // Abrimos directamente en nueva pestaña
-      window.open(url, '_blank');
+      // Abrir el documento en el visor interno
+      abrirPdfEnVisor(url);
       
-      // Resetear estados por si acaso
-      this.rawPdfUrl = url;
-      this.pdfUrl.set(this.sanitizer.bypassSecurityTrustResourceUrl(url));
+
     } catch (error: any) {
       console.error('Error al visualizar PDF:', error);
       this.ns.error('No se pudo generar el PDF: ' + (error.message || 'Error desconocido'));
@@ -137,11 +292,6 @@ export class HistoriaClinicaComponent implements OnInit {
     }
   }
 
-  abrirEnNuevaPestana() {
-    if (this.rawPdfUrl) {
-      window.open(this.rawPdfUrl, '_blank');
-    }
-  }
 
   cerrarVistaHistorial() {
     this.vistaHistorial.set(null);
@@ -193,8 +343,7 @@ export class HistoriaClinicaComponent implements OnInit {
       }
 
       if (url) {
-        const win = window.open(url, '_blank');
-        win?.focus();
+        abrirPdfEnVisor(url);
       }
     } catch (error) {
       console.error('Error generando impresión:', error);
@@ -346,5 +495,12 @@ export class HistoriaClinicaComponent implements OnInit {
     const m = hoy.getMonth() - naci.getMonth();
     if (m < 0 || (m === 0 && hoy.getDate() < naci.getDate())) edad--;
     return edad;
+  }
+
+  formatRespuesta(valor: any): string {
+    if (valor === true || valor === 'true') return 'Sí';
+    if (valor === false || valor === 'false') return 'No';
+    if (valor === undefined || valor === null || valor === '') return '—';
+    return String(valor);
   }
 }

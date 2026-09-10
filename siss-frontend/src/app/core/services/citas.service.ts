@@ -22,6 +22,10 @@ export class CitasService {
     return this.http.get<any>(this.apiUrl, { params }).pipe(map(res => res.data));
   }
 
+  confirmar(id: number) {
+    return this.http.patch<any>(`${this.apiUrl}/${id}/confirmar`, {}).pipe(map(res => res.data));
+  }
+
   cancelar(id: number) {
     return this.http.patch<any>(`${this.apiUrl}/${id}/cancelar`, {}).pipe(map(res => res.data));
   }

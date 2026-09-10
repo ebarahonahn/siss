@@ -1,6 +1,7 @@
 import {
   Controller,
   Get,
+  Post,
   Put,
   Body,
   Param,
@@ -9,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { RolesService } from './roles.service';
 import { ActualizarRolDto } from './dto/actualizar-rol.dto';
+import { CrearRolDto } from './dto/crear-rol.dto';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../../common/guards/roles.guard';
 import { Roles } from '../../common/decorators/roles.decorator';
@@ -27,6 +29,11 @@ export class RolesController {
   @Get(':id')
   obtener(@Param('id', ParseIntPipe) id: number) {
     return this.service.obtener(id);
+  }
+
+  @Post()
+  crear(@Body() dto: CrearRolDto) {
+    return this.service.crear(dto);
   }
 
   @Put(':id')

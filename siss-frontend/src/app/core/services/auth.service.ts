@@ -144,9 +144,21 @@ export class AuthService {
     const p = usuario.permisos;
     
     if (Array.isArray(p)) {
-      return p.includes('all') || p.includes(slug);
+      if (p.includes('all')) return true;
+      if (p.includes(slug)) return true;
+      return false;
     }
     
+    if (p && typeof p === 'object') {
+      if ((p as any)['all']) return true;
+      const [modulo, accion] = slug.split(':');
+      const acciones = (p as any)[modulo];
+      if (Array.isArray(acciones)) {
+        if (!accion) return acciones.length > 0;
+        return acciones.includes(accion) || acciones.includes('all');
+      }
+    }
+
     return false;
   }
 

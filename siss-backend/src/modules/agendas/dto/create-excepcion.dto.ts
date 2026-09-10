@@ -26,4 +26,12 @@ export class CreateExcepcionDto {
   @IsString()
   @IsOptional()
   descripcion?: string;
+
+  @IsString()
+  @IsOptional()
+  horaInicio?: string;
+
+  @IsString()
+  @IsOptional()
+  horaFin?: string;
 }

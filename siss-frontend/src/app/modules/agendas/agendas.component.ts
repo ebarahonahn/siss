@@ -58,7 +58,9 @@ export class AgendasComponent implements OnInit {
     tipo: 'VACACIONES_NORMALES',
     fechaInicio: '',
     fechaFin: '',
-    descripcion: ''
+    descripcion: '',
+    horaInicio: '',
+    horaFin: ''
   };
 
   constructor(
@@ -228,13 +230,23 @@ export class AgendasComponent implements OnInit {
     if (!DateUtils.esFechaValida(this.nuevaExcepcion.fechaInicio) || !DateUtils.esFechaValida(this.nuevaExcepcion.fechaFin)) {
       return;
     }
+    if (this.nuevaExcepcion.tipo === 'CAMBIO_HORARIO') {
+      if (!this.nuevaExcepcion.horaInicio || !this.nuevaExcepcion.horaFin) {
+        this.notificationService.warn('Debe especificar la hora de inicio y fin para el cambio de horario.');
+        return;
+      }
+    }
     const payload = {
       ...this.nuevaExcepcion,
       medicoId: Number(this.medicoId),
       establecimientoId: this.establecimientoId
     };
     this.agendasService.createExcepcion(payload).subscribe(() => {
-      this.notificationService.success('Ausencia registrada correctamente');
+      this.notificationService.success(
+        this.nuevaExcepcion.tipo === 'CAMBIO_HORARIO' 
+          ? 'Horario especial programado correctamente' 
+          : 'Ausencia registrada correctamente'
+      );
       this.cargarAgenda();
       this.nuevaExcepcion = {
         medicoId: this.medicoId,
@@ -242,7 +254,9 @@ export class AgendasComponent implements OnInit {
         tipo: 'VACACIONES_NORMALES',
         fechaInicio: '',
         fechaFin: '',
-        descripcion: ''
+        descripcion: '',
+        horaInicio: '',
+        horaFin: ''
       };
     });
   }
@@ -271,14 +285,18 @@ export class AgendasComponent implements OnInit {
     const tieneBase = this.agendaBase.some(a => a.diaSemana === diaSemana && a.activo);
     
     // Verificar si hay excepción comparando strings YYYY-MM-DD
-    const tieneExcepcion = this.excepciones.some(e => {
-      // Extraer solo la parte YYYY-MM-DD de la ISO string del servidor
+    const excepcion = this.excepciones.find(e => {
       const inicio = e.fechaInicio.split('T')[0];
       const fin = e.fechaFin.split('T')[0];
       return diaStr >= inicio && diaStr <= fin;
     });
 
-    if (tieneExcepcion) return 'bg-red-50 border-red-200 text-red-700';
+    if (excepcion) {
+      if (excepcion.tipo === 'CAMBIO_HORARIO') {
+        return 'bg-emerald-50 border-emerald-200 text-emerald-700 font-bold';
+      }
+      return 'bg-red-50 border-red-200 text-red-700';
+    }
     if (tieneBase) return 'bg-blue-50 border-blue-200 text-blue-700 font-bold';
     
     return 'bg-white border-gray-100 text-gray-400';
@@ -293,6 +311,19 @@ export class AgendasComponent implements OnInit {
 
   getHorarioTexto(dia: Date | null): string {
     if (!dia) return '';
+    const diaStr = this.formatDateLocal(dia);
+    
+    // Buscar si hay excepción de tipo CAMBIO_HORARIO para esta fecha
+    const excepcion = this.excepciones.find(e => {
+      const inicio = e.fechaInicio.split('T')[0];
+      const fin = e.fechaFin.split('T')[0];
+      return e.tipo === 'CAMBIO_HORARIO' && diaStr >= inicio && diaStr <= fin;
+    });
+
+    if (excepcion && excepcion.horaInicio && excepcion.horaFin) {
+      return `${excepcion.horaInicio} - ${excepcion.horaFin}`;
+    }
+
     const diaSemana = dia.getDay();
     const horario = this.agendaBase.find(a => a.diaSemana === diaSemana && a.activo);
     return horario ? `${horario.horaInicio} - ${horario.horaFin}` : '';
@@ -304,6 +335,7 @@ export class AgendasComponent implements OnInit {
       case 'VACACIONES_NORMALES': return 'bg-green-100 text-green-800 border-green-200';
       case 'CURSO_CONGRESO': return 'bg-blue-100 text-blue-800 border-blue-200';
       case 'INCAPACIDAD': return 'bg-red-100 text-red-800 border-red-200';
+      case 'CAMBIO_HORARIO': return 'bg-emerald-100 text-emerald-800 border-emerald-200';
       default: return 'bg-gray-100 text-gray-800 border-gray-200';
     }
   }

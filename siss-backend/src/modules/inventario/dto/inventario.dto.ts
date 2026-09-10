@@ -5,6 +5,7 @@ import {
   IsOptional,
   IsString,
   Min,
+  MaxLength,
   ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
@@ -20,6 +21,7 @@ export class AsignarMedicamentoDto {
 }
 
 export class ActualizarInventarioDto {
+  @IsString() @MaxLength(200) @IsOptional() motivoAjuste?: string;
   @IsInt() @Min(0) @IsOptional() @Type(() => Number) cantidadActual?: number;
   @IsInt() @Min(0) @IsOptional() @Type(() => Number) cantidadMinima?: number;
   @IsString() @IsOptional() lote?: string;

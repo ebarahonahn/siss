@@ -10,13 +10,15 @@ import { CatalogosService } from '../../core/services/catalogos.service';
 import { debounceTime, distinctUntilChanged, switchMap, catchError, of } from 'rxjs';
 import { DateUtils } from '../../core/utils/date-utils';
 import { DateValidators } from '../../core/validators/date.validator';
+import { prepararRecordatorioWhatsapp } from './recordatorio-whatsapp';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-citas',
   standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
   template: `
-    <div class="p-6 max-w-7xl mx-auto">
+    <div class="w-full min-w-0">
       <!-- Encabezado con estadísticas rápidas -->
       <div class="flex justify-between items-center mb-8">
         <div>
@@ -33,6 +35,10 @@ import { DateValidators } from '../../core/validators/date.validator';
       </div>
 
       <!-- Filtros y Listado -->
+      <p class="mb-4 p-3 rounded-lg bg-green-50 text-green-900 text-sm">
+        WhatsApp sin costo de integración: prepare el recordatorio, revise el teléfono y pulse Enviar en WhatsApp.
+        Cuando el paciente responda, registre su confirmación aquí. Las respuestas no se sincronizan automáticamente.
+      </p>
       <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden mb-8">
         <div class="p-4 border-b border-gray-50 flex items-center justify-between bg-gray-50/30">
           <h3 class="font-bold text-gray-700">Agenda para {{ hoy | date:'fullDate' }}</h3>
@@ -64,7 +70,7 @@ import { DateValidators } from '../../core/validators/date.validator';
                   <div class="text-xs text-gray-400">DNI: {{ cita.paciente.dni }}</div>
                 </td>
                 <td class="px-6 py-4">
-                  <div class="text-sm font-medium text-gray-800">{{ cita.medico.apellidos }}</div>
+                  <div class="text-sm font-medium text-gray-800 whitespace-normal">{{ cita.medico.nombres }} {{ cita.medico.apellidos }}</div>
                   <div class="text-xs text-gray-400 capitalize">{{ cita.tipo.replace('_', ' ') }}</div>
                 </td>
                 <td class="px-6 py-4">
@@ -78,12 +84,30 @@ import { DateValidators } from '../../core/validators/date.validator';
                   </span>
                 </td>
                 <td class="px-6 py-4 text-right">
-                  <button *ngIf="cita.estado === 'PROGRAMADA'" (click)="cancelarCita(cita.id)" 
-                    class="text-red-600 hover:bg-red-50 p-2 rounded-lg transition-colors" title="Cancelar Cita">
-                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <div class="flex items-center justify-end gap-2 whitespace-nowrap">
+                  <button *ngIf="cita.estado === 'PROGRAMADA' || cita.estado === 'CONFIRMADA'"
+                    type="button" title="Recordatorio por WhatsApp" aria-label="Preparar recordatorio por WhatsApp"
+                    (click)="prepararWhatsapp(cita)" class="inline-flex items-center justify-center w-10 h-10 border border-green-200 bg-green-50 text-green-700 hover:bg-green-100 rounded-xl transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-green-600">
+                    <svg aria-hidden="true" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M21 11.5a9 9 0 01-13.3 7.9L3 21l1.6-4.7A9 9 0 1121 11.5Z"/>
+                      <path stroke-linecap="round" stroke-linejoin="round" d="m8 7 2 3-1.2 1.2a8 8 0 004 4L14 14l3 2c-1 3-4 2-7-1s-4-6-2-8Z"/>
+                    </svg>
+                  </button>
+                  <button *ngIf="cita.estado === 'PROGRAMADA' && puedeConfirmar" (click)="registrarConfirmacion(cita)"
+                    type="button" title="Registrar confirmación" aria-label="Registrar confirmación"
+                    [disabled]="confirmandoId !== null" class="inline-flex items-center justify-center w-10 h-10 border border-blue-200 bg-blue-50 text-blue-700 hover:bg-blue-100 rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-600">
+                    <svg aria-hidden="true" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                      <circle cx="12" cy="12" r="9"/>
+                      <path stroke-linecap="round" stroke-linejoin="round" d="m8 12 3 3 5-6"/>
+                    </svg>
+                  </button>
+                  <button *ngIf="cita.estado === 'PROGRAMADA' || cita.estado === 'CONFIRMADA'" (click)="cancelarCita(cita.id)"
+                    type="button" aria-label="Cancelar cita" class="inline-flex items-center justify-center w-10 h-10 border border-red-200 bg-red-50 text-red-600 hover:bg-red-100 rounded-xl transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-red-600" title="Cancelar cita">
+                    <svg aria-hidden="true" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                     </svg>
                   </button>
+                  </div>
                 </td>
               </tr>
               <tr *ngIf="!citas || citas.length === 0">
@@ -97,6 +121,20 @@ import { DateValidators } from '../../core/validators/date.validator';
       </div>
 
       <!-- MODAL NUEVA CITA -->
+      <div *ngIf="recordatorio" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/40" role="dialog" aria-modal="true" aria-labelledby="titulo-whatsapp">
+        <div class="bg-white rounded-2xl p-6 max-w-lg w-full shadow-xl">
+          <h3 id="titulo-whatsapp" class="text-xl font-bold mb-4">Recordatorio por WhatsApp</h3>
+          <p class="mb-2">Teléfono: <strong>{{ recordatorio.telefono }}</strong></p>
+          <p class="whitespace-pre-line bg-gray-50 p-4 rounded-lg">{{ recordatorio.mensaje }}</p>
+          <label class="flex gap-2 my-4 text-sm"><input type="checkbox" [(ngModel)]="contactoAutorizado">Verifiqué el destinatario y su autorización para recibir recordatorios por WhatsApp.</label>
+          <p class="text-sm text-gray-500 mb-4">Abrir WhatsApp no envía el mensaje ni confirma la cita. Envíelo desde la cuenta del centro.</p>
+          <div class="flex justify-end gap-3">
+            <button (click)="recordatorio = null" class="px-4 py-2">Cerrar</button>
+            <a *ngIf="contactoAutorizado" [href]="recordatorio.url" target="_blank" rel="noopener noreferrer" class="px-4 py-2 rounded-lg bg-green-700 text-white">Abrir WhatsApp</a>
+          </div>
+        </div>
+      </div>
+
       <div *ngIf="mostrarModal" class="fixed inset-0 z-50 flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-gray-900/40 backdrop-blur-sm" (click)="cerrarModal()"></div>
         
@@ -177,6 +215,17 @@ import { DateValidators } from '../../core/validators/date.validator';
                   </option>
                 </select>
               </div>
+            </div>
+
+            <div *ngIf="asignacionesMedicoSeleccionado.length > 1" class="mt-4">
+              <label class="block text-sm font-semibold text-gray-700 mb-1">Servicio / asignaci&oacute;n de atenci&oacute;n</label>
+              <select formControlName="asignacionId"
+                class="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm">
+                <option value="">Seleccione el contexto de atenci&oacute;n...</option>
+                <option *ngFor="let a of asignacionesMedicoSeleccionado" [value]="a.id">
+                  {{ a.servicio }} &mdash; {{ a.especialidad }}
+                </option>
+              </select>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -292,6 +341,53 @@ export class CitasComponent implements OnInit {
   cargando = false;
   minutosEntreConsultas = 20;
   esMedico = false;
+  recordatorio: ReturnType<typeof prepararRecordatorioWhatsapp> | null = null;
+  contactoAutorizado = false;
+  confirmandoId: number | null = null;
+
+  get puedeConfirmar(): boolean {
+    return this.authService.obtenerUsuario()?.rol !== 'PACIENTE' && this.authService.tienePermiso('citas:editar');
+  }
+
+  prepararWhatsapp(cita: any) {
+    try {
+      this.recordatorio = prepararRecordatorioWhatsapp(cita);
+      this.contactoAutorizado = false;
+    } catch (error) {
+      this.notification.error((error as Error).message);
+    }
+  }
+
+  async registrarConfirmacion(cita: any) {
+    if (this.confirmandoId !== null || !this.puedeConfirmar || cita.estado !== 'PROGRAMADA') return;
+    const resultado = await Swal.fire({
+      title: 'Confirmar asistencia',
+      text: '¿El paciente confirmó que asistirá a esta cita?',
+      icon: 'question',
+      iconColor: '#2563eb',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, registrar confirmación',
+      cancelButtonText: 'Volver',
+      confirmButtonColor: '#2563eb',
+      cancelButtonColor: '#64748b',
+      focusCancel: true,
+      reverseButtons: true,
+      customClass: { popup: 'rounded-2xl', confirmButton: 'rounded-xl', cancelButton: 'rounded-xl' },
+    });
+    if (!resultado.isConfirmed || this.confirmandoId !== null) return;
+    this.confirmandoId = cita.id;
+    this.citasService.confirmar(cita.id).subscribe({
+      next: () => {
+        this.confirmandoId = null;
+        this.cargarCitas();
+        this.notification.success('Confirmación del paciente registrada');
+      },
+      error: (error) => {
+        this.confirmandoId = null;
+        this.notification.error(error.error?.message || 'No se pudo registrar la confirmación');
+      },
+    });
+  }
   
   esFechaValida(fecha: string): boolean {
     return DateUtils.esFechaValida(fecha);
@@ -301,6 +397,7 @@ export class CitasComponent implements OnInit {
   citaForm = this.fb.group({
     pacienteId: [0, Validators.required],
     medicoId: ['', Validators.required],
+    asignacionId: [''],
     especialidadId: [''],
     fechaHora: ['', [Validators.required, DateValidators.dateReal()]],
     tipo: ['CONSULTA_GENERAL', Validators.required],
@@ -321,7 +418,19 @@ export class CitasComponent implements OnInit {
     });
 
     // Escuchar cambios para sugerir hora
-    this.citaForm.get('medicoId')?.valueChanges.subscribe(() => this.sugerirHora());
+    this.citaForm.get('medicoId')?.valueChanges.subscribe(() => {
+      const asignaciones = this.asignacionesMedicoSeleccionado;
+      const asignacionControl = this.citaForm.get('asignacionId');
+      asignacionControl?.setValidators(
+        asignaciones.length > 1 ? [Validators.required] : [],
+      );
+      this.citaForm.patchValue(
+        { asignacionId: asignaciones.length === 1 ? asignaciones[0].id : '' },
+        { emitEvent: false },
+      );
+      asignacionControl?.updateValueAndValidity({ emitEvent: false });
+      this.sugerirHora();
+    });
   }
 
   setupSearch() {
@@ -470,6 +579,7 @@ export class CitasComponent implements OnInit {
       pacienteId: Number(v.pacienteId),
       fechaHora: v.fechaHora ? DateUtils.getDateTimeISO(v.fechaHora) : null,
       especialidadId: v.especialidadId ? Number(v.especialidadId) : undefined,
+      asignacionId: v.asignacionId ? Number(v.asignacionId) : undefined,
     };
     this.citasService.crear(payload).subscribe({
       next: () => {
@@ -534,5 +644,11 @@ export class CitasComponent implements OnInit {
   esDeMiCentroId(id: number): boolean {
     const user = this.authService.obtenerUsuario();
     return user?.establecimientoId === id;
+  }
+
+  get asignacionesMedicoSeleccionado(): any[] {
+    const medicoId = Number(this.citaForm.get('medicoId')?.value);
+    if (!medicoId) return [];
+    return this.medicos.find((m) => m.id === medicoId)?.asignacionesDisponibles || [];
   }
 }

@@ -1,7 +1,9 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { NotificationService } from '../../core/services/notification.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { InventarioService, MovimientoInventario, InventarioItem } from '../../core/services/inventario.service';
+import { InventarioService, MovimientoInventario, ProductoInventario } from '../../core/services/inventario.service';
 import * as XLSX from 'xlsx';
 
 interface MovimientoConProducto extends MovimientoInventario {
@@ -59,7 +61,7 @@ interface MovimientoConProducto extends MovimientoInventario {
                       class="w-full text-left px-4 py-2.5 text-sm hover:bg-blue-50 hover:text-blue-700 transition-colors border-b border-gray-50 last:border-0">
                 <span class="font-medium">{{ p.medicamento.nombreGenerico }}</span>
                 <span class="text-gray-400 ml-2 text-xs">{{ p.medicamento.codigo }}</span>
-                <span *ngIf="p.lote" class="text-gray-400 ml-2 text-xs">Lote: {{ p.lote }}</span>
+                <span class="text-gray-400 ml-2 text-xs">{{ p.medicamento.presentacion }} · {{ p.medicamento.concentracion }}</span>
               </button>
             </div>
           </div>
@@ -104,11 +106,11 @@ interface MovimientoConProducto extends MovimientoInventario {
               {{ productoSeleccionado.medicamento.codigo }} ·
               {{ productoSeleccionado.medicamento.presentacion }} ·
               {{ productoSeleccionado.medicamento.concentracion }}
-              <span *ngIf="productoSeleccionado.lote"> · Lote: {{ productoSeleccionado.lote }}</span>
+              <span> · Todos los lotes</span>
             </p>
           </div>
           <div class="text-right flex-shrink-0">
-            <p class="text-xs font-bold text-blue-700">Stock actual</p>
+            <p class="text-xs font-bold text-blue-700">Stock total activo</p>
             <p class="text-xl font-black text-blue-800">{{ productoSeleccionado.cantidadActual }}</p>
           </div>
         </div>
@@ -171,7 +173,7 @@ interface MovimientoConProducto extends MovimientoInventario {
                   <th class="text-left px-5 py-3.5 text-xs font-bold text-gray-500 uppercase tracking-wide">#</th>
                   <th class="text-left px-5 py-3.5 text-xs font-bold text-gray-500 uppercase tracking-wide">Tipo</th>
                   <th class="text-left px-5 py-3.5 text-xs font-bold text-gray-500 uppercase tracking-wide">Cantidad</th>
-                  <th class="text-left px-5 py-3.5 text-xs font-bold text-gray-500 uppercase tracking-wide">Motivo</th>
+                  <th class="text-left px-5 py-3.5 text-xs font-bold text-gray-500 uppercase tracking-wide">Lote</th><th class="text-left px-5 py-3.5 text-xs font-bold text-gray-500 uppercase tracking-wide">Motivo</th>
                   <th class="text-left px-5 py-3.5 text-xs font-bold text-gray-500 uppercase tracking-wide">Realizado por</th>
                   <th class="text-left px-5 py-3.5 text-xs font-bold text-gray-500 uppercase tracking-wide">Fecha</th>
                 </tr>
@@ -214,7 +216,7 @@ interface MovimientoConProducto extends MovimientoInventario {
                     <span class="text-gray-400 text-xs ml-1">un.</span>
                   </td>
 
-                  <td class="px-5 py-3.5 text-gray-600 max-w-[240px]">
+                  <td class="px-5 py-3.5 text-gray-600">{{ mov.inventario?.lote || '—' }}</td><td class="px-5 py-3.5 text-gray-600 max-w-[240px]">
                     <span class="truncate block" [title]="mov.motivo || ''">{{ mov.motivo || '—' }}</span>
                   </td>
 
@@ -222,10 +224,10 @@ interface MovimientoConProducto extends MovimientoInventario {
                     <div class="flex items-center gap-2">
                       <div class="w-7 h-7 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
                         <span class="text-blue-700 text-[10px] font-bold">
-                          {{ mov.usuario?.nombres?.charAt(0) }}{{ mov.usuario?.apellidos?.charAt(0) }}
+                          {{ mov.usuario.nombres.charAt(0) }}{{ mov.usuario.apellidos.charAt(0) }}
                         </span>
                       </div>
-                      <span class="text-gray-700 text-xs font-medium">{{ mov.usuario?.nombres }} {{ mov.usuario?.apellidos }}</span>
+                      <span class="text-gray-700 text-xs font-medium">{{ mov.usuario.nombres }} {{ mov.usuario.apellidos }}</span>
                     </div>
                   </td>
 
@@ -252,25 +254,30 @@ interface MovimientoConProducto extends MovimientoInventario {
     </div>
   `,
 })
-export class MovimientosInventarioComponent implements OnInit {
+export class MovimientosInventarioComponent implements OnInit, OnDestroy {
+  private consulta?: Subscription;
+  private notification = inject(NotificationService);
+  ngOnDestroy() { this.consulta?.unsubscribe(); }
   private svc = inject(InventarioService);
 
   busqueda = '';
   filtroTipo = '';
   cargando = false;
 
-  todos: InventarioItem[] = [];
-  productosFiltrados: InventarioItem[] = [];
-  productoSeleccionado: InventarioItem | null = null;
+  todos: ProductoInventario[] = [];
+  productosFiltrados: ProductoInventario[] = [];
+  productoSeleccionado: ProductoInventario | null = null;
 
   movimientos: MovimientoInventario[] = [];
   movimientosFiltrados: MovimientoInventario[] = [];
 
   ngOnInit() {
-    this.svc.listarAdmin().subscribe({ next: (items) => (this.todos = items), error: () => {} });
+    this.svc.productosConHistorial().subscribe({ next: (items) => (this.todos = items), error: () => {} });
   }
 
   filtrarProductos() {
+    this.consulta?.unsubscribe();
+    this.cargando = false;
     this.productoSeleccionado = null;
     this.movimientos = [];
     this.movimientosFiltrados = [];
@@ -283,7 +290,7 @@ export class MovimientosInventarioComponent implements OnInit {
     ).slice(0, 10);
   }
 
-  seleccionarProducto(p: InventarioItem) {
+  seleccionarProducto(p: ProductoInventario) {
     this.productoSeleccionado = p;
     this.busqueda = p.medicamento.nombreGenerico;
     this.productosFiltrados = [];
@@ -293,13 +300,14 @@ export class MovimientosInventarioComponent implements OnInit {
   cargarMovimientos() {
     if (!this.productoSeleccionado) return;
     this.cargando = true;
-    this.svc.obtenerMovimientos(this.productoSeleccionado.id).subscribe({
+    this.consulta?.unsubscribe();
+    this.consulta = this.svc.movimientosPorProducto(this.productoSeleccionado.medicamentoId).subscribe({
       next: (movs) => {
         this.movimientos = movs;
         this.aplicarFiltros();
         this.cargando = false;
       },
-      error: () => { this.cargando = false; }
+      error: () => { this.cargando = false; this.notification.error('No se pudieron cargar los movimientos del producto'); }
     });
   }
 
@@ -310,6 +318,8 @@ export class MovimientosInventarioComponent implements OnInit {
   }
 
   limpiarSeleccion() {
+    this.consulta?.unsubscribe();
+    this.cargando = false;
     this.productoSeleccionado = null;
     this.busqueda = '';
     this.filtroTipo = '';
@@ -348,7 +358,7 @@ export class MovimientosInventarioComponent implements OnInit {
 
     const med = this.productoSeleccionado.medicamento;
     const titulo = `Movimientos de Inventario - ${med.nombreGenerico}`;
-    const subtitulo = `Código: ${med.codigo} | Presentación: ${med.presentacion} | Concentración: ${med.concentracion}${this.productoSeleccionado.lote ? ' | Lote: ' + this.productoSeleccionado.lote : ''}`;
+    const subtitulo = `Código: ${med.codigo} | Presentación: ${med.presentacion} | Concentración: ${med.concentracion} | Todos los lotes`;
     const filtroStr = this.filtroTipo ? `Tipo filtrado: ${this.etiquetaTipo(this.filtroTipo)}` : 'Todos los tipos';
 
     // Usar hora LOCAL del navegador para la fecha del reporte
@@ -362,6 +372,7 @@ export class MovimientosInventarioComponent implements OnInit {
       '#': i + 1,
       'Tipo': this.etiquetaTipo(mov.tipo),
       'Cantidad': mov.cantidad,
+      'Lote': mov.inventario?.lote ?? '—',
       'Motivo': mov.motivo ?? '—',
       'Realizado por': mov.usuario ? `${mov.usuario.nombres} ${mov.usuario.apellidos}` : '—',
       'Fecha': this.formatFecha(mov.fecha),
@@ -383,6 +394,7 @@ export class MovimientosInventarioComponent implements OnInit {
       { wch: 5  },
       { wch: 16 },
       { wch: 12 },
+      { wch: 20 },
       { wch: 40 },
       { wch: 28 },
       { wch: 18 },
@@ -394,3 +406,4 @@ export class MovimientosInventarioComponent implements OnInit {
     XLSX.writeFile(wb, nombreArchivo);
   }
 }
+

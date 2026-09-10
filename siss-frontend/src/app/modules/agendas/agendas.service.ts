@@ -21,6 +21,8 @@ export interface ExcepcionAgenda {
   fechaInicio: string;
   fechaFin: string;
   descripcion: string;
+  horaInicio?: string;
+  horaFin?: string;
 }
 
 @Injectable({

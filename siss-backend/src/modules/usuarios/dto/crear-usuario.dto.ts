@@ -49,8 +49,9 @@ export class CrearUsuarioDto {
   @IsString()
   telefono?: string;
 
-  @IsEnum(RolNombre)
-  rol: RolNombre;
+  @IsString()
+  @IsNotEmpty()
+  rol: string;
 
   @IsOptional()
   @IsInt()

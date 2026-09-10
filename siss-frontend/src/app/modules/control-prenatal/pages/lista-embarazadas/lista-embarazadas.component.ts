@@ -1,3 +1,4 @@
+import { abrirPdfEnVisor } from '../../../../shared/utils/pdf-viewer';
 import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { ControlPrenatalService } from '../../control-prenatal.service';
 import { PacientesService } from '../../../../core/services/pacientes.service';
@@ -134,14 +135,8 @@ export class ListaEmbarazadasComponent implements OnInit, OnDestroy {
 
     this.controlService.exportarPdf(emb.id).subscribe({
       next: (blob: Blob) => {
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `CARNET_PERINATAL_${emb.paciente.dni}.pdf`;
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-        document.body.removeChild(a);
+        abrirPdfEnVisor(blob);
+        
         Swal.close();
       },
       error: (err) => {

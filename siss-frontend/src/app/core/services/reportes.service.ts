@@ -4,10 +4,10 @@ import { environment } from '../../../environments/environment';
 import { Observable, map } from 'rxjs';
 
 export interface DashboardKPIs {
-  consultasHoy: number;
-  pacientesNuevos: number;
-  stockCritico: number;
-  citasPendientes: number;
+  consultasHoy: number | null;
+  pacientesNuevos: number | null;
+  stockCritico: number | null;
+  citasPendientes: number | null;
   fechaActualizacion: string;
 }
 
@@ -55,6 +55,22 @@ export class ReportesService {
     return this.http.get<any>(`${environment.apiUrl}/reportes/disponibles`).pipe(
       map(res => res.data)
     );
+  }
+
+  obtenerMisReportes(): Observable<any[]> {
+    return this.http.get<any>(`${environment.apiUrl}/reportes/mis-reportes`).pipe(
+      map(res => res.data || [])
+    );
+  }
+
+  obtenerReportesUsuario(usuarioId: number): Observable<number[]> {
+    return this.http.get<any>(`${environment.apiUrl}/reportes/usuario/${usuarioId}`).pipe(
+      map(res => res.data || [])
+    );
+  }
+
+  asignarReportesUsuario(usuarioId: number, reporteIds: number[]): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}/reportes/usuario/${usuarioId}`, { reporteIds });
   }
 
   crearReporte(data: any): Observable<any> {

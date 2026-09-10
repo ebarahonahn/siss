@@ -3,7 +3,8 @@ import 'package:siss_mobile/src/core/api/api_service.dart';
 import 'package:intl/intl.dart';
 
 class FarmaciaPage extends StatefulWidget {
-  const FarmaciaPage({super.key});
+  final int? recetaId;
+  const FarmaciaPage({super.key, this.recetaId});
 
   @override
   State<FarmaciaPage> createState() => _FarmaciaPageState();
@@ -34,6 +35,9 @@ class _FarmaciaPageState extends State<FarmaciaPage> {
         final data = response.data['data'];
         setState(() {
           _recetas = data?['recetas'] ?? [];
+          if (widget.recetaId != null) {
+            _recetas = _recetas.where((r) => r['id'] == widget.recetaId).toList();
+          }
         });
         debugPrint('FARMACIA: Carga exitosa. Recetas: ${_recetas.length}');
       } else {
@@ -94,9 +98,10 @@ class _FarmaciaPageState extends State<FarmaciaPage> {
   }
 
   Widget _buildRecetaCard(dynamic receta) {
-    // Usamos creadoEn que es el campo correcto del backend
-    final DateTime fecha = DateTime.tryParse(receta['creadoEn'] ?? '') ?? DateTime.now();
-    final String fechaFormateada = DateFormat('dd/MM/yyyy').format(fecha);
+    final fecha = DateTime.tryParse(receta['creadaEn'] ?? '');
+    final String fechaFormateada = fecha == null
+        ? 'Fecha no disponible'
+        : DateFormat('dd/MM/yyyy').format(fecha.toLocal());
     final String establecimiento = receta['establecimiento']?['nombre'] ?? 'Centro Médico SISS';
     final List<dynamic> detalles = receta['detalles'] ?? [];
     final bool esVigente = receta['activo'] ?? true;
@@ -106,6 +111,7 @@ class _FarmaciaPageState extends State<FarmaciaPage> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       elevation: 2,
       child: ExpansionTile(
+        initiallyExpanded: widget.recetaId != null,
         leading: Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(

@@ -177,7 +177,7 @@ export class ReportePdfService {
                 
                 let textoValor = String(val || '—');
                 if (campo.tipo === 'BOOLEANO') {
-                  textoValor = val === true ? 'SÍ' : 'NO';
+                  textoValor = val === true ? 'Sí' : 'No';
                 }
                 
                 safeText(textoValor, margin + 55, currentY);
@@ -577,7 +577,7 @@ export class ReportePdfService {
       { l: 'VACUNA APLICADA', v: reg.vacuna?.nombre },
       { l: 'CÓDIGO DE LOTE', v: reg.lote?.codigoLote },
       { l: 'FECHA DE APLICACIÓN', v: this.formatDate(reg.fechaAplicacion) },
-      { l: 'DOSIS RECIBIDA', v: reg.esquema?.numeroDosis ? `DOSIS ${reg.esquema.numeroDosis}` : 'ÚNICA' },
+      { l: 'DOSIS RECIBIDA', v: reg.esquema?.descripcion || (reg.esquema?.numeroDosis ? `DOSIS ${reg.esquema.numeroDosis}` : 'ÚNICA') },
       { l: 'CENTRO DE SALUD', v: reg.establecimiento?.nombre || 'SISS SALUD' }
     ];
     details.forEach(d => {
@@ -750,9 +750,87 @@ export class ReportePdfService {
 
   async generarMorbilidadPdf(data: any[], inicio: string, fin: string): Promise<string> {
     const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
-    doc.setFont('helvetica', 'bold'); doc.setFontSize(16);
-    doc.text('REPORTE DE MORBILIDAD', 20, 20);
-    doc.setFontSize(10); doc.text(`Periodo: ${inicio} a ${fin}`, 20, 28);
+    const margin = 15;
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const contentWidth = pageWidth - (margin * 2);
+
+    // Encabezado
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(16);
+    doc.setTextColor(30, 58, 138); // Azul institucional
+    doc.text('SISS — REPORTE DE PERFIL DE MORBILIDAD', margin, 18);
+
+    doc.setFontSize(9);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(100, 116, 139);
+    doc.text(`Período consultado: ${inicio} al ${fin}`, margin, 24);
+    doc.text(`Fecha de emisión: ${new Date().toLocaleDateString('es-HN')} ${new Date().toLocaleTimeString('es-HN')}`, margin, 29);
+
+    doc.setDrawColor(226, 232, 240);
+    doc.line(margin, 32, margin + contentWidth, 32);
+
+    let currentY = 40;
+
+    if (!data || data.length === 0) {
+      doc.setFont('helvetica', 'italic');
+      doc.setFontSize(11);
+      doc.setTextColor(148, 163, 184);
+      doc.text('No se encontraron diagnósticos registrados para el rango de fechas y filtro seleccionado.', margin, currentY);
+    } else {
+      // Encabezados de Tabla
+      doc.setFillColor(241, 245, 249);
+      doc.rect(margin, currentY, contentWidth, 8, 'F');
+      
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(8);
+      doc.setTextColor(51, 65, 85);
+
+      doc.text('#', margin + 3, currentY + 5.5);
+      doc.text('CÓDIGO', margin + 12, currentY + 5.5);
+      doc.text('DIAGNÓSTICO (CIE-10)', margin + 35, currentY + 5.5);
+      doc.text('PRINCIPAL', margin + 120, currentY + 5.5, { align: 'center' });
+      doc.text('SECUNDARIO', margin + 150, currentY + 5.5, { align: 'center' });
+      doc.text('TOTAL', margin + 175, currentY + 5.5, { align: 'center' });
+
+      currentY += 10;
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8);
+      doc.setTextColor(15, 23, 42);
+
+      data.forEach((item, index) => {
+        if (currentY > 270) {
+          doc.addPage();
+          currentY = 20;
+        }
+
+        // Fila zebra
+        if (index % 2 === 1) {
+          doc.setFillColor(248, 250, 252);
+          doc.rect(margin, currentY - 3.5, contentWidth, 7, 'F');
+        }
+
+        doc.text(`${index + 1}`, margin + 3, currentY + 1);
+        doc.setFont('helvetica', 'bold');
+        doc.text(item.codigo || '—', margin + 12, currentY + 1);
+        doc.setFont('helvetica', 'normal');
+
+        const desc = item.descripcion || 'Sin descripción';
+        const descTruncada = desc.length > 52 ? desc.substring(0, 50) + '...' : desc;
+        doc.text(descTruncada, margin + 35, currentY + 1);
+
+        doc.text(String(item.principal || 0), margin + 120, currentY + 1, { align: 'center' });
+        doc.text(String(item.secundario || 0), margin + 150, currentY + 1, { align: 'center' });
+        doc.setFont('helvetica', 'bold');
+        doc.text(String(item.total || 0), margin + 175, currentY + 1, { align: 'center' });
+        doc.setFont('helvetica', 'normal');
+
+        doc.setDrawColor(241, 245, 249);
+        doc.line(margin, currentY + 3.5, margin + contentWidth, currentY + 3.5);
+
+        currentY += 7.5;
+      });
+    }
+
     const blob = doc.output('blob');
     return URL.createObjectURL(blob);
   }
@@ -904,5 +982,121 @@ export class ReportePdfService {
     if (h.includes('implante')) return { r: 51, g: 65, b: 85 }; // Slate
     if (h.includes('brackets')) return { r: 67, g: 56, b: 202 }; // Indigo
     return { r: 30, g: 58, b: 138 }; // Azul SISS
+  }
+
+  async generarExpedienteUnificadoPdfUrl(data: any): Promise<string> {
+    const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
+    const margin = 15;
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const contentWidth = pageWidth - (margin * 2);
+    let currentY = margin;
+
+    const safeText = (text: any, x: number, y: number, options?: any) => {
+      doc.text(String(text || '—'), x, y, options);
+    };
+
+    const checkPageBreak = (needed: number) => {
+      if (currentY + needed > 275) {
+        doc.addPage();
+        currentY = margin;
+        this.renderHeaderExpediente(doc, margin, pageWidth);
+        currentY += 25;
+      }
+    };
+
+    this.renderHeaderExpediente(doc, margin, pageWidth);
+    currentY += 20;
+
+    const pac = data?.paciente || {};
+    doc.setFillColor(241, 245, 249);
+    doc.rect(margin, currentY, contentWidth, 24, 'F');
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(13); doc.setTextColor(15, 23, 42);
+    safeText(`${pac.apellidos || ''}, ${pac.nombres || ''}`.trim().toUpperCase(), margin + 5, currentY + 8);
+    
+    doc.setFontSize(8); doc.setFont('helvetica', 'normal'); doc.setTextColor(71, 85, 105);
+    safeText(`DNI: ${pac.dni || '—'}   |   EXPEDIENTE: ${pac.numeroExpediente || '—'}   |   SEXO: ${pac.sexo?.nombre || '—'}`, margin + 5, currentY + 15);
+    safeText(`FECHA NAC: ${this.formatDate(pac.fechaNacimiento)}   |   TIPO SANGRE: ${pac.tipoSangre?.nombre || '—'}   |   ESTABLECIMIENTO: ${pac.establecimiento?.nombre || '—'}`, margin + 5, currentY + 20);
+    currentY += 30;
+
+    // Sección: Consultas Médicas
+    if (data.historias && data.historias.length > 0) {
+      checkPageBreak(25);
+      this.renderSectionTitle(doc, `CONSULTAS MÉDICAS Y ESPECIALIDADES (${data.historias.length})`, margin, currentY);
+      currentY += 10;
+
+      data.historias.forEach((h: any, idx: number) => {
+        checkPageBreak(20);
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(9); doc.setTextColor(30, 58, 138);
+        safeText(`${idx + 1}. ${h.medico?.especialidad?.nombre || 'Medicina General'} - ${this.formatDate(h.fecha)}`, margin, currentY);
+        currentY += 5;
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(8); doc.setTextColor(51, 65, 85);
+        safeText(`Médico: Dr(a). ${h.medico?.nombres || ''} ${h.medico?.apellidos || ''}`, margin + 5, currentY);
+        currentY += 4;
+        const diagStr = h.diagnosticos?.map((d: any) => `${d.codigoCIE10 || ''} ${d.descripcion || ''}`).join(', ') || 'Atención Médica';
+        safeText(`Diagnóstico: ${diagStr}`, margin + 5, currentY);
+        currentY += 7;
+      });
+    }
+
+    // Sección: Triajes
+    if (data.triajes && data.triajes.length > 0) {
+      checkPageBreak(25);
+      this.renderSectionTitle(doc, `TRIAJES DE URGENCIAS (${data.triajes.length})`, margin, currentY);
+      currentY += 10;
+
+      data.triajes.forEach((t: any, idx: number) => {
+        checkPageBreak(18);
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(9); doc.setTextColor(180, 83, 9);
+        safeText(`${idx + 1}. Triaje Urgencias (Prioridad ${t.nivelPrioridad || '—'}) - ${this.formatDate(t.creadoEn || t.fechaRegistro)}`, margin, currentY);
+        currentY += 5;
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(8); doc.setTextColor(51, 65, 85);
+        safeText(`Motivo: ${t.motivoConsulta || '—'} | P.A: ${t.presionSistolica || '—'}/${t.presionDiastolica || '—'} | Temp: ${t.temperatura || '—'}°C`, margin + 5, currentY);
+        currentY += 7;
+      });
+    }
+
+    // Sección: Controles Pediátricos CRED
+    if (data.controlesPediatricos && data.controlesPediatricos.length > 0) {
+      checkPageBreak(25);
+      this.renderSectionTitle(doc, `CONTROLES PEDIÁTRICOS CRED (${data.controlesPediatricos.length})`, margin, currentY);
+      currentY += 10;
+
+      data.controlesPediatricos.forEach((p: any, idx: number) => {
+        checkPageBreak(18);
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(9); doc.setTextColor(4, 120, 87);
+        safeText(`${idx + 1}. Control Niño Sano - ${this.formatDate(p.creadoEn || p.fechaControl)}`, margin, currentY);
+        currentY += 5;
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(8); doc.setTextColor(51, 65, 85);
+        safeText(`Peso: ${p.peso}kg | Talla: ${p.talla}cm | P. Cefálico: ${p.perimetroCefalico || '—'}cm | Estado: ${p.estadoNutricional || 'Normal'}`, margin + 5, currentY);
+        currentY += 7;
+      });
+    }
+
+    // Sección: Vacunación PAI
+    if (data.vacunaciones && data.vacunaciones.length > 0) {
+      checkPageBreak(25);
+      this.renderSectionTitle(doc, `REGISTRO DE VACUNACIÓN PAI (${data.vacunaciones.length})`, margin, currentY);
+      currentY += 10;
+
+      data.vacunaciones.forEach((v: any, idx: number) => {
+        checkPageBreak(16);
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(9); doc.setTextColor(14, 116, 144);
+        safeText(`${idx + 1}. Vacuna ${v.vacuna?.nombre} - ${this.formatDate(v.fechaAplicacion)}`, margin, currentY);
+        currentY += 5;
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(8); doc.setTextColor(51, 65, 85);
+        safeText(`Dosis: ${v.esquema?.descripcion || v.esquema?.numeroDosis || '—'} | Lote: ${v.lote?.codigoLote || '—'}`, margin + 5, currentY);
+        currentY += 7;
+      });
+    }
+
+    return doc.output('bloburl').toString();
+  }
+
+  private renderHeaderExpediente(doc: jsPDF, margin: number, pageWidth: number) {
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(14); doc.setTextColor(30, 58, 138);
+    doc.text('REPÚBLICA DE HONDURAS - SECRETARÍA DE SALUD', margin, margin + 5);
+    doc.setFontSize(10); doc.setTextColor(100, 116, 139);
+    doc.text('EXPEDIENTE CLÍNICO UNIFICADO DEL PACIENTE', margin, margin + 11);
+    doc.setDrawColor(226, 232, 240); doc.line(margin, margin + 15, pageWidth - margin, margin + 15);
   }
 }

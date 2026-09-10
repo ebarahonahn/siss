@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { ActualizarRolDto } from './dto/actualizar-rol.dto';
+import { CrearRolDto } from './dto/crear-rol.dto';
 
 @Injectable()
 export class RolesService {
@@ -57,5 +58,30 @@ export class RolesService {
         permisos: dto.permisos as any,
       },
     });
+  }
+
+  async crear(dto: CrearRolDto) {
+    const existe = await this.prisma.rol.findUnique({
+      where: { nombre: dto.nombre },
+    });
+    if (existe) {
+      throw new BadRequestException(`El rol '${dto.nombre}' ya existe`);
+    }
+
+    const rol = await this.prisma.rol.create({
+      data: {
+        nombre: dto.nombre,
+        descripcion: dto.descripcion || '',
+        permisos: {},
+      },
+    });
+
+    return {
+      id: rol.id,
+      nombre: rol.nombre,
+      descripcion: rol.descripcion,
+      permisos: rol.permisos,
+      totalUsuarios: 0,
+    };
   }
 }

@@ -1,4 +1,6 @@
-import { Component, OnInit, inject, signal, computed } from '@angular/core';
+import { Component, OnInit, OnDestroy, DestroyRef, inject, signal, computed } from '@angular/core';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { HospitalizacionService } from '../../core/services/hospitalizacion.service';
 import { MedicamentosService } from '../../core/services/medicamentos.service';
@@ -16,6 +18,16 @@ import { DateValidators } from '../../core/validators/date.validator';
   standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
   template: `
+    <div *ngIf="kardexPdfUrl()" class="fixed inset-0 z-[200] bg-black/60 p-3 md:p-6 flex items-center justify-center"
+         role="dialog" aria-modal="true" aria-labelledby="titulo-visor-kardex" (keydown.escape)="cerrarVisorKardex()">
+      <section class="bg-white rounded-2xl shadow-2xl w-full max-w-7xl h-[92vh] flex flex-col overflow-hidden">
+        <header class="flex items-center justify-between gap-4 px-5 py-3 border-b">
+          <h2 id="titulo-visor-kardex" class="font-bold text-slate-900">{{ tituloPdf() }}</h2>
+          <button type="button" (click)="cerrarVisorKardex()" class="px-4 py-2 rounded-lg hover:bg-slate-100">Cerrar visor</button>
+        </header>
+        <iframe [src]="kardexPdfUrl()" [title]="tituloPdf()" class="w-full flex-1 border-0"></iframe>
+      </section>
+    </div>
     <div class="min-h-screen bg-slate-50 p-4 md:p-8">
       
       <!-- Header -->
@@ -665,7 +677,7 @@ import { DateValidators } from '../../core/validators/date.validator';
 
       <!-- Modal Kardex de Enfermería -->
       <div *ngIf="mostrarKardex()" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-md">
-        <div class="bg-slate-50 rounded-[3rem] shadow-2xl w-full max-w-6xl h-[90vh] overflow-hidden flex flex-col animate-in">
+        <div class="bg-slate-50 rounded-[3rem] shadow-2xl w-full max-w-[95vw] 2xl:max-w-7xl h-[92vh] overflow-hidden flex flex-col animate-in">
           <!-- Header Moderno -->
           <div class="px-10 py-8 bg-white border-b border-slate-100 flex items-center justify-between">
             <div class="flex items-center gap-6">
@@ -710,7 +722,7 @@ import { DateValidators } from '../../core/validators/date.validator';
 
           <div class="flex-1 overflow-hidden flex gap-8 p-8">
             
-            <div class="w-1/3 flex flex-col gap-6 overflow-hidden">
+            <div class="w-2/5 max-w-[430px] shrink-0 flex flex-col gap-6 overflow-hidden">
               
               <!-- Tab Medicamentos -->
               <div *ngIf="pestanaKardex() === 'MEDICAMENTOS'" class="bg-white p-6 rounded-[2.5rem] border border-slate-100 shadow-sm flex flex-col h-full overflow-hidden">
@@ -750,10 +762,10 @@ import { DateValidators } from '../../core/validators/date.validator';
                     </div>
                   </div>
 
-                  <div class="grid grid-cols-2 gap-4">
+                  <div class="grid grid-cols-2 gap-3">
                     <div class="space-y-1.5">
                       <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Dosis *</label>
-                      <select formControlName="dosis" class="w-full px-5 py-4 bg-slate-50 border-none rounded-2xl text-sm focus:ring-2 focus:ring-violet-500 outline-none appearance-none font-bold">
+                      <select formControlName="dosis" class="w-full px-3.5 py-3.5 bg-slate-50 border-none rounded-2xl text-xs sm:text-sm focus:ring-2 focus:ring-violet-500 outline-none font-bold text-slate-700">
                         <option value="">Seleccione dosis...</option>
                         <option value="1 Tableta">1 Tableta</option>
                         <option value="2 Tabletas">2 Tabletas</option>
@@ -770,7 +782,7 @@ import { DateValidators } from '../../core/validators/date.validator';
                     </div>
                     <div class="space-y-1.5">
                       <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Vía</label>
-                      <select formControlName="via" class="w-full px-5 py-4 bg-slate-50 border-none rounded-2xl text-sm focus:ring-2 focus:ring-violet-500 outline-none appearance-none font-bold">
+                      <select formControlName="via" class="w-full px-3.5 py-3.5 bg-slate-50 border-none rounded-2xl text-xs sm:text-sm focus:ring-2 focus:ring-violet-500 outline-none font-bold text-slate-700">
                         <option value="ORAL">ORAL</option>
                         <option value="INTRAVENOSA">I.V.</option>
                         <option value="INTRAMUSCULAR">I.M.</option>
@@ -951,7 +963,29 @@ import { DateValidators } from '../../core/validators/date.validator';
     }
   `]
 })
-export class GestionHospitalizacionComponent implements OnInit {
+export class GestionHospitalizacionComponent implements OnInit, OnDestroy {
+  private readonly sanitizer = inject(DomSanitizer);
+  private readonly destroyRef = inject(DestroyRef);
+  private kardexBlobUrl: string | null = null;
+  kardexPdfUrl = signal<SafeResourceUrl | null>(null);
+  tituloPdf = signal('');
+
+  private abrirVisorPdf(blob: Blob, titulo: string) {
+    this.cerrarVisorKardex();
+    this.tituloPdf.set(titulo);
+    this.kardexBlobUrl = URL.createObjectURL(new Blob([blob], { type: 'application/pdf' }));
+    this.kardexPdfUrl.set(this.sanitizer.bypassSecurityTrustResourceUrl(this.kardexBlobUrl));
+  }
+
+  cerrarVisorKardex() {
+    this.kardexPdfUrl.set(null);
+    if (this.kardexBlobUrl) URL.revokeObjectURL(this.kardexBlobUrl);
+    this.kardexBlobUrl = null;
+  }
+
+  ngOnDestroy() {
+    this.cerrarVisorKardex();
+  }
   private svc = inject(HospitalizacionService);
   private medSvc = inject(MedicamentosService);
   private notification = inject(NotificationService);
@@ -1406,11 +1440,10 @@ export class GestionHospitalizacionComponent implements OnInit {
     console.log('Generando PDF para ingreso:', this.ingresoSeleccionado().id);
     this.generandoPdf.set(true);
     
-    this.svc.descargarNotasPdf(this.ingresoSeleccionado().id).subscribe({
+    this.svc.descargarNotasPdf(this.ingresoSeleccionado().id).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (blob) => {
         console.log('PDF recibido exitosamente');
-        const url = window.URL.createObjectURL(blob);
-        window.open(url, '_blank');
+        this.abrirVisorPdf(blob, 'Evolución médica — PDF');
         this.generandoPdf.set(false);
       },
       error: (err) => {
@@ -1422,13 +1455,12 @@ export class GestionHospitalizacionComponent implements OnInit {
   }
 
   descargarKardexPdf() {
-    if (!this.ingresoSeleccionado()) return;
+    if (!this.ingresoSeleccionado() || this.generandoKardexPdf()) return;
     
     this.generandoKardexPdf.set(true);
-    this.svc.descargarKardexPdf(this.ingresoSeleccionado().id).subscribe({
+    this.svc.descargarKardexPdf(this.ingresoSeleccionado().id).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (blob) => {
-        const url = window.URL.createObjectURL(blob);
-        window.open(url, '_blank');
+        this.abrirVisorPdf(blob, 'Kardex de Enfermería — PDF');
         this.generandoKardexPdf.set(false);
       },
       error: (err) => {

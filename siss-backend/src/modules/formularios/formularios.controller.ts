@@ -49,7 +49,7 @@ export class FormulariosController {
   }
 
   @Get('plantillas/especialidad/:espId/activa')
-  @Permissions('formularios:leer')
+  @Permissions('formularios:leer,historia_clinica:leer,historia_clinica:crear')
   obtenerActiva(@Param('espId', ParseIntPipe) espId: number) {
     return this.service.obtenerPlantillaActivaPorEspecialidad(espId);
   }

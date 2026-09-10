@@ -1,3 +1,4 @@
+import { abrirPdfEnVisor } from '../../shared/utils/pdf-viewer';
 
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -544,7 +545,7 @@ export class InventarioVacunasComponent implements OnInit {
   imprimirHistorialLote() {
     if (!this.loteSeleccionado || this.movimientos.length === 0) return;
     this.pdfSvc.generarMovimientosLotePdfUrl(this.movimientos, this.loteSeleccionado).then(url => {
-      window.open(url, '_blank');
+      abrirPdfEnVisor(url);
     });
   }
 

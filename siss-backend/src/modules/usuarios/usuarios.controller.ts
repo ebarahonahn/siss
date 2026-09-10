@@ -43,7 +43,7 @@ export class UsuariosController {
   }
 
   @Get('medicos-establecimiento')
-  @Permissions('citas:crear')
+  @Permissions('citas:leer,citas:crear,hospitalizacion:leer,pediatria:leer,control_prenatal:leer,triaje:leer,pacientes:leer,historia_clinica:leer,usuarios:leer')
   listarMedicos(
     @CurrentUser() user: any,
     @Query('establecimientoId') establecimientoId?: number,

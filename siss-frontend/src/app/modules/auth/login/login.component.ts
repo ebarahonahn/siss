@@ -198,7 +198,7 @@ import { interval, Subscription } from 'rxjs';
                   <input
                     [(ngModel)]="identificador"
                     type="text"
-                    placeholder="correo@sesal.hn o EMP001"
+                    placeholder="correo@siss.hn o EMP001"
                     class="w-full px-5 py-3 sm:py-4 bg-gray-50 border-2 border-gray-100 rounded-2xl text-sm
                            focus:outline-none focus:ring-0 focus:border-blue-500 transition-all font-medium" />
                 </div>
@@ -237,7 +237,7 @@ import { interval, Subscription } from 'rxjs';
                     type="text"
                     required
                     autocomplete="username"
-                    placeholder="correo@sesal.hn o EMP001"
+                    placeholder="correo@siss.hn o EMP001"
                     class="w-full px-5 py-3 sm:py-4 bg-gray-50 border-2 border-gray-100 rounded-2xl text-sm
                            focus:outline-none focus:ring-0 focus:border-blue-500 transition-all font-medium" />
                 </div>

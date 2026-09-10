@@ -175,27 +175,200 @@
   ══════════════════════════════════════════════════════ -->
   <ng-container *ngIf="!pacienteId()">
 
-    <!-- Cabecera -->
-    <div class="flex flex-wrap items-center justify-between gap-3">
+    <!-- Cabecera con selector de tipo de vista -->
+    <div class="flex flex-wrap items-center justify-between gap-4 bg-white p-4 rounded-2xl border border-gray-100 shadow-sm mb-4">
       <div>
         <h2 class="text-xl font-bold text-gray-900">Mis citas del día</h2>
         <p class="text-sm text-gray-500 mt-0.5">Seleccione una cita para crear o ver la historia clínica</p>
       </div>
-      <div class="flex items-center gap-2">
+
+      <div class="flex flex-wrap items-center gap-3">
+        <!-- Switch Selector de Vista -->
+        <div class="inline-flex p-1 bg-gray-100 rounded-xl border border-gray-200">
+          <button (click)="cambiarTipoVista('LISTA')"
+                  [class.bg-white]="tipoDeVista() === 'LISTA'"
+                  [class.text-blue-600]="tipoDeVista() === 'LISTA'"
+                  [class.shadow-sm]="tipoDeVista() === 'LISTA'"
+                  [class.text-gray-500]="tipoDeVista() !== 'LISTA'"
+                  class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
+            </svg>
+            Vista Lista
+          </button>
+          <button (click)="cambiarTipoVista('SEMANAL')"
+                  [class.bg-white]="tipoDeVista() === 'SEMANAL'"
+                  [class.text-blue-600]="tipoDeVista() === 'SEMANAL'"
+                  [class.shadow-sm]="tipoDeVista() === 'SEMANAL'"
+                  [class.text-gray-500]="tipoDeVista() !== 'SEMANAL'"
+                  class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+            Vista Semanal
+          </button>
+        </div>
+
         <input type="date" [(ngModel)]="fechaFiltro" (change)="cargarAgenda()"
                [class.ring-2]="!esFechaValida(fechaFiltro)"
                [class.ring-red-500]="!esFechaValida(fechaFiltro)"
-               class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"/>
+               class="px-3 py-2 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"/>
       </div>
     </div>
 
-    <!-- Cargando -->
-    <div *ngIf="cargandoCitas()" class="bg-white rounded-xl border border-gray-200 p-12 text-center text-gray-400 text-sm">
+    <!-- ══════════════════════════════════════════════════════
+         VISTA B: AGENDA EN CUADRÍCULA SEMANAL (ESTILO CALENDARIO)
+    ══════════════════════════════════════════════════════ -->
+    <div *ngIf="tipoDeVista() === 'SEMANAL'" class="space-y-4 animate-in fade-in duration-300">
+      
+      <!-- Leyendas de estado -->
+      <div class="flex flex-wrap items-center gap-4 px-2 py-1 text-xs font-semibold">
+        <span class="flex items-center gap-1.5 text-gray-700">
+          <span class="w-3 h-3 rounded-full bg-emerald-500 inline-block"></span> Confirmada
+        </span>
+        <span class="flex items-center gap-1.5 text-gray-700">
+          <span class="w-3 h-3 rounded-full bg-amber-500 inline-block"></span> Pendiente / En Sala
+        </span>
+        <span class="flex items-center gap-1.5 text-gray-700">
+          <span class="w-3 h-3 rounded-full bg-purple-500 inline-block"></span> Reagendada
+        </span>
+        <span class="flex items-center gap-1.5 text-gray-700">
+          <span class="w-3 h-3 rounded-full bg-rose-500 inline-block"></span> Cancelada
+        </span>
+        <span class="flex items-center gap-1.5 text-gray-700">
+          <span class="w-3 h-3 rounded-full bg-slate-500 inline-block"></span> No Asistió
+        </span>
+        <span class="flex items-center gap-1.5 text-gray-700">
+          <span class="w-3 h-3 rounded-full bg-blue-600 inline-block"></span> Atendida
+        </span>
+      </div>
+
+      <!-- Cuadrícula Semanal -->
+      <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-x-auto">
+        <div class="min-w-[800px]">
+          <!-- Encabezado Días -->
+          <div class="grid grid-cols-8 border-b border-gray-200 bg-gray-50/70 divide-x divide-gray-200 text-center">
+            <div class="py-3 text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center justify-center">
+              Hora
+            </div>
+            <ng-container *ngFor="let d of diasDeLaSemana">
+              <div [class.bg-blue-50]="d.esHoy" 
+                   class="py-3 px-2 flex flex-col items-center justify-center">
+                <span class="text-xs font-medium text-gray-500">{{ d.nombre }}</span>
+                <span [ngClass]="d.esHoy ? 'bg-blue-600 text-white w-7 h-7 rounded-full' : 'text-gray-800'"
+                      class="text-base font-bold mt-0.5 inline-flex items-center justify-center">
+                  {{ d.num }}
+                </span>
+              </div>
+            </ng-container>
+          </div>
+
+          <!-- Filas de horas -->
+          <div *ngIf="cargandoSemana()" class="py-16 text-center text-gray-400 text-sm">
+            Cargando cuadrícula semanal…
+          </div>
+
+          <div *ngIf="!cargandoSemana()" class="divide-y divide-gray-100">
+            <div *ngFor="let hora of horasSemana" class="grid grid-cols-8 divide-x divide-gray-100 min-h-[64px]">
+              <!-- Columna Hora -->
+              <div class="p-2 text-xs font-semibold text-gray-400 text-center flex items-start justify-center pt-3 bg-gray-50/30">
+                {{ hora }}
+              </div>
+
+              <!-- Celdas para cada día -->
+              <div *ngFor="let d of diasDeLaSemana" 
+                   [class.bg-blue-50]="d.esHoy" 
+                   class="p-1.5 relative hover:bg-gray-50/80 transition-colors">
+                <div class="space-y-1.5">
+                  <div *ngFor="let cita of getCitasSlot(d.fechaStr, hora)"
+                       [ngClass]="getCitaBgClass(cita.estado)"
+                       class="p-2 rounded-xl text-xs shadow-sm transition-all cursor-pointer transform hover:scale-[1.02]"
+                       (click)="citaDetalleModal.set(cita)">
+                    <div class="font-bold truncate">
+                      {{ cita.paciente.nombres }} {{ cita.paciente.apellidos }}
+                    </div>
+                    <div class="text-[10px] opacity-90 truncate mt-0.5">
+                      {{ (cita.tipo || '').replace('_', ' ') }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Detalle Cita Semanal -->
+    <div *ngIf="citaDetalleModal() as c" 
+         class="fixed inset-0 z-[9999] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 no-print">
+      <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden border border-gray-100 animate-in zoom-in-95 duration-200">
+        <div class="p-6 bg-gradient-to-r from-blue-600 to-indigo-600 text-white relative">
+          <button (click)="citaDetalleModal.set(null)" class="absolute top-4 right-4 text-white/80 hover:text-white p-1">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
+          <span [ngClass]="estadoBadge(c.estado)" class="text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-block mb-2">
+            {{ c.estado }}
+          </span>
+          <h3 class="text-lg font-bold">{{ c.paciente.nombres }} {{ c.paciente.apellidos }}</h3>
+          <p class="text-xs text-blue-100 mt-0.5">
+            DNI: {{ c.paciente.dni }} &nbsp;·&nbsp; Exp: {{ c.paciente.numeroExpediente }}
+          </p>
+        </div>
+
+        <div class="p-6 space-y-4">
+          <div class="text-xs text-gray-600 space-y-1">
+            <p><strong>Fecha y Hora:</strong> {{ c.fechaHora | date:'dd/MM/yyyy h:mm a':'UTC' }}</p>
+            <p><strong>Tipo:</strong> <span class="capitalize">{{ (c.tipo || '').replace('_', ' ') }}</span></p>
+            <p *ngIf="c.motivo"><strong>Motivo:</strong> {{ c.motivo }}</p>
+          </div>
+
+          <div class="pt-2 flex flex-col gap-2">
+            <!-- Atender -->
+            <button *ngIf="puedeAtender(c.estado) && !c.historia"
+                    (click)="nuevaConsulta(c); citaDetalleModal.set(null)"
+                    class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-2 transition-colors">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+              </svg>
+              Atender Cita
+            </button>
+
+            <!-- Marcar No Asistió -->
+            <button *ngIf="puedeAtender(c.estado) && !c.historia"
+                    (click)="marcarNoAsistio(c, $event); citaDetalleModal.set(null)"
+                    class="w-full py-2.5 bg-orange-50 hover:bg-orange-100 text-orange-700 font-bold border border-orange-200 rounded-xl text-xs flex items-center justify-center gap-2 transition-colors">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+              </svg>
+              Marcar como No Asistió
+            </button>
+
+            <!-- Acciones si atendida -->
+            <div *ngIf="c.estado === 'ATENDIDA' && c.historia" class="grid grid-cols-2 gap-2">
+              <button (click)="verResumen(c.historia.id); citaDetalleModal.set(null)"
+                      class="py-2.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold border border-emerald-200 rounded-xl text-xs flex items-center justify-center gap-1.5">
+                Ver Resumen
+              </button>
+              <button (click)="abrirModalImpresion(c.historia.id); citaDetalleModal.set(null)"
+                      class="py-2.5 bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold border border-blue-200 rounded-xl text-xs flex items-center justify-center gap-1.5">
+                Imprimir
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cargando en Lista -->
+    <div *ngIf="tipoDeVista() === 'LISTA' && cargandoCitas()" class="bg-white rounded-xl border border-gray-200 p-12 text-center text-gray-400 text-sm">
       Cargando citas…
     </div>
 
-    <!-- Sin citas -->
-    <div *ngIf="!cargandoCitas() && citas().length === 0"
+    <!-- Sin citas en Lista -->
+    <div *ngIf="tipoDeVista() === 'LISTA' && !cargandoCitas() && citas().length === 0"
          class="bg-white rounded-xl border border-gray-200 p-12 text-center">
       <svg class="w-12 h-12 text-gray-200 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
@@ -204,8 +377,8 @@
       <p class="text-gray-500 font-medium">No tiene citas programadas para esta fecha.</p>
     </div>
 
-    <!-- Lista de citas -->
-    <div *ngIf="!cargandoCitas() && citas().length > 0" class="space-y-3">
+    <!-- Lista de citas (Vista Lista Normal) -->
+    <div *ngIf="tipoDeVista() === 'LISTA' && !cargandoCitas() && citas().length > 0" class="space-y-3">
       <div *ngFor="let cita of citas()"
            class="bg-white rounded-xl border border-l-4 border-gray-200 shadow-sm hover:shadow-md transition-shadow"
            [ngClass]="estadoBorde(cita.estado)">
@@ -405,18 +578,119 @@
 
     <!-- Timeline de consultas -->
     <div *ngIf="consultas().length > 0" class="space-y-4">
-      <p class="text-xs font-bold text-gray-400 uppercase tracking-widest">Cronología médica</p>
+      
+      <!-- Buscador y Filtros -->
+      <div class="bg-white rounded-xl border border-gray-200 p-3 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-3">
+        <!-- Campo Búsqueda -->
+        <div class="relative flex-1">
+          <input type="text"
+                 [value]="filtroTexto()"
+                 (input)="filtroTexto.set($any($event.target).value)"
+                 placeholder="Buscar por diagnóstico (CIE-10), fecha (ej. 17/09/2026), médico..."
+                 class="w-full pl-9 pr-8 py-2 text-xs bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all placeholder:text-gray-400" />
+          <svg class="w-4 h-4 text-gray-400 absolute left-3 top-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          <button *ngIf="filtroTexto()"
+                  (click)="filtroTexto.set('')"
+                  class="absolute right-3 top-2 text-gray-400 hover:text-gray-600 font-bold">
+            ✕
+          </button>
+        </div>
 
-      <div *ngFor="let c of consultas()" class="relative pl-8">
+        <!-- Pills de Filtro -->
+        <div class="flex items-center gap-1.5 flex-wrap">
+          <button type="button"
+                  (click)="filtroTipo.set('TODAS')"
+                  [class.bg-blue-600]="filtroTipo() === 'TODAS'"
+                  [class.text-white]="filtroTipo() === 'TODAS'"
+                  [class.bg-gray-100]="filtroTipo() !== 'TODAS'"
+                  [class.text-gray-600]="filtroTipo() !== 'TODAS'"
+                  class="px-3 py-1.5 text-xs font-bold rounded-lg border border-gray-200 transition-colors">
+            Todas ({{ consultas().length }})
+          </button>
+          <button type="button"
+                  (click)="filtroTipo.set('PRENATAL')"
+                  [class.bg-emerald-600]="filtroTipo() === 'PRENATAL'"
+                  [class.text-white]="filtroTipo() === 'PRENATAL'"
+                  [class.bg-gray-100]="filtroTipo() !== 'PRENATAL'"
+                  [class.text-gray-600]="filtroTipo() !== 'PRENATAL'"
+                  class="px-3 py-1.5 text-xs font-bold rounded-lg border border-gray-200 transition-colors">
+            Prenatales
+          </button>
+          <button type="button"
+                  (click)="filtroTipo.set('ANIO_ACTUAL')"
+                  [class.bg-purple-600]="filtroTipo() === 'ANIO_ACTUAL'"
+                  [class.text-white]="filtroTipo() === 'ANIO_ACTUAL'"
+                  [class.bg-gray-100]="filtroTipo() !== 'ANIO_ACTUAL'"
+                  [class.text-gray-600]="filtroTipo() !== 'ANIO_ACTUAL'"
+                  class="px-3 py-1.5 text-xs font-bold rounded-lg border border-gray-200 transition-colors">
+            Este Año
+          </button>
+        </div>
+      </div>
+
+      <!-- Encabezado de sección + Paginación Superior -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-white p-3 rounded-xl border border-gray-200 shadow-2xs">
+        <p class="text-xs font-bold text-gray-400 uppercase tracking-widest">
+          Cronología médica 
+          <span *ngIf="consultasFiltradas().length !== consultas().length" class="text-blue-600 lowercase font-normal ml-1">
+            ({{ consultasFiltradas().length }} de {{ consultas().length }})
+          </span>
+        </p>
+
+        <!-- Controles de Paginación Superior -->
+        <div *ngIf="totalPaginas() > 1" class="flex items-center gap-2">
+          <span class="text-xs text-gray-500 font-medium mr-2">
+            Pág. <strong class="text-gray-800">{{ paginaActual() }}</strong> de {{ totalPaginas() }}
+          </span>
+
+          <button type="button"
+                  (click)="cambiarPagina(paginaActual() - 1)"
+                  [disabled]="paginaActual() === 1"
+                  class="px-2.5 py-1 bg-gray-50 border border-gray-200 rounded-lg text-xs font-bold text-gray-700 hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
+            ← Ant.
+          </button>
+
+          <!-- Números de página -->
+          <button *ngFor="let p of [].constructor(totalPaginas()); let idx = index"
+                  (click)="cambiarPagina(idx + 1)"
+                  [class.bg-blue-600]="paginaActual() === idx + 1"
+                  [class.text-white]="paginaActual() === idx + 1"
+                  [class.bg-gray-50]="paginaActual() !== idx + 1"
+                  [class.text-gray-700]="paginaActual() !== idx + 1"
+                  class="w-7 h-7 rounded-lg border border-gray-200 text-xs font-bold transition-colors">
+            {{ idx + 1 }}
+          </button>
+
+          <button type="button"
+                  (click)="cambiarPagina(paginaActual() + 1)"
+                  [disabled]="paginaActual() >= totalPaginas()"
+                  class="px-2.5 py-1 bg-gray-50 border border-gray-200 rounded-lg text-xs font-bold text-gray-700 hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
+            Sig. →
+          </button>
+        </div>
+      </div>
+
+      <!-- Sin resultados en filtro -->
+      <div *ngIf="consultasFiltradas().length === 0" class="bg-white rounded-xl border border-gray-200 p-8 text-center text-gray-400 text-sm">
+        No se encontraron consultas con el filtro especificado.
+      </div>
+
+      <!-- Listado paginado -->
+      <div *ngFor="let c of consultasPaginadas()" class="relative pl-8">
         <div class="absolute left-4 top-0 bottom-0 w-px bg-gray-200"></div>
-        <div class="absolute left-2.5 top-5 w-3 h-3 bg-blue-500 border-2 border-white rounded-full shadow-sm"></div>
+        <div class="absolute left-2.5 top-5 w-3 h-3 bg-blue-500 border-2 border-white rounded-full shadow-xs"></div>
 
-        <div class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+        <div class="bg-white rounded-xl border border-gray-100 shadow-xs overflow-hidden hover:shadow-md transition-shadow">
 
           <div class="px-4 py-2 bg-gray-50 border-b border-gray-100 flex items-center justify-between">
             <div class="flex items-center gap-2">
               <span class="text-xs font-bold text-gray-800">{{ c.fecha | date:'dd/MM/yyyy':'UTC' }}</span>
               <span class="text-[9px] bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded-full font-bold">EVOLUCIÓN</span>
+              <span *ngIf="c.controlPrenatal" class="text-[9px] bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded-full font-bold border border-emerald-200 uppercase">
+                CONTROL PRENATAL ({{ c.controlPrenatal.semanasGestacion }} SEM)
+              </span>
               <button (click)="abrirModalImpresion(c.id)"
                       class="ml-2 flex items-center gap-1 px-2 py-0.5 text-[9px] font-bold text-blue-600 bg-white border border-blue-100 rounded hover:bg-blue-50 transition-colors">
                 <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -481,6 +755,7 @@
 
         </div>
       </div>
+
     </div>
 
   </ng-container>
@@ -517,11 +792,6 @@
                 class="flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-2xl text-sm font-bold hover:bg-blue-700 transition-all shadow-lg hover:shadow-blue-200">
           <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
           VER PDF
-        </button>
-        <button *ngIf="vistaModo() === 'PDF' && rawPdfUrl" (click)="abrirEnNuevaPestana()"
-                class="flex items-center gap-2 px-5 py-2.5 bg-indigo-600 text-white rounded-2xl text-sm font-bold hover:bg-indigo-700 transition-all shadow-lg">
-          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-          ABRIR EN NUEVA PESTAÑA
         </button>
         <button *ngIf="vistaModo() === 'PDF'" (click)="vistaModo.set('RESUMEN')"
                 class="flex items-center gap-2 px-5 py-2.5 bg-gray-600 text-white rounded-2xl text-sm font-bold hover:bg-gray-700 transition-all shadow-lg">
@@ -653,7 +923,7 @@
                         <ng-container *ngIf="campo.tipo !== 'TITULO' && campo.tipo !== 'SEPARADOR' && h.respuestaFormulario.respuestas[campo.clave] !== undefined && h.respuestaFormulario.respuestas[campo.clave] !== ''">
                           <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">{{ campo.etiqueta }}</p>
                           <div class="text-sm text-gray-800 leading-relaxed bg-gray-50/50 p-3 rounded-2xl border border-gray-100/50">
-                            {{ h.respuestaFormulario.respuestas[campo.clave] }}
+                            {{ formatRespuesta(h.respuestaFormulario.respuestas[campo.clave]) }}
                           </div>
                         </ng-container>
                       </div>

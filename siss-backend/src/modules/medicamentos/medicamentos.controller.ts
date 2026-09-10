@@ -37,7 +37,7 @@ export class MedicamentosController {
   }
 
   @UseGuards(PermissionsGuard)
-  @Permissions('medicamentos:leer')
+  @Permissions('medicamentos:leer,historia_clinica:leer,recetas:leer,hospitalizacion:leer,pediatria:leer,control_prenatal:leer,triaje:leer')
   @Get()
   listar(
     @Query('pagina', new DefaultValuePipe(1), ParseIntPipe) pagina: number,
@@ -48,7 +48,7 @@ export class MedicamentosController {
   }
 
   @UseGuards(PermissionsGuard)
-  @Permissions('medicamentos:leer')
+  @Permissions('medicamentos:leer,historia_clinica:leer,recetas:leer,hospitalizacion:leer,pediatria:leer,control_prenatal:leer,triaje:leer')
   @Get(':id')
   obtener(@Param('id', ParseIntPipe) id: number) {
     return this.svc.obtener(id);

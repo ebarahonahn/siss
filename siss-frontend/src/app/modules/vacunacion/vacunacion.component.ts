@@ -1,3 +1,4 @@
+import { abrirPdfEnVisor } from '../../shared/utils/pdf-viewer';
 
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -82,6 +83,6 @@ export class VacunacionComponent implements OnInit {
         : this.pdfSvc.generarCarnetPosUrl(this.historial, this.paciente);
     }
 
-    promise.then(url => window.open(url, '_blank'));
+    promise.then(url => abrirPdfEnVisor(url));
   }
 }

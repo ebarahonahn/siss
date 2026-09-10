@@ -27,4 +27,8 @@ export class RolesService {
   actualizar(id: number, payload: { descripcion?: string; permisos?: Record<string, any> }) {
     return this.http.put<any>(`${this.base}/${id}`, payload).pipe(map(r => r.data as Rol));
   }
+
+  crear(payload: { nombre: string; descripcion?: string }) {
+    return this.http.post<any>(this.base, payload).pipe(map(r => r.data as Rol));
+  }
 }

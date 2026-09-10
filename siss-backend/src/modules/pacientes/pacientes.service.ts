@@ -7,6 +7,8 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreatePacienteDto } from './dto/create-paciente.dto';
+import { DateUtils } from '../../common/utils/date-utils';
+import { periodoPrescrito } from './tratamientos';
 
 @Injectable()
 export class PacientesService {
@@ -142,7 +144,32 @@ export class PacientesService {
         throw new NotFoundException(`No se encontró un registro de paciente para el DNI ${dni}`);
       }
 
-      return paciente;
+      const detalles = await this.prisma.detalleReceta.findMany({
+        where: { receta: { pacienteId: paciente.id, estado: { not: 'CANCELADA' } } },
+        include: { medicamento: true, receta: { include: { historia: { select: { fecha: true } } } } },
+        orderBy: { id: 'desc' },
+      });
+      const hoy = DateUtils.getHoyLocalString();
+      const tratamientosActuales = [
+        ...paciente.medicamentosActivos.map(m => ({
+          nombre: m.medicamento.nombreGenerico,
+          dosis: m.dosis, frecuencia: m.frecuencia,
+          inicio: m.inicio.toISOString().slice(0, 10),
+          fin: m.fin?.toISOString().slice(0, 10) ?? null,
+          indicaciones: null as string | null, recetaId: null as number | null,
+          periodoPrescrito: false,
+        })),
+        ...detalles.flatMap(d => {
+          const periodo = periodoPrescrito(d.receta.historia.fecha, d.duracion, hoy);
+          return periodo ? [{
+            nombre: d.medicamento.nombreGenerico,
+            dosis: d.dosis, frecuencia: d.frecuencia, ...periodo,
+            indicaciones: d.indicaciones, recetaId: d.recetaId,
+            periodoPrescrito: true,
+          }] : [];
+        }),
+      ];
+      return { ...paciente, tratamientosActuales };
     } catch (error) {
       console.error(`[PACIENTES] Error al buscar perfil para DNI ${dni}:`, error);
       throw error;
@@ -195,11 +222,13 @@ export class PacientesService {
         },
       },
       medicamentosActivos: {
-        where: { fin: null },
+        where: {
+          inicio: { lte: new Date(`${DateUtils.getHoyLocalString()}T00:00:00Z`) },
+          OR: [{ fin: null }, { fin: { gte: new Date(`${DateUtils.getHoyLocalString()}T00:00:00Z`) } }],
+        },
         include: { medicamento: true },
       },
       recetas: {
-        take: 10,
         orderBy: { creadaEn: 'desc' as const },
         include: {
           establecimiento: { select: { nombre: true } },

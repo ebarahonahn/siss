@@ -156,13 +156,13 @@ export class AuthService {
       throw new UnauthorizedException('Asignación inválida o no seleccionada');
     }
 
-    // ── Bloqueo por Agenda (Médicos con Permiso/Vacaciones) ──────────────────
+    // ── Bloqueo por Agenda (Médicos/Odontólogos con Permiso/Vacaciones) ──────
     const rolNombre = (asignacionSeleccionada?.rol?.nombre || usuario.rol?.nombre || '').toUpperCase();
-    const esMedico = rolNombre.includes('MEDICO');
+    const esClinicoConAgenda = rolNombre.includes('MEDICO') || rolNombre === 'ODONTOLOGIA';
 
-    console.log(`[AUTH] Validando acceso para: ${usuario.correo} | Rol: ${rolNombre} | esMedico: ${esMedico}`);
+    console.log(`[AUTH] Validando acceso para: ${usuario.correo} | Rol: ${rolNombre} | esClinicoConAgenda: ${esClinicoConAgenda}`);
 
-    if (esMedico && asignacionSeleccionada) {
+    if (esClinicoConAgenda && asignacionSeleccionada) {
       const ahora = new Date();
       
       // Calculamos el desfase de Honduras (UTC-6) de forma dinámica
@@ -188,45 +188,62 @@ export class AuthService {
         },
       });
 
+      let agendaActiva: { horaInicio: string; horaFin: string } | null = null;
+
       if (excepcion) {
-        const tipo = excepcion.tipo.toLowerCase().replace(/_/g, ' ');
-        console.log(`[AUTH] Bloqueado por excepción activa: ${tipo}`);
-        throw new UnauthorizedException(
-          `ACCESO DENEGADO: Actualmente tiene un registro de "${tipo.toUpperCase()}" activo en este establecimiento.`,
-        );
+        if (excepcion.tipo === 'CAMBIO_HORARIO' && excepcion.horaInicio && excepcion.horaFin) {
+          console.log(`[AUTH] Detectado Cambio de Horario Especial: ${excepcion.horaInicio} - ${excepcion.horaFin}`);
+          agendaActiva = {
+            horaInicio: excepcion.horaInicio,
+            horaFin: excepcion.horaFin
+          };
+        } else {
+          const tipo = excepcion.tipo.toLowerCase().replace(/_/g, ' ');
+          console.log(`[AUTH] Bloqueado por excepción activa (ausencia): ${tipo}`);
+          throw new UnauthorizedException(
+            `ACCESO DENEGADO: Actualmente tiene un registro de "${tipo.toUpperCase()}" activo en este establecimiento.`,
+          );
+        }
       }
 
-      // 2. Validar Jornada Base
-      const agenda = await this.prisma.agendaBase.findFirst({
-        where: {
-          medicoId: usuario.id,
-          establecimientoId: asignacionSeleccionada.establecimientoId,
-          diaSemana,
-          activo: true,
-        },
-      });
+      if (!agendaActiva) {
+        // 2. Validar Jornada Base
+        const agenda = await this.prisma.agendaBase.findFirst({
+          where: {
+            medicoId: usuario.id,
+            establecimientoId: asignacionSeleccionada.establecimientoId,
+            diaSemana,
+            activo: true,
+          },
+        });
 
-      if (!agenda) {
-        console.log(`[AUTH] No se encontró jornada base para el día ${diaSemana}`);
-        throw new UnauthorizedException(
-          `ACCESO DENEGADO: No tiene una jornada laboral programada para hoy en este establecimiento.`,
-        );
+        if (!agenda) {
+          console.log(`[AUTH] No se encontró jornada base para el día ${diaSemana}`);
+          throw new UnauthorizedException(
+            `ACCESO DENEGADO: No tiene una jornada laboral programada para hoy en este establecimiento.`,
+          );
+        }
+        
+        agendaActiva = {
+          horaInicio: agenda.horaInicio,
+          horaFin: agenda.horaFin
+        };
       }
 
-      const [hI, mI] = agenda.horaInicio.split(':').map(Number);
-      const [hF, mF] = agenda.horaFin.split(':').map(Number);
+      const [hI, mI] = agendaActiva.horaInicio.split(':').map(Number);
+      const [hF, mF] = agendaActiva.horaFin.split(':').map(Number);
       const minsInicio = hI * 60 + mI;
       const minsFin = hF * 60 + mF;
 
       const paramMargen = await this.prisma.parametroSistema.findUnique({ where: { clave: 'MARGEN_LOGIN_MINUTOS' } });
       const margen = paramMargen ? parseInt(paramMargen.valor) : 30;
 
-      console.log(`[AUTH] Horario: ${agenda.horaInicio}-${agenda.horaFin} | MinsActual: ${minsActual} | MinsRange: ${minsInicio-margen} a ${minsFin+margen}`);
+      console.log(`[AUTH] Horario Activo: ${agendaActiva.horaInicio}-${agendaActiva.horaFin} | MinsActual: ${minsActual} | MinsRange: ${minsInicio-margen} a ${minsFin+margen}`);
 
       if (minsActual < (minsInicio - margen) || minsActual > (minsFin + margen)) {
         console.log(`[AUTH] Bloqueado por estar fuera de horario`);
         throw new UnauthorizedException(
-          `ACCESO DENEGADO: Su jornada laboral en este centro es de ${agenda.horaInicio} a ${agenda.horaFin}. Actualmente se encuentra fuera del horario permitido.`,
+          `ACCENSO DENEGADO: Su jornada laboral en este centro para hoy es de ${agendaActiva.horaInicio} a ${agendaActiva.horaFin}. Actualmente se encuentra fuera del horario permitido.`,
         );
       }
     }

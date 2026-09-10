@@ -5,7 +5,7 @@ async function test() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        identificador: 'medico@sesal.hn',
+        identificador: 'medico@siss.hn',
         contrasena: 'Medico@123'
       })
     });

@@ -16,6 +16,6 @@ export class DashboardController {
   @Get('agenda')
   async getAgenda(@CurrentUser() user: any) {
     if (user.rol !== 'MEDICO') return [];
-    return this.dashboardService.getAgendaHoy(user.id);
+    return this.dashboardService.getAgendaHoy(user);
   }
 }

@@ -49,8 +49,12 @@
       </div>
     </div>
 
-    <div *ngIf="!cargando() && recetas().length === 0 && error() === ''" class="mt-4 text-center py-8 border-2 border-dashed border-gray-50 rounded-2xl">
-      <p class="text-sm text-gray-400">No hay resultados que mostrar</p>
+    <div *ngIf="errorBusqueda()" role="alert" class="mt-4 p-4 bg-red-50 text-red-700 rounded-xl text-sm">
+      {{ errorBusqueda() }}
+    </div>
+    <div *ngIf="!cargando() && recetas().length === 0 && !errorBusqueda()" class="mt-4 text-center py-8 border-2 border-dashed border-gray-50 rounded-2xl">
+      <p class="text-sm text-gray-500">{{ busquedaRealizada() ? 'No se encontraron recetas pendientes o parciales vigentes para esta identificación en el establecimiento actual.' : 'Ingrese al menos 3 caracteres del DNI o expediente para buscar.' }}</p>
+      <p *ngIf="busquedaRealizada()" class="mt-2 text-sm text-gray-500">Verifique la identificación y que el paciente tenga una receta vigente emitida en este establecimiento. Esta búsqueda no muestra la ficha del paciente ni recetas ya entregadas o vencidas.</p>
     </div>
   </div>
 

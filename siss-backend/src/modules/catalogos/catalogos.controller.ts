@@ -5,8 +5,7 @@ import { PermissionsGuard } from '../../common/guards/permissions.guard';
 import { Permissions } from '../../common/decorators/permissions.decorator';
 
 @Controller('catalogos')
-@UseGuards(JwtAuthGuard, PermissionsGuard)
-@Permissions('catalogos:leer')
+@UseGuards(JwtAuthGuard)
 export class CatalogosController {
   constructor(private readonly catalogosService: CatalogosService) {}
 

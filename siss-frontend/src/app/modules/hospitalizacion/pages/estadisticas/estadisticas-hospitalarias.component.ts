@@ -56,8 +56,9 @@ Chart.register(...registerables);
           <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-50 rounded-full -mr-16 -mt-16 transition-transform group-hover:scale-110"></div>
           <div class="relative">
             <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Promedio Estadía</p>
-            <h2 class="text-4xl font-black text-slate-900">{{ stats()?.indicadores?.promedioEstadia }} <span class="text-sm text-slate-400 font-bold">Días</span></h2>
-            <p class="mt-4 text-[10px] text-slate-500 font-bold">BASADO EN EGRESOS DEL MES</p>
+            <h2 class="text-4xl font-black text-slate-900">{{ stats()?.indicadores?.promedioEstadia ?? '—' }} <span *ngIf="stats()?.indicadores?.promedioEstadia != null" class="text-sm text-slate-400 font-bold">Días</span></h2>
+            <p class="mt-4 text-[10px] text-slate-500 font-bold">{{ stats()?.indicadores?.totalEgresosMes ? 'DURACIÓN TRANSCURRIDA DE EGRESOS DEL MES' : 'SIN EGRESOS PARA CALCULAR' }}</p>
+            <p *ngIf="stats()?.indicadores?.estadiasInvalidas" class="text-xs text-amber-700 mt-2">{{ stats()?.indicadores?.estadiasInvalidas }} egreso(s) con fechas inconsistentes excluidos del promedio.</p>
           </div>
         </div>
 
@@ -66,7 +67,7 @@ Chart.register(...registerables);
           <div class="absolute top-0 right-0 w-32 h-32 bg-amber-50 rounded-full -mr-16 -mt-16 transition-transform group-hover:scale-110"></div>
           <div class="relative">
             <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Giro de Cama</p>
-            <h2 class="text-4xl font-black text-slate-900">{{ stats()?.indicadores?.giroCama }} <span class="text-sm text-slate-400 font-bold">ROT.</span></h2>
+            <h2 class="text-4xl font-black text-slate-900">{{ stats()?.indicadores?.giroCama ?? '—' }} <span class="text-sm text-slate-400 font-bold">ROT.</span></h2>
             <p class="mt-4 text-[10px] text-slate-500 font-bold">EFICIENCIA DE USO MENSUAL</p>
           </div>
         </div>
@@ -77,7 +78,7 @@ Chart.register(...registerables);
           <div class="relative">
             <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Egresos del Mes</p>
             <h2 class="text-4xl font-black text-slate-900">{{ stats()?.indicadores?.totalEgresosMes }}</h2>
-            <p class="mt-4 text-[10px] text-slate-500 font-bold tracking-tight">ALTAS MÉDICAS REGISTRADAS</p>
+            <p class="mt-4 text-[10px] text-slate-500 font-bold tracking-tight">TODOS LOS TIPOS DE EGRESO REGISTRADOS</p>
           </div>
         </div>
       </div>
@@ -120,7 +121,7 @@ Chart.register(...registerables);
                 <tr *ngFor="let s of stats()?.analisisServicios" class="group hover:bg-slate-50/50 transition-all">
                   <td class="py-4 font-bold text-slate-700 text-sm">{{ s.servicio }}</td>
                   <td class="py-4 text-sm font-medium text-slate-500">{{ s.camas }}</td>
-                  <td class="py-4 text-sm font-medium text-slate-500">{{ s.ocupacion }}%</td>
+                  <td class="py-4 text-sm font-medium text-slate-500">{{ s.ocupadas }}</td>
                   <td class="py-4">
                     <div class="flex items-center justify-center">
                       <span [class]="s.ocupacion > 80 ? 'bg-rose-50 text-rose-600' : s.ocupacion > 50 ? 'bg-amber-50 text-amber-600' : 'bg-emerald-50 text-emerald-600'" 
@@ -213,17 +214,15 @@ export class EstadisticasHospitalariasComponent implements OnInit, AfterViewInit
           const ctx = canvas.getContext('2d');
           if (!ctx) return;
 
-          const ocupadas = data.indicadores?.ingresosActivos || 0;
-          const total = data.indicadores?.totalCamas || 0;
-          const disponibles = Math.max(0, total - ocupadas);
+          const estados = data.tendenciaOcupacion ?? [];
 
           this.chart = new Chart(ctx, {
             type: 'doughnut',
             data: {
-              labels: ['Ocupadas', 'Disponibles'],
+              labels: estados.map((e: any) => e.name),
               datasets: [{
-                data: [ocupadas, disponibles],
-                backgroundColor: ['#8b5cf6', '#f1f5f9'],
+                data: estados.map((e: any) => e.value),
+                backgroundColor: ['#8b5cf6', '#e2e8f0', '#f59e0b', '#ef4444', '#3b82f6'],
                 borderWidth: 0
               }]
             },
@@ -232,7 +231,7 @@ export class EstadisticasHospitalariasComponent implements OnInit, AfterViewInit
               responsive: true,
               maintainAspectRatio: true,
               plugins: {
-                legend: { display: false },
+                legend: { display: true, position: 'bottom' },
                 tooltip: { enabled: true }
               }
             }

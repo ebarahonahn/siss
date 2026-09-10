@@ -1,3 +1,4 @@
+import { abrirPdfEnVisor } from '../../../../shared/utils/pdf-viewer';
 import { Component, OnInit, signal, computed } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
@@ -361,13 +362,8 @@ export class DashboardNinoComponent implements OnInit {
     this.pediatriaService.generarPdf(this.pacienteId).subscribe({
       next: (blob: Blob) => {
         Swal.close();
-        const url = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = `CarnetPediatrico_${this.paciente?.dni || this.pacienteId}.pdf`;
-        link.click();
-        window.URL.revokeObjectURL(url);
-      },
+        abrirPdfEnVisor(blob);
+        },
       error: (err) => {
         Swal.close();
         Swal.fire('Error', 'No se pudo generar el carnet pediátrico PDF.', 'error');
@@ -408,13 +404,8 @@ export class DashboardNinoComponent implements OnInit {
     this.pediatriaService.generarPdfControl(controlId).subscribe({
       next: (blob: Blob) => {
         Swal.close();
-        const url = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = `ConsultaPediatrica_${this.paciente?.dni || this.pacienteId}_${controlId}.pdf`;
-        link.click();
-        window.URL.revokeObjectURL(url);
-      },
+        abrirPdfEnVisor(blob);
+        },
       error: (err) => {
         Swal.close();
         Swal.fire('Error', 'No se pudo generar el reporte de consulta PDF.', 'error');

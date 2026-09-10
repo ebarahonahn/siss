@@ -11,6 +11,7 @@ export interface CitaPendienteTriaje {
   motivo: string | null;
   paciente: { id: number; nombres: string; apellidos: string; dni: string; numeroExpediente: string; fechaNacimiento: string };
   medico: { id: number; nombres: string; apellidos: string };
+  especialidad: { id: number; nombre: string } | null;
   triaje: { id: number; categoria: string; creadoEn: string } | null;
 }
 

@@ -1,3 +1,4 @@
+import { abrirPdfEnVisor } from '../../../../shared/utils/pdf-viewer';
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
@@ -278,12 +279,7 @@ export class FichaPerinatalComponent implements OnInit {
 
     this.controlService.exportarPdf(this.embarazo.id).subscribe({
       next: (blob) => {
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `HCPB_${this.embarazo.paciente.dni}.pdf`;
-        a.click();
-        window.URL.revokeObjectURL(url);
+        abrirPdfEnVisor(blob);
         Swal.close();
       },
       error: (err) => {
@@ -805,12 +801,7 @@ export class FichaPerinatalComponent implements OnInit {
 
     this.controlService.exportarControlPdf(ctrl.id).subscribe({
       next: (blob) => {
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `ControlPrenatal_${ctrl.id}.pdf`;
-        a.click();
-        window.URL.revokeObjectURL(url);
+        abrirPdfEnVisor(blob);
         Swal.close();
       },
       error: (err) => {

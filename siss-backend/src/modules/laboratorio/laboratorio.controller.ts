@@ -20,19 +20,19 @@ export class LaboratorioController {
   constructor(private readonly labService: LaboratorioService) {}
 
   @Get('catalogo')
-  @Permissions('laboratorio:leer')
+  @Permissions('laboratorio:leer,historia_clinica:leer,historia_clinica:crear')
   listarCatalogo(@Query() filtro: FiltroExamenDto) {
     return this.labService.listarCatalogo(filtro);
   }
 
   @Get('categorias')
-  @Permissions('laboratorio:leer')
+  @Permissions('laboratorio:leer,historia_clinica:leer,historia_clinica:crear')
   listarCategorias() {
     return this.labService.listarCategorias();
   }
 
   @Get('establecimiento/:id')
-  @Permissions('laboratorio:leer')
+  @Permissions('laboratorio:leer,historia_clinica:leer,historia_clinica:crear')
   listarPorEstablecimiento(@Param('id', ParseIntPipe) id: number) {
     return this.labService.listarPorEstablecimiento(id);
   }

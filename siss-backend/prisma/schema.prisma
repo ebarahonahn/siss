@@ -59,6 +59,7 @@ model Usuario {
   longitud                     Decimal?                     @db.Decimal(11, 8)
   agendasBase                  AgendaBase[]                 @relation("AgendaMedico")
   asignaciones                 AsignacionUsuario[]
+  reportesAsignados            UsuarioReporte[]
   auditLogs                    AuditLog[]
   embarazosCreados             Embarazo[]                   @relation("EmbarazoCreadoPor")
   embarazosActualizados        Embarazo[]                   @relation("EmbarazoActualizadoPor")
@@ -107,6 +108,9 @@ model Usuario {
   hitosCreados                 HitoDesarrolloPaciente[]     @relation("HitoCreadoPor")
   hitosActualizados            HitoDesarrolloPaciente[]     @relation("HitoActualizadoPor")
   hitosEliminados              HitoDesarrolloPaciente[]     @relation("HitoEliminadoPor")
+  esquemasCreados              EsquemaVacunacion[]          @relation("EsquemaCreadoPor")
+  esquemasActualizados         EsquemaVacunacion[]          @relation("EsquemaActualizadoPor")
+  esquemasInactivados          EsquemaVacunacion[]          @relation("EsquemaInactivadoPor")
 
   especialidad                 Especialidad?                @relation(fields: [especialidadId], references: [id])
   establecimiento              Establecimiento?             @relation(fields: [establecimientoId], references: [id])
@@ -274,9 +278,23 @@ model ReporteDisponible {
   /// Indica si el reporte está disponible actualmente
   activo      Boolean @default(true)
   /// Orden de aparición en el listado
-  orden       Int     @default(0)
+  orden             Int              @default(0)
+  usuariosAsignados UsuarioReporte[]
 
   @@map("reportes_disponibles")
+}
+
+/// Asignación individual de reportes a usuarios
+model UsuarioReporte {
+  id        Int               @id @default(autoincrement())
+  usuarioId Int
+  usuario   Usuario           @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  reporteId Int
+  reporte   ReporteDisponible @relation(fields: [reporteId], references: [id], onDelete: Cascade)
+  creadoEn  DateTime          @default(now())
+
+  @@unique([usuarioId, reporteId])
+  @@map("usuario_reportes")
 }
 
 /// Representa la habilitación de un servicio del catálogo en un establecimiento específico
@@ -290,6 +308,7 @@ model Servicio {
   /// ID del servicio del catálogo
   catServicioId     Int
   asignaciones      AsignacionUsuario[]
+  citas             Cita[]
   ingresos          IngresoHospitalario[]
   salas             Sala[]
   catServicio       CatServicio           @relation(fields: [catServicioId], references: [id])
@@ -418,6 +437,7 @@ model AsignacionUsuario {
   rol               Rol?            @relation(fields: [rolId], references: [id])
   servicio          Servicio?       @relation(fields: [servicioId], references: [id])
   usuario           Usuario         @relation(fields: [usuarioId], references: [id])
+  citas             Cita[]
 
   @@unique([usuarioId, establecimientoId, servicioId, especialidadId])
   @@index([especialidadId], map: "asignaciones_usuario_especialidadId_fkey")
@@ -639,6 +659,8 @@ model Cita {
   medicoId          Int
   /// ID del establecimiento donde se realizará la cita
   establecimientoId Int
+  servicioId        Int?
+  asignacionId      Int?
   /// Fecha y hora programada para la atención
   fechaHora         DateTime
   /// Tiempo estimado de duración del encuentro médico
@@ -663,6 +685,8 @@ model Cita {
   creadoPor         Usuario?         @relation("CitaCreadaPor", fields: [creadoPorId], references: [id])
   especialidad      Especialidad?    @relation(fields: [especialidadId], references: [id])
   establecimiento   Establecimiento  @relation(fields: [establecimientoId], references: [id])
+  servicio          Servicio?        @relation(fields: [servicioId], references: [id])
+  asignacion        AsignacionUsuario? @relation(fields: [asignacionId], references: [id])
   medico            Usuario          @relation("CitaMedico", fields: [medicoId], references: [id])
   paciente          Paciente         @relation(fields: [pacienteId], references: [id])
   historia          HistoriaClinica?
@@ -673,6 +697,8 @@ model Cita {
   @@index([creadoPorId], map: "citas_creadoPorId_fkey")
   @@index([especialidadId], map: "citas_especialidadId_fkey")
   @@index([establecimientoId], map: "citas_establecimientoId_fkey")
+  @@index([servicioId], map: "citas_servicioId_fkey")
+  @@index([asignacionId], map: "citas_asignacionId_fkey")
   @@index([medicoId], map: "citas_medicoId_fkey")
   @@index([pacienteId], map: "citas_pacienteId_fkey")
   @@map("citas")
@@ -1590,6 +1616,10 @@ model ExcepcionAgenda {
   fechaInicio       DateTime
   /// Fecha y hora de fin de la excepción
   fechaFin          DateTime
+  /// Hora de inicio específica (solo aplica si tipo es CAMBIO_HORARIO)
+  horaInicio        String?         @db.VarChar(5)
+  /// Hora de fin específica (solo aplica si tipo es CAMBIO_HORARIO)
+  horaFin           String?         @db.VarChar(5)
   /// Descripción detallada o notas administrativas
   descripcion       String?         @db.VarChar(500)
   /// Fecha de registro del evento
@@ -1641,10 +1671,31 @@ model EsquemaVacunacion {
   intervaloMinimoDias  Int?
   /// Notas sobre la aplicación (ej: Dosis única)
   descripcion          String?              @db.VarChar(200)
+  /// Indica si la dosis está activa
+  activo               Boolean              @default(true)
+  /// Fecha de registro de la dosis
+  creadoEn             DateTime             @default(now())
+  /// ID del usuario que creó el registro
+  creadoPorId          Int?
+  /// Fecha de última modificación
+  actualizadoEn        DateTime?            @updatedAt
+  /// ID del usuario que modificó el registro
+  actualizadoPorId     Int?
+  /// Fecha de inactivación lógica
+  inactivadoEn         DateTime?
+  /// ID del usuario que inactivó el registro
+  inactivadoPorId      Int?
+
   vacuna               CatVacuna            @relation(fields: [vacunaId], references: [id])
   registros            VacunacionRegistro[]
+  creadoPor            Usuario?             @relation("EsquemaCreadoPor", fields: [creadoPorId], references: [id])
+  actualizadoPor       Usuario?             @relation("EsquemaActualizadoPor", fields: [actualizadoPorId], references: [id])
+  inactivadoPor        Usuario?             @relation("EsquemaInactivadoPor", fields: [inactivadoPorId], references: [id])
 
   @@unique([vacunaId, numeroDosis])
+  @@index([creadoPorId], map: "esquemas_vacunacion_creadoPorId_fkey")
+  @@index([actualizadoPorId], map: "esquemas_vacunacion_actualizadoPorId_fkey")
+  @@index([inactivadoPorId], map: "esquemas_vacunacion_inactivadoPorId_fkey")
   @@map("esquemas_vacunacion")
 }
 
@@ -2499,6 +2550,8 @@ enum TipoExcepcion {
   INCAPACIDAD
   /// Permiso con o sin goce de sueldo para asuntos personales
   PERMISO_PERSONAL
+  /// Cambio de horario especial de trabajo para un rango de fechas específico
+  CAMBIO_HORARIO
   /// Otros motivos de ausencia
   OTRO
 }

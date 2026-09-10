@@ -31,7 +31,7 @@ export const routes: Routes = [
       {
         path: 'pacientes',
         canActivate: [roleGuard],
-        data: { title: 'Pacientes', roles: ['MEDICO', 'ENFERMERA', 'ADMIN', 'RECEPCIONISTA', 'ADMIN_ESTABLECIMIENTO'] },
+        data: { title: 'Pacientes', roles: ['MEDICO', 'ENFERMERA', 'ADMIN', 'RECEPCIONISTA', 'ADMIN_ESTABLECIMIENTO', 'ODONTOLOGIA'] },
         loadComponent: () =>
           import('./modules/pacientes/pacientes.component').then(
             (m) => m.PacientesComponent,
@@ -40,14 +40,14 @@ export const routes: Routes = [
       {
         path: 'citas',
         canActivate: [roleGuard],
-        data: { title: 'Citas Médicas', roles: ['MEDICO', 'ENFERMERA', 'ADMIN', 'RECEPCIONISTA', 'ADMIN_ESTABLECIMIENTO'] },
+        data: { title: 'Citas Médicas', roles: ['MEDICO', 'ENFERMERA', 'ADMIN', 'RECEPCIONISTA', 'ADMIN_ESTABLECIMIENTO', 'ODONTOLOGIA'] },
         loadComponent: () =>
           import('./modules/citas/citas.component').then((m) => m.CitasComponent),
       },
       {
         path: 'agendas',
         canActivate: [roleGuard],
-        data: { roles: ['MEDICO', 'ADMIN', 'ADMIN_ESTABLECIMIENTO'] },
+        data: { roles: ['MEDICO', 'ADMIN', 'ADMIN_ESTABLECIMIENTO', 'ODONTOLOGIA'] },
         loadComponent: () =>
           import('./modules/agendas/agendas.component').then((m) => m.AgendasComponent),
       },
@@ -84,14 +84,28 @@ export const routes: Routes = [
       {
         path: 'vacunacion/inventario',
         canActivate: [roleGuard],
-        data: { roles: ['ENFERMERA', 'ADMIN', 'MEDICO', 'ADMIN_ESTABLECIMIENTO'] },
+        data: { title: 'Inventario PAI (Vacunas)' },
         loadComponent: () =>
           import('./modules/vacunacion/inventario-vacunas.component').then((m) => m.InventarioVacunasComponent),
       },
       {
+        path: 'historial-unificado',
+        canActivate: [roleGuard],
+        data: { title: 'Historial Clínico Unificado' },
+        loadComponent: () =>
+          import('./modules/historial-unificado/historial-unificado.component').then((m) => m.HistorialUnificadoComponent),
+      },
+      {
+        path: 'historial-unificado/:pacienteId',
+        canActivate: [roleGuard],
+        data: { title: 'Historial Clínico Unificado' },
+        loadComponent: () =>
+          import('./modules/historial-unificado/historial-unificado.component').then((m) => m.HistorialUnificadoComponent),
+      },
+      {
         path: 'historia-clinica',
         canActivate: [roleGuard],
-        data: { roles: ['MEDICO', 'ENFERMERA', 'ADMIN'] },
+        data: { roles: ['MEDICO', 'ENFERMERA', 'ADMIN', 'ODONTOLOGIA'] },
         children: [
           {
             path: '',
@@ -142,7 +156,7 @@ export const routes: Routes = [
       {
         path: 'servicios/recetas-paciente',
         canActivate: [roleGuard],
-        data: { roles: ['FARMACEUTICO', 'ADMIN', 'MEDICO', 'ADMIN_ESTABLECIMIENTO'] },
+        data: { roles: ['FARMACEUTICO', 'ADMIN', 'MEDICO', 'ADMIN_ESTABLECIMIENTO', 'ODONTOLOGIA'] },
         loadComponent: () =>
           import('./modules/recetas-paciente/recetas-paciente.component').then(
             (m) => m.RecetasPacienteComponent,
@@ -209,6 +223,15 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./modules/mantenimiento-medicamentos/mantenimiento-medicamentos.component').then(
             (m) => m.MantenimientoMedicamentosComponent,
+          ),
+      },
+      {
+        path: 'mantenimiento/vacunas',
+        canActivate: [roleGuard],
+        data: { roles: ['ADMIN'] },
+        loadComponent: () =>
+          import('./modules/mantenimiento-vacunas/mantenimiento-vacunas.component').then(
+            (m) => m.MantenimientoVacunasComponent,
           ),
       },
       {

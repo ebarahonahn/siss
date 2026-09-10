@@ -25,13 +25,13 @@ export class RadiologiaController {
   constructor(private readonly radiologiaService: RadiologiaService) {}
 
   @Get('catalogo')
-  @Permissions('radiologia:leer')
+  @Permissions('radiologia:leer,historia_clinica:leer,historia_clinica:crear')
   listarCatalogo(@Query() filtro: FiltroEstudioDto) {
     return this.radiologiaService.listarCatalogo(filtro);
   }
 
   @Get('categorias')
-  @Permissions('radiologia:leer')
+  @Permissions('radiologia:leer,historia_clinica:leer,historia_clinica:crear')
   listarCategorias() {
     return this.radiologiaService.listarCategorias();
   }

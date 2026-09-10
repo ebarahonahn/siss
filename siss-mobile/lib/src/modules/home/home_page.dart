@@ -7,9 +7,7 @@ import 'package:siss_mobile/src/modules/prenatal/controles_prenatales_page.dart'
 import 'package:siss_mobile/src/modules/inventario/stock_page.dart';
 import 'package:siss_mobile/src/core/auth/auth_service.dart';
 import 'package:dio/dio.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:open_filex/open_filex.dart';
-import 'dart:io';
+import 'package:siss_mobile/src/core/files/pdf_file.dart';
 import 'package:siss_mobile/src/core/api/api_service.dart';
 import 'package:intl/intl.dart';
 
@@ -27,6 +25,7 @@ class _HomePageState extends State<HomePage> {
   final List<Map<String, dynamic>> _medicamentos = [];
   bool _isLoading = true;
   bool _downloadingPdf = false;
+  bool _errorTratamientos = false;
 
   @override
   void initState() {
@@ -36,8 +35,10 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _loadData() async {
     setState(() => _isLoading = true);
+    _errorTratamientos = false;
     try {
       // 1. Cargar Citas
+      try {
       final citasResponse = await _api.get('/citas');
       final Map<String, dynamic> citasBody = citasResponse.data;
       debugPrint('DEBUG: Citas Response Body: $citasBody');
@@ -46,6 +47,9 @@ class _HomePageState extends State<HomePage> {
         final List<dynamic> citas = citasBody['data'];
         debugPrint('DEBUG: Numero de citas encontradas: ${citas.length}');
         _proximaCita = citas.isNotEmpty ? citas.first : null;
+      }
+      } catch (e) {
+        debugPrint('Error cargando citas: $e');
       }
 
       // 2. Cargar Perfil y Embarazo
@@ -65,22 +69,16 @@ class _HomePageState extends State<HomePage> {
             debugPrint('Error buscando embarazo activo: $e');
           }
 
-          final List<dynamic> meds = perfil['medicamentosActivos'] ?? [];
-          
+          final List<dynamic> meds = perfil['tratamientosActuales'];
           _medicamentos.clear();
-          for (var m in meds) {
-            final medInfo = m['medicamento'];
-            _medicamentos.add({
-              'nombre': medInfo['nombre'],
-              'dosis': m['dosis'],
-              'frecuencia': m['frecuencia'],
-              'proximaToma': '--:--',
-            });
-          }
+          _medicamentos.addAll(meds.map((m) => Map<String, dynamic>.from(m)));
+        } else {
+          throw StateError('No se recibió el perfil');
         }
       } catch (e) {
         debugPrint('Nota: No se pudo cargar el perfil del paciente: $e');
         _medicamentos.clear();
+        _errorTratamientos = true;
         _embarazoActivo = null;
       }
     } catch (e) {
@@ -93,40 +91,32 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _downloadPdf() async {
-    if (_embarazoActivo == null) return;
+    if (_embarazoActivo == null || _downloadingPdf) return;
 
     setState(() => _downloadingPdf = true);
 
     try {
       final id = _embarazoActivo!['id'];
       
-      // Obtener el directorio temporal para guardar el archivo
-      final tempDir = await getTemporaryDirectory();
-      final fullPath = '${tempDir.path}/carnet_prenatal_$id.pdf';
-
-      debugPrint('DEBUG: Iniciando descarga de PDF en $fullPath');
-
       // Descargar el archivo usando Dio
-      final response = await _api.getDio().get(
+      final response = await _api.getDio().get<List<int>>(
         '/control-prenatal/export/$id/pdf',
         options: Options(
           responseType: ResponseType.bytes,
+          headers: {'Accept': 'application/pdf'},
         ),
       );
 
-      // Guardar el archivo
-      final file = File(fullPath);
-      await file.writeAsBytes(response.data);
-
-      debugPrint('DEBUG: PDF guardado con éxito. Abriendo...');
-
-      // Abrir el archivo
-      final result = await OpenFilex.open(fullPath);
+      final bytes = response.data;
+      if (bytes == null || bytes.isEmpty) {
+        throw StateError('El servidor devolvió un PDF vacío');
+      }
+      final errorApertura = await saveAndOpenPdf(bytes, 'carnet_prenatal_$id.pdf');
       
-      if (result.type != ResultType.done) {
+      if (errorApertura != null) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('No se pudo abrir el PDF: ${result.message}')),
+            SnackBar(content: Text('No se pudo abrir el PDF: $errorApertura')),
           );
         }
       }
@@ -235,16 +225,19 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(height: 24),
 
             // Medicamentos Activos
-            _buildSectionTitle('Medicamentos de Hoy'),
+            _buildSectionTitle('Mi tratamiento actual'),
             const SizedBox(height: 8),
-            _medicamentos.isEmpty
+            _errorTratamientos
+              ? Card(child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                    const Text('No se pudieron cargar los tratamientos.'),
+                    TextButton(onPressed: _loadData, child: const Text('Reintentar')),
+                  ])))
+              : _medicamentos.isEmpty
               ? _buildEmptyMedicationsCard()
               : Column(
-                  children: _medicamentos.map((m) => _buildMedicationItem(
-                    m['nombre'], 
-                    '${m['dosis']} - ${m['frecuencia']}', 
-                    m['proximaToma']
-                  )).toList(),
+                  children: _medicamentos.map(_buildMedicationItem).toList(),
                 ),
           ],
         ),
@@ -435,54 +428,43 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildMedicationItem(String name, String dose, String time) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10)],
-      ),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(color: Colors.blue.shade50, borderRadius: BorderRadius.circular(10)),
-            child: Icon(Icons.medication, color: Colors.blue.shade700),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                Text(dose, style: TextStyle(color: Colors.grey[600], fontSize: 14)),
-              ],
-            ),
-          ),
-          Text(time, style: const TextStyle(color: Color(0xFF1E88E5), fontWeight: FontWeight.bold)),
-        ],
-      ),
-    );
+  void _verRecetas() {
+    Navigator.push(context, MaterialPageRoute(builder: (_) => const FarmaciaPage()));
   }
 
-  Widget _buildEmptyMedicationsCard() {
+  String _fechaTratamiento(dynamic value) {
+    final fecha = DateTime.tryParse(value?.toString() ?? '');
+    return fecha == null ? 'Fecha no disponible' : DateFormat('dd/MM/yyyy').format(fecha);
+  }
+
+  Widget _buildMedicationItem(Map<String, dynamic> tratamiento) {
+    final inicio = _fechaTratamiento(tratamiento['inicio']);
+    final fin = tratamiento['fin'];
+    final recetaId = tratamiento['recetaId'];
     return Card(
-      elevation: 0,
-      color: Colors.white,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: BorderSide(color: Colors.grey.shade200)),
-      child: const Padding(
-        padding: EdgeInsets.all(20.0),
-        child: Row(
+      margin: const EdgeInsets.only(bottom: 12),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Icon(Icons.info_outline, color: Colors.grey),
-            SizedBox(width: 12),
-            Expanded(
-              child: Text(
-                'No tienes medicamentos programados para hoy.',
-                style: TextStyle(color: Colors.grey, fontSize: 14),
-              ),
+            Text(tratamiento['nombre'] ?? 'Medicamento sin nombre',
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+            const SizedBox(height: 4),
+            Text('Dosis: ${tratamiento['dosis']}'),
+            Text('Frecuencia: ${tratamiento['frecuencia']}'),
+            if ((tratamiento['indicaciones'] ?? '').toString().trim().isNotEmpty)
+              Text('Indicaciones: ${tratamiento['indicaciones']}'),
+            const SizedBox(height: 8),
+            Text(fin == null ? 'Desde $inicio · Tratamiento continuo'
+                : '$inicio al ${_fechaTratamiento(fin)}'),
+            if (tratamiento['periodoPrescrito'] == true)
+              const Text('Período prescrito desde la consulta; no confirma el inicio de las tomas.',
+                  style: TextStyle(fontSize: 12, color: Colors.grey)),
+            TextButton(
+              onPressed: () => Navigator.push(context, MaterialPageRoute(
+                builder: (_) => FarmaciaPage(recetaId: recetaId))),
+              child: Text(recetaId == null ? 'Ver mis recetas' : 'Ver receta #$recetaId'),
             ),
           ],
         ),
@@ -490,6 +472,20 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Widget _buildEmptyMedicationsCard() {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('No hay tratamientos activos registrados. Consulta tus recetas.'),
+            TextButton(onPressed: _verRecetas, child: const Text('Ver mis recetas')),
+          ],
+        ),
+      ),
+    );
+  }
   Widget _buildVitalSignsCard(Map<String, dynamic>? signos) {
     if (signos == null || (signos['presionSistolica'] == null && signos['temperatura'] == null)) {
       return Card(
@@ -659,3 +655,4 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+

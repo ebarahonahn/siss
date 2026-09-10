@@ -8,7 +8,7 @@
     <div class="flex flex-wrap items-center justify-between gap-3">
       <div>
         <h2 class="text-xl font-bold text-gray-900">Triaje de pacientes</h2>
-        <p class="text-sm text-gray-500 mt-0.5">Protocolo SESAL — Sistema de clasificación por color</p>
+        <p class="text-sm text-gray-500 mt-0.5">Protocolo SISS — Sistema de clasificación por color</p>
       </div>
       <input type="date" [(ngModel)]="fechaFiltro" (change)="cargar()"
              [class.ring-2]="!esFechaValida(fechaFiltro)"
@@ -54,8 +54,8 @@
           <div class="flex items-center gap-4 min-w-0">
             <!-- Hora -->
             <div class="text-center flex-shrink-0 w-14">
-              <p class="text-xl font-bold text-gray-800 leading-none">{{ cita.fechaHora | date:'h:mm a' }}</p>
-              <p class="text-xs text-gray-400 mt-0.5">{{ cita.fechaHora | date:'dd/MM' }}</p>
+              <p class="text-xl font-bold text-gray-800 leading-none">{{ cita.fechaHora | date:'h:mm a':'UTC' }}</p>
+              <p class="text-xs text-gray-400 mt-0.5">{{ cita.fechaHora | date:'dd/MM':'UTC' }}</p>
             </div>
 
             <div class="min-w-0">
@@ -66,6 +66,15 @@
                 <span [ngClass]="tipoBadge(cita.tipo)"
                       class="text-xs font-medium px-2 py-0.5 rounded-full flex-shrink-0">
                   {{ cita.tipo.replace('_', ' ') }}
+                </span>
+                <!-- Badge de Especialidad/Servicio -->
+                <span *ngIf="cita.especialidad"
+                      class="inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full flex-shrink-0 bg-violet-50 text-violet-700 border border-violet-200">
+                  <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 8h10"/>
+                  </svg>
+                  {{ cita.especialidad.nombre }}
                 </span>
                 <!-- Badge si ya tiene triaje -->
                 <span *ngIf="cita.triaje"
@@ -79,7 +88,7 @@
                 DNI: {{ cita.paciente.dni }} &nbsp;·&nbsp;
                 Exp: {{ cita.paciente.numeroExpediente }} &nbsp;·&nbsp;
                 {{ edad(cita.paciente.fechaNacimiento) }} años &nbsp;·&nbsp;
-                {{ cita.medico.apellidos }}
+                {{ cita.medico.nombres }} {{ cita.medico.apellidos }}
               </p>
               <p *ngIf="cita.motivo" class="text-xs text-gray-400 mt-0.5 italic truncate max-w-sm">
                 "{{ cita.motivo }}"
@@ -131,7 +140,7 @@
             DNI {{ citaSeleccionada()!.paciente.dni }} &nbsp;·&nbsp;
             Exp {{ citaSeleccionada()!.paciente.numeroExpediente }} &nbsp;·&nbsp;
             {{ edad(citaSeleccionada()!.paciente.fechaNacimiento) }} años &nbsp;·&nbsp;
-            Cita {{ citaSeleccionada()!.fechaHora | date:'h:mm a' }} — {{ citaSeleccionada()!.medico.apellidos }}
+            Cita {{ citaSeleccionada()!.fechaHora | date:'h:mm a':'UTC' }} — {{ citaSeleccionada()!.medico.nombres }} {{ citaSeleccionada()!.medico.apellidos }}
           </p>
         </div>
       </div>
@@ -284,7 +293,7 @@
           </span>
         </h3>
         <input type="range" formControlName="escalaDolor" min="0" max="10" step="1"
-               class="w-full h-2 rounded-full appearance-none cursor-pointer
+               class="w-full h-2 rounded-full appearance-none cursor-pointer disabled:cursor-default
                       bg-gradient-to-r from-green-400 via-yellow-400 to-red-500"/>
         <div class="flex justify-between text-xs text-gray-400 mt-1">
           <span>0 Sin dolor</span>
@@ -298,7 +307,8 @@
         <h3 class="text-sm font-bold text-gray-700 uppercase tracking-wider mb-4">Nivel de conciencia — AVDI</h3>
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
           <button *ngFor="let c of conciencias" type="button"
-                  (click)="form.patchValue({ nivelConciencia: c.valor })"
+                  [disabled]="soloLectura()"
+                  (click)="!soloLectura() && form.patchValue({ nivelConciencia: c.valor })"
                   [ngClass]="form.get('nivelConciencia')?.value === c.valor
                     ? 'bg-blue-600 border-blue-600 text-white'
                     : 'bg-white border-gray-200 text-gray-700 hover:border-blue-300'"
@@ -314,10 +324,11 @@
         <h3 class="text-sm font-bold text-gray-700 uppercase tracking-wider mb-1">
           Clasificación de triaje <span class="text-red-500">*</span>
         </h3>
-        <p class="text-xs text-gray-400 mb-4">Protocolo SESAL — Sistema Manchester adaptado</p>
+        <p class="text-xs text-gray-400 mb-4">Protocolo SISS — Sistema Manchester adaptado</p>
 
         <div class="grid grid-cols-1 sm:grid-cols-5 gap-3">
           <button *ngFor="let cat of categorias" type="button"
+                  [disabled]="soloLectura()"
                   (click)="seleccionarCategoria(cat.valor)"
                   [ngClass]="form.get('categoria')?.value === cat.valor
                     ? [cat.bg, cat.text, 'ring-4', cat.ring, 'scale-105 shadow-lg']

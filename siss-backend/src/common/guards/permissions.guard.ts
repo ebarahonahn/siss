@@ -27,6 +27,10 @@ export class PermissionsGuard implements CanActivate {
     const { user } = request;
     console.log(`[PERMISSIONS] Validando '${permisoRequerido}' para usuario: ${user?.correo} | DNI: ${user?.dni} | Permisos: ${JSON.stringify(user?.permisos)}`);
 
+    if (user?.rol === 'ADMIN') {
+      return true;
+    }
+
     if (!user || !user.permisos) {
       console.log('[PERMISSIONS] Usuario sin permisos');
       throw new ForbiddenException(
@@ -36,30 +40,42 @@ export class PermissionsGuard implements CanActivate {
 
     const permisos = user.permisos;
 
-    // Soporte para nuevo formato (array plano de strings)
+    const permisosRequeridos = permisoRequerido.split(',');
+
+    // Soporte para formato array (ej. ['pediatria:leer', 'pediatria'])
     if (Array.isArray(permisos)) {
-      const hasPermission = permisos.includes('all') || permisos.includes(permisoRequerido);
-      console.log(`[PERMISSIONS] Evaluando array. Requerido: ${permisoRequerido} | Resultado: ${hasPermission}`);
+      if (permisos.includes('all')) return true;
+      const hasPermission = permisosRequeridos.some(req => {
+        const modulo = req.split(':')[0];
+        return (
+          permisos.includes(req) ||
+          permisos.includes(modulo) ||
+          permisos.some(p => p === modulo || p.startsWith(`${modulo}:`))
+        );
+      });
+      console.log(`[PERMISSIONS] Evaluando array. Requeridos: ${permisosRequeridos} | Resultado: ${hasPermission}`);
       if (hasPermission) return true;
-      console.log(`[PERMISSIONS] Denegado: ${permisoRequerido} no está en ${permisos}`);
+      console.log(`[PERMISSIONS] Denegado: ninguno de ${permisosRequeridos} está en ${permisos}`);
       throw new ForbiddenException(
         `No tiene el permiso necesario (${permisoRequerido}) para realizar esta acción`,
       );
     }
 
-    // Soporte para formato antiguo (objeto)
+    // Soporte para formato objeto (ej. { pediatria: ['leer'] })
     if (permisos && typeof permisos === 'object') {
       console.log('[PERMISSIONS] Evaluando objeto');
       if (permisos.all === true) return true;
-      const [modulo, accion] = permisoRequerido.split(':');
-      const permisosModulo = permisos[modulo];
-      if (
-        permisosModulo &&
-        Array.isArray(permisosModulo) &&
-        permisosModulo.includes(accion)
-      ) {
-        return true;
-      }
+      
+      const hasPermission = permisosRequeridos.some(req => {
+        const [modulo, accion] = req.split(':');
+        const permisosModulo = permisos[modulo];
+        // Tener asignado el módulo (objeto no vacío / true) otorga acceso total a cualquier acción del módulo
+        if (!permisosModulo) return false;
+        if (Array.isArray(permisosModulo)) return permisosModulo.length > 0;
+        return !!permisosModulo;
+      });
+
+      if (hasPermission) return true;
     }
 
     console.log('[PERMISSIONS] Denegado al final');

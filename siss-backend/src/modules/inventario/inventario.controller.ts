@@ -56,6 +56,18 @@ export class InventarioController {
     return this.svc.stockBajo(user.establecimientoId);
   }
 
+  @Get('productos-historial')
+  @Permissions('inventario:leer')
+  productosHistorial(@CurrentUser() user: any) {
+    return this.svc.productosConHistorial(user.establecimientoId);
+  }
+
+  @Get('productos/:medicamentoId/movimientos')
+  @Permissions('inventario:leer')
+  movimientosProducto(@Param('medicamentoId', ParseIntPipe) id: number, @CurrentUser() user: any) {
+    return this.svc.movimientosPorProducto(id, user.establecimientoId);
+  }
+
   @Get(':id')
   @Permissions('inventario:leer')
   obtener(@Param('id', ParseIntPipe) id: number) {

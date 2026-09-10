@@ -14,38 +14,121 @@ export class PdfService {
   private getPrinter() {
     const pdfmake = require('pdfmake');
     pdfmake.setFonts(this.fonts);
+    pdfmake.setUrlAccessPolicy(() => false);
     return pdfmake;
+  }
+
+  private async generarBuffer(doc: any): Promise<Buffer> {
+    const stream = await doc.getStream();
+    return new Promise((resolve, reject) => {
+      const chunks: Buffer[] = [];
+      stream.on('data', (chunk: Buffer) => chunks.push(chunk));
+      stream.once('error', reject);
+      stream.once('end', () => resolve(Buffer.concat(chunks)));
+      stream.end();
+    });
   }
 
   // --- MÉTODOS DE HOSPITALIZACIÓN ---
   async generarNotasEvolucion(paciente: any, ingreso: any, notas: any[]) {
     const pdfmake = this.getPrinter();
+    const valor = (v: any) => v === null || v === undefined || v === '' ? 'No registrado' : String(v);
+    const nombre = (p: any) => [p?.nombres, p?.apellidos].filter(Boolean).join(' ') || 'No registrado';
+    const fecha = (v: any) => {
+      const d = v ? new Date(v) : null;
+      return !d || Number.isNaN(d.getTime()) ? 'No registrada' : d.toLocaleString('es-HN', {
+        timeZone: 'UTC', day: '2-digit', month: '2-digit', year: 'numeric',
+        hour: '2-digit', minute: '2-digit', hour12: false,
+      });
+    };
     const docDefinition: any = {
-      pageSize: 'LETTER',
+      pageSize: 'LETTER', pageMargins: [40, 40, 40, 40],
+      defaultStyle: { font: 'Roboto', fontSize: 10, color: '#1e293b' },
       content: [
         { text: 'SISTEMA INTEGRAL DE SALUD (SISS)', style: 'header' },
         { text: 'NOTAS DE EVOLUCIÓN', style: 'title', alignment: 'center', margin: [0, 10] },
-        ...notas.map(n => ({ text: `[${new Date(n.fecha).toLocaleString()}] ${n.nota}`, margin: [0, 5], fontSize: 9 }))
+        { text: `Paciente: ${nombre(paciente)}`, bold: true },
+        { text: `DNI: ${valor(paciente?.dni)} | Expediente: ${valor(paciente?.numeroExpediente)}`, margin: [0, 4, 0, 4] },
+        { text: `Ingreso #${valor(ingreso?.id)} | Fecha: ${fecha(ingreso?.fechaIngreso)}` },
+        { text: `Motivo de ingreso: ${valor(ingreso?.motivoIngreso)}`, margin: [0, 4, 0, 4] },
+        { text: `Diagnóstico de ingreso: ${valor(ingreso?.diagnosticoIngreso)} | CIE-10: ${valor(ingreso?.cie10Ingreso)}`, margin: [0, 0, 0, 16] },
+        ...(notas.length ? notas.flatMap(n => [
+          { text: `Fecha de evolución: ${fecha(n.fecha)}`, bold: true, color: '#334155', margin: [0, 10, 0, 4] },
+          { text: `Médico responsable: ${nombre(n.medico)}`, margin: [0, 0, 0, 8] },
+          {
+            table: { widths: ['*', '*', '*', '*', '*'], body: [
+              ['FC (lpm)', 'FR (rpm)', 'PA (mmHg)', 'Temp. (°C)', 'SatO2 (%)'].map(text => ({ text, bold: true, fillColor: '#e2e8f0' })),
+              [valor(n.frecuenciaCardiaca), valor(n.frecuenciaRespiratoria), valor(n.presionArterial), valor(n.temperatura), valor(n.saturacionOxigeno)],
+            ] }, layout: 'lightHorizontalLines', fontSize: 9, margin: [0, 0, 0, 8],
+          },
+          { text: 'Evolución médica', bold: true, margin: [0, 0, 0, 4] },
+          { text: valor(n.nota), margin: [0, 0, 0, 16], lineHeight: 1.2 },
+        ]) : [{ text: 'No hay notas de evolución registradas.' }]),
       ],
-      styles: { header: { fontSize: 10, bold: true }, title: { fontSize: 14, bold: true } }
+      styles: { header: { fontSize: 10, bold: true }, title: { fontSize: 16, bold: true } },
+      footer: (page: number, pages: number) => ({ text: `Evolución médica | Página ${page} de ${pages}`, alignment: 'right', fontSize: 8, margin: [40, 10, 40, 0] }),
     };
     const doc = pdfmake.createPdf(docDefinition);
-    const stream = await doc.getStream();
-    stream.end();
-    return stream;
+    return this.generarBuffer(doc);
   }
 
   async generarKardex(paciente: any, ingreso: any, kardex: any[], signos: any[]) {
     const pdfmake = this.getPrinter();
+    const valor = (v: any) => v === null || v === undefined || v === '' ? '-' : String(v);
+    const nombre = (p: any) => [p?.nombres, p?.apellidos].filter(Boolean).join(' ') || '-';
+    // Hospitalización guarda las fechas como hora local literal en UTC.
+    const fecha = (v: any) => {
+      if (!v) return '-';
+      const d = new Date(v);
+      return Number.isNaN(d.getTime()) ? '-' : d.toLocaleString('es-HN', {
+        timeZone: 'UTC', day: '2-digit', month: '2-digit', year: 'numeric',
+        hour: '2-digit', minute: '2-digit', hour12: false,
+      });
+    };
+    const tabla = (headers: string[], widths: any[], rows: any[][]) => ({
+      table: {
+        headerRows: 1, widths,
+        body: [headers.map(text => ({ text, bold: true, color: '#ffffff', fillColor: '#334155' })), ...rows],
+      },
+      layout: 'lightHorizontalLines', fontSize: 8, margin: [0, 6, 0, 16],
+    });
     const docDefinition: any = {
-      pageSize: 'LETTER',
-      content: [{ text: 'KARDEX DE ENFERMERÍA', style: 'title', alignment: 'center' }],
-      styles: { title: { fontSize: 14, bold: true } }
+      pageSize: 'LETTER', pageOrientation: 'landscape', pageMargins: [30, 30, 30, 35],
+      defaultStyle: { font: 'Roboto', fontSize: 9, color: '#1e293b' },
+      content: [
+        { text: 'SISTEMA INTEGRAL DE SALUD', fontSize: 9, color: '#64748b' },
+        { text: 'KARDEX DE ENFERMERÍA', style: 'title', margin: [0, 5, 0, 12] },
+        { text: `Paciente: ${nombre(paciente)}`, bold: true },
+        { text: `DNI: ${valor(paciente?.dni)}    Expediente: ${valor(paciente?.numeroExpediente)}    Ingreso: ${valor(ingreso?.id)}`, margin: [0, 4, 0, 14] },
+        { text: 'ADMINISTRACIÓN DE MEDICAMENTOS', style: 'section' },
+        kardex.length ? tabla(
+          ['Programación / aplicación', 'Medicamento', 'Dosis / vía', 'Estado', 'Responsable', 'Observaciones'],
+          [110, '*', 85, 78, 100, '*'],
+          kardex.map(k => [
+            `${fecha(k.fechaProgramada)}\nAplicación: ${fecha(k.fechaAplicacion)}`,
+            valor(k.medicamento?.nombreGenerico), `${valor(k.dosis)}\n${valor(k.via)}`,
+            valor(k.estado), nombre(k.enfermera), valor(k.observaciones),
+          ]),
+        ) : { text: 'No hay administraciones de medicamentos registradas.', margin: [0, 6, 0, 16] },
+        { text: 'CONTROL DE SIGNOS VITALES', style: 'section' },
+        signos.length ? tabla(
+          ['Fecha / hora', 'FC / FR', 'PA', 'Temp. / SatO2', 'Peso / Glucosa', 'Responsable', 'Observaciones'],
+          [95, 65, 55, 80, 85, 105, '*'],
+          signos.map(s => [
+            fecha(s.fecha), `${valor(s.frecuenciaCardiaca)} lpm\n${valor(s.frecuenciaRespiratoria)} rpm`,
+            valor(s.presionArterial), `${valor(s.temperatura)} °C\n${valor(s.saturacionOxigeno)} %`,
+            `${valor(s.pesoKg)} kg\n${valor(s.glucoMetria)} mg/dL`, nombre(s.usuario), valor(s.observaciones),
+          ]),
+        ) : { text: 'No hay signos vitales registrados.', margin: [0, 6, 0, 16] },
+      ],
+      styles: { title: { fontSize: 18, bold: true }, section: { fontSize: 11, bold: true } },
+      footer: (page: number, pages: number) => ({
+        text: `Kardex de enfermería | Página ${page} de ${pages}`, alignment: 'right', fontSize: 8,
+        color: '#64748b', margin: [30, 10, 30, 0],
+      }),
     };
     const doc = pdfmake.createPdf(docDefinition);
-    const stream = await doc.getStream();
-    stream.end();
-    return stream;
+    return this.generarBuffer(doc);
   }
 
   // --- MÉTODOS DE CONTROL PRENATAL ---
@@ -1657,4 +1740,3 @@ export class PdfService {
     return stream;
   }
 }
-

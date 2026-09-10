@@ -187,4 +187,194 @@ export class VacunacionService {
       orderBy: { fecha: 'desc' }
     });
   }
+
+  // --- MANTENIMIENTO DE VACUNAS Y ESQUEMAS ---
+
+  async listarVacunasMantenimiento(page: number = 1, limit: number = 20, search?: string) {
+    const skip = (page - 1) * limit;
+    const where: any = {};
+
+    if (search) {
+      where.OR = [
+        { nombre: { contains: search } },
+        { descripcion: { contains: search } },
+        { poblacionMeta: { contains: search } }
+      ];
+    }
+
+    const [data, total] = await Promise.all([
+      this.prisma.catVacuna.findMany({
+        where,
+        include: { 
+          esquemas: {
+            orderBy: { numeroDosis: 'asc' },
+            include: {
+              creadoPor: { select: { nombres: true, apellidos: true } },
+              actualizadoPor: { select: { nombres: true, apellidos: true } },
+              inactivadoPor: { select: { nombres: true, apellidos: true } }
+            }
+          }
+        },
+        orderBy: { nombre: 'asc' },
+        skip,
+        take: limit,
+      }),
+      this.prisma.catVacuna.count({ where })
+    ]);
+
+    return {
+      data,
+      total,
+      pagina: page,
+      totalPaginas: Math.ceil(total / limit)
+    };
+  }
+
+  async obtenerVacunaMantenimiento(id: number) {
+    const vacuna = await this.prisma.catVacuna.findUnique({
+      where: { id },
+      include: {
+        esquemas: {
+          orderBy: { numeroDosis: 'asc' },
+          include: {
+            creadoPor: { select: { nombres: true, apellidos: true } },
+            actualizadoPor: { select: { nombres: true, apellidos: true } },
+            inactivadoPor: { select: { nombres: true, apellidos: true } }
+          }
+        }
+      }
+    });
+
+    if (!vacuna) throw new NotFoundException('Vacuna no encontrada');
+    return vacuna;
+  }
+
+  async crearVacuna(dto: any) {
+    const existente = await this.prisma.catVacuna.findUnique({
+      where: { nombre: dto.nombre }
+    });
+    if (existente) {
+      throw new BadRequestException('Ya existe una vacuna registrada con este nombre');
+    }
+
+    return this.prisma.catVacuna.create({
+      data: dto
+    });
+  }
+
+  async actualizarVacuna(id: number, dto: any) {
+    const vacuna = await this.prisma.catVacuna.findUnique({ where: { id } });
+    if (!vacuna) throw new NotFoundException('Vacuna no encontrada');
+
+    if (dto.nombre && dto.nombre !== vacuna.nombre) {
+      const existente = await this.prisma.catVacuna.findUnique({
+        where: { nombre: dto.nombre }
+      });
+      if (existente) {
+        throw new BadRequestException('Ya existe otra vacuna registrada con este nombre');
+      }
+    }
+
+    return this.prisma.catVacuna.update({
+      where: { id },
+      data: dto
+    });
+  }
+
+  async desactivarVacuna(id: number) {
+    const vacuna = await this.prisma.catVacuna.findUnique({ where: { id } });
+    if (!vacuna) throw new NotFoundException('Vacuna no encontrada');
+
+    // Desactivamos lógicamente la vacuna
+    return this.prisma.catVacuna.update({
+      where: { id },
+      data: { activo: !vacuna.activo } // Toggle activo
+    });
+  }
+
+  async crearEsquema(vacunaId: number, dto: any, userId: number) {
+    const vacuna = await this.prisma.catVacuna.findUnique({ where: { id: vacunaId } });
+    if (!vacuna) throw new NotFoundException('Vacuna no encontrada');
+
+    // Verificar si ya existe esa dosis
+    const dosisExistente = await this.prisma.esquemaVacunacion.findUnique({
+      where: {
+        vacunaId_numeroDosis: {
+          vacunaId,
+          numeroDosis: dto.numeroDosis
+        }
+      }
+    });
+
+    if (dosisExistente) {
+      throw new BadRequestException(`Ya existe la dosis número ${dto.numeroDosis} para esta vacuna`);
+    }
+
+    return this.prisma.esquemaVacunacion.create({
+      data: {
+        ...dto,
+        vacunaId,
+        creadoPorId: userId,
+        activo: true
+      }
+    });
+  }
+
+  async actualizarEsquema(vacunaId: number, esquemaId: number, dto: any, userId: number) {
+    const esquema = await this.prisma.esquemaVacunacion.findUnique({ where: { id: esquemaId } });
+    if (!esquema || esquema.vacunaId !== vacunaId) {
+      throw new NotFoundException('Dosis del esquema no encontrada');
+    }
+
+    if (dto.numeroDosis && dto.numeroDosis !== esquema.numeroDosis) {
+      const dosisExistente = await this.prisma.esquemaVacunacion.findUnique({
+        where: {
+          vacunaId_numeroDosis: {
+            vacunaId,
+            numeroDosis: dto.numeroDosis
+          }
+        }
+      });
+
+      if (dosisExistente) {
+        throw new BadRequestException(`Ya existe la dosis número ${dto.numeroDosis} para esta vacuna`);
+      }
+    }
+
+    const updateData: any = { ...dto, actualizadoPorId: userId };
+    
+    // Si el esquema se está reactivando (por ejemplo, pasando de inactivo a activo)
+    if (dto.activo === true && esquema.activo === false) {
+      updateData.inactivadoEn = null;
+      updateData.inactivadoPorId = null;
+    } else if (dto.activo === false && esquema.activo === true) {
+      // Si se está desactivando explícitamente a través del update
+      updateData.inactivadoEn = new Date();
+      updateData.inactivadoPorId = userId;
+    }
+
+    return this.prisma.esquemaVacunacion.update({
+      where: { id: esquemaId },
+      data: updateData
+    });
+  }
+
+  async eliminarEsquema(vacunaId: number, esquemaId: number, userId: number) {
+    const esquema = await this.prisma.esquemaVacunacion.findUnique({ where: { id: esquemaId } });
+    if (!esquema || esquema.vacunaId !== vacunaId) {
+      throw new NotFoundException('Dosis del esquema no encontrada');
+    }
+
+    // Para mantener el historial clínico íntegro y permitir la auditoría de inactivaciones,
+    // realizamos una inactivación lógica asignando activo: false, inactivadoPorId: userId e inactivadoEn: Date.
+    return this.prisma.esquemaVacunacion.update({
+      where: { id: esquemaId },
+      data: {
+        activo: false,
+        inactivadoEn: new Date(),
+        inactivadoPorId: userId,
+        actualizadoPorId: userId
+      }
+    });
+  }
 }

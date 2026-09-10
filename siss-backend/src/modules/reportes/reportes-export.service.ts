@@ -4,6 +4,54 @@ import { Response } from 'express';
 
 @Injectable()
 export class ReportesExportService {
+  crearLibroAt1(data: any[], inicio: string, fin: string) {
+    const workbook = new ExcelJS.Workbook();
+    workbook.creator = 'SISS';
+    const sheet = workbook.addWorksheet('AT-1', {
+      views: [{ state: 'frozen', ySplit: 5 }],
+      pageSetup: { orientation: 'landscape', paperSize: 5, fitToPage: true, fitToWidth: 1, fitToHeight: 0, printTitlesRow: '1:5' },
+    });
+    sheet.columns = [
+      { key: 'numero', width: 6 }, { key: 'atencionId', width: 10 },
+      { key: 'fecha', width: 12 }, { key: 'hora', width: 8 },
+      { key: 'establecimiento', width: 25 }, { key: 'medico', width: 28 },
+      { key: 'colegiado', width: 12 }, { key: 'especialidad', width: 20 },
+      { key: 'tipo', width: 16 }, { key: 'expediente', width: 16 },
+      { key: 'identidad', width: 18 }, { key: 'paciente', width: 30 },
+      { key: 'nacimiento', width: 12 }, { key: 'edad', width: 12 },
+      { key: 'sexo', width: 12 }, { key: 'procedencia', width: 30 },
+      { key: 'diagnosticos', width: 60 },
+    ];
+    sheet.mergeCells('A1:Q1'); sheet.getCell('A1').value = 'AT-1 · Registro Diario de Atenciones Médicas';
+    sheet.getCell('A1').font = { bold: true, size: 16, color: { argb: 'FFFFFF' } };
+    sheet.getCell('A1').fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: '1E293B' } };
+    sheet.getRow(1).height = 30;
+    sheet.mergeCells('A2:Q2'); sheet.getCell('A2').value = `Período: ${inicio} al ${fin} · Total de atenciones: ${data.length}`;
+    sheet.mergeCells('A3:Q3'); sheet.getCell('A3').value = 'Versión SISS · Una fila por atención registrada; edad a la fecha de atención. Campos sin registro en blanco.';
+    sheet.getRow(5).values = ['N.º', 'Atención ID', 'Fecha', 'Hora', 'Establecimiento', 'Médico', 'Colegiado', 'Especialidad', 'Tipo de cita', 'Expediente', 'Identidad', 'Paciente', 'Nacimiento', 'Edad', 'Sexo', 'Procedencia', 'Diagnósticos / CIE-10'];
+    sheet.getRow(5).font = { bold: true, color: { argb: 'FFFFFF' } };
+    sheet.getRow(5).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: '334155' } };
+    sheet.getRow(5).height = 30;
+    data.forEach((item, index) => {
+      const row = sheet.addRow({ ...item, numero: index + 1 });
+      row.height = Math.max(32, Math.min(240, 16 * (String(item.diagnosticos || '').split('\n').reduce((n, line) => n + Math.max(1, Math.ceil(line.length / 55)), 0))));
+      if (index % 2 === 1) row.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'F1F5F9' } };
+      for (const key of ['expediente', 'identidad', 'colegiado']) row.getCell(key).numFmt = '@';
+    });
+    if (!data.length) { sheet.mergeCells('A6:Q6'); sheet.getCell('A6').value = 'No hay atenciones registradas para el período y alcance seleccionados.'; }
+    sheet.eachRow(row => row.eachCell(cell => { cell.alignment = { vertical: 'top', wrapText: true }; }));
+    sheet.autoFilter = { from: 'A5', to: `Q${Math.max(5, data.length + 5)}` };
+    sheet.headerFooter.oddFooter = 'SISS · AT-1&P / &N';
+    return workbook;
+  }
+
+  async generarExcelAt1(data: any[], res: Response, inicio: string, fin: string) {
+    const workbook = this.crearLibroAt1(data, inicio, fin);
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    res.setHeader('Content-Disposition', `attachment; filename="at-1_${inicio}_${fin}.xlsx"`);
+    await workbook.xlsx.write(res);
+    res.end();
+  }
   async generarExcelProductividad(data: any[], res: Response) {
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet('Productividad Médica');

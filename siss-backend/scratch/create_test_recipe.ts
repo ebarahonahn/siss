@@ -6,7 +6,7 @@ async function main() {
   const pEdgar = await prisma.paciente.findUnique({ where: { dni: '0801197106887' } });
   if (!pEdgar) throw new Error('Paciente Edgar no encontrado');
 
-  const med = await prisma.usuario.findFirst({ where: { correo: 'medico@sesal.hn' } });
+  const med = await prisma.usuario.findFirst({ where: { correo: 'medico@siss.hn' } });
   if (!med) throw new Error('Medico no encontrado');
 
   const med1 = await prisma.medicamento.findFirst({ where: { codigo: 'MED-001' } }); // Paracetamol

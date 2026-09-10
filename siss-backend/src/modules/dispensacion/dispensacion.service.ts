@@ -14,7 +14,10 @@ export class DispensacionService {
     identificador: string,
     establecimientoId: number,
   ) {
-    const term = identificador.trim();
+    const term = identificador?.trim() ?? '';
+    if (term.length < 3) return [];
+    // El DNI se registra con 13 dígitos, pero puede ingresarse con separadores.
+    const dni = /^[\d\s-]+$/.test(term) ? term.replace(/[\s-]/g, '') : term;
     const vigenciaDias = await this.obtenerVigenciaReceta();
     const fechaLimite = new Date();
     fechaLimite.setDate(fechaLimite.getDate() - vigenciaDias);
@@ -45,7 +48,7 @@ export class DispensacionService {
         estado: { in: ['PENDIENTE', 'PARCIAL'] },
         paciente: {
           OR: [
-            { dni: { contains: term } },
+            { dni: { contains: dni } },
             { numeroExpediente: { contains: term } },
             { nombres: { contains: term } },
             { apellidos: { contains: term } },

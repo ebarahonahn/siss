@@ -6,11 +6,24 @@ import { EstadoCita } from '@prisma/client';
 export class ReportesService {
   constructor(private prisma: PrismaService) {}
 
+  private filtroCentroClinico(estId?: number) {
+    if (!estId) return {};
+    return {
+      OR: [
+        { cita: { establecimientoId: estId } },
+        { citaId: null, paciente: { establecimientoId: estId } },
+      ],
+    };
+  }
+
   async getDashboardKPIs(
     establecimientoId?: number,
     inicio?: Date,
     fin?: Date,
+    reportesPermitidos?: string[],
+    usuarioId?: number,
   ) {
+    const puede = (slug: string) => !reportesPermitidos || reportesPermitidos.includes(slug);
     const now = new Date();
 
     // Si no se proveen fechas, usamos el "hoy" local (GMT-6)
@@ -46,37 +59,41 @@ export class ReportesService {
     const [consultas, pacientesNuevos, stockCritico, citasPendientes] =
       await Promise.all([
         // 1. Consultas en el rango
-        this.prisma.historiaClinica.count({
+        puede('productividad') ? this.prisma.historiaClinica.count({
           where: {
             fecha: { gte: startRange, lte: endRange },
-            ...baseFilter,
+            ...this.filtroCentroClinico(establecimientoId),
+            ...(usuarioId ? { medicoId: usuarioId } : {}),
           },
-        }),
+        }) : Promise.resolve(null),
 
         // 2. Pacientes Nuevos (Mes del inicio del rango)
-        this.prisma.paciente.count({
+        puede('demografia') ? this.prisma.paciente.count({
           where: {
             fechaRegistro: { gte: startOfMonth, lte: endRange },
+            ...baseFilter,
+            ...this.filtroPacientesAsignados(establecimientoId, usuarioId),
           },
-        }),
+        }) : Promise.resolve(null),
 
         // 3. Stock Crítico (Siempre actual)
-        this.prisma.inventario.count({
+        puede('inventario') ? this.prisma.inventario.count({
           where: {
             ...baseFilter,
             activo: true,
             cantidadActual: { lt: 20 },
           },
-        }),
+        }) : Promise.resolve(null),
 
         // 4. Citas Pendientes (Próximas 24h desde hoy o en el rango)
-        this.prisma.cita.count({
+        puede('citas') ? this.prisma.cita.count({
           where: {
             ...baseFilter,
             fechaHora: { gte: startRange, lte: endRange },
+            ...(usuarioId ? { medicoId: usuarioId } : {}),
             estado: { in: [EstadoCita.PROGRAMADA, EstadoCita.CONFIRMADA] },
           },
-        }),
+        }) : Promise.resolve(null),
       ]);
 
     return {
@@ -88,14 +105,14 @@ export class ReportesService {
     };
   }
 
-  async getProductividadData(inicio: Date, fin: Date, estId?: number) {
+  async getProductividadData(inicio: Date, fin: Date, estId?: number, usuarioId?: number) {
     const where: any = {
       fecha: { gte: inicio, lte: fin },
+      ...this.filtroCentroClinico(estId),
     };
-    if (estId) where.establecimientoId = estId;
 
     const historias = await this.prisma.historiaClinica.findMany({
-      where,
+      where: { ...where, ...(usuarioId ? { medicoId: usuarioId } : {}) },
       include: {
         medico: {
           select: {
@@ -149,12 +166,70 @@ export class ReportesService {
     }));
   }
 
-  async getDemografiaData(estId?: number) {
+  async getAt1Data(inicio: Date, fin: Date, estId?: number, usuarioId?: number) {
+    const historias = await this.prisma.historiaClinica.findMany({
+      where: {
+        fecha: { gte: inicio, lte: fin }, eliminadoEn: null,
+        ...this.filtroCentroClinico(estId),
+        ...(usuarioId ? { medicoId: usuarioId } : {}),
+      },
+      select: {
+        id: true, fecha: true,
+        medico: { select: { nombres: true, apellidos: true, numeroColegiado: true } },
+        cita: { select: { tipo: true, especialidad: { select: { nombre: true } }, establecimiento: { select: { nombre: true } } } },
+        paciente: { select: {
+          numeroExpediente: true, dni: true, nombres: true, apellidos: true, fechaNacimiento: true,
+          sexo: { select: { nombre: true } }, departamento: { select: { nombre: true } },
+          municipio: { select: { nombre: true } }, comunidad: true,
+          establecimiento: { select: { nombre: true } },
+        } },
+        diagnosticos: { select: { codigoCIE10: true, descripcion: true, tipo: true }, orderBy: { id: 'asc' } },
+      },
+      orderBy: [{ fecha: 'asc' }, { medicoId: 'asc' }, { id: 'asc' }],
+    });
+    return historias.map(h => ({
+      atencionId: h.id,
+      fecha: h.fecha.toISOString().slice(0, 10), hora: h.fecha.toISOString().slice(11, 16),
+      establecimiento: h.cita?.establecimiento.nombre ?? h.paciente.establecimiento.nombre,
+      medico: `${h.medico.nombres} ${h.medico.apellidos}`, colegiado: h.medico.numeroColegiado ?? '',
+      especialidad: h.cita?.especialidad?.nombre ?? '', tipo: h.cita?.tipo ?? '',
+      expediente: h.paciente.numeroExpediente, identidad: h.paciente.dni,
+      paciente: `${h.paciente.nombres} ${h.paciente.apellidos}`,
+      nacimiento: h.paciente.fechaNacimiento.toISOString().slice(0, 10),
+      edad: this.edadEnAtencion(h.paciente.fechaNacimiento, h.fecha), sexo: h.paciente.sexo.nombre,
+      procedencia: [h.paciente.departamento.nombre, h.paciente.municipio.nombre, h.paciente.comunidad].filter(Boolean).join(' / '),
+      diagnosticos: h.diagnosticos.map(d => `${d.codigoCIE10} — ${d.descripcion} (${d.tipo})`).join('\n'),
+    }));
+  }
+
+  private edadEnAtencion(nacimiento: Date, fecha: Date): string {
+    if (nacimiento > fecha) return '';
+    let meses = (fecha.getUTCFullYear() - nacimiento.getUTCFullYear()) * 12 + fecha.getUTCMonth() - nacimiento.getUTCMonth();
+    if (fecha.getUTCDate() < nacimiento.getUTCDate()) meses--;
+    if (meses >= 12) return `${Math.floor(meses / 12)} años`;
+    if (meses >= 1) return `${meses} meses`;
+    const dia = (d: Date) => Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate());
+    return `${Math.floor((dia(fecha) - dia(nacimiento)) / 86400000)} días`;
+  }
+
+  private filtroPacientesAsignados(estId?: number, usuarioId?: number) {
+    if (!usuarioId) return {};
+    const centro = estId ? { establecimientoId: estId } : {};
+    return {
+      OR: [
+        { citas: { some: { medicoId: usuarioId, ...centro, estado: { notIn: [EstadoCita.CANCELADA, EstadoCita.NO_ASISTIO] } } } },
+        { historialClinico: { some: { medicoId: usuarioId, ...this.filtroCentroClinico(estId) } } },
+        { vacunas: { some: { aplicadoPorId: usuarioId, ...centro } } },
+      ],
+    };
+  }
+
+  async getDemografiaData(estId?: number, usuarioId?: number) {
     const where: any = { activo: true };
     if (estId) where.establecimientoId = estId;
 
     const pacientes = await this.prisma.paciente.findMany({
-      where,
+      where: { ...where, ...this.filtroPacientesAsignados(estId, usuarioId) },
       include: {
         sexo: { select: { nombre: true } },
         departamento: { select: { nombre: true } },
@@ -194,7 +269,7 @@ export class ReportesService {
     return age;
   }
 
-  async getKardexData(inicio: Date, fin: Date, estId?: number) {
+  async getKardexData(inicio: Date, fin: Date, estId?: number, usuarioId?: number) {
     const where: any = {
       fecha: { gte: inicio, lte: fin },
     };
@@ -203,7 +278,7 @@ export class ReportesService {
     }
 
     const movimientos = await this.prisma.movimientoInventario.findMany({
-      where,
+      where: { ...where, ...(usuarioId ? { usuarioId } : {}) },
       include: {
         inventario: {
           include: {
@@ -228,7 +303,7 @@ export class ReportesService {
     }));
   }
 
-  async getMorbilidadData(inicio: Date, fin: Date, estId?: number) {
+  async getMorbilidadData(inicio: Date, fin: Date, estId?: number, usuarioId?: number) {
     const where: any = {
       historia: {
         fecha: { gte: inicio, lte: fin },
@@ -238,10 +313,11 @@ export class ReportesService {
     if (estId) {
       where.historia = {
         ...where.historia,
-        cita: { establecimientoId: estId },
+        ...this.filtroCentroClinico(estId),
       };
     }
 
+    if (usuarioId) where.historia.medicoId = usuarioId;
     const diagnosticos = await this.prisma.diagnostico.findMany({
       where,
       select: {
@@ -274,7 +350,7 @@ export class ReportesService {
       .slice(0, 10);
   }
 
-  async getCitasData(inicio: Date, fin: Date, estId?: number) {
+  async getCitasData(inicio: Date, fin: Date, estId?: number, usuarioId?: number) {
     if (!inicio || isNaN(inicio.getTime())) inicio = new Date();
     if (!fin || isNaN(fin.getTime())) fin = new Date();
 
@@ -287,7 +363,7 @@ export class ReportesService {
     }
 
     const citas = await this.prisma.cita.findMany({
-      where,
+      where: { ...where, ...(usuarioId ? { medicoId: usuarioId } : {}) },
       include: {
         paciente: {
           select: { nombres: true, apellidos: true, numeroExpediente: true },
@@ -356,18 +432,95 @@ export class ReportesService {
     });
   }
 
+  async getReportesPorUsuario(usuarioId: number) {
+    const asignaciones = await (this.prisma as any).usuarioReporte.findMany({
+      where: { usuarioId },
+      select: { reporteId: true },
+    });
+    return asignaciones.map((a: any) => a.reporteId);
+  }
+
+  async asignarReportesAUsuario(usuarioId: number, reporteIds: number[]) {
+    return await this.prisma.$transaction(async (tx: any) => {
+      await tx.usuarioReporte.deleteMany({
+        where: { usuarioId },
+      });
+
+      if (reporteIds && reporteIds.length > 0) {
+        await tx.usuarioReporte.createMany({
+          data: reporteIds.map((reporteId) => ({
+            usuarioId,
+            reporteId,
+          })),
+        });
+      }
+
+      return { ok: true, count: reporteIds?.length || 0 };
+    });
+  }
+
+  async getMisReportes(usuarioId: number, rol: string, permisos: any, asignacionId?: number, establecimientoId?: number) {
+    const reportes = await (this.prisma as any).reporteDisponible.findMany({
+      where: { activo: true },
+      orderBy: [{ categoria: 'asc' }, { orden: 'asc' }],
+    });
+
+    if (rol === 'ADMIN') return reportes;
+
+    // Los permisos explícitos de la asignación activa prevalecen sobre listas
+    // anteriores y sobre el token, que puede contener permisos desactualizados.
+    if (asignacionId) {
+      const asignacion = await this.prisma.asignacionUsuario.findFirst({
+        where: { id: asignacionId, usuarioId, activo: true, ...(establecimientoId ? { establecimientoId } : {}) },
+        select: { permisos: true },
+      });
+      if (!asignacion) return [];
+      if (Array.isArray(asignacion.permisos)) {
+        const explicitos = asignacion.permisos;
+        return reportes.filter((r: any) => explicitos.includes(r.permiso));
+      }
+    }
+
+    const esAdmin = (Array.isArray(permisos) && permisos.includes('all')) || (permisos && permisos['all']);
+    if (esAdmin) {
+      return reportes;
+    }
+
+    const asignaciones = await (this.prisma as any).usuarioReporte.findMany({
+      where: { usuarioId },
+      select: { reporteId: true },
+    });
+
+    if (asignaciones.length > 0) {
+      const allowedIds = new Set(asignaciones.map((a: any) => a.reporteId));
+      return reportes.filter((r: any) => allowedIds.has(r.id));
+    }
+
+    return reportes.filter((r: any) => {
+      if (!r.permiso) return false;
+      if (Array.isArray(permisos)) {
+        return permisos.includes(r.permiso);
+      } else if (permisos && typeof permisos === 'object') {
+        const [mod, acc] = r.permiso.split(':');
+        const acciones = permisos[mod];
+        return Array.isArray(acciones) && acciones.includes(acc);
+      }
+      return false;
+    });
+  }
+
   // =============================================
   // REPORTES DE VACUNACIÓN (PAI)
   // =============================================
 
-  async getConsolidadoPaiData(inicio: Date, fin: Date, estId?: number) {
+  async getConsolidadoPaiData(inicio: Date, fin: Date, estId?: number, usuarioId?: number) {
     const where: any = {
       fechaAplicacion: { gte: inicio, lte: fin }
     };
     if (estId) where.establecimientoId = estId;
 
     const registros = await this.prisma.vacunacionRegistro.findMany({
-      where,
+      where: { ...where, ...(usuarioId ? { aplicadoPorId: usuarioId } : {}) },
       include: {
         vacuna: { select: { nombre: true } },
         paciente: { select: { nombres: true, apellidos: true, dni: true, fechaNacimiento: true } },
@@ -414,7 +567,7 @@ export class ReportesService {
     }));
   }
 
-  async getCoberturaData(inicio: Date, fin: Date, estId?: number) {
+  async getCoberturaData(inicio: Date, fin: Date, estId?: number, usuarioId?: number) {
     const where: any = {
       fechaAplicacion: { gte: inicio, lte: fin }
     };
@@ -429,7 +582,7 @@ export class ReportesService {
     // Contar aplicaciones por vacuna
     const aplicaciones = await this.prisma.vacunacionRegistro.groupBy({
       by: ['vacunaId'],
-      where,
+      where: { ...where, ...(usuarioId ? { aplicadoPorId: usuarioId } : {}) },
       _count: { id: true }
     });
 

@@ -55,6 +55,10 @@ import { finalize } from 'rxjs/operators';
                 <section>
                   <h3 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-4">Área Médica</h3>
                   <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <label class="p-4 rounded-xl border-2 cursor-pointer flex items-center gap-3 transition-all" [class.border-blue-600]="tienePermiso('reportes:at-1')" [class.bg-blue-50]="tienePermiso('reportes:at-1')" [class.border-slate-50]="!tienePermiso('reportes:at-1')">
+                      <input type="checkbox" [checked]="tienePermiso('reportes:at-1')" (change)="togglePermiso('reportes:at-1')" class="rounded border-slate-300 text-blue-600">
+                      <span class="text-sm font-bold text-slate-700">AT-1 · Registro Diario de Atenciones Médicas (Excel)</span>
+                    </label>
                     <div (click)="togglePermiso('reportes:productividad')" class="p-4 rounded-xl border-2 cursor-pointer flex items-center gap-3 transition-all" [class.border-blue-600]="tienePermiso('reportes:productividad')" [class.bg-blue-50]="tienePermiso('reportes:productividad')" [class.border-slate-50]="!tienePermiso('reportes:productividad')">
                       <input type="checkbox" [checked]="tienePermiso('reportes:productividad')" class="rounded border-slate-300 text-blue-600">
                       <span class="text-sm font-bold text-slate-700">Productividad Médica (XLS)</span>

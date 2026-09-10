@@ -1,3 +1,4 @@
+import { abrirPdfEnVisor } from '../../../../shared/utils/pdf-viewer';
 import { Component, inject, OnInit, signal, computed, SecurityContext } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import * as L from 'leaflet';
@@ -221,7 +222,10 @@ import { OdontogramaComponent, DienteEstado } from '../../../../shared/component
               </div>
               <div class="min-w-0">
                 <p class="text-xs font-bold text-gray-800 truncate">Historial del Paciente</p>
-                <p class="text-[10px] text-gray-400">{{ historial().length }} consulta(s) previa(s)</p>
+                <p class="text-[10px] text-gray-400">
+                  <span *ngIf="historialFiltrado().length !== historial().length">{{ historialFiltrado().length }} de </span>
+                  {{ historial().length }} consulta(s) previa(s)
+                </p>
               </div>
             </div>
             <button (click)="panelAbierto.set(!panelAbierto())"
@@ -242,8 +246,81 @@ import { OdontogramaComponent, DienteEstado } from '../../../../shared/component
             <span class="text-[10px] font-bold text-blue-400">{{ historial().length }}</span>
           </div>
 
-          <!-- Lista de consultas previas -->
-          <div *ngIf="panelAbierto()" class="flex-1 overflow-y-auto py-2">
+          <!-- Lista de consultas previas y controles -->
+          <div *ngIf="panelAbierto()" class="flex-1 overflow-y-auto flex flex-col">
+
+            <!-- Buscador y Filtros -->
+            <div class="px-3 py-2 border-b border-gray-100 bg-gray-50/50 space-y-2 flex-shrink-0">
+              <!-- Campo Búsqueda -->
+              <div class="relative">
+                <input type="text"
+                       [value]="filtroHistorialTexto()"
+                       (input)="filtroHistorialTexto.set($any($event.target).value)"
+                       placeholder="Buscar diagnóstico, médico..."
+                       class="w-full pl-7 pr-7 py-1.5 text-xs bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 placeholder:text-gray-300" />
+                <svg class="w-3.5 h-3.5 text-gray-400 absolute left-2 top-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                <button *ngIf="filtroHistorialTexto()"
+                        (click)="filtroHistorialTexto.set('')"
+                        class="absolute right-2 top-2 text-gray-300 hover:text-gray-500">
+                  ✕
+                </button>
+              </div>
+
+              <!-- Filtros en Pills -->
+              <div class="flex items-center gap-1 overflow-x-auto custom-scrollbar pb-0.5">
+                <button type="button"
+                        (click)="filtroTipo.set('TODAS')"
+                        [class.bg-blue-600]="filtroTipo() === 'TODAS'"
+                        [class.text-white]="filtroTipo() === 'TODAS'"
+                        [class.bg-white]="filtroTipo() !== 'TODAS'"
+                        [class.text-gray-600]="filtroTipo() !== 'TODAS'"
+                        class="px-2 py-0.5 text-[9px] font-bold rounded-full border border-gray-200 shadow-2xs whitespace-nowrap transition-colors">
+                  Todas
+                </button>
+                <button type="button"
+                        (click)="filtroTipo.set('PRENATAL')"
+                        [class.bg-emerald-600]="filtroTipo() === 'PRENATAL'"
+                        [class.text-white]="filtroTipo() === 'PRENATAL'"
+                        [class.bg-white]="filtroTipo() !== 'PRENATAL'"
+                        [class.text-gray-600]="filtroTipo() !== 'PRENATAL'"
+                        class="px-2 py-0.5 text-[9px] font-bold rounded-full border border-gray-200 shadow-2xs whitespace-nowrap transition-colors">
+                  Prenatales
+                </button>
+                <button type="button"
+                        (click)="filtroTipo.set('ANIO_ACTUAL')"
+                        [class.bg-purple-600]="filtroTipo() === 'ANIO_ACTUAL'"
+                        [class.text-white]="filtroTipo() === 'ANIO_ACTUAL'"
+                        [class.bg-white]="filtroTipo() !== 'ANIO_ACTUAL'"
+                        [class.text-gray-600]="filtroTipo() !== 'ANIO_ACTUAL'"
+                        class="px-2 py-0.5 text-[9px] font-bold rounded-full border border-gray-200 shadow-2xs whitespace-nowrap transition-colors">
+                  Este Año
+                </button>
+              </div>
+
+              <!-- Barra de Paginación Rápida Superior -->
+              <div *ngIf="historialFiltrado().length > 0"
+                   class="pt-1.5 border-t border-gray-200/60 flex items-center justify-between text-xs">
+                <button type="button"
+                        (click)="cambiarPaginaHistorial(paginaHistorial() - 1)"
+                        [disabled]="paginaHistorial() === 1"
+                        class="px-2 py-0.5 bg-white border border-gray-200 rounded text-[10px] font-bold text-gray-600 hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed">
+                  ← Ant.
+                </button>
+
+                <span class="text-[10px] font-semibold text-gray-500">
+                  Pág. <strong class="text-gray-800">{{ paginaHistorial() }}</strong> de {{ totalPaginasHistorial() }}
+                </span>
+
+                <button type="button"
+                        (click)="cambiarPaginaHistorial(paginaHistorial() + 1)"
+                        [disabled]="paginaHistorial() >= totalPaginasHistorial()"
+                        class="px-2 py-0.5 bg-white border border-gray-200 rounded text-[10px] font-bold text-gray-600 hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed">
+                  Sig. →
+                </button>
+              </div>
+            </div>
 
             <!-- Cargando -->
             <div *ngIf="cargandoHistorial()" class="px-3 py-6 text-center text-xs text-gray-400">
@@ -255,70 +332,72 @@ import { OdontogramaComponent, DienteEstado } from '../../../../shared/component
             </div>
 
             <!-- Sin historial -->
-            <div *ngIf="!cargandoHistorial() && historial().length === 0"
+            <div *ngIf="!cargandoHistorial() && historialFiltrado().length === 0"
                  class="px-3 py-8 text-center">
               <svg class="w-8 h-8 text-gray-200 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                       d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
               </svg>
-              <p class="text-xs text-gray-400 italic">Sin consultas previas</p>
+              <p class="text-xs text-gray-400 italic">No se encontraron consultas</p>
             </div>
 
-            <!-- Entradas del historial -->
-            <div *ngFor="let h of historial(); let i = index"
-                 class="historial-entrada border-b border-gray-50 last:border-0">
+            <!-- Entradas del historial paginadas -->
+            <div class="flex-1">
+              <div *ngFor="let h of historialPaginado(); let i = index"
+                   class="historial-entrada border-b border-gray-50 last:border-0">
 
-              <!-- Fila clickeable -->
-              <button type="button"
-                      (click)="toggleDetalle(h.id)"
-                      class="w-full text-left px-3 py-2.5 hover:bg-blue-50 transition-colors group">
-                <div class="flex items-start gap-2">
-                  <div class="flex-shrink-0 mt-0.5">
-                    <div class="w-2 h-2 rounded-full"
-                         [class.bg-blue-500]="h.id !== detalleAbierto()"
-                         [class.bg-blue-700]="h.id === detalleAbierto()"></div>
-                  </div>
-                  <div class="min-w-0 flex-1">
-                    <div class="flex items-center gap-2 mb-0.5">
-                      <p class="text-xs font-semibold text-gray-800 group-hover:text-blue-700 transition-colors">
-                        {{ h.fecha | date:'dd/MM/yyyy':'UTC' }}
+                <!-- Fila clickeable -->
+                <button type="button"
+                        (click)="toggleDetalle(h.id)"
+                        class="w-full text-left px-3 py-2.5 hover:bg-blue-50 transition-colors group">
+                  <div class="flex items-start gap-2">
+                    <div class="flex-shrink-0 mt-0.5">
+                      <div class="w-2 h-2 rounded-full"
+                           [class.bg-blue-500]="h.id !== detalleAbierto()"
+                           [class.bg-blue-700]="h.id === detalleAbierto()"></div>
+                    </div>
+                    <div class="min-w-0 flex-1">
+                      <div class="flex items-center gap-2 mb-0.5">
+                        <p class="text-xs font-semibold text-gray-800 group-hover:text-blue-700 transition-colors">
+                          {{ h.fecha | date:'dd/MM/yyyy':'UTC' }}
+                        </p>
+                        <span *ngIf="h.controlPrenatal" 
+                              class="text-[8px] font-black bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded uppercase tracking-tighter shadow-xs border border-emerald-200">
+                          Control Prenatal ({{ h.controlPrenatal.semanasGestacion }} sem)
+                        </span>
+                      </div>
+                      <p class="text-[10px] text-gray-400 truncate">
+                        {{ h.medico.nombres }} {{ h.medico.apellidos }}
                       </p>
-                      <span *ngIf="h.controlPrenatal" 
-                            class="text-[8px] font-black bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded uppercase tracking-tighter shadow-sm border border-emerald-200">
-                        Control Prenatal ({{ h.controlPrenatal.semanasGestacion }} sem)
-                      </span>
-                    </div>
-                    <p class="text-[10px] text-gray-400 truncate">
-                      {{ h.medico.nombres }} {{ h.medico.apellidos }}
-                    </p>
-                    <p *ngIf="h.medico.establecimiento" class="text-[9px] text-blue-400 font-medium truncate uppercase tracking-tighter">
-                      {{ h.medico.establecimiento.nombre }}
-                    </p>
-                    <!-- Diagnósticos en miniatura -->
-                    <div *ngIf="h.diagnosticos?.length" class="mt-1 flex flex-wrap gap-1">
-                      <span *ngFor="let d of h.diagnosticos | slice:0:2"
-                            class="text-[9px] bg-blue-50 text-blue-600 border border-blue-100 px-1.5 py-0.5 rounded font-mono">
-                        {{ d.codigoCIE10 }}
-                      </span>
-                      <span *ngIf="h.diagnosticos.length > 2"
-                            class="text-[9px] text-gray-400">+{{ h.diagnosticos.length - 2 }}</span>
+                      <p *ngIf="h.medico.establecimiento" class="text-[9px] text-blue-400 font-medium truncate uppercase tracking-tighter">
+                        {{ h.medico.establecimiento.nombre }}
+                      </p>
+                      <!-- Diagnósticos en miniatura -->
+                      <div *ngIf="h.diagnosticos?.length" class="mt-1 flex flex-wrap gap-1">
+                        <span *ngFor="let d of h.diagnosticos | slice:0:2"
+                              class="text-[9px] bg-blue-50 text-blue-600 border border-blue-100 px-1.5 py-0.5 rounded font-mono">
+                          {{ d.codigoCIE10 }}
+                        </span>
+                        <span *ngIf="h.diagnosticos.length > 2"
+                              class="text-[9px] text-gray-400">+{{ h.diagnosticos.length - 2 }}</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div class="flex flex-col items-center gap-2 mt-1">
-                  <button type="button"
-                          (click)="$event.stopPropagation(); verDetalleCompleto(h)"
-                          title="Ver consulta completa"
-                          class="p-2 text-blue-500 hover:text-blue-700 hover:bg-blue-100 rounded-xl transition-all shadow-sm hover:shadow-md bg-white border border-blue-50">
-                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                    </svg>
-                  </button>
-                </div>
-              </button>
+                  <div class="flex flex-col items-center gap-2 mt-1">
+                    <button type="button"
+                            (click)="$event.stopPropagation(); verDetalleCompleto(h)"
+                            title="Ver consulta completa"
+                            class="p-2 text-blue-500 hover:text-blue-700 hover:bg-blue-100 rounded-xl transition-all shadow-xs hover:shadow-md bg-white border border-blue-50">
+                      <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                      </svg>
+                    </button>
+                  </div>
+                </button>
 
-            </div><!-- fin ngFor -->
+              </div><!-- fin ngFor -->
+            </div>
 
           </div><!-- fin lista de consultas -->
         </aside>
@@ -329,7 +408,7 @@ import { OdontogramaComponent, DienteEstado } from '../../../../shared/component
         <main class="flex-1 min-w-0 px-4 py-8 overflow-auto">
 
           <!-- Encabezado Nueva Consulta -->
-          <div class="flex items-center justify-between mb-8 max-w-4xl mx-auto">
+          <div class="flex items-center justify-between mb-8 max-w-4xl">
             <div class="flex items-center gap-4">
               <button type="button" (click)="cancelar()" 
                       class="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-gray-400 hover:text-red-600 hover:shadow-md transition-all border border-gray-100 shadow-sm group">
@@ -347,7 +426,7 @@ import { OdontogramaComponent, DienteEstado } from '../../../../shared/component
             </div>
           </div>
 
-          <form [formGroup]="form" (ngSubmit)="guardar()" class="space-y-6 max-w-4xl mx-auto">
+          <form [formGroup]="form" (ngSubmit)="guardar()" class="space-y-6 max-w-[1300px] mx-auto">
 
             <!-- 1. Signos Vitales -->
             <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
@@ -365,7 +444,7 @@ import { OdontogramaComponent, DienteEstado } from '../../../../shared/component
                   Pre-cargado desde triaje
                 </span>
               </div>
-              <div class="p-6 grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div class="p-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4">
                 <div>
                   <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Presión Sistólica</label>
                   <div class="relative">
@@ -567,6 +646,7 @@ import { OdontogramaComponent, DienteEstado } from '../../../../shared/component
                             </div>
                             <app-odontograma 
                               [initialData]="respuestaDinamica[campo.clave] ? JSON.parse(respuestaDinamica[campo.clave]) : []"
+                              [edadPaciente]="calcularEdad(paciente()?.fechaNacimiento)"
                               (dataChanged)="actualizarDatosOdontograma(campo.clave, $event)">
                             </app-odontograma>
 
@@ -1764,6 +1844,7 @@ import { OdontogramaComponent, DienteEstado } from '../../../../shared/component
                               </ng-container>
                               <app-odontograma *ngIf="campo.tipo === 'ODONTOGRAMA'"
                                 [readonly]="true"
+                                [edadPaciente]="calcularEdad(paciente()?.fechaNacimiento)"
                                 [initialData]="parseOdontoData(extraerMapaOdonto(h.respuestaFormulario.respuestas, campo.clave))">
                               </app-odontograma>
 
@@ -1968,7 +2049,7 @@ import { OdontogramaComponent, DienteEstado } from '../../../../shared/component
               <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
             </div>
             <div>
-              <p class="text-xs font-bold text-red-800 uppercase tracking-wide">Notificación Requerida por SESAL</p>
+              <p class="text-xs font-bold text-red-800 uppercase tracking-wide">Notificación Requerida por SISS</p>
               <p class="text-[11px] text-red-700 leading-relaxed mt-1">Este diagnóstico requiere el bloqueo epidemiológico inmediato del domicilio. Es vital capturar las coordenadas exactas y antecedentes de viaje.</p>
             </div>
           </div>
@@ -2237,6 +2318,74 @@ export class NuevaConsultaComponent implements OnInit {
   cargandoHistorial = signal(false);
   detalleAbierto    = signal<number | null>(null);
   vistaHistorial    = signal<HistoriaClinica | null>(null);
+  
+  // Filtros y paginación del historial
+  filtroHistorialTexto = signal('');
+  filtroTipo           = signal<'TODAS' | 'PRENATAL' | 'ANIO_ACTUAL'>('TODAS');
+  paginaHistorial      = signal(1);
+  elementosPorPagina   = signal(5);
+
+  historialFiltrado = computed(() => {
+    const text = this.filtroHistorialTexto().toLowerCase().trim();
+    const tipo = this.filtroTipo();
+    const currentYear = new Date().getFullYear();
+
+    return this.historial().filter(h => {
+      if (tipo === 'PRENATAL' && !h.controlPrenatal) return false;
+      if (tipo === 'ANIO_ACTUAL') {
+        const fechaAño = new Date(h.fecha).getUTCFullYear();
+        if (fechaAño !== currentYear) return false;
+      }
+
+      if (text) {
+        const enMedico = `${h.medico?.nombres} ${h.medico?.apellidos}`.toLowerCase().includes(text);
+        const enLugar  = h.medico?.establecimiento?.nombre?.toLowerCase().includes(text) || false;
+        const enDiags  = h.diagnosticos?.some(d => 
+          d.codigoCIE10?.toLowerCase().includes(text) || d.descripcion?.toLowerCase().includes(text)
+        ) || false;
+        const enSubjetivo = h.subjetivo?.toLowerCase().includes(text) || false;
+
+        let enFecha = false;
+        if (h.fecha) {
+          const d = new Date(h.fecha);
+          if (!isNaN(d.getTime())) {
+            const day   = String(d.getUTCDate()).padStart(2, '0');
+            const month = String(d.getUTCMonth() + 1).padStart(2, '0');
+            const year  = String(d.getUTCFullYear());
+            const meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+            const mesNom = meses[d.getUTCMonth()];
+
+            enFecha = `${day}/${month}/${year}`.includes(text) || 
+                      `${year}-${month}-${day}`.includes(text) || 
+                      `${day}-${month}-${year}`.includes(text) || 
+                      `${day} ${mesNom} ${year}`.includes(text);
+          }
+        }
+
+        return enMedico || enLugar || enDiags || enSubjetivo || enFecha;
+      }
+
+      return true;
+    });
+  });
+
+  totalPaginasHistorial = computed(() => {
+    const total = Math.ceil(this.historialFiltrado().length / this.elementosPorPagina());
+    return total > 0 ? total : 1;
+  });
+
+  historialPaginado = computed(() => {
+    const pag = Math.min(this.paginaHistorial(), this.totalPaginasHistorial());
+    const inicio = (pag - 1) * this.elementosPorPagina();
+    return this.historialFiltrado().slice(inicio, inicio + this.elementosPorPagina());
+  });
+
+  cambiarPaginaHistorial(nuevaPagina: number) {
+    if (nuevaPagina >= 1 && nuevaPagina <= this.totalPaginasHistorial()) {
+      this.paginaHistorial.set(nuevaPagina);
+    }
+  }
+
   historialHallazgos = signal<{pieza: number, hallazgo: string, fecha: Date}[]>([]);
   hallazgosHoy = signal<{pieza: number, hallazgo: string, fecha: Date}[]>([]);
   odontogramaInicial = signal<DienteEstado[]>([]);
@@ -2522,10 +2671,29 @@ export class NuevaConsultaComponent implements OnInit {
   get notificacionEpiGroup() { return this.form.get('notificacionEpi') as FormGroup; }
 
   ngOnInit() {
+    console.log('[NUEVA-CONSULTA] ngOnInit cargado!');
+    console.log('[NUEVA-CONSULTA] history.state:', JSON.stringify(history.state));
     const pid   = history.state?.pacienteId    as number | undefined;
     const cid   = history.state?.citaId        as number | undefined;
-    const currentEspId = this.auth.obtenerUsuario()?.especialidadId;
-    const espId = (history.state?.especialidadId as number | undefined) || currentEspId;
+    const usuarioActual = this.auth.obtenerUsuario();
+    console.log('[NUEVA-CONSULTA] Usuario Actual:', JSON.stringify(usuarioActual));
+    const currentEspId = usuarioActual?.especialidadId;
+    console.log('[NUEVA-CONSULTA] currentEspId (de token):', currentEspId);
+    let espId = (history.state?.especialidadId as number | undefined) || currentEspId;
+    console.log('[NUEVA-CONSULTA] espId inicial:', espId);
+
+    console.log('[NUEVA-CONSULTA] tieneRol(ODONTOLOGIA):', this.auth.tieneRol('ODONTOLOGIA'));
+    console.log('[NUEVA-CONSULTA] tieneRol(MEDICO_PEDIATRA):', this.auth.tieneRol('MEDICO_PEDIATRA'));
+
+    if (this.auth.tieneRol('ODONTOLOGIA')) {
+      espId = 11; // ID de Odontología
+      console.log('[NUEVA-CONSULTA] Forzado espId a 11 por rol ODONTOLOGIA');
+    } else if (this.auth.tieneRol('MEDICO_PEDIATRA')) {
+      espId = 2;  // ID de Pediatría
+      console.log('[NUEVA-CONSULTA] Forzado espId a 2 por rol MEDICO_PEDIATRA');
+    }
+
+    console.log('[NUEVA-CONSULTA] espId final a cargar:', espId);
 
     if (!pid) {
       this.router.navigate(['/historia-clinica']);
@@ -3175,8 +3343,8 @@ export class NuevaConsultaComponent implements OnInit {
   }
 
   formatRespuesta(valor: any): string {
-    if (valor === true || valor === 'true') return 'SÍ';
-    if (valor === false || valor === 'false') return 'NO';
+    if (valor === true || valor === 'true') return 'Sí';
+    if (valor === false || valor === 'false') return 'No';
     if (valor === undefined || valor === null || valor === '') return '—';
     return String(valor);
   }
@@ -3787,8 +3955,7 @@ export class NuevaConsultaComponent implements OnInit {
       }
 
       if (url) {
-        const win = window.open(url, '_blank');
-        win?.focus();
+        abrirPdfEnVisor(url);
       }
     } catch (error) {
       console.error('Error generando impresión:', error);

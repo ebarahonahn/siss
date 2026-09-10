@@ -11,7 +11,6 @@ interface NavItem {
   ruta: string;
   roles: string[];
   modulo?: string;
-  dependencias?: string[]; // Módulos adicionales requeridos
   subItems?: { label: string; ruta: string; modulo?: string; roles?: string[] }[];
 }
 
@@ -43,7 +42,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
         {
           label: 'Dashboard',
           ruta: '/dashboard',
-          roles: ['ADMIN','MEDICO','ENFERMERA','FARMACEUTICO','RECEPCIONISTA','EPIDEMIOLOGO','ADMIN_ESTABLECIMIENTO'],
+          roles: ['ADMIN','MEDICO','ENFERMERA','FARMACEUTICO','RECEPCIONISTA','EPIDEMIOLOGO','ADMIN_ESTABLECIMIENTO','ODONTOLOGIA'],
         },
       ]
     },
@@ -53,27 +52,26 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
         {
           label: 'Pacientes',
           ruta: '/pacientes',
-          roles: ['ADMIN','MEDICO','ENFERMERA','RECEPCIONISTA','ADMIN_ESTABLECIMIENTO'],
+          roles: ['ADMIN','MEDICO','ENFERMERA','RECEPCIONISTA','ADMIN_ESTABLECIMIENTO','ODONTOLOGIA'],
           modulo: 'pacientes',
         },
         {
           label: 'Citas',
           ruta: '/citas',
-          roles: ['ADMIN','MEDICO','ENFERMERA','RECEPCIONISTA','ADMIN_ESTABLECIMIENTO'],
+          roles: ['ADMIN','MEDICO','ENFERMERA','RECEPCIONISTA','ADMIN_ESTABLECIMIENTO','ODONTOLOGIA'],
           modulo: 'citas',
         },
         {
-          label: 'Agendas',
+          label: 'Agendas Médicas',
           ruta: '/agendas',
-          roles: ['ADMIN','MEDICO','ENFERMERA','RECEPCIONISTA','ADMIN_ESTABLECIMIENTO'],
+          roles: ['ADMIN','MEDICO','ENFERMERA','RECEPCIONISTA','ADMIN_ESTABLECIMIENTO','ODONTOLOGIA'],
           modulo: 'agendas', 
         },
         {
           label: 'Historia Clínica',
           ruta: '/historia-clinica',
-          roles: ['ADMIN','MEDICO','ENFERMERA'],
+          roles: ['ADMIN','MEDICO','ENFERMERA','ODONTOLOGIA'],
           modulo: 'historia_clinica',
-          dependencias: ['citas', 'pacientes'],
         },
         {
           label: 'Triaje',
@@ -87,8 +85,8 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
           roles: ['ADMIN','MEDICO','ENFERMERA','ADMIN_ESTABLECIMIENTO'],
           modulo: 'vacunacion',
           subItems: [
-            { label: 'Vacunación', ruta: '/vacunacion', roles: ['ENFERMERA', 'MEDICO', 'ADMIN', 'ADMIN_ESTABLECIMIENTO'] },
-            { label: 'Inventario PAI', ruta: '/vacunacion/inventario', roles: ['ENFERMERA', 'ADMIN', 'ADMIN_ESTABLECIMIENTO'] }
+            { label: 'Vacunación', ruta: '/vacunacion', modulo: 'vacunacion' },
+            { label: 'Inventario PAI', ruta: '/vacunacion/inventario', modulo: 'inventario_vacunas' }
           ]
         },
         {
@@ -101,13 +99,19 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
           label: 'Control Prenatal',
           ruta: '/control-prenatal',
           roles: ['ADMIN','MEDICO','ENFERMERA'],
-          modulo: 'pacientes', // Temporalmente usando el permiso de pacientes para visibilidad
+          modulo: 'control_prenatal',
         },
         {
           label: 'Pediatría',
           ruta: '/pediatria',
           roles: ['ADMIN','MEDICO','ENFERMERA'],
-          modulo: 'pacientes', // Usando pacientes para visibilidad inicial
+          modulo: 'pediatria',
+        },
+        {
+          label: 'Historial Unificado',
+          ruta: '/historial-unificado',
+          roles: ['ADMIN','MEDICO','ENFERMERA','ADMIN_ESTABLECIMIENTO','EPIDEMIOLOGO'],
+          modulo: 'historial_unificado',
         },
 
       ]
@@ -119,14 +123,13 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
           label: 'Farmacia',
           ruta: '/farmacia',
           roles: ['ADMIN','FARMACEUTICO'],
-          modulo: 'recetas',
+          modulo: 'farmacia',
         },
         {
           label: 'Recetas por Paciente',
           ruta: '/servicios/recetas-paciente',
-          roles: ['ADMIN','FARMACEUTICO','MEDICO','ADMIN_ESTABLECIMIENTO'],
+          roles: ['ADMIN','FARMACEUTICO','MEDICO','ADMIN_ESTABLECIMIENTO','ODONTOLOGIA'],
           modulo: 'recetas',
-          dependencias: ['pacientes'],
         },
       ]
     },
@@ -174,12 +177,14 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
             { label: 'Formularios Clínicos', ruta: '/mantenimiento/formularios',  modulo: 'formularios'  },
             { label: 'Catálogo CIE-10',      ruta: '/mantenimiento/diagnosticos',  modulo: 'diagnosticos' },
             { label: 'Medicamentos',         ruta: '/mantenimiento/medicamentos',  modulo: 'medicamentos' },
-            { label: 'Exámenes Lab',         ruta: '/mantenimiento/laboratorio',   roles: ['ADMIN']       },
-            { label: 'Estudios Imagen',      ruta: '/mantenimiento/radiologia',    roles: ['ADMIN']       },
-            { label: 'Establecimientos',     ruta: '/mantenimiento/establecimientos',      roles: ['ADMIN']       },
+            { label: 'Vacunas y Esquemas PAI', ruta: '/mantenimiento/vacunas',      modulo: 'vacunacion'   },
+            { label: 'Exámenes Lab',         ruta: '/mantenimiento/laboratorio',   modulo: 'laboratorio'  },
+            { label: 'Estudios Imagen',      ruta: '/mantenimiento/radiologia',    modulo: 'radiologia'   },
+            { label: 'Establecimientos',     ruta: '/mantenimiento/establecimientos',      modulo: 'establecimientos' },
             { label: 'Roles y Permisos',     ruta: '/mantenimiento/roles',         roles: ['ADMIN']       },
+            { label: 'Catálogo de Reportes', ruta: '/reportes/gestion',             modulo: 'gestion_reportes' },
             { label: 'Personalización Login', ruta: '/mantenimiento/login',         roles: ['ADMIN']       },
-            { label: 'Solicitudes Móviles',  ruta: '/mantenimiento/solicitudes',   roles: ['ADMIN', 'ADMIN_ESTABLECIMIENTO'] },
+            { label: 'Solicitudes Móviles',  ruta: '/mantenimiento/solicitudes',   modulo: 'usuarios'     },
           ],
         },
       ]
@@ -191,6 +196,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
           label: 'Control Epidemiológico',
           ruta: '/epidemiologia/dashboard',
           roles: ['ADMIN','ADMIN_ESTABLECIMIENTO','EPIDEMIOLOGO'],
+          modulo: 'epidemiologia',
         },
         {
           label: 'Reportes',
@@ -210,21 +216,22 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
       .map(section => ({
         ...section,
         items: section.items
-          .filter(item => item.roles.includes(rol))
           .filter(item => {
-            // Verificar módulo principal
-            if (item.modulo && !this.auth.tieneAccesoModulo(item.modulo)) return false;
-            // Verificar dependencias
-            if (item.dependencias && !item.dependencias.every(d => this.auth.tieneAccesoModulo(d))) return false;
-            return true;
+            if (item.modulo) {
+              return this.auth.tieneAccesoModulo(item.modulo);
+            }
+            return item.roles.includes(rol);
           })
           .map(item => ({
             ...item,
-            subItems: item.subItems?.filter(
-              sub => (!sub.modulo || this.auth.tieneAccesoModulo(sub.modulo)) &&
-                     (!sub.roles || sub.roles.includes(rol))
-            ),
-          })),
+            subItems: item.subItems?.filter(sub => {
+              if (sub.modulo) {
+                return this.auth.tieneAccesoModulo(sub.modulo);
+              }
+              return !sub.roles || sub.roles.includes(rol);
+            }),
+          }))
+          .filter(item => !item.subItems || item.subItems.length > 0),
       }))
       .filter(section => section.items.length > 0);
   }

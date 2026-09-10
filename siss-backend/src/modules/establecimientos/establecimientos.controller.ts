@@ -28,7 +28,7 @@ export class EstablecimientosController {
   }
 
   @Get()
-  @Permissions('establecimientos:leer')
+  @Permissions('establecimientos:leer,hospitalizacion:leer,pediatria:leer,citas:leer,triaje:leer,control_prenatal:leer,pacientes:leer,historia_clinica:leer')
   listar() {
     return this.service.listar();
   }
@@ -39,7 +39,7 @@ export class EstablecimientosController {
   }
 
   @Get(':id')
-  @Permissions('establecimientos:leer')
+  @Permissions('establecimientos:leer,hospitalizacion:leer,pediatria:leer,citas:leer,triaje:leer,control_prenatal:leer,pacientes:leer,historia_clinica:leer')
   obtener(@Param('id', ParseIntPipe) id: number) {
     return this.service.obtenerPorId(id);
   }

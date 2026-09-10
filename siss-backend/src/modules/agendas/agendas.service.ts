@@ -8,17 +8,18 @@ export class AgendasService {
   constructor(private prisma: PrismaService) {}
 
   async upsertAgendaBase(dto: CreateAgendaBaseDto) {
-    return this.prisma.agendaBase.upsert({
+    // 1. Eliminar cualquier registro de jornada previo para el mismo día
+    await this.prisma.agendaBase.deleteMany({
       where: {
-        medicoId_establecimientoId_diaSemana_horaInicio: {
-          medicoId: dto.medicoId,
-          establecimientoId: dto.establecimientoId,
-          diaSemana: dto.diaSemana,
-          horaInicio: dto.horaInicio,
-        },
+        medicoId: dto.medicoId,
+        establecimientoId: dto.establecimientoId,
+        diaSemana: dto.diaSemana,
       },
-      update: { ...dto },
-      create: { ...dto },
+    });
+
+    // 2. Crear el nuevo registro de jornada base
+    return this.prisma.agendaBase.create({
+      data: dto,
     });
   }
 
@@ -69,13 +70,44 @@ export class AgendasService {
   async verificarDisponibilidad(medicoId: number, establecimientoId: number, fechaHora: Date) {
     const d = new Date(fechaHora);
     const diaSemana = d.getUTCDay();
-    const horaStr = d.getUTCHours().toString().padStart(2, '0') + ':' + 
+    const horaStr = d.getUTCHours().toString().padStart(2, '0') + ':' +
                     d.getUTCMinutes().toString().padStart(2, '0');
 
     console.log(`[Diagnóstico Agenda] Médico: ${medicoId}, Centro: ${establecimientoId}`);
     console.log(`[Diagnóstico Agenda] Literal Detectado - Día: ${diaSemana}, Hora: ${horaStr}`);
 
-    // 1. Verificar si el médico tiene jornada en ESTE establecimiento
+    const ausencia = await this.prisma.excepcionAgenda.findFirst({
+      where: {
+        medicoId: Number(medicoId), establecimientoId: Number(establecimientoId),
+        tipo: { not: 'CAMBIO_HORARIO' }, fechaInicio: { lte: fechaHora }, fechaFin: { gte: fechaHora },
+      },
+    });
+    if (ausencia) return { disponible: false, mensaje: `El médico no está disponible: ${ausencia.tipo}.` };
+    // 1. Verificar si hay un Cambio de Horario Especial activo para este día
+    const excepcionHorario = await this.prisma.excepcionAgenda.findFirst({
+      where: {
+        medicoId: Number(medicoId),
+        establecimientoId: Number(establecimientoId),
+        tipo: 'CAMBIO_HORARIO',
+        fechaInicio: { lte: fechaHora },
+        fechaFin: { gte: fechaHora },
+      },
+      orderBy: { id: 'desc' },
+    });
+
+    if (excepcionHorario && excepcionHorario.horaInicio && excepcionHorario.horaFin) {
+      if (horaStr >= excepcionHorario.horaInicio && horaStr <= excepcionHorario.horaFin) {
+        // En rango de la jornada especial
+        return { disponible: true };
+      } else {
+        return {
+          disponible: false,
+          mensaje: `El médico tiene una jornada especial hoy de ${excepcionHorario.horaInicio} a ${excepcionHorario.horaFin}. Este horario no está cubierto.`,
+        };
+      }
+    }
+
+    // 2. Si no hay jornada especial, verificar si el médico tiene jornada base en este horario
     const jornada = await this.prisma.agendaBase.findFirst({
       where: {
         medicoId: Number(medicoId),
@@ -95,18 +127,19 @@ export class AgendasService {
       };
     }
 
-    // 2. Verificar excepciones en ESTE establecimiento
-    const excepcion = await this.prisma.excepcionAgenda.findFirst({
+    // 3. Verificar si hay otras excepciones (ausencias/bloqueos) activas
+    const excepcionAusencia = await this.prisma.excepcionAgenda.findFirst({
       where: {
-        medicoId,
-        establecimientoId,
+        medicoId: Number(medicoId),
+        establecimientoId: Number(establecimientoId),
+        tipo: { not: 'CAMBIO_HORARIO' },
         fechaInicio: { lte: fechaHora },
         fechaFin: { gte: fechaHora },
       },
     });
 
-    if (excepcion) {
-      const tipo = excepcion.tipo
+    if (excepcionAusencia) {
+      const tipo = excepcionAusencia.tipo
         .toLowerCase()
         .split('_')
         .map((w) => w.charAt(0).toUpperCase() + w.slice(1))

@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
+import { Injectable, NotFoundException, ConflictException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { DateUtils } from '../../common/utils/date-utils';
 import { 
@@ -232,7 +232,10 @@ export class HospitalizacionService {
     }
 
     // Validar destino
-    const camaDestino = await this.prisma.cama.findUnique({ where: { id: data.camaDestinoId } });
+    const camaDestino = await this.prisma.cama.findUnique({
+      where: { id: data.camaDestinoId },
+      include: { habitacion: { include: { sala: true } } },
+    });
     if (!camaDestino || camaDestino.estado !== 'DISPONIBLE') {
       throw new ConflictException('Cama de destino no disponible');
     }
@@ -261,7 +264,7 @@ export class HospitalizacionService {
       // 4. Actualizar el ingreso con la nueva cama
       await tx.ingresoHospitalario.update({
         where: { id: data.ingresoId },
-        data: { camaId: data.camaDestinoId }
+        data: { camaId: data.camaDestinoId, servicioId: camaDestino.habitacion.sala.servicioId }
       });
 
       return movimiento;
@@ -419,103 +422,71 @@ export class HospitalizacionService {
     });
   }
 
-  async obtenerEstadisticas(servicioId?: number) {
-    const ahora = new Date();
-    const inicioMes = new Date(ahora.getFullYear(), ahora.getMonth(), 1);
-
-    // 1. Total de camas activas
-    const totalCamas = await this.prisma.cama.count({
-      where: { 
-        activo: true,
-        ...(servicioId && { habitacion: { sala: { servicioId } } })
+  async obtenerEstadisticas(establecimientoId: number, servicioId?: number) {
+    if (!Number.isInteger(establecimientoId) || establecimientoId <= 0) {
+      throw new BadRequestException('Debe seleccionar un establecimiento');
+    }
+    if (servicioId !== undefined && (!Number.isInteger(servicioId) || servicioId <= 0)) {
+      throw new BadRequestException('Servicio inválido');
+    }
+    const ahora = DateUtils.getLiteralNow();
+    const inicioMes = new Date(Date.UTC(ahora.getUTCFullYear(), ahora.getUTCMonth(), 1));
+    const filtroServicio = { establecimientoId, ...(servicioId !== undefined ? { id: servicioId } : {}) };
+    const [camas, egresosMes] = await this.prisma.$transaction([
+      this.prisma.cama.findMany({
+        where: { activo: true, habitacion: { sala: { servicio: filtroServicio } } },
+        include: { habitacion: { include: { sala: { include: { servicio: { include: { catServicio: true } } } } } } },
+      }),
+      this.prisma.egresoHospitalario.findMany({
+        where: {
+          fechaEgreso: { gte: inicioMes, lte: ahora },
+          ingreso: { cama: { habitacion: { sala: { servicio: filtroServicio } } } },
+        },
+        include: { ingreso: { include: { cama: { include: { habitacion: { include: { sala: true } } } } } } },
+      }),
+    ]);
+    const totalCamas = camas.length;
+    const ocupadas = camas.filter(c => c.estado === 'OCUPADA').length;
+    const estados = [
+      ['OCUPADA', 'Ocupadas'], ['DISPONIBLE', 'Disponibles'], ['LIMPIEZA', 'En limpieza'],
+      ['MANTENIMIENTO', 'En mantenimiento'], ['RESERVADA', 'Reservadas'],
+    ];
+    const estadias = egresosMes.map(e => (e.fechaEgreso.getTime() - e.ingreso.fechaIngreso.getTime()) / 86400000);
+    const validas = estadias.filter(d => Number.isFinite(d) && d >= 0);
+    const promedioEstadia = validas.length ? Math.round(validas.reduce((a, b) => a + b, 0) / validas.length * 10) / 10 : null;
+    // La cama actual (o última al egresar) determina el servicio, incluso tras un traslado.
+    const servicios = new Map<number, { servicio: string; camas: number; ocupadas: number; egresos: number }>();
+    for (const cama of camas) {
+      const servicio = cama.habitacion.sala.servicio;
+      const fila = servicios.get(servicio.id) ?? { servicio: servicio.catServicio.nombre, camas: 0, ocupadas: 0, egresos: 0 };
+      fila.camas++;
+      if (cama.estado === 'OCUPADA') fila.ocupadas++;
+      servicios.set(servicio.id, fila);
+    }
+    for (const egreso of egresosMes) {
+      const id = egreso.ingreso.cama.habitacion.sala.servicioId;
+      if (!servicios.has(id)) {
+        const servicio = await this.prisma.servicio.findUnique({ where: { id }, include: { catServicio: true } });
+        servicios.set(id, { servicio: servicio?.catServicio.nombre ?? 'Servicio', camas: 0, ocupadas: 0, egresos: 0 });
       }
-    });
-
-    // 2. Ingresos activos (Ocupación actual)
-    const ingresosActivosDetalle = await this.prisma.ingresoHospitalario.findMany({
-      where: { 
-        estado: 'ACTIVO',
-        ...(servicioId && { servicioId })
-      }
-    });
-    const ingresosActivos = ingresosActivosDetalle.length;
-
-    // 3. Egresos del mes (para Giro de Cama)
-    console.time('Stats:Egresos');
-    const egresosMes = await this.prisma.egresoHospitalario.findMany({
-      where: {
-        fechaEgreso: { gte: inicioMes },
-        ...(servicioId && { ingreso: { servicioId } })
-      },
-      include: { ingreso: true }
-    });
-    console.timeEnd('Stats:Egresos');
-    console.log(`Egresos encontrados para estadísticas: ${egresosMes.length}`);
-
-    // Cálculos
-    const ocupacionPorcentual = totalCamas > 0 ? (ingresosActivos / totalCamas) * 100 : 0;
-    const giroCama = totalCamas > 0 ? egresosMes.length / totalCamas : 0;
-    
-    let sumaEstadia = 0;
-    egresosMes.forEach(e => {
-      const diffTime = Math.abs(e.fechaEgreso.getTime() - e.ingreso.fechaIngreso.getTime());
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      sumaEstadia += diffDays === 0 ? 1 : diffDays;
-    });
-    const promedioEstadia = egresosMes.length > 0 ? sumaEstadia / egresosMes.length : 0;
-
-    console.log('Estadísticas calculadas:', { totalCamas, ingresosActivos, totalEgresos: egresosMes.length });
-
-    // 4. Análisis por Servicio (Ocupación y Giro)
-    const serviciosActivos = await this.prisma.servicio.findMany({
-      where: { activo: true },
-      include: { catServicio: true }
-    });
-
-    const analisisServiciosRaw = await Promise.all(serviciosActivos.map(async (s) => {
-      // Contar camas activas en este servicio
-      const camasServicio = await this.prisma.cama.count({
-        where: { activo: true, habitacion: { sala: { servicioId: s.id } } }
-      });
-      
-      // Si el servicio no tiene camas configuradas, lo ignoramos para la estadística
-      if (camasServicio === 0) return null;
-
-      // Contar ocupadas (ingresos activos)
-      const ocupadasServicio = ingresosActivosDetalle.filter(i => i.servicioId === s.id).length;
-      
-      // Filtrar egresos del mes
-      const egresosServicio = egresosMes.filter(e => e.ingreso.servicioId === s.id).length;
-
-      return {
-        servicio: s.catServicio.nombre,
-        camas: camasServicio,
-        ocupacion: camasServicio > 0 ? Math.round((ocupadasServicio / camasServicio) * 100) : 0,
-        egresos: egresosServicio,
-        giro: camasServicio > 0 ? Math.round((egresosServicio / camasServicio) * 100) / 100 : 0
-      };
-    }));
-
-    // Filtrar nulos (servicios sin camas)
-    const analisisServicios = analisisServiciosRaw.filter(s => s !== null);
-
+      servicios.get(id)!.egresos++;
+    }
     return {
+      periodo: { desde: inicioMes, hasta: ahora },
       indicadores: {
-        totalCamas,
-        ingresosActivos,
-        ocupacionPorcentual: Math.round(ocupacionPorcentual * 10) / 10,
-        giroCama: Math.round(giroCama * 100) / 100,
-        promedioEstadia: Math.round(promedioEstadia * 10) / 10,
-        totalEgresosMes: egresosMes.length
+        totalCamas, ingresosActivos: ocupadas,
+        ocupacionPorcentual: totalCamas ? Math.round(ocupadas / totalCamas * 1000) / 10 : 0,
+        giroCama: totalCamas ? Math.round(egresosMes.length / totalCamas * 100) / 100 : null,
+        promedioEstadia, estadiasInvalidas: estadias.length - validas.length,
+        totalEgresosMes: egresosMes.length,
       },
-      tendenciaOcupacion: [
-        { name: 'Ocupadas', value: ingresosActivos },
-        { name: 'Disponibles', value: totalCamas - ingresosActivos }
-      ],
-      analisisServicios
+      tendenciaOcupacion: estados.map(([estado, name]) => ({ name, value: camas.filter(c => c.estado === estado).length })),
+      analisisServicios: [...servicios.values()].map(s => ({
+        ...s, ocupacion: s.camas ? Math.round(s.ocupadas / s.camas * 1000) / 10 : 0,
+        giro: s.camas ? Math.round(s.egresos / s.camas * 100) / 100 : null,
+      })),
     };
   }
-
   async liberarCama(id: number) {
     const cama = await this.prisma.cama.findUnique({ where: { id } });
     if (!cama) throw new NotFoundException('Cama no encontrada');
@@ -526,3 +497,4 @@ export class HospitalizacionService {
     });
   }
 }
+

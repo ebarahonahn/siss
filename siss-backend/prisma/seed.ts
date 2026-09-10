@@ -80,6 +80,10 @@ async function main() {
         catalogos: ['leer'],
         epidemiologia: ['leer', 'notificar'],
         vacunacion: ['leer'],
+        pediatria: ['leer', 'crear'],
+        hospitalizacion: ['leer', 'gestionar'],
+        triaje: ['leer'],
+        historial_unificado: ['leer'],
       },
     },
     {
@@ -94,6 +98,9 @@ async function main() {
         establecimientos: ['leer'],
         geo: ['leer'],
         catalogos: ['leer'],
+        pediatria: ['leer'],
+        hospitalizacion: ['leer'],
+        historial_unificado: ['leer'],
       },
     },
     {
@@ -118,6 +125,7 @@ async function main() {
         establecimientos: ['leer'],
         geo: ['leer'],
         catalogos: ['leer'],
+        hospitalizacion: ['leer'],
       },
     },
     {
@@ -146,6 +154,7 @@ async function main() {
         establecimientos: ['leer'],
         geo: ['leer'],
         catalogos: ['leer'],
+        hospitalizacion: ['leer', 'gestionar'],
       },
     },
     {
@@ -269,6 +278,12 @@ async function main() {
 
   // ── Reportes Disponibles ───────────────────────────────────────────────────
   const reportes = [
+    {
+      nombre: 'AT-1 · Registro Diario de Atenciones Médicas',
+      descripcion: 'Excel - Versión SISS, detalle diario de atenciones',
+      categoria: 'MEDICA', slug: 'at-1', tipo: 'EXCEL',
+      permiso: 'reportes:at-1', icono: 'clipboard', orden: 3,
+    },
     // Médica
     {
       nombre: 'Productividad Médica',
@@ -415,13 +430,13 @@ async function main() {
   const contrasenaHash = await bcrypt.hash('Admin@123', 10);
 
   const admin = await prisma.usuario.upsert({
-    where: { correo: 'admin@sesal.hn' },
+    where: { correo: 'admin@siss.hn' },
     update: {},
     create: {
       numeroEmpleado: 'EMP-0001',
       nombres: 'Administrador',
       apellidos: 'Sistema',
-      correo: 'admin@sesal.hn',
+      correo: 'admin@siss.hn',
       contrasenaHash,
       rolId: rolAdmin!.id,
       establecimientoId: hospTegus.id,
@@ -443,12 +458,12 @@ async function main() {
   const espODON = await prisma.especialidad.findUnique({ where: { codigo: 'ODON' } });
 
   const medico = await prisma.usuario.upsert({
-    where: { correo: 'medico@sesal.hn' },
+    where: { correo: 'medico@siss.hn' },
     update: {},
     create: {
       numeroEmpleado: 'EMP-0002',
       nombres: 'Dr. Ricardo', apellidos: 'Soto',
-      correo: 'medico@sesal.hn',
+      correo: 'medico@siss.hn',
       contrasenaHash: contrasenaMedico,
       rolId: rolMedico!.id,
       establecimientoId: hospTegus.id,
@@ -471,12 +486,12 @@ async function main() {
   });
 
   const medico2 = await prisma.usuario.upsert({
-    where: { correo: 'medico2@sesal.hn' },
+    where: { correo: 'medico2@siss.hn' },
     update: {},
     create: {
       numeroEmpleado: 'EMP-0010',
       nombres: 'Dr. Mario', apellidos: 'Gomez',
-      correo: 'medico2@sesal.hn',
+      correo: 'medico2@siss.hn',
       contrasenaHash: contrasenaMedico,
       rolId: rolMedico!.id,
       establecimientoId: hospTegus.id,
@@ -500,12 +515,12 @@ async function main() {
   console.log(`  ✔ Médico 2 creado: ${medico2.correo} / Medico@123`);
 
   const enfermera = await prisma.usuario.upsert({
-    where: { correo: 'enfermera@sesal.hn' },
+    where: { correo: 'enfermera@siss.hn' },
     update: {},
     create: {
       numeroEmpleado: 'EMP-0003',
       nombres: 'Elena', apellidos: 'Garcia',
-      correo: 'enfermera@sesal.hn',
+      correo: 'enfermera@siss.hn',
       contrasenaHash: contrasenaComun,
       rolId: rolEnfermera!.id,
       establecimientoId: hospTegus.id,
@@ -513,12 +528,12 @@ async function main() {
   });
 
   const recepcion = await prisma.usuario.upsert({
-    where: { correo: 'recepcion@sesal.hn' },
+    where: { correo: 'recepcion@siss.hn' },
     update: {},
     create: {
       numeroEmpleado: 'EMP-0004',
       nombres: 'Ana', apellidos: 'Martínez',
-      correo: 'recepcion@sesal.hn',
+      correo: 'recepcion@siss.hn',
       contrasenaHash: contrasenaComun,
       rolId: rolRecepcion!.id,
       establecimientoId: hospTegus.id,
@@ -526,12 +541,12 @@ async function main() {
   });
 
   const farmacia = await prisma.usuario.upsert({
-    where: { correo: 'farmaceutico@sesal.hn' },
+    where: { correo: 'farmaceutico@siss.hn' },
     update: {},
     create: {
       numeroEmpleado: 'EMP-0005',
       nombres: 'Jorge', apellidos: 'Ramos',
-      correo: 'farmaceutico@sesal.hn',
+      correo: 'farmaceutico@siss.hn',
       contrasenaHash: contrasenaComun,
       rolId: rolFarmacia!.id,
       establecimientoId: hospTegus.id,
@@ -1103,10 +1118,10 @@ async function main() {
 
   console.log('\n✅ Seed actualizado y completado exitosamente.\n');
   console.log('Credenciales operativas:');
-  console.log('  Admin:       admin@sesal.hn      / Admin@123');
-  console.log('  Médico:      medico@sesal.hn     / Medico@123');
-  console.log('  Enfermera:   enfermera@sesal.hn  / Siss@123');
-  console.log('  Recepción:   recepcion@sesal.hn  / Siss@123');
+  console.log('  Admin:       admin@siss.hn      / Admin@123');
+  console.log('  Médico:      medico@siss.hn     / Medico@123');
+  console.log('  Enfermera:   enfermera@siss.hn  / Siss@123');
+  console.log('  Recepción:   recepcion@siss.hn  / Siss@123');
 }
 
 main()

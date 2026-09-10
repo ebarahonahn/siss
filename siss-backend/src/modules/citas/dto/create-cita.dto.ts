@@ -44,4 +44,8 @@ export class CreateCitaDto {
   @IsInt()
   @IsOptional()
   establecimientoId?: number;
+
+  @IsInt()
+  @IsOptional()
+  asignacionId?: number;
 }

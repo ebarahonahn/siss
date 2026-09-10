@@ -10,6 +10,12 @@ import { EstadoCita } from '@prisma/client';
 import { DateUtils } from '../../common/utils/date-utils';
 import { AgendasService } from '../agendas/agendas.service';
 
+interface ContextoAsignacion {
+  asignacionId: number | null;
+  servicioId: number | null;
+  especialidadId: number | null;
+}
+
 @Injectable()
 export class CitasService {
   constructor(
@@ -22,13 +28,15 @@ export class CitasService {
     establecimientoId: number,
     usuarioId: number,
     roles: string[],
+    contexto?: ContextoAsignacion,
   ) {
     const startMsg = `[START-CREAR] Usuario: ${usuarioId}, Roles: ${JSON.stringify(roles)}, DTO: ${JSON.stringify(dto)}\n`;
     require('fs').appendFileSync('citas_debug.log', startMsg);
     // 1. Un médico no puede agendar citas para otro médico
-    if (roles.includes('MEDICO') && dto.medicoId !== usuarioId) {
+    const esClinico = roles.includes('MEDICO') || roles.includes('ODONTOLOGIA') || roles.includes('MEDICO_PEDIATRA');
+    if (esClinico && dto.medicoId !== usuarioId) {
       throw new ForbiddenException(
-        'Como médico, solo puede agendar citas para usted mismo',
+        'Como profesional clínico, solo puede agendar citas para usted mismo',
       );
     }
 
@@ -131,12 +139,31 @@ export class CitasService {
       );
     }
 
+    const contextoCita = await this.resolverContextoCita(
+      dto.medicoId,
+      establecimientoId,
+      dto.especialidadId ?? null,
+      dto.asignacionId ?? null,
+      contexto,
+      esClinico,
+    );
+
+    const { asignacionId: _asignacionSolicitada, ...datosCita } = dto;
+
     return this.prisma.cita.create({
       data: {
-        ...dto,
+        ...datosCita,
         fechaHora: fechaSolicitada,
         establecimientoId,
         creadoPorId: roles.includes('PACIENTE') ? null : usuarioId,
+        ...(contextoCita?.asignacionId
+          ? {
+              asignacionId: contextoCita.asignacionId,
+              servicioId: contextoCita.servicioId,
+              especialidadId:
+                dto.especialidadId ?? contextoCita.especialidadId ?? undefined,
+            }
+          : {}),
       },
       include: {
         paciente: { select: { nombres: true, apellidos: true, dni: true } },
@@ -146,12 +173,97 @@ export class CitasService {
     });
   }
 
+  private async resolverContextoCita(
+    medicoId: number,
+    establecimientoId: number,
+    especialidadId: number | null,
+    asignacionSolicitadaId: number | null,
+    contextoCreador: ContextoAsignacion | undefined,
+    esClinico: boolean,
+  ): Promise<ContextoAsignacion | null> {
+    // Si el propio profesional crea la cita, el JWT ya contiene la asignacion
+    // elegida durante el inicio de sesion.
+    if (esClinico && contextoCreador?.asignacionId) {
+      return contextoCreador;
+    }
+
+    const asignaciones = await this.prisma.asignacionUsuario.findMany({
+      where: {
+        usuarioId: medicoId,
+        establecimientoId,
+        activo: true,
+      },
+      select: {
+        id: true,
+        servicioId: true,
+        especialidadId: true,
+      },
+    });
+
+    if (asignacionSolicitadaId) {
+      const seleccionada = asignaciones.find(
+        (asignacion) => asignacion.id === asignacionSolicitadaId,
+      );
+      if (!seleccionada) {
+        throw new ForbiddenException(
+          'La asignacion seleccionada no pertenece al medico en este establecimiento',
+        );
+      }
+      return {
+        asignacionId: seleccionada.id,
+        servicioId: seleccionada.servicioId,
+        especialidadId: seleccionada.especialidadId,
+      };
+    }
+
+    // Para citas creadas por recepcion, la especialidad seleccionada identifica
+    // la asignacion del medico siempre que la coincidencia sea unica.
+    if (especialidadId) {
+      const porEspecialidad = asignaciones.filter(
+        (asignacion) => asignacion.especialidadId === especialidadId,
+      );
+      if (porEspecialidad.length === 1) {
+        return {
+          asignacionId: porEspecialidad[0].id,
+          servicioId: porEspecialidad[0].servicioId,
+          especialidadId: porEspecialidad[0].especialidadId,
+        };
+      }
+    }
+
+    if (contextoCreador?.servicioId) {
+      const porServicio = asignaciones.filter(
+        (asignacion) =>
+          asignacion.servicioId === contextoCreador.servicioId,
+      );
+      if (porServicio.length === 1) {
+        return {
+          asignacionId: porServicio[0].id,
+          servicioId: porServicio[0].servicioId,
+          especialidadId: porServicio[0].especialidadId,
+        };
+      }
+    }
+
+    // Una sola asignacion activa en el establecimiento tampoco es ambigua.
+    if (asignaciones.length === 1) {
+      return {
+        asignacionId: asignaciones[0].id,
+        servicioId: asignaciones[0].servicioId,
+        especialidadId: asignaciones[0].especialidadId,
+      };
+    }
+
+    return null;
+  }
+
   async listar(
     establecimientoId: number | null,
     roles: string[],
     usuarioId: number,
     fecha?: string,
     dni?: string,
+    contexto?: ContextoAsignacion,
   ) {
     const where: any = {};
 
@@ -159,9 +271,35 @@ export class CitasService {
       where.establecimientoId = establecimientoId;
     }
 
-    // Si es médico, solo ve sus citas en este establecimiento
-    if (roles.includes('MEDICO')) {
+    // Si es profesional clínico (médico, odontólogo, etc.), solo ve sus citas en este establecimiento
+    const esClinico = roles.includes('MEDICO') || roles.includes('ODONTOLOGIA') || roles.includes('MEDICO_PEDIATRA');
+    if (esClinico) {
       where.medicoId = usuarioId;
+
+      // Las citas nuevas se aislan por la asignacion seleccionada. Para las
+      // historicas, sin asignacionId, solo usamos datos que ya existian.
+      if (contexto?.asignacionId) {
+        const citasHistoricasCompatibles = contexto.especialidadId
+          ? {
+              asignacionId: null,
+              especialidadId: contexto.especialidadId,
+            }
+          : contexto.servicioId
+            ? {
+                asignacionId: null,
+                servicioId: contexto.servicioId,
+              }
+            : {
+                asignacionId: null,
+                servicioId: null,
+                especialidadId: null,
+              };
+
+        where.OR = [
+          { asignacionId: contexto.asignacionId },
+          citasHistoricasCompatibles,
+        ];
+      }
     }
 
     // Si es paciente, filtramos por su registro de paciente vinculado al DNI
@@ -209,6 +347,7 @@ export class CitasService {
             apellidos: true,
             dni: true,
             numeroExpediente: true,
+            telefono: true,
             fechaNacimiento: true,
           },
         },
@@ -248,6 +387,18 @@ export class CitasService {
       },
       orderBy: { fechaHora: 'asc' },
     });
+  }
+
+  async confirmar(id: number, user: any) {
+    if (user.rol === 'PACIENTE') throw new ForbiddenException();
+    const visibles = await this.listar(user.establecimientoId, [user.rol], user.id, undefined, user.dni, user);
+    if (!visibles.some(cita => cita.id === id)) throw new NotFoundException('Cita no encontrada');
+    const resultado = await this.prisma.cita.updateMany({
+      where: { id, estado: EstadoCita.PROGRAMADA, fechaHora: { gte: DateUtils.getLiteralNow() } },
+      data: { estado: EstadoCita.CONFIRMADA },
+    });
+    if (!resultado.count) throw new ConflictException('Solo se pueden confirmar citas programadas futuras. Actualice la agenda.');
+    return { id, estado: EstadoCita.CONFIRMADA };
   }
 
   async cancelar(id: number, usuarioId: number) {
@@ -291,7 +442,17 @@ export class CitasService {
     const d = new Date(Date.UTC(parseInt(partes[0]), parseInt(partes[1]) - 1, parseInt(partes[2]), 12, 0, 0)); 
     const diaSemana = d.getUTCDay();
 
-    const jornada = await this.prisma.agendaBase.findFirst({
+    const excepciones = await this.prisma.excepcionAgenda.findMany({
+      where: {
+        medicoId: Number(medicoId), establecimientoId: Number(establecimientoId),
+        fechaInicio: { lte: fin }, fechaFin: { gte: inicio },
+      },
+      orderBy: { id: 'desc' },
+    });
+    const ausencia = excepciones.find(e => e.tipo !== 'CAMBIO_HORARIO');
+    if (ausencia) throw new ConflictException(`El médico no está disponible en la fecha seleccionada: ${ausencia.tipo}.`);
+    const especial = excepciones.find(e => e.tipo === 'CAMBIO_HORARIO' && e.horaInicio && e.horaFin);
+    const jornada = especial ? { horaInicio: especial.horaInicio!, horaFin: especial.horaFin! } : await this.prisma.agendaBase.findFirst({
       where: { 
         medicoId: Number(medicoId), 
         establecimientoId: Number(establecimientoId), 
@@ -333,10 +494,8 @@ export class CitasService {
         let sugerencia = inicioJornada;
         if (ahoraLiteral > inicioJornada) {
           sugerencia = ahoraLiteral;
-          const mins = sugerencia.getMinutes();
-          sugerencia.setMinutes(Math.ceil((mins + 1) / 10) * 10);
-          sugerencia.setSeconds(0);
-          sugerencia.setMilliseconds(0);
+          const mins = sugerencia.getUTCMinutes();
+          sugerencia.setUTCMinutes(Math.ceil((mins + 1) / 10) * 10, 0, 0);
         }
 
         // VALIDACIÓN CRÍTICA: ¿La hora sugerida está fuera de la jornada?
@@ -362,12 +521,12 @@ export class CitasService {
     const ahoraLiteral = DateUtils.getLiteralNow();
     if (ahoraLiteral > siguienteHora) {
       siguienteHora = ahoraLiteral;
-      const mins = siguienteHora.getMinutes();
-      siguienteHora.setMinutes(Math.ceil((mins + 1) / 10) * 10);
-      siguienteHora.setSeconds(0);
-      siguienteHora.setMilliseconds(0);
+      const mins = siguienteHora.getUTCMinutes();
+      siguienteHora.setUTCMinutes(Math.ceil((mins + 1) / 10) * 10, 0, 0);
     }
 
+    const inicioJornada = new Date(`${fecha}T${jornada.horaInicio}:00.000Z`);
+    if (siguienteHora < inicioJornada) siguienteHora = inicioJornada;
     // Validar que la siguiente hora sugerida no se salga de la jornada
     const [hf, mf] = jornada.horaFin.split(':');
     const finJornada = new Date(`${fecha}T${hf}:${mf}:00.000Z`);

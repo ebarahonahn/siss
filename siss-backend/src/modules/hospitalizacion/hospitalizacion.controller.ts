@@ -34,8 +34,7 @@ export class HospitalizacionController {
     res.setHeader('Content-Type', 'application/pdf');
     res.setHeader('Content-Disposition', `inline; filename=evolucion_${id}.pdf`);
     
-    doc.pipe(res);
-    doc.end();
+    res.send(doc);
   }
 
   @Get('reporte-kardex/:ingresoId')
@@ -50,8 +49,7 @@ export class HospitalizacionController {
     res.setHeader('Content-Type', 'application/pdf');
     res.setHeader('Content-Disposition', `inline; filename=kardex_${id}.pdf`);
     
-    doc.pipe(res);
-    doc.end();
+    res.send(doc);
   }
 
   @Get('seguimiento/:ingresoId')
@@ -93,8 +91,8 @@ export class HospitalizacionController {
 
   @Get('estadisticas')
   @Permissions('hospitalizacion:leer')
-  obtenerEstadisticas(@Query('servicioId') servicioId?: string) {
-    return this.svc.obtenerEstadisticas(servicioId ? Number(servicioId) : undefined);
+  obtenerEstadisticas(@CurrentUser() user: any, @Query('servicioId') servicioId?: string) {
+    return this.svc.obtenerEstadisticas(user.establecimientoId, servicioId !== undefined ? Number(servicioId) : undefined);
   }
 
   @Post('notas')
