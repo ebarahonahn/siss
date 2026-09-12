@@ -85,7 +85,7 @@ import { interval, Subscription } from 'rxjs';
           <div class="bg-white rounded-[2.5rem] shadow-2xl p-6 sm:p-8 lg:p-10 animate-fade-in">
             <!-- Logo e Identidad -->
             <div class="text-center mb-4 sm:mb-6">
-              <div class="w-14 h-14 sm:w-20 sm:h-20 bg-white rounded-2xl flex items-center justify-center mx-auto mb-2 sm:mb-4 shadow-xl shadow-blue-600/10 overflow-hidden border border-gray-50">
+              <div class="w-48 h-20 sm:w-56 sm:h-24 bg-white rounded-2xl flex items-center justify-center mx-auto mb-2 sm:mb-4 shadow-xl shadow-blue-600/10 overflow-hidden border border-gray-50">
                  <!-- Mostrar Logo si existe, si no mostrar icono por defecto -->
                  <img *ngIf="configGeneral?.logoMimetype" [src]="imgService.getLogoUrl()" class="w-full h-full object-contain p-2">
                  <div *ngIf="!configGeneral?.logoMimetype" class="w-full h-full bg-blue-600 flex items-center justify-center">
