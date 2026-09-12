@@ -9,7 +9,8 @@ import { PacientesService } from '../../core/services/pacientes.service';
 import { ReportePdfService } from '../../core/services/reporte-pdf.service';
 import { AuthService } from '../../core/services/auth.service';
 import { DateUtils } from '../../core/utils/date-utils';
-import { BehaviorSubject, debounceTime, switchMap, of } from 'rxjs';
+import { ConfiguracionDocumentosService } from '../../core/services/configuracion-documentos.service';
+import { BehaviorSubject, debounceTime, switchMap, of, firstValueFrom } from 'rxjs';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -328,6 +329,7 @@ export class HistorialUnificadoComponent implements OnInit {
   private ps = inject(PacientesService);
   private pdfSvc = inject(ReportePdfService);
   private auth = inject(AuthService);
+  private documentosService = inject(ConfiguracionDocumentosService);
   private http = inject(HttpClient);
   private route = inject(ActivatedRoute);
 
@@ -566,16 +568,35 @@ export class HistorialUnificadoComponent implements OnInit {
         }
       });
 
-      const url = await this.pdfSvc.generarExpedienteUnificadoPdfUrl(data);
+      const configDocumento = await firstValueFrom(
+        this.documentosService.obtener('HISTORIAL_UNIFICADO'),
+      );
+      const url = await this.pdfSvc.generarExpedienteUnificadoPdfUrl(data, configDocumento);
       Swal.close();
 
       if (url) {
-        abrirPdfEnVisor(url);
+        abrirPdfEnVisor(
+          url,
+          configDocumento.tituloVisor,
+          this.nombreArchivoExpediente(configDocumento.nombreArchivo, data),
+        );
       }
     } catch (err) {
       console.error('Error al generar PDF de expediente unificado:', err);
       Swal.fire('Error', 'No se pudo generar el expediente unificado en PDF', 'error');
     }
+  }
+
+  private nombreArchivoExpediente(plantilla: string, data: any): string {
+    const identificador = String(
+      data?.paciente?.numeroExpediente || data?.paciente?.dni || 'paciente',
+    )
+      .trim()
+      .replace(/[^a-zA-Z0-9_-]+/g, '-');
+    const nombre = (plantilla || 'expediente-clinico-{expediente}.pdf')
+      .replaceAll('{expediente}', identificador || 'paciente');
+
+    return nombre.toLowerCase().endsWith('.pdf') ? nombre : `${nombre}.pdf`;
   }
 
   async imprimirConsulta(id: number) {
@@ -608,11 +629,30 @@ export class HistorialUnificadoComponent implements OnInit {
         paciente: data.paciente || h.paciente,
       };
 
-      const url = await this.pdfSvc.generarConsultaPdfUrl(historiaCompleta);
+      const configHistorial = await firstValueFrom(
+        this.documentosService.obtener('HISTORIAL_UNIFICADO'),
+      );
+      let configDocumento = configHistorial;
+      try {
+        configDocumento = await firstValueFrom(
+          this.documentosService.obtener('CONSULTA_CLINICA'),
+        );
+      } catch {
+        // Mantiene la configuración actual hasta que se cree la específica de consulta.
+      }
+      const url = await this.pdfSvc.generarConsultaPdfUrl(
+        historiaCompleta,
+        undefined,
+        configDocumento,
+      );
       Swal.close();
 
       if (url) {
-        abrirPdfEnVisor(url);
+        abrirPdfEnVisor(
+          url,
+          configDocumento.tituloVisor,
+          this.nombreArchivoExpediente(configDocumento.nombreArchivo, data),
+        );
       }
     } catch (err) {
       console.error('Error al generar PDF de consulta:', err);

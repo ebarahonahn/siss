@@ -3,6 +3,59 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { LoginImagesService, LoginImage, ConfigGeneral } from '../../core/services/login-images.service';
 import { NotificationService } from '../../core/services/notification.service';
+import {
+  ConfiguracionDocumento,
+  ConfiguracionDocumentosService,
+} from '../../core/services/configuracion-documentos.service';
+
+interface TipoDocumentoPdf {
+  codigo: string;
+  nombre: string;
+  descripcion: string;
+}
+
+const TIPOS_DOCUMENTO_PDF: TipoDocumentoPdf[] = [
+  {
+    codigo: 'HISTORIAL_UNIFICADO',
+    nombre: 'Historial unificado',
+    descripcion: 'Expediente clínico unificado del paciente.',
+  },
+  {
+    codigo: 'CONSULTA_CLINICA',
+    nombre: 'Consulta clínica',
+    descripcion: 'Resumen y nota de una consulta médica.',
+  },
+  {
+    codigo: 'RECETA_MEDICA',
+    nombre: 'Receta médica',
+    descripcion: 'Receta y tratamiento indicados al paciente.',
+  },
+  {
+    codigo: 'SOLICITUD_LABORATORIO',
+    nombre: 'Solicitud de laboratorio',
+    descripcion: 'Orden para exámenes de laboratorio clínico.',
+  },
+  {
+    codigo: 'SOLICITUD_RADIOLOGIA',
+    nombre: 'Solicitud de radiología',
+    descripcion: 'Orden para estudios radiológicos.',
+  },
+  {
+    codigo: 'INCAPACIDAD_MEDICA',
+    nombre: 'Constancia de incapacidad',
+    descripcion: 'Constancia de incapacidad médica.',
+  },
+  {
+    codigo: 'REFERENCIA_MEDICA',
+    nombre: 'Referencia médica',
+    descripcion: 'Hoja de referencia o remisión.',
+  },
+  {
+    codigo: 'CARNET_INMUNIZACIONES',
+    nombre: 'Carnet de inmunizaciones',
+    descripcion: 'Carnet de vacunas del paciente.',
+  },
+];
 
 @Component({
   selector: 'app-mantenimiento-login',
@@ -56,6 +109,97 @@ import { NotificationService } from '../../core/services/notification.service';
               <p class="text-sm text-gray-500">Este logo reemplazará al icono del corazón en la pantalla de login. Se recomienda formato PNG con fondo transparente.</p>
               <input type="file" (change)="onLogoSelected($event)" accept="image/*" class="hidden" #logoInput>
               <button (click)="logoInput.click()" class="text-blue-600 font-bold hover:underline">Cambiar logo</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Configuración de documentos PDF -->
+      <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 mb-10">
+        <div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+          <div>
+            <h2 class="text-xl font-bold text-gray-900 flex items-center gap-3">
+              <svg class="w-6 h-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 01.586-1.414l5-5A2 2 0 0114.999 2H17a2 2 0 012 2v14a2 2 0 01-2 2z"/></svg>
+              Configuración de documentos PDF
+            </h2>
+            <p class="text-sm text-gray-500 mt-2">Crea una configuración por tipo de documento y personaliza sus textos sin modificar el código.</p>
+          </div>
+          <button (click)="nuevaConfigDocumento()" [disabled]="!hayTipoDocumentoDisponible() || cargandoDocumento"
+                  class="shrink-0 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl font-bold transition-all shadow-lg shadow-blue-500/20 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            Agregar configuración
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div class="lg:col-span-1 rounded-2xl border border-gray-200 bg-gray-50 p-3">
+            <p class="px-2 pb-2 text-xs font-bold uppercase tracking-wide text-gray-500">Documentos configurados</p>
+            <div class="space-y-2">
+              <button *ngFor="let documento of configuracionesDocumento"
+                      (click)="seleccionarConfigDocumento(documento)"
+                      [class.border-blue-500]="documento.codigo === configDocumento.codigo && !modoNuevaConfiguracion"
+                      [class.bg-blue-50]="documento.codigo === configDocumento.codigo && !modoNuevaConfiguracion"
+                      [class.text-blue-900]="documento.codigo === configDocumento.codigo && !modoNuevaConfiguracion"
+                      class="w-full rounded-xl border border-transparent bg-white px-4 py-3 text-left transition-all hover:border-blue-200 hover:bg-blue-50">
+                <span class="block text-sm font-bold">{{ nombreDocumento(documento.codigo) }}</span>
+                <span class="mt-1 block text-xs text-gray-500">{{ descripcionDocumento(documento.codigo) }}</span>
+              </button>
+            </div>
+            <p *ngIf="configuracionesDocumento.length === 0" class="px-3 py-5 text-sm text-gray-500">Todavía no hay documentos configurados.</p>
+          </div>
+
+          <div class="lg:col-span-2">
+            <div class="mb-5 flex flex-wrap items-end justify-between gap-3">
+              <div>
+                <h3 class="text-lg font-bold text-gray-900">{{ modoNuevaConfiguracion ? 'Nueva configuración de documento' : nombreDocumento(configDocumento.codigo) }}</h3>
+                <p class="mt-1 text-sm text-gray-500">{{ modoNuevaConfiguracion ? 'Selecciona el documento que deseas configurar.' : descripcionDocumento(configDocumento.codigo) }}</p>
+              </div>
+              <span *ngIf="!modoNuevaConfiguracion" class="rounded-lg bg-gray-100 px-3 py-1.5 font-mono text-xs text-gray-500">{{ configDocumento.codigo }}</span>
+            </div>
+
+            <div *ngIf="modoNuevaConfiguracion" class="mb-5">
+              <label class="block text-sm font-bold text-gray-700 mb-2">Documento</label>
+              <select [(ngModel)]="configDocumento.codigo" name="codigoDocumentoPdf"
+                      class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all">
+                <option *ngFor="let tipo of tiposDocumentoDisponibles" [value]="tipo.codigo" [disabled]="tipoDocumentoConfigurado(tipo.codigo)">
+                  {{ tipo.nombre }}
+                </option>
+              </select>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div>
+                <label class="block text-sm font-bold text-gray-700 mb-2">Título del encabezado</label>
+                <input [(ngModel)]="configDocumento.tituloEncabezado" name="tituloEncabezadoPdf" type="text" maxlength="200"
+                       class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all">
+              </div>
+              <div>
+                <label class="block text-sm font-bold text-gray-700 mb-2">Subtítulo</label>
+                <input [(ngModel)]="configDocumento.subtitulo" name="subtituloPdf" type="text" maxlength="200"
+                       class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all">
+              </div>
+              <div>
+                <label class="block text-sm font-bold text-gray-700 mb-2">Título del visor</label>
+                <input [(ngModel)]="configDocumento.tituloVisor" name="tituloVisorPdf" type="text" maxlength="160"
+                       class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all">
+              </div>
+              <div>
+                <label class="block text-sm font-bold text-gray-700 mb-2">Nombre de descarga</label>
+                <input [(ngModel)]="configDocumento.nombreArchivo" name="nombreArchivoPdf" type="text" maxlength="160"
+                       class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all">
+                <p class="text-xs text-gray-400 mt-1">Usa <code class="font-mono">&#123;expediente&#125;</code> para insertar el número de expediente.</p>
+              </div>
+            </div>
+
+            <div class="mt-6 flex flex-wrap gap-3">
+              <button *ngIf="modoNuevaConfiguracion" (click)="cancelarNuevaConfigDocumento()" [disabled]="cargandoDocumento"
+                      class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-3 rounded-xl font-bold transition-all disabled:opacity-50">
+                Cancelar
+              </button>
+              <button (click)="guardarConfigDocumento()" [disabled]="cargandoDocumento"
+                      class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-bold transition-all shadow-lg shadow-blue-500/20 disabled:opacity-50">
+                {{ cargandoDocumento ? 'Guardando...' : (modoNuevaConfiguracion ? 'Crear configuración' : 'Guardar cambios') }}
+              </button>
             </div>
           </div>
         </div>
@@ -194,14 +338,29 @@ import { NotificationService } from '../../core/services/notification.service';
 export class MantenimientoLoginComponent implements OnInit {
   imgService = inject(LoginImagesService);
   private notify = inject(NotificationService);
+  private documentosService = inject(ConfiguracionDocumentosService);
 
   imagenes: LoginImage[] = [];
   configGeneral: ConfigGeneral = { id: 1, siglasSistema: 'SISS', nombreSistema: 'Sistema Integral de Salud', actualizadoEn: '' };
+  configDocumento: ConfiguracionDocumento = {
+    id: 0,
+    codigo: 'HISTORIAL_UNIFICADO',
+    tituloEncabezado: 'REPÚBLICA DE HONDURAS - SECRETARÍA DE SALUD',
+    subtitulo: 'EXPEDIENTE CLÍNICO UNIFICADO DEL PACIENTE',
+    tituloVisor: 'Expediente clínico unificado',
+    nombreArchivo: 'expediente-clinico-{expediente}.pdf',
+    creadoEn: '',
+    actualizadoEn: '',
+  };
+  configuracionesDocumento: ConfiguracionDocumento[] = [];
+  readonly tiposDocumentoDisponibles = TIPOS_DOCUMENTO_PDF;
+  modoNuevaConfiguracion = false;
   
   mostrarModal = false;
   modoEdicion = false;
   cargando = false;
   cargandoConfig = false;
+  cargandoDocumento = false;
   selectedFile: File | null = null;
   selectedLogo: File | null = null;
   currentId: number | null = null;
@@ -216,6 +375,7 @@ export class MantenimientoLoginComponent implements OnInit {
   ngOnInit() {
     this.cargarImagenes();
     this.cargarConfig();
+    this.cargarConfiguracionesDocumento();
   }
 
   cargarConfig() {
@@ -245,6 +405,140 @@ export class MantenimientoLoginComponent implements OnInit {
         this.notify.error('Error al guardar la configuración');
         this.cargandoConfig = false;
       }
+    });
+  }
+
+  cargarConfiguracionesDocumento() {
+    this.documentosService.listar().subscribe({
+      next: (configuraciones) => {
+        this.configuracionesDocumento = configuraciones;
+        const seleccionada = configuraciones.find(
+          (config) => config.codigo === this.configDocumento.codigo,
+        ) || configuraciones[0];
+
+        if (seleccionada) {
+          this.seleccionarConfigDocumento(seleccionada);
+        }
+      },
+      error: () => this.notify.error('Error al cargar las configuraciones de PDF'),
+    });
+  }
+
+  seleccionarConfigDocumento(config: ConfiguracionDocumento) {
+    this.configDocumento = { ...config };
+    this.modoNuevaConfiguracion = false;
+  }
+
+  nuevaConfigDocumento() {
+    const tipoDisponible = this.tiposDocumentoDisponibles.find(
+      (tipo) => !this.tipoDocumentoConfigurado(tipo.codigo),
+    );
+
+    if (!tipoDisponible) {
+      return;
+    }
+
+    this.configDocumento = this.crearConfiguracionPredeterminada(tipoDisponible.codigo);
+    this.modoNuevaConfiguracion = true;
+  }
+
+  cancelarNuevaConfigDocumento() {
+    this.modoNuevaConfiguracion = false;
+    const seleccionada = this.configuracionesDocumento.find(
+      (config) => config.codigo === 'HISTORIAL_UNIFICADO',
+    ) || this.configuracionesDocumento[0];
+
+    if (seleccionada) {
+      this.seleccionarConfigDocumento(seleccionada);
+    }
+  }
+
+  tipoDocumentoConfigurado(codigo: string) {
+    return this.configuracionesDocumento.some((config) => config.codigo === codigo);
+  }
+
+  hayTipoDocumentoDisponible() {
+    return this.tiposDocumentoDisponibles.some(
+      (tipo) => !this.tipoDocumentoConfigurado(tipo.codigo),
+    );
+  }
+
+  nombreDocumento(codigo: string) {
+    return this.tiposDocumentoDisponibles.find((tipo) => tipo.codigo === codigo)?.nombre
+      || codigo.replace(/_/g, ' ');
+  }
+
+  descripcionDocumento(codigo: string) {
+    return this.tiposDocumentoDisponibles.find((tipo) => tipo.codigo === codigo)?.descripcion
+      || 'Configuración de documento PDF.';
+  }
+
+  private crearConfiguracionPredeterminada(codigo: string): ConfiguracionDocumento {
+    const configuracionesPredeterminadas: Record<string, Pick<
+      ConfiguracionDocumento,
+      'tituloEncabezado' | 'subtitulo' | 'tituloVisor' | 'nombreArchivo'
+    >> = {
+      HISTORIAL_UNIFICADO: {
+        tituloEncabezado: 'REPÚBLICA DE HONDURAS - SECRETARÍA DE SALUD',
+        subtitulo: 'EXPEDIENTE CLÍNICO UNIFICADO DEL PACIENTE',
+        tituloVisor: 'Expediente clínico unificado',
+        nombreArchivo: 'expediente-clinico-{expediente}.pdf',
+      },
+      CONSULTA_CLINICA: {
+        tituloEncabezado: 'SISS CLÍNICO',
+        subtitulo: 'CONSULTA CLÍNICA',
+        tituloVisor: 'Consulta clínica',
+        nombreArchivo: 'consulta-clinica-{expediente}.pdf',
+      },
+    };
+    const predeterminada = configuracionesPredeterminadas[codigo] || {
+      tituloEncabezado: 'SISS CLÍNICO',
+      subtitulo: '',
+      tituloVisor: this.nombreDocumento(codigo),
+      nombreArchivo: `${codigo.toLowerCase().replaceAll('_', '-')}-{expediente}.pdf`,
+    };
+
+    return {
+      id: 0,
+      codigo,
+      ...predeterminada,
+      creadoEn: '',
+      actualizadoEn: '',
+    };
+  }
+
+  guardarConfigDocumento() {
+    this.cargandoDocumento = true;
+    const esNuevaConfiguracion = this.modoNuevaConfiguracion;
+    const { codigo, tituloEncabezado, subtitulo, tituloVisor, nombreArchivo } = this.configDocumento;
+    const datos = {
+      tituloEncabezado,
+      subtitulo,
+      tituloVisor,
+      nombreArchivo,
+    };
+    const solicitud = esNuevaConfiguracion
+      ? this.documentosService.crear({ codigo, ...datos })
+      : this.documentosService.actualizar(codigo, datos);
+
+    solicitud.subscribe({
+      next: (config) => {
+        const index = this.configuracionesDocumento.findIndex((item) => item.codigo === config.codigo);
+        this.configuracionesDocumento = index >= 0
+          ? this.configuracionesDocumento.map((item) => item.codigo === config.codigo ? config : item)
+          : [...this.configuracionesDocumento, config].sort((a, b) => a.codigo.localeCompare(b.codigo));
+        this.seleccionarConfigDocumento(config);
+        this.cargandoDocumento = false;
+        this.notify.success(
+          esNuevaConfiguracion
+            ? 'Configuración de PDF creada correctamente'
+            : 'Configuración del PDF actualizada correctamente',
+        );
+      },
+      error: () => {
+        this.cargandoDocumento = false;
+        this.notify.error('Error al guardar la configuración del PDF');
+      },
     });
   }
 

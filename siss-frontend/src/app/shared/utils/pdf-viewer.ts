@@ -1,7 +1,11 @@
 let visorActual: HTMLDialogElement | null = null;
 
 /** Abre un PDF generado localmente en un diálogo de la aplicación. */
-export function abrirPdfEnVisor(origen: string | Blob, titulo = 'Vista previa PDF'): void {
+export function abrirPdfEnVisor(
+  origen: string | Blob,
+  titulo = 'Vista previa PDF',
+  nombreArchivo = 'documento.pdf',
+): void {
   if (typeof origen === 'string' && !origen.startsWith('blob:')) {
     throw new Error('El visor requiere un PDF generado por la aplicación');
   }
@@ -21,7 +25,7 @@ export function abrirPdfEnVisor(origen: string | Blob, titulo = 'Vista previa PD
   const descargar = document.createElement('a');
   descargar.textContent = 'Descargar PDF';
   descargar.href = url;
-  descargar.download = 'documento.pdf';
+  descargar.download = nombreArchivo;
   const cerrar = document.createElement('button');
   cerrar.type = 'button';
   cerrar.textContent = 'Cerrar visor';

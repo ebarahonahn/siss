@@ -1,8 +1,11 @@
 import {
   Controller,
   Get,
+  Put,
+  Param,
   Post,
   Body,
+  UseGuards,
   UseInterceptors,
   UploadedFile,
   Res,
@@ -10,6 +13,11 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ConfiguracionService } from './configuracion.service';
 import * as express from 'express';
+import { CreateConfiguracionDocumentoDto } from './dto/create-configuracion-documento.dto';
+import { UpdateConfiguracionDocumentoDto } from './dto/update-configuracion-documento.dto';
+import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
+import { PermissionsGuard } from '../../common/guards/permissions.guard';
+import { Permissions } from '../../common/decorators/permissions.decorator';
 
 @Controller('configuracion')
 export class ConfiguracionController {
@@ -32,6 +40,33 @@ export class ConfiguracionController {
       logo: file?.buffer,
       logoMimetype: file?.mimetype,
     });
+  }
+
+  @Get('documentos')
+  listarConfiguracionesDocumento() {
+    return this.configService.listarConfiguracionesDocumento();
+  }
+
+  @Post('documentos')
+  @UseGuards(JwtAuthGuard, PermissionsGuard)
+  @Permissions('configuracion:gestionar')
+  crearConfiguracionDocumento(@Body() data: CreateConfiguracionDocumentoDto) {
+    return this.configService.crearConfiguracionDocumento(data);
+  }
+
+  @Get('documentos/:codigo')
+  obtenerConfiguracionDocumento(@Param('codigo') codigo: string) {
+    return this.configService.obtenerConfiguracionDocumento(codigo);
+  }
+
+  @Put('documentos/:codigo')
+  @UseGuards(JwtAuthGuard, PermissionsGuard)
+  @Permissions('configuracion:gestionar')
+  actualizarConfiguracionDocumento(
+    @Param('codigo') codigo: string,
+    @Body() data: UpdateConfiguracionDocumentoDto,
+  ) {
+    return this.configService.actualizarConfiguracionDocumento(codigo, data);
   }
 
   @Get('logo')

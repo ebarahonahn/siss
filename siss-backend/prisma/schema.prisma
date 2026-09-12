@@ -2040,6 +2040,22 @@ model Configuracion {
   @@map("configuraciones")
 }
 
+/// Textos y metadatos configurables de los documentos generados por el sistema.
+model ConfiguracionDocumento {
+  id                Int      @id @default(autoincrement())
+  /// Identificador técnico estable del tipo de documento (ej: HISTORIAL_UNIFICADO).
+  codigo            String   @unique @db.VarChar(50)
+  tituloEncabezado  String   @map("titulo_encabezado") @db.VarChar(200)
+  subtitulo         String   @db.VarChar(200)
+  tituloVisor       String   @map("titulo_visor") @db.VarChar(160)
+  /// Admite el marcador {expediente} para nombrar la descarga.
+  nombreArchivo     String   @map("nombre_archivo") @db.VarChar(160)
+  creadoEn          DateTime @default(now()) @map("creado_en")
+  actualizadoEn     DateTime @updatedAt @map("actualizado_en")
+
+  @@map("configuraciones_documento")
+}
+
 /// Modelo para cuentas de usuario de PACIENTES (Móvil)
 /// Separa los usuarios institucionales de los ciudadanos
 model PacienteUsuario {

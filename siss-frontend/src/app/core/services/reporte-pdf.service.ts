@@ -1,14 +1,91 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { jsPDF } from 'jspdf';
 import { HistoriaClinica } from './historia-clinica.service';
+import {
+  ConfiguracionDocumento,
+  ConfiguracionDocumentosService,
+} from './configuracion-documentos.service';
+import { firstValueFrom } from 'rxjs';
+
+const CONFIGURACION_HISTORIAL_PREDETERMINADA: Pick<
+  ConfiguracionDocumento,
+  'tituloEncabezado' | 'subtitulo' | 'tituloVisor'
+> = {
+  tituloEncabezado: 'REPÚBLICA DE HONDURAS - SECRETARÍA DE SALUD',
+  subtitulo: 'EXPEDIENTE CLÍNICO UNIFICADO DEL PACIENTE',
+  tituloVisor: 'Expediente clínico unificado',
+};
+
+const CONFIGURACION_CONSULTA_PREDETERMINADA: Pick<
+  ConfiguracionDocumento,
+  'tituloEncabezado' | 'subtitulo' | 'tituloVisor'
+> = {
+  tituloEncabezado: 'SISS CLÍNICO',
+  subtitulo: '',
+  tituloVisor: 'Vista previa PDF',
+};
+
+type ConfiguracionPdfBasica = Pick<
+  ConfiguracionDocumento,
+  'tituloEncabezado' | 'subtitulo' | 'tituloVisor'
+>;
+
+const CONFIGURACIONES_DOCUMENTO_PREDETERMINADAS: Record<string, ConfiguracionPdfBasica> = {
+  RECETA_MEDICA: {
+    tituloEncabezado: 'SISS CLÍNICO',
+    subtitulo: '',
+    tituloVisor: 'Receta médica',
+  },
+  SOLICITUD_LABORATORIO: {
+    tituloEncabezado: 'SISS CLÍNICO',
+    subtitulo: '',
+    tituloVisor: 'Solicitud de laboratorio',
+  },
+  SOLICITUD_RADIOLOGIA: {
+    tituloEncabezado: 'SISS CLÍNICO',
+    subtitulo: '',
+    tituloVisor: 'Solicitud de radiología',
+  },
+  INCAPACIDAD_MEDICA: {
+    tituloEncabezado: 'SISS CLÍNICO',
+    subtitulo: '',
+    tituloVisor: 'Constancia de incapacidad médica',
+  },
+  REFERENCIA_MEDICA: {
+    tituloEncabezado: 'SISS CLÍNICO',
+    subtitulo: '',
+    tituloVisor: 'Hoja de referencia médica',
+  },
+  CARNET_INMUNIZACIONES: {
+    tituloEncabezado: 'SISS CLÍNICO',
+    subtitulo: '',
+    tituloVisor: 'Carnet de inmunizaciones',
+  },
+};
 
 @Injectable({
   providedIn: 'root'
 })
 export class ReportePdfService {
+  private readonly documentosService = inject(ConfiguracionDocumentosService);
 
-  async generarConsultaPdfUrl(h: HistoriaClinica, odontogramaHistory?: any[]): Promise<string> {
+  async generarConsultaPdfUrl(
+    h: HistoriaClinica,
+    odontogramaHistory?: any[],
+    configuracionDocumento?: Pick<ConfiguracionDocumento, 'tituloEncabezado' | 'subtitulo' | 'tituloVisor'>,
+  ): Promise<string> {
+    const configuracionGuardada = configuracionDocumento
+      || await this.obtenerConfiguracionDocumento('CONSULTA_CLINICA');
+    const configuracion = {
+      ...CONFIGURACION_CONSULTA_PREDETERMINADA,
+      ...configuracionGuardada,
+    };
     const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
+    doc.setProperties({
+      title: configuracion.tituloVisor,
+      subject: configuracion.subtitulo,
+      author: configuracion.tituloEncabezado,
+    });
     const margin = 20;
     const pageWidth = doc.internal.pageSize.getWidth();
     const contentWidth = pageWidth - (margin * 2);
@@ -21,14 +98,11 @@ export class ReportePdfService {
     const checkPageBreak = (needed: number) => {
       if (currentY + needed > 275) {
         doc.addPage();
-        currentY = margin;
-        this.renderHeader(doc, h, margin, pageWidth);
-        currentY += 25;
+        currentY = this.renderHeader(doc, h, margin, pageWidth, configuracion) + 9;
       }
     };
 
-    this.renderHeader(doc, h, margin, pageWidth);
-    currentY += 25;
+    currentY = this.renderHeader(doc, h, margin, pageWidth, configuracion) + 9;
 
     doc.setFillColor(248, 250, 252);
     doc.rect(margin, currentY, contentWidth, 22, 'F');
@@ -309,8 +383,27 @@ export class ReportePdfService {
     return URL.createObjectURL(blob);
   }
 
+  private async obtenerConfiguracionDocumento(codigo: string): Promise<ConfiguracionDocumento | undefined> {
+    try {
+      return await firstValueFrom(this.documentosService.obtener(codigo));
+    } catch {
+      // Un documento sin configurar continúa utilizando el diseño predeterminado.
+      return undefined;
+    }
+  }
+
+  private async resolverConfiguracionDocumento(codigo: string): Promise<ConfiguracionPdfBasica> {
+    const predeterminada = CONFIGURACIONES_DOCUMENTO_PREDETERMINADAS[codigo];
+    const guardada = await this.obtenerConfiguracionDocumento(codigo);
+    return {
+      ...predeterminada,
+      ...guardada,
+    };
+  }
+
   async generarRecetaPdfUrl(h: HistoriaClinica, formato: 'NORMAL' | 'POS' = 'NORMAL'): Promise<string> {
     const isPos = formato === 'POS';
+    const configuracion = await this.resolverConfiguracionDocumento('RECETA_MEDICA');
     const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: isPos ? [80, 150] : 'a4' });
     
     if (isPos) {
@@ -339,9 +432,9 @@ export class ReportePdfService {
       this.renderPosFooter(doc, h, y + 5);
     } else {
       const margin = 20; const pageWidth = doc.internal.pageSize.getWidth();
-      this.renderHeader(doc, h, margin, pageWidth);
-      this.renderSectionTitle(doc, 'RECETA MÉDICA / TRATAMIENTO', margin, 45);
-      let y = 55;
+      const headerBottom = this.renderHeader(doc, h, margin, pageWidth, configuracion);
+      this.renderSectionTitle(doc, 'RECETA MÉDICA / TRATAMIENTO', margin, headerBottom + 9);
+      let y = headerBottom + 19;
       (h.recetas || []).forEach(r => {
         (r.detalles || []).forEach((det: any) => {
           doc.setFont('helvetica', 'bold'); doc.setFontSize(10);
@@ -364,6 +457,7 @@ export class ReportePdfService {
 
   async generarLaboratorioPdfUrl(h: HistoriaClinica, formato: 'NORMAL' | 'POS' = 'NORMAL'): Promise<string> {
     const isPos = formato === 'POS';
+    const configuracion = await this.resolverConfiguracionDocumento('SOLICITUD_LABORATORIO');
     const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: isPos ? [80, 120] : 'a4' });
     if (isPos) {
       this.renderPosHeader(doc, h, 'ORDEN LABORATORIO');
@@ -378,9 +472,9 @@ export class ReportePdfService {
       this.renderPosFooter(doc, h, y + 5);
     } else {
       const margin = 20; const pageWidth = doc.internal.pageSize.getWidth();
-      this.renderHeader(doc, h, margin, pageWidth);
-      this.renderSectionTitle(doc, 'SOLICITUD DE LABORATORIO CLÍNICO', margin, 45);
-      let y = 55;
+      const headerBottom = this.renderHeader(doc, h, margin, pageWidth, configuracion);
+      this.renderSectionTitle(doc, 'SOLICITUD DE LABORATORIO CLÍNICO', margin, headerBottom + 9);
+      let y = headerBottom + 19;
       (h.solicitudesLab || []).forEach(s => {
         (s.detalles || []).forEach((det: any) => {
           doc.setFont('helvetica', 'bold'); doc.setFontSize(10);
@@ -399,6 +493,7 @@ export class ReportePdfService {
 
   async generarRadiologiaPdfUrl(h: HistoriaClinica, formato: 'NORMAL' | 'POS' = 'NORMAL'): Promise<string> {
     const isPos = formato === 'POS';
+    const configuracion = await this.resolverConfiguracionDocumento('SOLICITUD_RADIOLOGIA');
     const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: isPos ? [80, 120] : 'a4' });
     if (isPos) {
       this.renderPosHeader(doc, h, 'ORDEN RADIOLOGÍA');
@@ -413,9 +508,9 @@ export class ReportePdfService {
       this.renderPosFooter(doc, h, y + 5);
     } else {
       const margin = 20; const pageWidth = doc.internal.pageSize.getWidth();
-      this.renderHeader(doc, h, margin, pageWidth);
-      this.renderSectionTitle(doc, 'SOLICITUD DE ESTUDIOS RADIOLÓGICOS', margin, 45);
-      let y = 55;
+      const headerBottom = this.renderHeader(doc, h, margin, pageWidth, configuracion);
+      this.renderSectionTitle(doc, 'SOLICITUD DE ESTUDIOS RADIOLÓGICOS', margin, headerBottom + 9);
+      let y = headerBottom + 19;
       (h.solicitudesRad || []).forEach(s => {
         (s.detalles || []).forEach((det: any) => {
           doc.setFont('helvetica', 'bold'); doc.setFontSize(10);
@@ -434,6 +529,7 @@ export class ReportePdfService {
 
   async generarIncapacidadPdfUrl(h: HistoriaClinica, formato: 'NORMAL' | 'POS' = 'NORMAL'): Promise<string> {
     const isPos = formato === 'POS';
+    const configuracion = await this.resolverConfiguracionDocumento('INCAPACIDAD_MEDICA');
     const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: isPos ? [80, 120] : 'a4' });
     if (isPos) {
       this.renderPosHeader(doc, h, 'INCAPACIDAD MÉDICA');
@@ -445,9 +541,9 @@ export class ReportePdfService {
       this.renderPosFooter(doc, h, y + 5);
     } else {
       const margin = 20; const pageWidth = doc.internal.pageSize.getWidth();
-      this.renderHeader(doc, h, margin, pageWidth);
-      this.renderSectionTitle(doc, 'CONSTANCIA DE INCAPACIDAD MÉDICA', margin, 45);
-      let y = 60;
+      const headerBottom = this.renderHeader(doc, h, margin, pageWidth, configuracion);
+      this.renderSectionTitle(doc, 'CONSTANCIA DE INCAPACIDAD MÉDICA', margin, headerBottom + 9);
+      let y = headerBottom + 24;
       (h.incapacidades || []).forEach(inc => {
         doc.setFont('helvetica', 'bold'); doc.setFontSize(12);
         doc.text(`${inc.tipo.toUpperCase()}`, margin, y);
@@ -463,6 +559,7 @@ export class ReportePdfService {
 
   async generarRemisionPdfUrl(h: HistoriaClinica, formato: 'NORMAL' | 'POS' = 'NORMAL'): Promise<string> {
     const isPos = formato === 'POS';
+    const configuracion = await this.resolverConfiguracionDocumento('REFERENCIA_MEDICA');
     const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: isPos ? [80, 120] : 'a4' });
     if (isPos) {
       this.renderPosHeader(doc, h, 'REMISION / REFERENCIA');
@@ -475,9 +572,9 @@ export class ReportePdfService {
       this.renderPosFooter(doc, h, y + 5);
     } else {
       const margin = 20; const pageWidth = doc.internal.pageSize.getWidth();
-      this.renderHeader(doc, h, margin, pageWidth);
-      this.renderSectionTitle(doc, 'HOJA DE REFERENCIA / REMISIÓN', margin, 45);
-      let y = 60;
+      const headerBottom = this.renderHeader(doc, h, margin, pageWidth, configuracion);
+      this.renderSectionTitle(doc, 'HOJA DE REFERENCIA / REMISIÓN', margin, headerBottom + 9);
+      let y = headerBottom + 24;
       (h.referidos || []).forEach(ref => {
         doc.setFont('helvetica', 'bold'); doc.setFontSize(11);
         doc.text(`ESTABLECIMIENTO DESTINO: ${String(ref.destino?.nombre || ref.establecimientoDestino || 'GENERAL').toUpperCase()}`, margin, y);
@@ -519,14 +616,54 @@ export class ReportePdfService {
     doc.text('GENERADO POR SISS CLÍNICO', 40, y + 12, { align: 'center' });
   }
 
-  private renderHeader(doc: jsPDF, h: HistoriaClinica, margin: number, pageWidth: number) {
+  private renderHeader(
+    doc: jsPDF,
+    h: HistoriaClinica,
+    margin: number,
+    pageWidth: number,
+    configuracion?: Pick<ConfiguracionDocumento, 'tituloEncabezado' | 'subtitulo'>,
+  ): number {
     const med = (h.medico as any) || {};
-    doc.setFont('helvetica', 'bold'); doc.setFontSize(20); doc.setTextColor(30, 58, 138);
-    doc.text('SISS CLÍNICO', margin, margin + 8);
-    doc.setFontSize(10); doc.setTextColor(30, 41, 59);
+    const encabezado = configuracion?.tituloEncabezado || 'SISS CLÍNICO';
+    const subtitulo = configuracion?.subtitulo || '';
     const est = String(med.establecimiento?.nombre || 'ESTABLECIMIENTO MÉDICO').toUpperCase();
-    doc.text(est, pageWidth - margin, margin + 8, { align: 'right' });
-    doc.setDrawColor(203, 213, 225); doc.line(margin, margin + 16, pageWidth - margin, margin + 16);
+
+    if (!subtitulo) {
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(20); doc.setTextColor(30, 58, 138);
+      doc.text(encabezado, margin, margin + 8);
+      doc.setFontSize(10); doc.setTextColor(30, 41, 59);
+      doc.text(est, pageWidth - margin, margin + 8, { align: 'right' });
+      const separatorY = margin + 16;
+      doc.setDrawColor(203, 213, 225); doc.line(margin, separatorY, pageWidth - margin, separatorY);
+      return separatorY;
+    }
+
+    // Los textos configurables pueden ser extensos. Reservamos una columna para
+    // cada uno y calculamos el alto del encabezado antes de comenzar el contenido.
+    const columnGap = 5;
+    const establishmentWidth = 62;
+    const titleWidth = pageWidth - (margin * 2) - columnGap - establishmentWidth;
+    const headerY = margin + 7;
+
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(12); doc.setTextColor(30, 58, 138);
+    const titleLines = doc.splitTextToSize(encabezado, titleWidth);
+    doc.text(titleLines, margin, headerY);
+    const titleBottom = headerY + ((titleLines.length - 1) * 5);
+
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(8); doc.setTextColor(100, 116, 139);
+    const subtitleY = titleBottom + 5;
+    const subtitleLines = doc.splitTextToSize(subtitulo, titleWidth);
+    doc.text(subtitleLines, margin, subtitleY);
+    const subtitleBottom = subtitleY + ((subtitleLines.length - 1) * 3.5);
+
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(8); doc.setTextColor(30, 41, 59);
+    const establishmentLines = doc.splitTextToSize(est, establishmentWidth);
+    doc.text(establishmentLines, pageWidth - margin, headerY, { align: 'right' });
+    const establishmentBottom = headerY + ((establishmentLines.length - 1) * 4);
+
+    const separatorY = Math.max(subtitleBottom, establishmentBottom) + 4;
+    doc.setDrawColor(203, 213, 225); doc.line(margin, separatorY, pageWidth - margin, separatorY);
+    return separatorY;
   }
 
   private renderSectionTitle(doc: jsPDF, title: string, x: number, y: number) {
@@ -619,14 +756,21 @@ export class ReportePdfService {
   }
 
   async generarCarnetPdfUrl(historial: any[], pac: any): Promise<string> {
+    const configuracion = await this.resolverConfiguracionDocumento('CARNET_INMUNIZACIONES');
     const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
     const margin = 20; const pageWidth = doc.internal.pageSize.getWidth();
     const contentWidth = pageWidth - (margin * 2);
 
     // Encabezado PAI
-    this.renderHeader(doc, { medico: { establecimiento: historial[0]?.establecimiento } } as any, margin, pageWidth);
+    const headerBottom = this.renderHeader(
+      doc,
+      { medico: { establecimiento: historial[0]?.establecimiento } } as any,
+      margin,
+      pageWidth,
+      configuracion,
+    );
     
-    let currentY = margin + 28;
+    let currentY = headerBottom + 12;
     doc.setFont('helvetica', 'bold'); doc.setFontSize(18); doc.setTextColor(30, 58, 138);
     doc.text('CARNET DE INMUNIZACIONES (PAI)', margin, currentY);
     
@@ -984,8 +1128,20 @@ export class ReportePdfService {
     return { r: 30, g: 58, b: 138 }; // Azul SISS
   }
 
-  async generarExpedienteUnificadoPdfUrl(data: any): Promise<string> {
+  async generarExpedienteUnificadoPdfUrl(
+    data: any,
+    configuracionDocumento?: Pick<ConfiguracionDocumento, 'tituloEncabezado' | 'subtitulo' | 'tituloVisor'>,
+  ): Promise<string> {
+    const configuracion = {
+      ...CONFIGURACION_HISTORIAL_PREDETERMINADA,
+      ...configuracionDocumento,
+    };
     const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
+    doc.setProperties({
+      title: configuracion.tituloVisor,
+      subject: configuracion.subtitulo,
+      author: configuracion.tituloEncabezado,
+    });
     const margin = 15;
     const pageWidth = doc.internal.pageSize.getWidth();
     const contentWidth = pageWidth - (margin * 2);
@@ -999,12 +1155,12 @@ export class ReportePdfService {
       if (currentY + needed > 275) {
         doc.addPage();
         currentY = margin;
-        this.renderHeaderExpediente(doc, margin, pageWidth);
+        this.renderHeaderExpediente(doc, margin, pageWidth, configuracion);
         currentY += 25;
       }
     };
 
-    this.renderHeaderExpediente(doc, margin, pageWidth);
+    this.renderHeaderExpediente(doc, margin, pageWidth, configuracion);
     currentY += 20;
 
     const pac = data?.paciente || {};
@@ -1092,11 +1248,16 @@ export class ReportePdfService {
     return doc.output('bloburl').toString();
   }
 
-  private renderHeaderExpediente(doc: jsPDF, margin: number, pageWidth: number) {
+  private renderHeaderExpediente(
+    doc: jsPDF,
+    margin: number,
+    pageWidth: number,
+    configuracion: Pick<ConfiguracionDocumento, 'tituloEncabezado' | 'subtitulo'>,
+  ) {
     doc.setFont('helvetica', 'bold'); doc.setFontSize(14); doc.setTextColor(30, 58, 138);
-    doc.text('REPÚBLICA DE HONDURAS - SECRETARÍA DE SALUD', margin, margin + 5);
+    doc.text(configuracion.tituloEncabezado, margin, margin + 5);
     doc.setFontSize(10); doc.setTextColor(100, 116, 139);
-    doc.text('EXPEDIENTE CLÍNICO UNIFICADO DEL PACIENTE', margin, margin + 11);
+    doc.text(configuracion.subtitulo, margin, margin + 11);
     doc.setDrawColor(226, 232, 240); doc.line(margin, margin + 15, pageWidth - margin, margin + 15);
   }
 }

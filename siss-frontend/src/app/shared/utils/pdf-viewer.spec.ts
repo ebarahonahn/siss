@@ -5,11 +5,15 @@ describe('Visor PDF interno', () => {
 
   it('abre un diálogo con PDF y descarga, sin abrir ventanas', () => {
     const open = spyOn(window, 'open');
-    abrirPdfEnVisor(new Blob(['%PDF-1.7'], { type: 'application/pdf' }), 'Reporte de prueba');
+    abrirPdfEnVisor(
+      new Blob(['%PDF-1.7'], { type: 'application/pdf' }),
+      'Reporte de prueba',
+      'reporte-prueba.pdf',
+    );
     const dialog = document.querySelector('dialog')!;
     expect(dialog.open).toBeTrue();
     expect(dialog.querySelector('iframe')!.title).toBe('Reporte de prueba');
-    expect(dialog.querySelector('a')!.download).toBe('documento.pdf');
+    expect(dialog.querySelector('a')!.download).toBe('reporte-prueba.pdf');
     expect(open).not.toHaveBeenCalled();
   });
 

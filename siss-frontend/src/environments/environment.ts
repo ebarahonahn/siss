@@ -4,7 +4,7 @@ export const environment = {
   // socketUrl: 'http://localhost:3000',
   
   // esto ha que descomentarlo  cuando se tenga que ahcer un commit 
-  production: false,
+  production: true,
   apiUrl: 'https://siss-backend.onrender.com/api/v1',
   socketUrl: 'https://siss-backend.onrender.com',
 };
