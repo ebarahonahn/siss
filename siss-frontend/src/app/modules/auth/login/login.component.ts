@@ -94,8 +94,8 @@ import { interval, Subscription } from 'rxjs';
                     </svg>
                  </div>
               </div>
-              <h1 class="text-2xl sm:text-3xl lg:text-4xl font-black text-gray-900 tracking-tight mb-1">{{ configGeneral?.siglasSistema || 'SISS' }}</h1>
-              <p class="text-gray-500 font-medium text-sm leading-tight">{{ configGeneral?.nombreSistema || 'Sistema Integral de Salud - Honduras' }}</p>
+              <!--<h1 class="text-2xl sm:text-3xl lg:text-4xl font-black text-gray-900 tracking-tight mb-1">{{ configGeneral?.siglasSistema || 'SISS' }}</h1>
+              <p class="text-gray-500 font-medium text-sm leading-tight">{{ configGeneral?.nombreSistema || 'Sistema Integral de Salud - Honduras' }}</p> -->
             </div>
 
             <!-- Mensajes Informativos / Errores -->
